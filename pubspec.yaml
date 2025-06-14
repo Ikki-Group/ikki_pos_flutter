@@ -9,12 +9,40 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Core
+  go_router: ^15.1.3
+  dio: ^5.8.0+1
+  shared_preferences: ^2.5.3
+  freezed_annotation: ^3.0.0
+
+  # State Management
+  riverpod_annotation: ^3.0.0-dev.15
+  flutter_riverpod: ^3.0.0-dev.15
+
+  # Local Database
+  sembast:
+  sembast_sqflite:
+  sqflite:
+
+  # UI
   cupertino_icons: ^1.0.8
+  pinput: ^5.0.1
+
+  # Util
+  fpdart: ^1.1.1
+  intl: ^0.20.2
+  bson: ^5.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
+  riverpod_lint: ^3.0.0-dev.15
+  riverpod_generator: ^3.0.0-dev.15
+  freezed: ^3.0.6
 
 flutter:
   uses-material-design: true
