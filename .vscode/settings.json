@@ -1,0 +1,23 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "editor.formatOnSave": true,
+  "workbench.editor.enablePreview": false,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.freezed.dart, ${capture}.g.dart, ${capture}.freezed.g.dart"
+  },
+  "explorer.fileNesting.expand": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "windows": true,
+    "**/*/*.g.dart": true,
+    "**/*/*.freezed.dart": true,
+  }
+}

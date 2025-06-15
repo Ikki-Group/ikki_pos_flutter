@@ -15,7 +15,3 @@ generate:
 generate-watch:
 	echo "Generating needed codes.." ; \
 	dart run build_runner watch --delete-conflicting-outputs ; \
-
-l10n:
-	echo "Generating needed codes.." ; \
-	flutter gen-l10n ; \
