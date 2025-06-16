@@ -1,5 +1,6 @@
 import 'package:ikki_pos_flutter/data/auth/auth_model.dart';
 import 'package:ikki_pos_flutter/data/auth/auth_repo.dart';
+import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_device_manager.g.dart';
@@ -19,9 +20,15 @@ class AuthDeviceManager extends _$AuthDeviceManager {
           AuthDeviceReq(key: code, deviceInfo: await DeviceInfoDto.current()),
         );
 
-    state = res.fold<AsyncValue<String>>(
-      (e) => AsyncValue.error(e.msg, StackTrace.current),
-      (r) => AsyncValue.data(r.token),
+    res.fold(
+      (e) {
+        state = AsyncValue.error(e.msg, StackTrace.current);
+      },
+      (r) async {
+        final token = r.token;
+        await ref.read(appTokenProvider.notifier).setToken(token);
+        state = AsyncValue.data(token);
+      },
     );
   }
 }

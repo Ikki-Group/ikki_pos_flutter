@@ -16,11 +16,17 @@ class AuthDevicePage extends ConsumerStatefulWidget {
 class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   late TextEditingController pinController;
   final focusNode = FocusNode();
+  String code = "";
 
   @override
   void initState() {
     super.initState();
     pinController = TextEditingController();
+    pinController.addListener(() {
+      setState(() {
+        code = pinController.text.trim();
+      });
+    });
   }
 
   @override
@@ -31,12 +37,9 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   }
 
   Future<void> _authenticate() async {
-    final code = pinController.text;
-    // if (code.length != _kCodeLen) {
-    //   return;
-    // }
-
-    await ref.read(authDeviceManagerProvider.notifier).authenticate(code);
+    await ref
+        .read(authDeviceManagerProvider.notifier)
+        .authenticate(code.toUpperCase());
   }
 
   @override
@@ -60,6 +63,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
               backgroundColor: Colors.redAccent,
             ),
           );
+          pinController.clear();
         },
       );
     });
@@ -67,7 +71,6 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     return Scaffold(
       body: Center(
         child: GestureDetector(
-          // onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           onTap: () => focusNode.unfocus(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,6 +92,20 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                 controller: pinController,
                 focusNode: focusNode,
                 hapticFeedbackType: HapticFeedbackType.lightImpact,
+                textCapitalization: TextCapitalization.characters,
+                defaultPinTheme: PinTheme(
+                  width: 56,
+                  height: 56,
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: Color.fromRGBO(30, 60, 87, 1),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -101,7 +118,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                 ),
                 onPressed: mnger.maybeWhen<VoidCallback?>(
                   loading: () => null,
-                  orElse: () => _authenticate,
+                  orElse: () => code.length == _kCodeLen ? _authenticate : null,
                 ),
                 child: const Text('Authenticate Device'),
               ),
