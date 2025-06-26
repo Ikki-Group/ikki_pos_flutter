@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_transitions/go_transitions.dart';
 import 'package:ikki_pos_flutter/core/config/app_palette.dart';
 
 class AppTheme {
@@ -31,6 +32,13 @@ class AppTheme {
       filled: true,
       fillColor: Colors.grey[200],
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    ),
+
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: GoTransitions.fadeUpwards,
+        TargetPlatform.iOS: GoTransitions.fade,
+      },
     ),
   );
 

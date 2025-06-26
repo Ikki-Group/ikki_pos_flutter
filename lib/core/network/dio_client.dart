@@ -20,6 +20,11 @@ Dio dioClient(Ref ref) {
       'X-Platform': 'Flutter',
       'X-Platform-Version': '1.0.0',
     },
+    validateStatus: (status) {
+      // Only 2xx
+      if (status == null) return false;
+      return status >= 200 && status < 300;
+    },
   );
 
   // Auth interceptor

@@ -22,7 +22,7 @@ class IkkiPosApp extends ConsumerWidget {
 }
 
 Future<void> setPreferredOrientations() {
-  return SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+  return SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
 }

@@ -15,3 +15,7 @@ generate:
 generate-watch:
 	echo "Generating needed codes.." ; \
 	dart run build_runner watch --delete-conflicting-outputs ; \
+
+lint:
+	echo "Linting the project.." ; \
+	dart run custom_lint ; \

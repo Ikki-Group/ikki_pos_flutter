@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikki_pos_flutter/data/outlet/service.dart';
 import 'package:ikki_pos_flutter/features/auth/pages/auth_device_page.dart';
+import 'package:ikki_pos_flutter/features/home/pages/home_page.dart';
+import 'package:ikki_pos_flutter/features/user/pages/user_select_page.dart';
+import 'package:ikki_pos_flutter/router/ikki_router.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_provider.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
-import 'package:ikki_pos_flutter/widgets/scaffold/home_scaffold.dart';
+import 'package:ikki_pos_flutter/widgets/scaffold/home/home_scaffold.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
-
-enum IkkiRouter {
-  splash(path: "/splash"),
-  authDevice(path: "/auth-device"),
-
-  // Home
-  home(path: "/home");
-
-  const IkkiRouter({required this.path});
-  final String path;
-}
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
@@ -25,7 +18,7 @@ GoRouter goRouter(Ref ref) {
 
   ref
     ..onDispose(listener.dispose)
-    ..listen(appProvider.select((value) => value), (_, next) {
+    ..listen(appProvider, (_, next) {
       print('authProvider.select next: $next');
       listener.value = next;
     });
@@ -55,10 +48,10 @@ GoRouter goRouter(Ref ref) {
           return const Scaffold(body: Center(child: Text("Loading...")));
         },
       ),
+
       GoRoute(
         path: IkkiRouter.authDevice.path,
         builder: (context, state) {
-          print('state: $state');
           return const AuthDevicePage();
         },
         redirect: (context, state) async {
@@ -70,19 +63,38 @@ GoRouter goRouter(Ref ref) {
         },
       ),
 
+      GoRoute(
+        path: IkkiRouter.userSelect.path,
+        builder: (context, state) {
+          return const UserSelectPage();
+        },
+      ),
+
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return HomeScaffold(child: child);
         },
+        redirect: (context, state) {
+          final hasOutlet = ref.read(outletServiceProvider).outlet != null;
+          return !hasOutlet ? IkkiRouter.userSelect.path : null;
+        },
         routes: [
           GoRoute(
-            path: "/home",
+            path: IkkiRouter.home.path,
             builder: (context, state) {
-              return Scaffold(body: Center(child: Text("Hom")));
+              return const HomePage();
+            },
+          ),
+          GoRoute(
+            path: IkkiRouter.history.path,
+            builder: (context, state) {
+              return const Center(child: Text("History"));
             },
           ),
         ],
       ),
+
+      // Exception Handler
     ],
   );
 
