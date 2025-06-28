@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/data/outlet/model.dart';
-import 'package:ikki_pos_flutter/data/outlet/service.dart';
+import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
+import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -36,7 +36,7 @@ class _LeftInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final outlet = ref.watch(outletServiceProvider.select((s) => s.outlet))!;
+    final outlet = ref.watch(outletNotifierProvider.select((s) => s.outlet))!;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -71,10 +71,10 @@ class _CreateOrderButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton.icon(
       onPressed: () async {
-        final outlet = ref.read(outletServiceProvider);
+        final outlet = ref.read(outletNotifierProvider);
         if (!outlet.isOpen()) {
           ref
-              .read(outletServiceProvider.notifier)
+              .read(outletNotifierProvider.notifier)
               .setOpen(
                 OutletSessionOpen(
                   at: DateTime.now().toString(),

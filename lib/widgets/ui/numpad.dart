@@ -78,9 +78,7 @@ class _NumpadState extends State<Numpad> {
     final bool isEmptyInput = input.isEmpty;
     final Color borderColor = isEmptyInput ? Colors.grey : Palette.primary;
     final Color textColor = isEmptyInput ? Colors.grey[500]! : Colors.black;
-    final FontWeight textFontWeight = isEmptyInput
-        ? FontWeight.normal
-        : FontWeight.bold;
+    final FontWeight textFontWeight = isEmptyInput ? FontWeight.normal : FontWeight.bold;
     final double textFontSize = isEmptyInput ? 20 : 24;
 
     return Center(
@@ -194,9 +192,7 @@ class _NumpadState extends State<Numpad> {
                       const SizedBox(width: 16), // Space between buttons
                       Expanded(
                         child: FilledButton(
-                          onPressed: int.tryParse(input) != null
-                              ? onSubmit
-                              : null,
+                          onPressed: int.tryParse(input) != null ? onSubmit : null,
                           style: FilledButton.styleFrom(
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor: Colors.white,

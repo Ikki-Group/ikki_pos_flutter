@@ -37,13 +37,12 @@ class AppException implements Exception {
     );
   }
 
-  factory AppException.fromException(Exception e, StackTrace? stackTrace) =>
-      AppException(
-        msg: e.toString(),
-        code: e.runtimeType.toString(),
-        error: e,
-        stackTrace: stackTrace,
-      );
+  factory AppException.fromException(Exception e, StackTrace? stackTrace) => AppException(
+    msg: e.toString(),
+    code: e.runtimeType.toString(),
+    error: e,
+    stackTrace: stackTrace,
+  );
 
   factory AppException.fromObject(Object e, StackTrace? stackTrace) {
     if (e is DioException) {

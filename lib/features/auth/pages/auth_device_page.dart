@@ -37,9 +37,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   }
 
   Future<void> _authenticate() async {
-    await ref
-        .read(authDeviceManagerProvider.notifier)
-        .authenticate(code.toUpperCase());
+    await ref.read(authDeviceManagerProvider.notifier).authenticate(code.toUpperCase());
   }
 
   @override

@@ -53,6 +53,5 @@ abstract class SamplePost with _$SamplePost {
     required String body,
   }) = _SamplePost;
 
-  factory SamplePost.fromJson(Map<String, dynamic> json) =>
-      _$SamplePostFromJson(json);
+  factory SamplePost.fromJson(Map<String, dynamic> json) => _$SamplePostFromJson(json);
 }

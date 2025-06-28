@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/data/outlet/service.dart';
+import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
+import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
 import 'package:ikki_pos_flutter/features/auth/pages/auth_device_page.dart';
 import 'package:ikki_pos_flutter/features/home/pages/home_page.dart';
 import 'package:ikki_pos_flutter/features/user/pages/user_select_page.dart';
@@ -55,9 +56,7 @@ GoRouter goRouter(Ref ref) {
           return const AuthDevicePage();
         },
         redirect: (context, state) async {
-          final hasToken = await ref
-              .read(appTokenProvider.future)
-              .then((t) => t != null && t.isNotEmpty);
+          final hasToken = await ref.read(appTokenProvider.future).then((t) => t != null && t.isNotEmpty);
 
           return hasToken ? "/home" : null;
         },
@@ -75,8 +74,17 @@ GoRouter goRouter(Ref ref) {
           return HomeScaffold(child: child);
         },
         redirect: (context, state) {
-          final hasOutlet = ref.read(outletServiceProvider).outlet != null;
-          return !hasOutlet ? IkkiRouter.userSelect.path : null;
+          final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
+          if (!hasOutlet) {
+            throw Exception("outlet is null");
+          }
+
+          final hasUser = ref.read(userNotifierProvider) != null;
+          if (!hasUser) {
+            return IkkiRouter.userSelect.path;
+          }
+
+          return null;
         },
         routes: [
           GoRoute(

@@ -13,8 +13,7 @@ abstract class AuthDeviceReq with _$AuthDeviceReq {
     required DeviceInfoDto deviceInfo,
   }) = _AuthDeviceReq;
 
-  factory AuthDeviceReq.fromJson(Map<String, dynamic> json) =>
-      _$AuthDeviceReqFromJson(json);
+  factory AuthDeviceReq.fromJson(Map<String, dynamic> json) => _$AuthDeviceReqFromJson(json);
 }
 
 @freezed
@@ -27,8 +26,7 @@ abstract class AuthDeviceRes with _$AuthDeviceRes {
     required ReceiptDto receipt,
   }) = _AuthDeviceRes;
 
-  factory AuthDeviceRes.fromJson(Map<String, dynamic> json) =>
-      _$AuthDeviceResFromJson(json);
+  factory AuthDeviceRes.fromJson(Map<String, dynamic> json) => _$AuthDeviceResFromJson(json);
 }
 
 @freezed
@@ -40,8 +38,7 @@ abstract class DeviceInfoDto with _$DeviceInfoDto {
     required String deviceId,
   }) = _DeviceInfoDto;
 
-  factory DeviceInfoDto.fromJson(Map<String, dynamic> json) =>
-      _$DeviceInfoDtoFromJson(json);
+  factory DeviceInfoDto.fromJson(Map<String, dynamic> json) => _$DeviceInfoDtoFromJson(json);
 
   static Future<DeviceInfoDto> current() async {
     final DeviceInfoPlugin info = DeviceInfoPlugin();
@@ -66,9 +63,7 @@ abstract class DeviceInfoDto with _$DeviceInfoDto {
         os: 'iOS ${iosInfo.systemVersion}',
         model: iosInfo.model,
         appVersion: iosInfo.systemVersion,
-        deviceId:
-            iosInfo.identifierForVendor ??
-            'fallback_device_id_${DateTime.now().millisecondsSinceEpoch}',
+        deviceId: iosInfo.identifierForVendor ?? 'fallback_device_id_${DateTime.now().millisecondsSinceEpoch}',
       );
     }
 
@@ -78,9 +73,7 @@ abstract class DeviceInfoDto with _$DeviceInfoDto {
 
 @freezed
 abstract class ReceiptDto with _$ReceiptDto {
-  const factory ReceiptDto({required String prefix, required int counter}) =
-      _ReceiptDto;
+  const factory ReceiptDto({required String prefix, required int counter}) = _ReceiptDto;
 
-  factory ReceiptDto.fromJson(Map<String, dynamic> json) =>
-      _$ReceiptDtoFromJson(json);
+  factory ReceiptDto.fromJson(Map<String, dynamic> json) => _$ReceiptDtoFromJson(json);
 }

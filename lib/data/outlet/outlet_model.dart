@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+part 'outlet_model.freezed.dart';
+part 'outlet_model.g.dart';
 
 @freezed
 abstract class OutletModel with _$OutletModel {
@@ -16,8 +16,7 @@ abstract class OutletModel with _$OutletModel {
     required String updatedBy,
   }) = _OutletModel;
 
-  factory OutletModel.fromJson(Map<String, dynamic> json) =>
-      _$OutletModelFromJson(json);
+  factory OutletModel.fromJson(Map<String, dynamic> json) => _$OutletModelFromJson(json);
 
   static getMock() {
     return OutletModel(
@@ -42,8 +41,7 @@ abstract class OutletSession with _$OutletSession {
     OutletSessionClose? close,
   }) = _OutletSession;
 
-  factory OutletSession.fromJson(Map<String, dynamic> json) =>
-      _$OutletSessionFromJson(json);
+  factory OutletSession.fromJson(Map<String, dynamic> json) => _$OutletSessionFromJson(json);
 
   factory OutletSession.initial(OutletSessionOpen? open) {
     return OutletSession(
@@ -65,8 +63,7 @@ abstract class OutletSessionSummary with _$OutletSessionSummary {
     required int cash,
   }) = _OutletSessionSummary;
 
-  factory OutletSessionSummary.fromJson(Map<String, dynamic> json) =>
-      _$OutletSessionSummaryFromJson(json);
+  factory OutletSessionSummary.fromJson(Map<String, dynamic> json) => _$OutletSessionSummaryFromJson(json);
 
   factory OutletSessionSummary.initial() {
     return OutletSessionSummary(
@@ -88,8 +85,7 @@ abstract class OutletSessionOpen with _$OutletSessionOpen {
     String? note,
   }) = _OutletSessionOpen;
 
-  factory OutletSessionOpen.fromJson(Map<String, dynamic> json) =>
-      _$OutletSessionOpenFromJson(json);
+  factory OutletSessionOpen.fromJson(Map<String, dynamic> json) => _$OutletSessionOpenFromJson(json);
 }
 
 @freezed
@@ -101,6 +97,21 @@ abstract class OutletSessionClose with _$OutletSessionClose {
     String? note,
   }) = _OutletSessionClose;
 
-  factory OutletSessionClose.fromJson(Map<String, dynamic> json) =>
-      _$OutletSessionCloseFromJson(json);
+  factory OutletSessionClose.fromJson(Map<String, dynamic> json) => _$OutletSessionCloseFromJson(json);
+}
+
+@freezed
+abstract class OutletState with _$OutletState {
+  const OutletState._();
+
+  const factory OutletState({
+    OutletModel? outlet,
+    OutletSession? session,
+  }) = _OutletState;
+
+  factory OutletState.fromJson(Map<String, dynamic> json) => _$OutletStateFromJson(json);
+
+  bool isOpen() {
+    return outlet != null && session != null;
+  }
 }

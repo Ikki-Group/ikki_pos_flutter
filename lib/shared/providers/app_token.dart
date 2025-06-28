@@ -12,16 +12,12 @@ class AppToken extends _$AppToken {
   }
 
   Future<void> setToken(String token) async {
-    await ref
-        .read(sharedPrefsProvider.future)
-        .then((sp) => sp.setString(SharedPrefsKeys.authToken.key, token));
+    await ref.read(sharedPrefsProvider).setString(SharedPrefsKeys.authToken.key, token);
     state = AsyncValue.data(token);
   }
 
   Future<String?> getToken() async {
-    final token = await ref
-        .read(sharedPrefsProvider.future)
-        .then((sp) => sp.getString(SharedPrefsKeys.authToken.key));
+    final token = ref.read(sharedPrefsProvider).getString(SharedPrefsKeys.authToken.key);
 
     state = AsyncValue.data(token);
     return token;

@@ -1,5 +1,6 @@
 import 'package:ikki_pos_flutter/data/auth/auth_model.dart';
 import 'package:ikki_pos_flutter/data/auth/auth_repo.dart';
+import 'package:ikki_pos_flutter/shared/providers/app_provider.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,6 +29,7 @@ class AuthDeviceManager extends _$AuthDeviceManager {
         final token = r.token;
         await ref.read(appTokenProvider.notifier).setToken(token);
         state = AsyncValue.data(token);
+        ref.read(appProvider.notifier).load();
       },
     );
   }

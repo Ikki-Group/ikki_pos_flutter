@@ -25,8 +25,7 @@ class HomePage extends StatelessWidget {
                           print(TabItem.values[idx]);
                         },
                         tabs: [
-                          for (var item in TabItem.values)
-                            Tab(text: item.label),
+                          for (var item in TabItem.values) Tab(text: item.label),
                         ],
                         labelColor: Colors.blueAccent,
                       ),
@@ -177,8 +176,7 @@ class PosDashboardScreen extends StatefulWidget {
   State<PosDashboardScreen> createState() => _PosDashboardScreenState();
 }
 
-class _PosDashboardScreenState extends State<PosDashboardScreen>
-    with SingleTickerProviderStateMixin {
+class _PosDashboardScreenState extends State<PosDashboardScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   // Dummy Data for demonstration
@@ -536,9 +534,7 @@ class OrderCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 4.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
-          side: isSelected
-              ? const BorderSide(color: Colors.blue, width: 1.5)
-              : BorderSide.none,
+          side: isSelected ? const BorderSide(color: Colors.blue, width: 1.5) : BorderSide.none,
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -663,9 +659,7 @@ class OrderCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 12, color: Colors.black),
                   ),
                   Icon(
-                    order.paymentStatus == PaymentStatus.paid
-                        ? Icons.check_circle
-                        : Icons.credit_card,
+                    order.paymentStatus == PaymentStatus.paid ? Icons.check_circle : Icons.credit_card,
                     color: Colors.grey[600],
                     size: 16,
                   ),
@@ -729,8 +723,7 @@ class _OrderDetailsPanel extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
-                      order.timeAgo ??
-                          '00:00:00', // Use a default if timeAgo is null
+                      order.timeAgo ?? '00:00:00', // Use a default if timeAgo is null
                       style: const TextStyle(
                         color: Colors.orange,
                         fontSize: 12,

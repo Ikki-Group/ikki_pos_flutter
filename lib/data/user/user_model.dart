@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'model.freezed.dart';
-part 'model.g.dart';
+part 'user_model.freezed.dart';
+part 'user_model.g.dart';
 
 @freezed
 sealed class User with _$User {
@@ -13,4 +13,15 @@ sealed class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  static List<User> getMock() {
+    return List.generate(800, (index) {
+      return User(
+        id: '$index',
+        name: 'Rizqy Nugroho $index',
+        email: 'rizqy.nugroho$index@ikki.id',
+        pin: '123456',
+      );
+    });
+  }
 }

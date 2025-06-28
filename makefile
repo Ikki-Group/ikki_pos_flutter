@@ -19,3 +19,7 @@ generate-watch:
 lint:
 	echo "Linting the project.." ; \
 	dart run custom_lint ; \
+
+format:
+	echo "Formatting the project.." ; \
+	dart format . ; \
