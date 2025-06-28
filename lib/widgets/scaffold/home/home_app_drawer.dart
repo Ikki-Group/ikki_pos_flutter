@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
+import 'package:ikki_pos_flutter/router/ikki_router.dart';
 
 enum SGDrawerItem {
   home(name: 'Mulai Penjualan', icon: Icons.point_of_sale, path: "/home"),
@@ -116,6 +118,12 @@ class _UserInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userNotifierProvider);
+
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -129,9 +137,9 @@ class _UserInfo extends ConsumerWidget {
             const SizedBox(width: 12.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  'ikki',
+                  user.name,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -139,28 +147,24 @@ class _UserInfo extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  'haha resto',
+                  user.id,
                   style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
           ],
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: () {
-            // Handle ADMIN POS button tap
+            context.go(IkkiRouter.userSelect.path);
           },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.all(0),
           ),
-          child: const Text(
-            'ADMIN',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          child: Icon(
+            Icons.logout,
+            color: Colors.white,
+            size: 24,
           ),
         ),
       ],

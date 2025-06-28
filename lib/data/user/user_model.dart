@@ -4,7 +4,9 @@ part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 @freezed
-sealed class User with _$User {
+abstract class User with _$User {
+  const User._();
+
   const factory User({
     required String id,
     required String name,
@@ -23,5 +25,11 @@ sealed class User with _$User {
         pin: '123456',
       );
     });
+  }
+
+  static int kPinLength = 6;
+
+  bool comparePin(String pin) {
+    return pin == this.pin;
   }
 }

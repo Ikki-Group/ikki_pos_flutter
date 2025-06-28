@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/data/user/user_model.dart';
+import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
 import 'package:ikki_pos_flutter/features/user/widgets/user_select_dialog.dart';
+import 'package:ikki_pos_flutter/router/ikki_router.dart';
+import 'package:ikki_pos_flutter/widgets/ui/numpad_pin.dart';
 
 class UserSelectPage extends ConsumerStatefulWidget {
   const UserSelectPage({super.key});
@@ -11,8 +15,10 @@ class UserSelectPage extends ConsumerStatefulWidget {
   ConsumerState<UserSelectPage> createState() => _UserSelectPageState();
 }
 
-class _UserSelectPageState extends ConsumerState<UserSelectPage> {
+class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProviderStateMixin {
+  final int maxPinLength = User.kPinLength;
   User? selectedUser;
+  String _displayValue = "";
 
   _openDialog() async {
     final user = await showDialog<User?>(
@@ -29,6 +35,54 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
     });
   }
 
+  void _handleKeyPress(NumpadKey key) {
+    if (selectedUser == null) {
+      _openDialog();
+      return;
+    }
+    setState(() {
+      switch (key) {
+        case NumpadKey.backspace:
+          if (_displayValue.isNotEmpty) {
+            _displayValue = _displayValue.substring(0, _displayValue.length - 1);
+          }
+          break;
+        case NumpadKey.empty:
+          // Do nothing for empty keys
+          break;
+        default:
+          // Add the digit only if we haven't reached max length
+          if (_displayValue.length < maxPinLength) {
+            _displayValue += key.value;
+          }
+
+          if (_displayValue.length == maxPinLength) {
+            final isValid = selectedUser!.comparePin(_displayValue);
+            if (isValid) {
+              ref.read(userNotifierProvider.notifier).setUser(selectedUser!);
+              context.go(IkkiRouter.home.path);
+              return;
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "PIN tidak valid",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              _displayValue = "";
+              return;
+            }
+          }
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final outlet = ref.watch(outletNotifierProvider).outlet!;
@@ -40,12 +94,12 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Selamat Datang Kembali',
+              'Selamat Datang',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
             ),
             const SizedBox(height: 8),
             Text(
-              '-- IKKI Coffee --',
+              '-- ${outlet.name} --',
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
             ),
             const SizedBox(height: 32),
@@ -76,9 +130,21 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
               ),
             ),
             const SizedBox(height: 32),
-            const SizedBox(
+
+            PinIndicator(
+              pinLength: _displayValue.length,
+              maxLength: maxPinLength,
+              boxSize: 45,
+            ),
+            SizedBox(
               width: 280,
-              child: AspectRatio(aspectRatio: 1 / 1, child: Placeholder()),
+              child: Column(
+                children: [
+                  NumpadPin(
+                    onKeyPressed: _handleKeyPress,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

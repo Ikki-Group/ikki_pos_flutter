@@ -26,12 +26,12 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.blue,
-        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.blue, width: 1),
+          side: BorderSide(color: Colors.black, width: 1),
         ),
       ),
     ),

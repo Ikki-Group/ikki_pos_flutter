@@ -15,7 +15,7 @@ class UserSelectDialog extends StatefulWidget {
 class _UserSelectDialogState extends State<UserSelectDialog> {
   final ScrollController _scrollController = ScrollController();
   User? _selectedUser;
-  bool _hasScrolledToInitialUser = false;
+  final bool _hasScrolledToInitialUser = false;
 
   @override
   void initState() {
@@ -27,6 +27,16 @@ class _UserSelectDialogState extends State<UserSelectDialog> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  _scrollTo(int index) {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        index * 60.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   @override
@@ -61,14 +71,7 @@ class _UserSelectDialogState extends State<UserSelectDialog> {
 
                     if (index != -1) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (_scrollController.hasClients) {
-                          _scrollController.animateTo(
-                            index * 60.0,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeOut,
-                          );
-                          _hasScrolledToInitialUser = true; // Set flag to prevent future scrolls
-                        }
+                        _scrollTo(index);
                       });
                     }
                   }

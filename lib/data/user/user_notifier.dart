@@ -13,4 +13,8 @@ class UserNotifier extends _$UserNotifier {
   Future<void> setUser(User user) async {
     state = user.copyWith();
   }
+
+  Future<void> logout() async {
+    state = null;
+  }
 }
