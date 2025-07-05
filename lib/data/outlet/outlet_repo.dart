@@ -29,7 +29,6 @@ class OutletRepo {
 
   Future<OutletState?> getState() async {
     final state = sharedPrefs.getString(SharedPrefsKeys.outlet.key);
-    print("state: $state");
     if (state == null) {
       OutletModel outlet = await getRemote();
       return OutletState(outlet: outlet);

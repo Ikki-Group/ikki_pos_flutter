@@ -21,7 +21,7 @@ abstract class OutletModel with _$OutletModel {
   static getMock() {
     return OutletModel(
       id: 'id',
-      name: 'Ikki Coffee ${DateTime.now().millisecondsSinceEpoch}',
+      name: 'Ikki Coffee',
       type: 'type',
       syncAt: "2023-07-01T00:00:00.000Z",
       createdAt: "2023-07-01T00:00:00.000Z",
@@ -113,5 +113,10 @@ abstract class OutletState with _$OutletState {
 
   bool isOpen() {
     return outlet != null && session != null;
+  }
+
+  OutletModel get requiredOutlet {
+    if (outlet == null) throw Exception("Outlet is null");
+    return outlet!;
   }
 }

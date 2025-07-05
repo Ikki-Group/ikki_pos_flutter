@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_transitions/go_transitions.dart';
 import 'package:ikki_pos_flutter/core/config/app_palette.dart';
 
-class AppTheme {
+abstract final class AppTheme {
   static final light = ThemeData(
     useMaterial3: true,
     primarySwatch: Colors.blue,
@@ -31,7 +31,6 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.black, width: 1),
         ),
       ),
     ),

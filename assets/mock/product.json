@@ -1,0 +1,2372 @@
+{
+  "categories": [
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5091688",
+      "name": "Manual Brew",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721afe"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5633983",
+      "name": "Zero Kalori Bev",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b09"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5088225",
+      "name": "Take Away",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b07"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072798",
+      "name": "TEA",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b08"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072801",
+      "name": "SNACK",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b06"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072797",
+      "name": "SIGNATURE",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b05"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072799",
+      "name": "SALAD",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b04"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072796",
+      "name": "RICE BOWL",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b03"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5359157",
+      "name": "PASTA",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b02"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5570382",
+      "name": "BUNDLING",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721af8"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072803",
+      "name": "MOCKTAIL",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b01"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072792",
+      "name": "MILKY",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721b00"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5890179",
+      "name": "MERCHANDISE",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721aff"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072795",
+      "name": "KOPSU",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721afd"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072800",
+      "name": "ICE BLENDED",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721afc"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072794",
+      "name": "ESPRESSO",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721afb"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072802",
+      "name": "DESSERT",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721afa"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "5072793",
+      "name": "CROISSANT",
+      "desc": null,
+      "isActive": true,
+      "id": "68131f267fd8dc04f2721af9"
+    }
+  ],
+  "products": [
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94725299",
+      "name": "Puff pastry sausage",
+      "desc": "Synced from Moka",
+      "price": 15000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fe4",
+          "mokaId": "94725299",
+          "name": "default",
+          "price": 15000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fe3"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118928",
+      "name": "Shrimp Salad",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ffb",
+          "mokaId": "80118928",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b04",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ffa"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118911",
+      "name": "Shibuya Night",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ff9",
+          "mokaId": "80118911",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ff8"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "97033442",
+      "name": "Seasonal Today",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ff7",
+          "mokaId": "97033442",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ff6"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "97603797",
+      "name": "Sausage Cheese Croinssant",
+      "desc": "Synced from Moka",
+      "price": 29000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ff5",
+          "mokaId": "97603797",
+          "name": "default",
+          "price": 29000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af9",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ff4"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "100069797",
+      "name": "Sampoerna Mild",
+      "desc": "Synced from Moka",
+      "price": 37000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ff3",
+          "mokaId": "100069797",
+          "name": "default",
+          "price": 37000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721aff",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ff2"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94221471",
+      "name": "Salted Caramel",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ff1",
+          "mokaId": "94221471",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ff0"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118902",
+      "name": "River's Island",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fef",
+          "mokaId": "80118902",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b01",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fee"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118906",
+      "name": "Red Velvet",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fec",
+          "mokaId": "123934667",
+          "name": "Ice",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435fed",
+          "mokaId": "123934668",
+          "name": "Hot",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b00",
+      "isActive": true,
+      "id": "68132086c51abab0a0435feb"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "87271898",
+      "name": "Red Futari",
+      "desc": "Synced from Moka",
+      "price": 28000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fea",
+          "mokaId": "87271898",
+          "name": "default",
+          "price": 28000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afc",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fe9"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118904",
+      "name": "Rainy 246",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fe8",
+          "mokaId": "80118904",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afd",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fe7"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94725129",
+      "name": "Puff pastry stick",
+      "desc": "Synced from Moka",
+      "price": 14000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fe6",
+          "mokaId": "94725129",
+          "name": "default",
+          "price": 14000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fe5"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "87272001",
+      "name": "Shyness Cold Brew",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435ffd",
+          "mokaId": "87272001",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ffc"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94725155",
+      "name": "Puff pastry cream",
+      "desc": "Synced from Moka",
+      "price": 15000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fe2",
+          "mokaId": "94725155",
+          "name": "default",
+          "price": 15000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fe1"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94221477",
+      "name": "Peppermint Tea",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fe0",
+          "mokaId": "94221477",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fdf"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118918",
+      "name": "Peanut Butter",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fde",
+          "mokaId": "80118918",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afc",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fdd"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118920",
+      "name": "Peach Tea",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fdc",
+          "mokaId": "80118920",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b08",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fdb"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101098386",
+      "name": "Paint Au+Rivers Island",
+      "desc": "Synced from Moka",
+      "price": 43000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fda",
+          "mokaId": "101098386",
+          "name": "default",
+          "price": 43000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fd9"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118931",
+      "name": "New york chesse cake",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fd6",
+          "mokaId": "80118931",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fd5"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "102150534",
+      "name": "NYCK",
+      "desc": "Synced from Moka",
+      "price": 180000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fd8",
+          "mokaId": "102150534",
+          "name": "default",
+          "price": 180000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fd7"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118914",
+      "name": "Monogatari",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fd4",
+          "mokaId": "80118914",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fd3"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "93965408",
+      "name": "Mix Platter",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fd2",
+          "mokaId": "93965408",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fd1"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80701348",
+      "name": "Mineral Water",
+      "desc": "Synced from Moka",
+      "price": 5000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fd0",
+          "mokaId": "80701348",
+          "name": "default",
+          "price": 5000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fcf"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "99093056",
+      "name": "Sweet Toast",
+      "desc": "Synced from Moka",
+      "price": 24000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436013",
+          "mokaId": "99093056",
+          "name": "default",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0436012"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "98606979",
+      "name": "Zero Kalori",
+      "desc": "Synced from Moka",
+      "price": 60000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043602b",
+          "mokaId": "98606979",
+          "name": "default",
+          "price": 60000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a043602a"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "87271972",
+      "name": "Windy Summer",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436029",
+          "mokaId": "87271972",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0436028"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118925",
+      "name": "Vegetable Tempura",
+      "desc": "Synced from Moka",
+      "price": 20000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436027",
+          "mokaId": "80118925",
+          "name": "default",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0436026"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "98611496",
+      "name": "Tumblr",
+      "desc": "Synced from Moka",
+      "price": 50000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436025",
+          "mokaId": "98611496",
+          "name": "default",
+          "price": 50000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721aff",
+      "isActive": true,
+      "id": "68132086c51abab0a0436024"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "98607107",
+      "name": "Tshirt IKKI.CO",
+      "desc": "Synced from Moka",
+      "price": 150000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436023",
+          "mokaId": "98607107",
+          "name": "default",
+          "price": 150000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721aff",
+      "isActive": true,
+      "id": "68132086c51abab0a0436022"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "102448335",
+      "name": "Triple Flash",
+      "desc": "Synced from Moka",
+      "price": 60000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436021",
+          "mokaId": "102448335",
+          "name": "default",
+          "price": 60000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0436020"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118912",
+      "name": "Tokyo Calling",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043601f",
+          "mokaId": "80118912",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a043601e"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "83698956",
+      "name": "The Winger",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043601d",
+          "mokaId": "83698956",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a043601c"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "84642849",
+      "name": "Tea Selection",
+      "desc": "Synced from Moka",
+      "price": 20000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043601a",
+          "mokaId": "130227746",
+          "name": "Earl Grey",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a043601b",
+          "mokaId": "144209668",
+          "name": "Mango Lychee",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b08",
+      "isActive": true,
+      "id": "68132086c51abab0a0436019"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118908",
+      "name": "Taro",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436017",
+          "mokaId": "123934671",
+          "name": "Ice",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0436018",
+          "mokaId": "123934672",
+          "name": "Hot",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b00",
+      "isActive": true,
+      "id": "68132086c51abab0a0436016"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80610804",
+      "name": "Take Away Pepper",
+      "desc": "Synced from Moka",
+      "price": 2000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436015",
+          "mokaId": "80610804",
+          "name": "default",
+          "price": 2000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b07",
+      "isActive": true,
+      "id": "68132086c51abab0a0436014"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118905",
+      "name": "Miki Mitsu",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fce",
+          "mokaId": "80118905",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afd",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fcd"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118915",
+      "name": "Sweet Biscoff",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436011",
+          "mokaId": "80118915",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afc",
+      "isActive": true,
+      "id": "68132086c51abab0a0436010"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "100069808",
+      "name": "Surya 12",
+      "desc": "Synced from Moka",
+      "price": 28000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043600f",
+          "mokaId": "100069808",
+          "name": "default",
+          "price": 28000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721aff",
+      "isActive": true,
+      "id": "68132086c51abab0a043600e"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118900",
+      "name": "Submarine",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043600d",
+          "mokaId": "80118900",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b01",
+      "isActive": true,
+      "id": "68132086c51abab0a043600c"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94033273",
+      "name": "Strawberry Sando",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a043600b",
+          "mokaId": "94033273",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a043600a"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118916",
+      "name": "Strawberry Cheese Cake",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436009",
+          "mokaId": "80118916",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afc",
+      "isActive": true,
+      "id": "68132086c51abab0a0436008"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "98495536",
+      "name": "Stevia",
+      "desc": "Synced from Moka",
+      "price": 60000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436007",
+          "mokaId": "98495536",
+          "name": "default",
+          "price": 60000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0436006"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101285870",
+      "name": "Spaghetti Bolognese",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436005",
+          "mokaId": "101285870",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b02",
+      "isActive": true,
+      "id": "68132086c51abab0a0436004"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "88188682",
+      "name": "Spaggheti Carbonara",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436003",
+          "mokaId": "88188682",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b02",
+      "isActive": true,
+      "id": "68132086c51abab0a0436002"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "88188718",
+      "name": "Spaggheti Aglio e Olio",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0436001",
+          "mokaId": "88188718",
+          "name": "default",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b02",
+      "isActive": true,
+      "id": "68132086c51abab0a0436000"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118901",
+      "name": "Silly Crush",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fff",
+          "mokaId": "80118901",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b01",
+      "isActive": true,
+      "id": "68132086c51abab0a0435ffe"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118924",
+      "name": "Calamary Matah",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f7b",
+          "mokaId": "80118924",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f7a"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118917",
+      "name": "Coconut Treez",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f9a",
+          "mokaId": "80118917",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afc",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f99"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118919",
+      "name": "Classic Tea",
+      "desc": "Synced from Moka",
+      "price": 10000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f97",
+          "mokaId": "123934684",
+          "name": "Ice",
+          "price": 10000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f98",
+          "mokaId": "123934685",
+          "name": "Hot",
+          "price": 10000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b08",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f96"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "90893715",
+      "name": "Chocolate croissant",
+      "desc": "Synced from Moka",
+      "price": 28000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f95",
+          "mokaId": "90893715",
+          "name": "default",
+          "price": 28000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af9",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f94"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118909",
+      "name": "Chocolate",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f92",
+          "mokaId": "123934673",
+          "name": "Ice",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f93",
+          "mokaId": "123934674",
+          "name": "Hot",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b00",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f91"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118930",
+      "name": "Chicken Rice Bowl",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f8c",
+          "mokaId": "123934696",
+          "name": "Black Pepper",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f8d",
+          "mokaId": "123934697",
+          "name": "Teriyaki",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        },
+        {
+          "id": "68132086c51abab0a0435f8e",
+          "mokaId": "123934698",
+          "name": "Yakiniku",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        },
+        {
+          "id": "68132086c51abab0a0435f8f",
+          "mokaId": "123934699",
+          "name": "Curry",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        },
+        {
+          "id": "68132086c51abab0a0435f90",
+          "mokaId": "125152104",
+          "name": "BBQ",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b03",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f8b"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101285894",
+      "name": "Chicken Katsu Sambal Matah",
+      "desc": "Synced from Moka",
+      "price": 39000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f8a",
+          "mokaId": "101285894",
+          "name": "default",
+          "price": 39000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b03",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f89"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101285923",
+      "name": "Chicken Katsu Mushroom",
+      "desc": "Synced from Moka",
+      "price": 39000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f88",
+          "mokaId": "101285923",
+          "name": "default",
+          "price": 39000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b03",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f87"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101285913",
+      "name": "Chicken Katsu Curry",
+      "desc": "Synced from Moka",
+      "price": 39000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f86",
+          "mokaId": "101285913",
+          "name": "default",
+          "price": 39000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b03",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f85"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118923",
+      "name": "Chicken Karage",
+      "desc": "Synced from Moka",
+      "price": 25000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f83",
+          "mokaId": "123934689",
+          "name": "Mustard Honey",
+          "price": 25000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f84",
+          "mokaId": "142285627",
+          "name": "Original",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f82"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80186467",
+      "name": "Charcoal",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f80",
+          "mokaId": "124046548",
+          "name": "ICE",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f81",
+          "mokaId": "124603630",
+          "name": "HOT",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b00",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f7f"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118896",
+      "name": "Cappucino",
+      "desc": "Synced from Moka",
+      "price": 24000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f7d",
+          "mokaId": "123934655",
+          "name": "Ice",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f7e",
+          "mokaId": "123934656",
+          "name": "Hot",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f7c"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "89757443",
+      "name": "Cricket IKKI.CO",
+      "desc": "Synced from Moka",
+      "price": 10000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f9c",
+          "mokaId": "89757443",
+          "name": "default",
+          "price": 10000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721aff",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f9b"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118897",
+      "name": "Cafe Latte",
+      "desc": "Synced from Moka",
+      "price": 24000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f78",
+          "mokaId": "123934657",
+          "name": "Ice",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f79",
+          "mokaId": "123934658",
+          "name": "Hot",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f77"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101098372",
+      "name": "Butter Croissant+Shibuya Night",
+      "desc": "Synced from Moka",
+      "price": 40000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f76",
+          "mokaId": "101098372",
+          "name": "default",
+          "price": 40000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f75"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118932",
+      "name": "Butter Croissant",
+      "desc": "Synced from Moka",
+      "price": 21000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f74",
+          "mokaId": "80118932",
+          "name": "default",
+          "price": 21000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af9",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f73"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "102128496",
+      "name": "Bundling B",
+      "desc": "Synced from Moka",
+      "price": 50000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f71",
+          "mokaId": "156134836",
+          "name": "KATSU MATAH",
+          "price": 50000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f72",
+          "mokaId": "156134837",
+          "name": "KATSU CURRY",
+          "price": 50000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f70"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "102128590",
+      "name": "Bundling A",
+      "desc": "Synced from Moka",
+      "price": 45000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f6e",
+          "mokaId": "156135018",
+          "name": "Black pepper",
+          "price": 45000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f6f",
+          "mokaId": "156135019",
+          "name": "BBQ",
+          "price": 45000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f6d"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "85511131",
+      "name": "Brokoly Tempura",
+      "desc": "Synced from Moka",
+      "price": 25000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f6c",
+          "mokaId": "85511131",
+          "name": "default",
+          "price": 25000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f6b"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118929",
+      "name": "Beef Salad",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f67",
+          "mokaId": "80118929",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b04",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f66"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "89757420",
+      "name": "BOTTLE 300ml",
+      "desc": "Synced from Moka",
+      "price": 30000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f69",
+          "mokaId": "137550664",
+          "name": "BLACK WHITE",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f6a",
+          "mokaId": "138224633",
+          "name": "COLD BREW",
+          "price": 30000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f68"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118895",
+      "name": "Americano",
+      "desc": "Synced from Moka",
+      "price": 20000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f64",
+          "mokaId": "123934653",
+          "name": "Ice",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f65",
+          "mokaId": "123934654",
+          "name": "Hot",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f63"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118898",
+      "name": "Affogato",
+      "desc": "Synced from Moka",
+      "price": 24000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f62",
+          "mokaId": "80118898",
+          "name": "default",
+          "price": 24000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f61"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "100412983",
+      "name": "Kue Keranjang",
+      "desc": "Synced from Moka",
+      "price": 10000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fb5",
+          "mokaId": "100412983",
+          "name": "default",
+          "price": 10000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fb4"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118903",
+      "name": "Miki Brown Sugar",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fcc",
+          "mokaId": "80118903",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afd",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fcb"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118910",
+      "name": "Midnight in Tokyo",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fca",
+          "mokaId": "80118910",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fc9"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "92938360",
+      "name": "Mendoan",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fc8",
+          "mokaId": "92938360",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fc7"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118899",
+      "name": "Melody",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fc6",
+          "mokaId": "80118899",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b01",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fc5"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118907",
+      "name": "Matcha",
+      "desc": "Synced from Moka",
+      "price": 23000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fc3",
+          "mokaId": "123934669",
+          "name": "Ice",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435fc4",
+          "mokaId": "123934670",
+          "name": "Hot",
+          "price": 23000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b00",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fc2"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94300675",
+      "name": "Maple Latte",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fc1",
+          "mokaId": "94300675",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fc0"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "92936057",
+      "name": "Manual brew",
+      "desc": "Synced from Moka",
+      "price": 25000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fbf",
+          "mokaId": "92936057",
+          "name": "default",
+          "price": 25000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afe",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fbe"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "94300700",
+      "name": "Mango Tea",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fbd",
+          "mokaId": "94300700",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fbc"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118921",
+      "name": "Lychee Tea",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fbb",
+          "mokaId": "80118921",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b08",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fba"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118922",
+      "name": "Lemon Tea",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fb9",
+          "mokaId": "80118922",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b08",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fb8"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118913",
+      "name": "Lady Sunshine",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fb7",
+          "mokaId": "80118913",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b05",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fb6"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "93203340",
+      "name": "Additional Milk",
+      "desc": "Synced from Moka",
+      "price": 8000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f5f",
+          "mokaId": "142602401",
+          "name": "Oatside",
+          "price": 8000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435f60",
+          "mokaId": "142602404",
+          "name": "Almond",
+          "price": 8000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f5e"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "101285891",
+      "name": "Korean Spicy Wings",
+      "desc": "Synced from Moka",
+      "price": 35000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fb3",
+          "mokaId": "101285891",
+          "name": "default",
+          "price": 35000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fb2"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "98749794",
+      "name": "Himalaya Salt",
+      "desc": "Synced from Moka",
+      "price": 5000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fb1",
+          "mokaId": "98749794",
+          "name": "default",
+          "price": 5000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b09",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fb0"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "87271935",
+      "name": "Gumi Breeze",
+      "desc": "Synced from Moka",
+      "price": 26000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435faf",
+          "mokaId": "87271935",
+          "name": "default",
+          "price": 26000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b01",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fae"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118926",
+      "name": "French Fries",
+      "desc": "Synced from Moka",
+      "price": 20000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fad",
+          "mokaId": "80118926",
+          "name": "default",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721b06",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fac"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "99345447",
+      "name": "Espresso Pouch",
+      "desc": "Synced from Moka",
+      "price": 12000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435faa",
+          "mokaId": "151421985",
+          "name": "30ML",
+          "price": 12000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435fab",
+          "mokaId": "151552931",
+          "name": "60ML",
+          "price": 20000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fa9"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "80118894",
+      "name": "Espresso",
+      "desc": "Synced from Moka",
+      "price": 0,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fa8",
+          "mokaId": "80118894",
+          "name": "default",
+          "price": 0,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afb",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fa7"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "102448310",
+      "name": "Double Flash",
+      "desc": "Synced from Moka",
+      "price": 39000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fa6",
+          "mokaId": "102448310",
+          "name": "default",
+          "price": 39000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af8",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fa5"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "99429651",
+      "name": "Donat",
+      "desc": "Synced from Moka",
+      "price": 8000,
+      "hasVariant": true,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fa2",
+          "mokaId": "151551757",
+          "name": "Snow",
+          "price": 8000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        },
+        {
+          "id": "68132086c51abab0a0435fa3",
+          "mokaId": "151551758",
+          "name": "Chocolate",
+          "price": 12000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        },
+        {
+          "id": "68132086c51abab0a0435fa4",
+          "mokaId": "153124072",
+          "name": "Almond",
+          "price": 12000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": false
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435fa1"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "83698878",
+      "name": "Dango",
+      "desc": "Synced from Moka",
+      "price": 22000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435fa0",
+          "mokaId": "83698878",
+          "name": "default",
+          "price": 22000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721afa",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f9f"
+    },
+    {
+      "outletId": "67c88c36d8dc434ded021140",
+      "mokaId": "97355155",
+      "name": "Croissant Small",
+      "desc": "Synced from Moka",
+      "price": 18000,
+      "hasVariant": false,
+      "variants": [
+        {
+          "id": "68132086c51abab0a0435f9e",
+          "mokaId": "97355155",
+          "name": "default",
+          "price": 18000,
+          "recipeId": null,
+          "isActive": true,
+          "isDefault": true
+        }
+      ],
+      "categoryId": "68131f267fd8dc04f2721af9",
+      "isActive": true,
+      "id": "68132086c51abab0a0435f9d"
+    }
+  ]
+}

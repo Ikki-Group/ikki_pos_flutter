@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
 import 'package:ikki_pos_flutter/features/auth/pages/auth_device_page.dart';
+import 'package:ikki_pos_flutter/features/cart/pages/cart_selection_page.dart';
 import 'package:ikki_pos_flutter/features/home/pages/home_page.dart';
 import 'package:ikki_pos_flutter/features/user/pages/user_select_page.dart';
 import 'package:ikki_pos_flutter/router/ikki_router.dart';
@@ -42,9 +44,10 @@ GoRouter goRouter(Ref ref) {
 
       return null;
     },
-    routes: [
+    routes: <RouteBase>[
       GoRoute(
         path: IkkiRouter.splash.path,
+        name: IkkiRouter.splash.name,
         builder: (context, state) {
           return const Scaffold(body: Center(child: Text("Loading...")));
         },
@@ -52,6 +55,7 @@ GoRouter goRouter(Ref ref) {
 
       GoRoute(
         path: IkkiRouter.authDevice.path,
+        name: IkkiRouter.authDevice.name,
         builder: (context, state) {
           return const AuthDevicePage();
         },
@@ -64,6 +68,7 @@ GoRouter goRouter(Ref ref) {
 
       GoRoute(
         path: IkkiRouter.userSelect.path,
+        name: IkkiRouter.userSelect.name,
         builder: (context, state) {
           return const UserSelectPage();
         },
@@ -86,15 +91,17 @@ GoRouter goRouter(Ref ref) {
 
           return null;
         },
-        routes: [
+        routes: <RouteBase>[
           GoRoute(
             path: IkkiRouter.home.path,
+            name: IkkiRouter.home.name,
             builder: (context, state) {
               return const HomePage();
             },
           ),
           GoRoute(
             path: IkkiRouter.history.path,
+            name: IkkiRouter.history.name,
             builder: (context, state) {
               return const Center(child: Text("History"));
             },
@@ -102,7 +109,38 @@ GoRouter goRouter(Ref ref) {
         ],
       ),
 
-      // Exception Handler
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return Scaffold(
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.dark,
+              child: child,
+            ),
+          );
+        },
+        redirect: (context, state) {
+          final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
+          if (!hasOutlet) {
+            throw Exception("outlet is null");
+          }
+
+          final hasUser = ref.read(userNotifierProvider) != null;
+          if (!hasUser) {
+            return IkkiRouter.userSelect.path;
+          }
+
+          return null;
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: IkkiRouter.cartSelection.path,
+            name: IkkiRouter.cartSelection.name,
+            builder: (context, state) {
+              return const CartSelectionPage();
+            },
+          ),
+        ],
+      ),
     ],
   );
 

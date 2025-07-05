@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ikki_pos_flutter/features/home/manager/home_tab_item.dart';
+import 'package:ikki_pos_flutter/features/home/widgets/home_topbar.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
@@ -6,92 +8,48 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        spacing: 8,
-        children: [
-          Column(
-            children: [
-              Row(
-                spacing: 10,
+    return DefaultTabController(
+      length: HomeTabItem.values.length,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          spacing: 8,
+          children: [
+            HomeTopBar(),
+            Flexible(
+              child: Row(
+                spacing: 8,
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: DefaultTabController(
-                      length: 4,
-                      child: TabBar(
-                        onTap: (idx) {
-                          print(TabItem.values[idx]);
-                        },
-                        tabs: [
-                          for (var item in TabItem.values) Tab(text: item.label),
-                        ],
-                        labelColor: Colors.blueAccent,
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
                   Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        // hintText: 'Search',
-                        label: Text('Search'),
+                    flex: 3,
+                    child: Container(
+                      height: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-          Flexible(
-            child: Row(
-              spacing: 8,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    height: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    height: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
-              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-}
-
-enum TabItem {
-  selfOrder(label: "Self Order"),
-  process(label: "Process"),
-  done(label: "Done"),
-  canceled(label: "Void");
-
-  const TabItem({required this.label});
-
-  final String label;
-
-  // @override
-  // toString() {
-  //   return "TabItem{label: $label}";
-  // }
 }
 
 // --- 1. Data Models ---

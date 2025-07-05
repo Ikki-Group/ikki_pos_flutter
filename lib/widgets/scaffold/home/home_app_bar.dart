@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
+import 'package:ikki_pos_flutter/features/home/widgets/home_create_order_button.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -25,7 +26,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
 
       title: _LeftInfo(),
-      actions: [_CreateOrderButton()],
+      actions: [HomeCreateOrderButton()],
       actionsPadding: const EdgeInsets.only(right: 16),
     );
   }
@@ -36,7 +37,7 @@ class _LeftInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final outlet = ref.watch(outletNotifierProvider.select((s) => s.outlet))!;
+    final outlet = ref.watch(outletNotifierProvider.select((s) => s.requiredOutlet));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

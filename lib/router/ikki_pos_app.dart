@@ -22,6 +22,7 @@ class IkkiPosApp extends ConsumerWidget {
 }
 
 Future<void> setPreferredOrientations() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black));
   return SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

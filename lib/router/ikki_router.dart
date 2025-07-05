@@ -6,7 +6,13 @@ enum IkkiRouter {
 
   // Home
   home(path: "/home"),
-  history(path: "/history");
+  history(path: "/history"),
+
+  // Cart
+  cartSelection(path: "/cart-selection"),
+  cartPayment(path: "/cart-payment")
+  //
+  ;
 
   const IkkiRouter({required this.path});
   final String path;
