@@ -18,6 +18,7 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_serializable: ^6.9.5
   json_annotation: ^4.9.0
+  google_fonts: ^6.2.1
 
   # State Management
   riverpod_annotation: ^3.0.0-dev.15
@@ -54,3 +55,14 @@ flutter:
   uses-material-design: true
   assets:
     - assets/mock/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+        - asset: assets/fonts/Inter-Light.ttf
+        - asset: assets/fonts/Inter-SemiBold.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Bold.ttf

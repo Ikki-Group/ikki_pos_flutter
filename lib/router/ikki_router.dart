@@ -1,4 +1,6 @@
 enum IkkiRouter {
+  widgetsbook(path: "/widgetsbook"),
+
   splash(path: "/splash"),
   authDevice(path: "/auth-device"),
 

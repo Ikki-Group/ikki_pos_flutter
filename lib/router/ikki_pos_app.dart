@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikki_pos_flutter/core/config/app_constants.dart';
-import 'package:ikki_pos_flutter/core/config/app_theme.dart';
+import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
 import 'package:ikki_pos_flutter/router/app_router.dart';
 
 class IkkiPosApp extends ConsumerWidget {
@@ -14,7 +14,7 @@ class IkkiPosApp extends ConsumerWidget {
     final GoRouter router = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: router,
-      theme: AppTheme.light,
+      theme: POSTheme.lightTheme,
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
     );

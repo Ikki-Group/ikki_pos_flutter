@@ -7,6 +7,7 @@ import 'package:ikki_pos_flutter/features/auth/pages/auth_device_page.dart';
 import 'package:ikki_pos_flutter/features/cart/pages/cart_selection_page.dart';
 import 'package:ikki_pos_flutter/features/home/pages/home_page.dart';
 import 'package:ikki_pos_flutter/features/user/pages/user_select_page.dart';
+import 'package:ikki_pos_flutter/features/widgetsbook/pages/pos_theme_showcase_page.dart';
 import 'package:ikki_pos_flutter/router/ikki_router.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_provider.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
@@ -18,6 +19,7 @@ part 'app_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final listener = ValueNotifier<AppState>(AppState.loading());
+  final initialLocation = IkkiRouter.widgetsbook.path;
 
   ref
     ..onDispose(listener.dispose)
@@ -27,17 +29,16 @@ GoRouter goRouter(Ref ref) {
     });
 
   final router = GoRouter(
-    initialLocation: IkkiRouter.splash.path,
+    initialLocation: initialLocation,
     refreshListenable: listener,
     redirect: (context, state) {
       final isReady = switch (listener.value) {
         Loading() => false,
         Ready() => true,
       };
-
       if (!isReady) return null;
-      final isSplash = state.matchedLocation == IkkiRouter.splash.path;
 
+      final isSplash = state.matchedLocation == IkkiRouter.splash.path;
       if (isSplash) {
         return IkkiRouter.authDevice.path;
       }
@@ -141,9 +142,30 @@ GoRouter goRouter(Ref ref) {
           ),
         ],
       ),
+
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return Scaffold(
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.dark,
+              child: child,
+            ),
+          );
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: IkkiRouter.widgetsbook.path,
+            name: IkkiRouter.widgetsbook.name,
+            builder: (context, state) {
+              return const POSThemeShowcasePage();
+            },
+          ),
+        ],
+      ),
     ],
   );
 
+  // Its a good practice to dispose the router when the widget is disposed.
   ref.onDispose(router.dispose);
   return router;
 }
