@@ -1,4 +1,3 @@
-// button_variants.dart
 import 'package:flutter/material.dart';
 
 enum ButtonVariant {
@@ -315,6 +314,28 @@ class ThemedButton extends StatelessWidget {
   const ThemedButton({
     super.key,
     required this.text,
+    this.onPressed,
+    this.variant = ButtonVariant.primary,
+    this.size = ButtonSize.medium,
+    this.icon,
+    this.isLoading = false,
+    this.width,
+  });
+
+  const ThemedButton.cancel({
+    super.key,
+    this.text = "Batal",
+    this.onPressed,
+    this.variant = ButtonVariant.destructive,
+    this.size = ButtonSize.medium,
+    this.icon,
+    this.isLoading = false,
+    this.width,
+  });
+
+  const ThemedButton.process({
+    super.key,
+    this.text = "Proses",
     this.onPressed,
     this.variant = ButtonVariant.primary,
     this.size = ButtonSize.medium,

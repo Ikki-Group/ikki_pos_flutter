@@ -17,17 +17,17 @@ abstract class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   static List<User> getMock() {
-    return List.generate(800, (index) {
+    return List.generate(10, (index) {
       return User(
         id: '$index',
         name: 'Rizqy Nugroho $index',
         email: 'rizqy.nugroho$index@ikki.id',
-        pin: '123456',
+        pin: '1111',
       );
     });
   }
 
-  static int kPinLength = 6;
+  static int kPinLength = 4;
 
   bool comparePin(String pin) {
     return pin == this.pin;

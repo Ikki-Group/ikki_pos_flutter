@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class IkkiDialog extends StatelessWidget {
-  const IkkiDialog({super.key, required this.child});
+  const IkkiDialog({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.all(8),
+  });
+
   final Widget child;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +16,7 @@ class IkkiDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
       ),
-      child: child,
+      child: Padding(padding: padding, child: child),
     );
   }
 }

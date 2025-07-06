@@ -196,7 +196,7 @@ class PinIndicator extends StatelessWidget {
               color: borderColor,
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(14),
             color: emptyColor,
           ),
           child: Center(

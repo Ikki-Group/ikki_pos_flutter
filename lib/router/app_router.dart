@@ -19,7 +19,8 @@ part 'app_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final listener = ValueNotifier<AppState>(AppState.loading());
-  final initialLocation = IkkiRouter.widgetsbook.path;
+  // final initialLocation = IkkiRouter.widgetsbook.path;
+  final initialLocation = IkkiRouter.splash.path;
 
   ref
     ..onDispose(listener.dispose)
@@ -62,8 +63,7 @@ GoRouter goRouter(Ref ref) {
         },
         redirect: (context, state) async {
           final hasToken = await ref.read(appTokenProvider.future).then((t) => t != null && t.isNotEmpty);
-
-          return hasToken ? "/home" : null;
+          return hasToken ? IkkiRouter.home.path : null;
         },
       ),
 

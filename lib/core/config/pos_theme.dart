@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class POSTheme {
+abstract class POSTheme {
   // Primary Colors
   static const Color primaryBlue = Color(0xFF2563EB);
   static const Color primaryBlueDark = Color(0xFF1D4ED8);
@@ -453,7 +453,7 @@ extension POSColors on BuildContext {
 }
 
 // Custom Text Styles
-class POSTextStyles {
+abstract class POSTextStyles {
   static const TextStyle headerTitle = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ikki_pos_flutter/core/config/app_palette.dart';
 import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
 
+typedef ListKeys = List<List<String>>;
+
 const _defaultKeys = [
   ['1', '2', '3'],
   ['4', '5', '6'],
@@ -14,7 +16,7 @@ class Numpad extends StatefulWidget {
   final int? initialValue;
   final String? placeholder;
   final ValueChanged<int?>? onInputChanged;
-  final List<List<String>> customKeys;
+  final ListKeys customKeys;
 
   const Numpad({
     super.key,

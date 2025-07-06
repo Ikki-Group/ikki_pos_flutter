@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/widgets/dialogs/open_outlet_dialog.dart';
+import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
 
 class HomeCreateOrderButton extends ConsumerStatefulWidget {
   const HomeCreateOrderButton({super.key});
@@ -11,7 +12,7 @@ class HomeCreateOrderButton extends ConsumerStatefulWidget {
 }
 
 class HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
-  Future<void> _onPressed(BuildContext context) async {
+  Future<void> _onPressed() async {
     final outlet = ref.read(outletNotifierProvider);
 
     OpenOutletDialog.show(context);
@@ -25,22 +26,13 @@ class HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-      ),
-      onPressed: () => _onPressed(context),
+    return ThemedButton(
+      onPressed: () => _onPressed(),
       icon: const Icon(
         Icons.add,
         size: 24,
       ),
-      label: Text(
-        "Buat Pesanan",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      text: 'Buat Pesanan',
     );
   }
 }

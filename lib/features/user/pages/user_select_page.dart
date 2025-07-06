@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/data/user/user_model.dart';
 import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
@@ -20,7 +21,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
   User? selectedUser;
   String _displayValue = "";
 
-  _openDialog() async {
+  Future<void> _openDialog() async {
     final user = await showDialog<User?>(
       context: context,
       builder: (context) => UserSelectDialog(
@@ -40,6 +41,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
       _openDialog();
       return;
     }
+
     setState(() {
       switch (key) {
         case NumpadKey.backspace:
@@ -48,7 +50,6 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           }
           break;
         case NumpadKey.empty:
-          // Do nothing for empty keys
           break;
         default:
           // Add the digit only if we haven't reached max length
@@ -95,23 +96,19 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           children: [
             Text(
               'Selamat Datang',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              style: POSTextStyles.headerTitle.copyWith(color: Colors.black),
             ),
             const SizedBox(height: 8),
             Text(
               '-- ${outlet.name} --',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
+              style: POSTextStyles.headerTitle.copyWith(color: Colors.black),
             ),
             const SizedBox(height: 32),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                fixedSize: const Size.fromWidth(280),
-                side: const BorderSide(color: Colors.black),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                fixedSize: const Size.fromWidth(320),
                 foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
               ),
               onPressed: () {
                 _openDialog();
@@ -123,19 +120,22 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
                   Expanded(
                     child: Text(
                       selectedUser?.name ?? 'Pilih Karyawan',
-                      style: TextStyle(overflow: TextOverflow.ellipsis),
+                      style: POSTextStyles.buttonText.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
-
+            const SizedBox(height: 42),
             PinIndicator(
               pinLength: _displayValue.length,
               maxLength: maxPinLength,
-              boxSize: 45,
+              boxSize: 52,
             ),
+            const SizedBox(height: 24),
             SizedBox(
               width: 280,
               child: Column(
@@ -149,19 +149,6 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           ],
         ),
       ),
-    );
-  }
-}
-
-class ItemWidget extends StatelessWidget {
-  const ItemWidget({super.key, required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(height: 100, child: Center(child: Text(text))),
     );
   }
 }

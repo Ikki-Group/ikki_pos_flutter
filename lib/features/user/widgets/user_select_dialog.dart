@@ -1,26 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
 import 'package:ikki_pos_flutter/data/user/user_model.dart';
 import 'package:ikki_pos_flutter/data/user/user_repo.dart';
+import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
+import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
 
-class UserSelectDialog extends StatefulWidget {
+class UserSelectDialog extends ConsumerStatefulWidget {
   const UserSelectDialog({super.key, this.initialValue});
 
   final User? initialValue;
 
   @override
-  State<UserSelectDialog> createState() => _UserSelectDialogState();
+  createState() => _UserSelectDialogState();
 }
 
-class _UserSelectDialogState extends State<UserSelectDialog> {
-  final ScrollController _scrollController = ScrollController();
+class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
+  late ScrollController _scrollController;
+
+  late List<User> _users;
   User? _selectedUser;
-  final bool _hasScrolledToInitialUser = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _selectedUser = widget.initialValue;
+    _users = ref.read(userRepoProvider).list();
+
+    final scrollIndex = _selectedUser != null ? _users.indexWhere((user) => user.id == _selectedUser!.id) : 0;
+    if (scrollIndex != -1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollTo(scrollIndex);
+      });
+    }
   }
 
   @override
@@ -32,7 +45,7 @@ class _UserSelectDialogState extends State<UserSelectDialog> {
   _scrollTo(int index) {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
-        index * 60.0,
+        index * 32.0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -41,59 +54,46 @@ class _UserSelectDialogState extends State<UserSelectDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
+    return IkkiDialog(
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: 450,
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildTitle("Pilih Karyawan"),
+            IkkiDialogTitle(title: "Pilih Karyawan"),
             Flexible(
               flex: 1,
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final users = ref.watch(userRepoProvider).list();
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8),
+                controller: _scrollController,
+                itemCount: _users.length,
+                itemBuilder: (context, index) {
+                  final user = _users[index];
+                  final isSelected = _selectedUser?.id == user.id;
 
-                  if (users.isEmpty) {
-                    return const Center(child: Text("No users available."));
-                  }
-
-                  if (!_hasScrolledToInitialUser && widget.initialValue != null) {
-                    final index = users.indexWhere((user) => user.id == widget.initialValue!.id);
-
-                    if (index != -1) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _scrollTo(index);
+                  return CheckboxListTile(
+                    title: Text(user.name),
+                    subtitle: Text(user.email),
+                    value: isSelected,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                    checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                    selectedTileColor: Colors.red,
+                    activeColor: Colors.red,
+                    fillColor: WidgetStateColor.resolveWith((states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return POSTheme.primaryBlue;
+                      }
+                      return Colors.transparent;
+                    }),
+                    autofocus: true,
+                    onChanged: (bool? newValue) {
+                      setState(() {
+                        _selectedUser = user;
                       });
-                    }
-                  }
-
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: users.length,
-                    itemExtent: 60,
-                    itemBuilder: (context, index) {
-                      final user = users[index];
-                      final isSelected = _selectedUser?.id == user.id;
-
-                      return CheckboxListTile(
-                        title: Text(user.name),
-                        subtitle: Text(user.email),
-                        value: isSelected,
-                        onChanged: (bool? newValue) {
-                          setState(() {
-                            _selectedUser = user;
-                          });
-                        },
-                      );
                     },
                   );
                 },
@@ -106,49 +106,30 @@ class _UserSelectDialogState extends State<UserSelectDialog> {
     );
   }
 
-  Widget _buildTitle(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Material(
-        color: Colors.blueAccent,
-        shadowColor: Colors.red,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildFooter(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          TextButton(
+          ThemedButton(
+            variant: ButtonVariant.outline,
+            size: ButtonSize.large,
+            text: "Batal",
             onPressed: () {
               Navigator.pop(context, null);
             },
-            child: const Text('Cancel'),
           ),
-          const SizedBox(width: 8), // Spacing between buttons
-          ElevatedButton(
-            // Disable button if no users are selected
+
+          const SizedBox(width: 8),
+          ThemedButton(
+            size: ButtonSize.large,
             onPressed: _selectedUser == null
                 ? null
                 : () {
                     Navigator.pop(context, _selectedUser);
                   },
-            child: const Text('Process'),
+            text: "Proses",
           ),
         ],
       ),
