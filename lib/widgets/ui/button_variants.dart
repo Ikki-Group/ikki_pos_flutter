@@ -4,6 +4,7 @@ enum ButtonVariant {
   primary,
   secondary,
   destructive,
+  outlinedDestructive,
   outline,
   ghost,
   link,
@@ -34,6 +35,8 @@ class ButtonVariants {
         return _secondaryButton(size);
       case ButtonVariant.destructive:
         return _destructiveButton(size);
+      case ButtonVariant.outlinedDestructive:
+        return _outlinedDestructiveButton(size);
       case ButtonVariant.outline:
         return _outlineButton(size);
       case ButtonVariant.ghost:
@@ -184,6 +187,53 @@ class ButtonVariants {
     );
   }
 
+  static ButtonStyle _outlinedDestructiveButton(ButtonSize size) {
+    return OutlinedButton.styleFrom(
+      backgroundColor: Colors.transparent,
+      foregroundColor: destructiveColor,
+      disabledBackgroundColor: Colors.transparent,
+      disabledForegroundColor: textSecondaryColor,
+      side: BorderSide(color: borderColor, width: 1),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: _getPadding(size),
+      minimumSize: Size(0, _getMinHeight(size)),
+      textStyle: TextStyle(
+        fontSize: _getFontSize(size),
+        fontWeight: FontWeight.w500,
+      ),
+    ).copyWith(
+      backgroundColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.hovered)) {
+          return Color(0xFFF9FAFB);
+        }
+        if (states.contains(WidgetState.pressed)) {
+          return Color(0xFFF3F4F6);
+        }
+        return Colors.transparent;
+      }),
+      side: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return BorderSide(color: Color(0xFFE5E7EB), width: 1);
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return BorderSide(color: Color(0xFFDC2626), width: 1);
+        }
+        return BorderSide(color: destructiveColor, width: 1);
+      }),
+      foregroundColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return textSecondaryColor;
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return destructiveColor;
+        }
+        return destructiveColor;
+      }),
+    );
+  }
+
   static ButtonStyle _outlineButton(ButtonSize size) {
     return OutlinedButton.styleFrom(
       backgroundColor: Colors.transparent,
@@ -303,7 +353,7 @@ class ButtonVariants {
 
 // Custom Button Widget
 class ThemedButton extends StatelessWidget {
-  final String text;
+  final Widget text;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
   final ButtonSize size;
@@ -324,10 +374,10 @@ class ThemedButton extends StatelessWidget {
 
   const ThemedButton.cancel({
     super.key,
-    this.text = "Batal",
+    this.text = const Text("Batal"),
     this.onPressed,
-    this.variant = ButtonVariant.destructive,
-    this.size = ButtonSize.medium,
+    this.variant = ButtonVariant.outlinedDestructive,
+    this.size = ButtonSize.large,
     this.icon,
     this.isLoading = false,
     this.width,
@@ -335,10 +385,10 @@ class ThemedButton extends StatelessWidget {
 
   const ThemedButton.process({
     super.key,
-    this.text = "Proses",
+    this.text = const Text("Proses"),
     this.onPressed,
     this.variant = ButtonVariant.primary,
-    this.size = ButtonSize.medium,
+    this.size = ButtonSize.large,
     this.icon,
     this.isLoading = false,
     this.width,
@@ -367,23 +417,24 @@ class ThemedButton extends StatelessWidget {
   Widget _buildRegularButton(ButtonStyle style) {
     switch (variant) {
       case ButtonVariant.outline:
+      case ButtonVariant.outlinedDestructive:
         return OutlinedButton(
           onPressed: onPressed,
           style: style,
-          child: Text(text),
+          child: text,
         );
       case ButtonVariant.ghost:
       case ButtonVariant.link:
         return TextButton(
           onPressed: onPressed,
           style: style,
-          child: Text(text),
+          child: text,
         );
       default:
         return ElevatedButton(
           onPressed: onPressed,
           style: style,
-          child: Text(text),
+          child: text,
         );
     }
   }
@@ -391,11 +442,12 @@ class ThemedButton extends StatelessWidget {
   Widget _buildIconButton(ButtonStyle style) {
     switch (variant) {
       case ButtonVariant.outline:
+      case ButtonVariant.outlinedDestructive:
         return OutlinedButton.icon(
           onPressed: onPressed,
           style: style,
           icon: icon!,
-          label: Text(text),
+          label: text,
         );
       case ButtonVariant.ghost:
       case ButtonVariant.link:
@@ -403,14 +455,14 @@ class ThemedButton extends StatelessWidget {
           onPressed: onPressed,
           style: style,
           icon: icon!,
-          label: Text(text),
+          label: text,
         );
       default:
         return ElevatedButton.icon(
           onPressed: onPressed,
           style: style,
           icon: icon!,
-          label: Text(text),
+          label: text,
         );
     }
   }
@@ -424,6 +476,7 @@ class ThemedButton extends StatelessWidget {
 
     switch (variant) {
       case ButtonVariant.outline:
+      case ButtonVariant.outlinedDestructive:
         return OutlinedButton(
           onPressed: null,
           style: style,
@@ -441,7 +494,7 @@ class ThemedButton extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
-              Text(text),
+              text,
             ],
           ),
         );
@@ -464,7 +517,7 @@ class ThemedButton extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
-              Text(text),
+              text,
             ],
           ),
         );
@@ -486,7 +539,7 @@ class ThemedButton extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8),
-              Text(text),
+              text,
             ],
           ),
         );
@@ -499,7 +552,7 @@ class ButtonExamples extends StatefulWidget {
   const ButtonExamples({super.key});
 
   @override
-  _ButtonExamplesState createState() => _ButtonExamplesState();
+  createState() => _ButtonExamplesState();
 }
 
 class _ButtonExamplesState extends State<ButtonExamples> {
@@ -512,152 +565,152 @@ class _ButtonExamplesState extends State<ButtonExamples> {
       children: [
         // Primary Buttons
         Text('Primary Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Small',
-              size: ButtonSize.small,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Medium',
-              size: ButtonSize.medium,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Large',
-              size: ButtonSize.large,
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Small',
+        //         size: ButtonSize.small,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Medium',
+        //         size: ButtonSize.medium,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Large',
+        //         size: ButtonSize.large,
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Secondary Buttons
-        Text('Secondary Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Secondary',
-              variant: ButtonVariant.secondary,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'With Icon',
-              variant: ButtonVariant.secondary,
-              icon: Icon(Icons.star),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   // Secondary Buttons
+        //   Text('Secondary Buttons', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Secondary',
+        //         variant: ButtonVariant.secondary,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'With Icon',
+        //         variant: ButtonVariant.secondary,
+        //         icon: Icon(Icons.star),
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Destructive Buttons
-        Text('Destructive Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Delete',
-              variant: ButtonVariant.destructive,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Remove Item',
-              variant: ButtonVariant.destructive,
-              icon: Icon(Icons.delete),
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   // Destructive Buttons
+        //   Text('Destructive Buttons', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Delete',
+        //         variant: ButtonVariant.destructive,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Remove Item',
+        //         variant: ButtonVariant.destructive,
+        //         icon: Icon(Icons.delete),
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Outline Buttons
-        Text('Outline Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Outline',
-              variant: ButtonVariant.outline,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Cancel',
-              variant: ButtonVariant.outline,
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   // Outline Buttons
+        //   Text('Outline Buttons', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Outline',
+        //         variant: ButtonVariant.outline,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Cancel',
+        //         variant: ButtonVariant.outline,
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Ghost Buttons
-        Text('Ghost Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Ghost',
-              variant: ButtonVariant.ghost,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Link Style',
-              variant: ButtonVariant.link,
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   // Ghost Buttons
+        //   Text('Ghost Buttons', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Ghost',
+        //         variant: ButtonVariant.ghost,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Link Style',
+        //         variant: ButtonVariant.link,
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Loading States
-        Text('Loading States', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ThemedButton(
-              text: 'Loading',
-              isLoading: true,
-              onPressed: () {},
-            ),
-            ThemedButton(
-              text: 'Processing',
-              variant: ButtonVariant.secondary,
-              isLoading: true,
-              onPressed: () {},
-            ),
-          ],
-        ),
+        //   // Loading States
+        //   Text('Loading States', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   Wrap(
+        //     spacing: 8,
+        //     runSpacing: 8,
+        //     children: [
+        //       ThemedButton(
+        //         text: 'Loading',
+        //         isLoading: true,
+        //         onPressed: () {},
+        //       ),
+        //       ThemedButton(
+        //         text: 'Processing',
+        //         variant: ButtonVariant.secondary,
+        //         isLoading: true,
+        //         onPressed: () {},
+        //       ),
+        //     ],
+        //   ),
 
-        SizedBox(height: 16),
+        //   SizedBox(height: 16),
 
-        // Full Width
-        Text('Full Width', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 8),
-        ThemedButton(
-          text: 'Full Width Button',
-          width: double.infinity,
-          onPressed: () {},
-        ),
+        //   // Full Width
+        //   Text('Full Width', style: Theme.of(context).textTheme.headlineSmall),
+        //   SizedBox(height: 8),
+        //   ThemedButton(
+        //     text: 'Full Width Button',
+        //     width: double.infinity,
+        //     onPressed: () {},
+        //   ),
       ],
     );
   }

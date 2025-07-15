@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
+import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
 import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
@@ -26,13 +27,41 @@ class OpenOutletDialog extends ConsumerStatefulWidget {
 }
 
 class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
+  int _openingCash = 0;
+
   @override
   void initState() {
     super.initState();
   }
 
-  _onCashInPressed() {
-    CurrencyNumpadDialog.show(context);
+  Future<void> _onCashInPressed() async {
+    final val = await CurrencyNumpadDialog.show(
+      context,
+      initialValue: _openingCash,
+    );
+    if (val != null) {
+      setState(() {
+        _openingCash = val;
+      });
+    }
+  }
+
+  _onClose() {
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _onProcessPressed() async {
+    final user = ref.read(userNotifierProvider);
+    ref
+        .read(outletNotifierProvider.notifier)
+        .setOpen(
+          OutletSessionOpen(
+            at: DateTime.now().toIso8601String(),
+            by: user!.name,
+            balance: _openingCash,
+          ),
+        );
+    _onClose();
   }
 
   @override
@@ -90,7 +119,7 @@ class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(Formatter.toIdr.format(0)),
+                          child: Text(Formatter.toIdr.format(_openingCash)),
                         ),
                       ),
                     ),
@@ -102,13 +131,14 @@ class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ThemedButton.cancel(
-                  size: ButtonSize.medium,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  size: ButtonSize.large,
+                  onPressed: _onClose,
                 ),
                 const SizedBox(width: 8),
-                ThemedButton.process(),
+                ThemedButton.process(
+                  size: ButtonSize.large,
+                  onPressed: _openingCash == 0 ? null : _onProcessPressed,
+                ),
               ],
             ),
           ],

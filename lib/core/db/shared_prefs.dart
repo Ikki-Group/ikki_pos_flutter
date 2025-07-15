@@ -10,7 +10,10 @@ SharedPreferences sharedPrefs(ref) {
 
 enum SharedPrefsKeys {
   authToken,
-  outlet;
+  outlet,
+  receiptCode
+  //
+  ;
 
   String get key => toString().replaceAll('SharedPrefsKeys.', '');
 }

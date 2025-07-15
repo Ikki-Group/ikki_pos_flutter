@@ -12,6 +12,7 @@ import 'package:ikki_pos_flutter/router/ikki_router.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_provider.dart';
 import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
 import 'package:ikki_pos_flutter/widgets/scaffold/home/home_scaffold.dart';
+import 'package:keyboard_service/keyboard_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
@@ -112,10 +113,12 @@ GoRouter goRouter(Ref ref) {
 
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
-          return Scaffold(
-            body: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle.dark,
-              child: child,
+          return KeyboardAutoDismiss(
+            scaffold: Scaffold(
+              body: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle.dark,
+                child: child,
+              ),
             ),
           );
         },

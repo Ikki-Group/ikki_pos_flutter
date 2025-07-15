@@ -4,7 +4,7 @@ class IkkiDialog extends StatelessWidget {
   const IkkiDialog({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(8),
+    this.padding = const EdgeInsets.all(12),
   });
 
   final Widget child;
@@ -22,8 +22,17 @@ class IkkiDialog extends StatelessWidget {
 }
 
 class IkkiDialogTitle extends StatelessWidget {
-  const IkkiDialogTitle({super.key, required this.title});
+  const IkkiDialogTitle({
+    super.key,
+    required this.title,
+    this.icon = const Icon(
+      Icons.play_arrow,
+      color: Colors.white,
+      size: 24,
+    ),
+  });
 
+  final Widget icon;
   final String title;
 
   @override
@@ -34,20 +43,16 @@ class IkkiDialogTitle extends StatelessWidget {
         color: Colors.orange[700],
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
           child: Row(
             spacing: 8,
             children: [
-              Icon(
-                Icons.play_arrow,
-                color: Colors.white,
-                size: 24,
-              ),
+              icon,
               Text(
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
               ),

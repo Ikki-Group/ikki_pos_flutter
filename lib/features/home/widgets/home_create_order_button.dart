@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
 import 'package:ikki_pos_flutter/widgets/dialogs/open_outlet_dialog.dart';
+import 'package:ikki_pos_flutter/widgets/dialogs/sales_mode_modal.dart';
 import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
 
 class HomeCreateOrderButton extends ConsumerStatefulWidget {
@@ -15,13 +16,12 @@ class HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
   Future<void> _onPressed() async {
     final outlet = ref.read(outletNotifierProvider);
 
-    OpenOutletDialog.show(context);
-
-    // final isOpen = outlet.isOpen();
-
-    // if (isOpen) {
-    //   context.goNamed(IkkiRouter.cartSelection.name);
-    // }
+    final isOpen = outlet.isOpen();
+    if (isOpen) {
+      SalesModeModal.show(context);
+    } else {
+      OpenOutletDialog.show(context);
+    }
   }
 
   @override
@@ -32,7 +32,7 @@ class HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
         Icons.add,
         size: 24,
       ),
-      text: 'Buat Pesanan',
+      text: Text('Buat Pesanan'),
     );
   }
 }

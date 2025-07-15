@@ -119,4 +119,10 @@ abstract class OutletState with _$OutletState {
     if (outlet == null) throw Exception("Outlet is null");
     return outlet!;
   }
+
+  OutletSession get requiredSession {
+    requiredOutlet;
+    if (session == null) throw Exception("Session is null");
+    return session!;
+  }
 }

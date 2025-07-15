@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
 import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
 import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
 import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
@@ -10,8 +9,8 @@ class CurrencyNumpadDialog extends ConsumerStatefulWidget {
   const CurrencyNumpadDialog({super.key, this.initialValue});
   final int? initialValue;
 
-  static Future<int> show(BuildContext context, {int? initialValue}) async {
-    showDialog<void>(
+  static Future<int?> show(BuildContext context, {int? initialValue}) async {
+    return showDialog<int?>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -20,8 +19,6 @@ class CurrencyNumpadDialog extends ConsumerStatefulWidget {
         );
       },
     );
-
-    return 1;
   }
 
   @override
@@ -29,6 +26,7 @@ class CurrencyNumpadDialog extends ConsumerStatefulWidget {
 }
 
 class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
+  final _maxInputLength = 9;
   int? _input;
 
   @override
@@ -37,9 +35,9 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
     _input = widget.initialValue;
   }
 
-  void onInputChanged(int? value) {
+  void onInputChanged(String? value) {
     setState(() {
-      _input = value;
+      _input = int.tryParse(value ?? "") ?? 0;
     });
   }
 
@@ -51,15 +49,11 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
   Widget build(BuildContext context) {
     final placeholder = "Masukkan Kas Awal";
 
-    String? value;
-    if (_input == null || _input == 0) {
-      value = placeholder;
-    } else {
-      value = Formatter.toIdr.format(_input!);
-    }
+    bool isEmptyInput = _input == null || _input == 0;
+    String? value = isEmptyInput ? null : Formatter.toIdr.format(_input!);
 
     return IkkiDialog(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 350),
         child: Column(
@@ -74,12 +68,22 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.zero,
                   border: BoxBorder.fromLTRB(
-                    bottom: BorderSide(color: POSTheme.primaryBlue, width: 1),
+                    bottom: BorderSide(
+                      color: isEmptyInput ? Colors.grey[500]! : Colors.black,
+                      width: 1,
+                    ),
                   ),
                 ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text(value, style: TextStyle(fontSize: 24)),
+                  child: Text(
+                    value ?? placeholder,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isEmptyInput ? Colors.grey[500]! : Colors.black,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -87,26 +91,43 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
             NumpadPin(
               aspectRatio: 4 / 2,
               onKeyPressed: (key) {
-                if (key == NumpadKey.empty) {
-                  return;
+                final inputStr = _input?.toString() ?? "";
+                switch (key) {
+                  case NumpadKey.backspace:
+                    if (inputStr.isNotEmpty) {
+                      onInputChanged(inputStr.substring(0, inputStr.length - 1));
+                    }
+                    break;
+                  case NumpadKey.empty:
+                  case NumpadKey.decimal:
+                    break;
+                  default:
+                    if (inputStr.length < _maxInputLength) {
+                      onInputChanged(inputStr + key.value);
+                    }
                 }
-                onInputChanged((int.tryParse(_input?.toString() ?? "") ?? 0) + int.parse(key.value));
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             Row(
+              mainAxisSize: MainAxisSize.max,
               spacing: 8,
               children: [
-                Expanded(
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
                   child: ThemedButton.cancel(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
                 ),
-                Expanded(
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
                   child: ThemedButton.process(
-                    text: "Simpan",
+                    text: Text("Simpan"),
+                    onPressed: isEmptyInput ? null : onSubmit,
                   ),
                 ),
               ],

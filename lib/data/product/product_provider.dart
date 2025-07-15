@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ikki_pos_flutter/data/product/product_model.dart';
 import 'package:ikki_pos_flutter/data/product/product_repo.dart';
@@ -31,17 +30,38 @@ class ProductData extends _$ProductData {
   Future<void> load() async {
     final repo = ref.read(productRepoProvider);
     final products = await repo.getProducts();
-    var categories = await repo.getCategories();
+    final categories = await repo.getCategories();
 
-    // Most efficient - single pass grouping
-    final categoriesCount = products
-        .groupListsBy((product) => product.categoryId)
-        .map((key, value) => MapEntry(key, value.length));
+    final cc = <String, int>{
+      ProductCategory.kIdAll: 0,
+      ProductCategory.kIdFavorite: 0,
+    };
 
-    categories = categories.map((category) {
-      return category.copyWith(productCount: categoriesCount[category.id] ?? 0);
-    }).toList();
+    for (var product in products) {
+      cc.update(
+        product.categoryId,
+        (o) => o + 1,
+        ifAbsent: () => 1,
+      );
 
-    state = state.copyWith(categories: categories, products: products);
+      cc.update(ProductCategory.kIdAll, (o) => o + 1);
+      if (product.isFavorite) {
+        cc.update(
+          ProductCategory.kIdFavorite,
+          (o) => o + 1,
+        );
+      }
+    }
+
+    state = state.copyWith(
+      products: products,
+      categories: categories
+          .map(
+            (category) => category.copyWith(
+              productCount: cc[category.id] ?? 0,
+            ),
+          )
+          .toList(),
+    );
   }
 }

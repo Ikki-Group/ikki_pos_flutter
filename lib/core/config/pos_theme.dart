@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_transitions/go_transitions.dart';
 
 abstract class POSTheme {
   // Primary Colors
@@ -417,25 +418,12 @@ abstract class POSTheme {
           letterSpacing: 0.5,
         ),
       ),
-    );
-  }
-
-  // Dark Theme (Optional)
-  static ThemeData get darkTheme {
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: primaryBlueLight,
-        secondary: secondaryOrangeLight,
-        surface: Color(0xFF1E293B),
-        error: statusError,
-        onPrimary: Color(0xFF000000),
-        onSecondary: Color(0xFF000000),
-        onSurface: Color(0xFFE2E8F0),
-        onError: Color(0xFFFFFFFF),
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: GoTransitions.fadeUpwards,
+          TargetPlatform.iOS: GoTransitions.fade,
+        },
       ),
-      scaffoldBackgroundColor: const Color(0xFF0F172A),
     );
   }
 }

@@ -22,7 +22,7 @@ class ProductRepo {
       (c) => ProductCategory.fromJson(c),
     );
 
-    return categories.toList();
+    return [...ProductCategory.kCustomCategories, ...categories];
   }
 
   Future<List<Product>> getProducts() async {

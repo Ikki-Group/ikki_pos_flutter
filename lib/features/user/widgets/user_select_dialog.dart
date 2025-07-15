@@ -112,24 +112,15 @@ class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          ThemedButton(
-            variant: ButtonVariant.outline,
-            size: ButtonSize.large,
-            text: "Batal",
+          ThemedButton.cancel(
             onPressed: () {
               Navigator.pop(context, null);
             },
           ),
 
           const SizedBox(width: 8),
-          ThemedButton(
-            size: ButtonSize.large,
-            onPressed: _selectedUser == null
-                ? null
-                : () {
-                    Navigator.pop(context, _selectedUser);
-                  },
-            text: "Proses",
+          ThemedButton.process(
+            onPressed: _selectedUser == null ? null : () => Navigator.pop(context, _selectedUser),
           ),
         ],
       ),

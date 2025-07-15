@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ikki_pos_flutter/core/config/app_palette.dart';
+import 'package:ikki_pos_flutter/data/cart/cart_notifier.dart';
 import 'package:ikki_pos_flutter/data/product/product_model.dart';
 import 'package:ikki_pos_flutter/data/product/product_provider.dart';
+import 'package:ikki_pos_flutter/features/cart/manager/cart_selection_manager.dart';
 import 'package:ikki_pos_flutter/features/cart/widgets/category_selection.dart';
 import 'package:ikki_pos_flutter/router/ikki_router.dart';
+import 'package:ikki_pos_flutter/shared/utils/debounce.dart';
 import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
+import 'package:ikki_pos_flutter/widgets/dialogs/sales_mode_modal.dart';
+import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
 
 const int kFlexLeft = 70;
 const int kFlexRight = 30;
@@ -15,10 +20,10 @@ class CartSelectionPage extends ConsumerStatefulWidget {
   const CartSelectionPage({super.key});
 
   @override
-  CartSelectionPageState createState() => CartSelectionPageState();
+  ConsumerState createState() => _CartSelectionPageState();
 }
 
-class CartSelectionPageState extends ConsumerState<CartSelectionPage> {
+class _CartSelectionPageState extends ConsumerState<CartSelectionPage> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +38,7 @@ class CartSelectionPageState extends ConsumerState<CartSelectionPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 4),
               child: Row(
                 spacing: 8,
                 children: [
@@ -61,9 +66,9 @@ class CartSelectionPageState extends ConsumerState<CartSelectionPage> {
                   Expanded(
                     flex: kFlexLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 12),
                       child: Column(
-                        spacing: 8,
+                        spacing: 12,
                         children: [
                           CategorySelection(),
                           Expanded(
@@ -77,7 +82,7 @@ class CartSelectionPageState extends ConsumerState<CartSelectionPage> {
                   Expanded(
                     flex: kFlexRight,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Column(
                         spacing: 4,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -174,15 +179,27 @@ class GridViewButton extends ConsumerWidget {
 }
 
 class SearchProductInput extends ConsumerWidget {
-  const SearchProductInput({super.key});
+  SearchProductInput({super.key});
+  final _debouncer = Debouncer();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
+      onChanged: (v) {
+        _debouncer.debounce(
+          onDebounce: () => ref.read(searchProductNotifierProvider.notifier).setSearch(v),
+        );
+      },
       decoration: InputDecoration(
         hintText: "Cari Produk",
-        prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-        suffixIcon: Icon(Icons.clear, color: Colors.grey[600]),
+        constraints: const BoxConstraints(maxHeight: 40),
+        contentPadding: const EdgeInsets.all(0),
+        prefixIcon: Icon(
+          Icons.search,
+          color: Colors.grey[600],
+          size: 18,
+        ),
+        prefixIconConstraints: const BoxConstraints(minHeight: 40, minWidth: 40),
       ),
     );
   }
@@ -193,16 +210,13 @@ class AddCustomAmountButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton.icon(
+    final ts = ref.watch(searchProductNotifierProvider);
+    return ThemedButton(
       onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Palette.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
+      size: ButtonSize.large,
       icon: const Icon(Icons.add),
-      label: const Text('Custom Amount'),
+      text: Text('Custom Amount $ts'),
+      variant: ButtonVariant.ghost,
     );
   }
 }
@@ -212,29 +226,33 @@ class AddCustomerButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton.icon(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 2.0),
+      child: ThemedButton(
+        size: ButtonSize.large,
+        variant: ButtonVariant.outline,
+        onPressed: () {},
+        icon: const Icon(Icons.person_add),
+        text: Text('Pelanggan'),
       ),
-      icon: const Icon(Icons.person_add),
-      label: const Text('Pelanggan'),
     );
   }
 }
 
 class OrderModeInfo extends ConsumerWidget {
   const OrderModeInfo({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FilledButton.tonal(
-      style: FilledButton.styleFrom(
-        fixedSize: const Size.fromWidth(double.infinity),
-      ),
-      onPressed: () {},
-      child: Text("Order Mode"),
+    final cart = ref.watch(cartNotifierProvider);
+    final buttonText = "${cart.saleMode.name} (${cart.pax} Pax)";
+
+    return ThemedButton(
+      size: ButtonSize.large,
+      onPressed: () {
+        SalesModeModal.show(context);
+      },
+      text: Text(buttonText),
     );
   }
 }
@@ -248,7 +266,7 @@ class PayButton extends ConsumerWidget {
         fixedSize: const Size.fromWidth(double.infinity),
       ),
       onPressed: () {},
-      child: Text("Pay"),
+      child: Text("Bayar  |  Rp. 10.000"),
     );
   }
 }
@@ -258,15 +276,25 @@ class ProductList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final products = ref.watch(productDataProvider).products;
+    final search = ref.watch(searchProductNotifierProvider);
+    final category = ref.watch(categoryFilterNotifierProvider);
+    var products = ref.watch(productDataProvider).products;
+
+    if (category.id != ProductCategory.kIdAll) {
+      products = products.where((p) => p.categoryId == category.id).toList();
+    }
+
+    if (search.isNotEmpty) {
+      products = products.where((p) => p.name.contains(search)).toList();
+    }
 
     return GridView.builder(
       itemCount: products.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 19 / 8,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
       ),
       itemBuilder: (context, index) {
         final product = products[index];
@@ -293,7 +321,7 @@ class ProductCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 3,
+        spacing: 4,
         children: [
           Text(
             product.name,
