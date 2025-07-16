@@ -1,3 +1,4 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ikki_pos_flutter/data/product/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,4 +23,14 @@ class CategoryFilterNotifier extends _$CategoryFilterNotifier {
   );
 
   void setFilter(ProductCategory value) => state = value;
+}
+
+@freezed
+class CartSelectionManagerState {
+  const CartSelectionManagerState._();
+
+  const factory CartSelectionManagerState({
+    required String saleMode,
+    required int pax,
+  }) = _CartSelectionManagerState;
 }
