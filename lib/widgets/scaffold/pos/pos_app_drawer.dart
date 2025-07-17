@@ -1,34 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
-import 'package:ikki_pos_flutter/router/ikki_router.dart';
 
-enum SGDrawerItem {
-  home(name: 'Mulai Penjualan', icon: Icons.point_of_sale, path: "/home"),
-  sales(name: 'Riwayat Penjualan', icon: Icons.history, path: "/history"),
-  finance(name: 'Laporan Keuangan', icon: Icons.attach_money, path: "/finance"),
-  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, path: "/shift"),
-  input(name: 'Input Pembukuan', icon: Icons.attach_money, path: "/input"),
-  printers(name: 'Printer', icon: Icons.print, path: "/printers"),
-  settings(name: 'Pengaturan', icon: Icons.settings, path: "/settings");
+import '../../../data/user/user.provider.dart';
+import '../../../router/ikki_router.dart';
 
-  const SGDrawerItem({
-    required this.name,
-    required this.icon,
-    required this.path,
-  });
-
-  final String name;
-  final IconData icon;
-  final String path;
-}
-
-class HomeAppDrawer extends StatelessWidget {
-  const HomeAppDrawer({super.key});
+class PosAppDrawer extends ConsumerWidget {
+  const PosAppDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).fullPath;
 
     return Drawer(
@@ -39,15 +20,15 @@ class HomeAppDrawer extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Color(0xFF003366),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
               boxShadow: [BoxShadow()],
             ),
-            child: SafeArea(
+            child: const SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [const SizedBox(height: 8.0), _UserInfo()],
+                children: [SizedBox(height: 8), _UserInfo()],
               ),
             ),
           ),
@@ -57,7 +38,7 @@ class HomeAppDrawer extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
               children: [
-                for (var item in SGDrawerItem.values)
+                for (final item in SGDrawerItem.values)
                   _buildMenuItem(
                     context,
                     item: item,
@@ -80,7 +61,7 @@ class HomeAppDrawer extends StatelessWidget {
     BuildContext context, {
     required int index,
     required bool isSelected,
-    required Function() onTap,
+    required void Function() onTap,
     required SGDrawerItem item,
   }) {
     return InkWell(
@@ -91,7 +72,7 @@ class HomeAppDrawer extends StatelessWidget {
           border: Border(
             right: BorderSide(
               color: isSelected ? Colors.orangeAccent : Colors.transparent,
-              width: 5.0,
+              width: 5,
             ),
           ),
         ),
@@ -118,7 +99,7 @@ class _UserInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userNotifierProvider);
+    final user = ref.watch(currentUserProvider);
 
     if (user == null) {
       return const SizedBox.shrink();
@@ -134,13 +115,13 @@ class _UserInfo extends ConsumerWidget {
               backgroundColor: Colors.white,
               child: Icon(Icons.person, color: Color(0xFF003366)),
             ),
-            const SizedBox(width: 12.0),
+            const SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   user.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -148,7 +129,7 @@ class _UserInfo extends ConsumerWidget {
                 ),
                 Text(
                   user.id,
-                  style: TextStyle(color: Colors.white70, fontSize: 13),
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
@@ -156,12 +137,12 @@ class _UserInfo extends ConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            context.go(IkkiRouter.userSelect.path);
+            context.goNamed(IkkiRouter.userSelect.name);
           },
           style: TextButton.styleFrom(
-            padding: const EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
           ),
-          child: Icon(
+          child: const Icon(
             Icons.logout,
             color: Colors.white,
             size: 24,
@@ -170,4 +151,24 @@ class _UserInfo extends ConsumerWidget {
       ],
     );
   }
+}
+
+enum SGDrawerItem {
+  home(name: 'Mulai Penjualan', icon: Icons.point_of_sale, path: '/home'),
+  sales(name: 'Riwayat Penjualan', icon: Icons.history, path: '/history'),
+  finance(name: 'Laporan Keuangan', icon: Icons.attach_money, path: '/finance'),
+  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, path: '/shift'),
+  input(name: 'Input Pembukuan', icon: Icons.attach_money, path: '/input'),
+  printers(name: 'Printer', icon: Icons.print, path: '/printers'),
+  settings(name: 'Pengaturan', icon: Icons.settings, path: '/settings');
+
+  const SGDrawerItem({
+    required this.name,
+    required this.icon,
+    required this.path,
+  });
+
+  final String name;
+  final IconData icon;
+  final String path;
 }
