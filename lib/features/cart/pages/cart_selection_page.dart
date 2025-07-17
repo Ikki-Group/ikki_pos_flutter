@@ -7,7 +7,7 @@ import '../../../data/cart/cart_notifier.dart';
 import '../../../data/product/product_provider.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/debounce.dart';
-import '../../../widgets/dialogs/sales_mode_modal.dart';
+import '../../../widgets/dialogs/sales_mode_modal_old.dart';
 import '../../../widgets/ui/button_variants.dart';
 import '../manager/cart_selection_manager.dart';
 import '../widgets/cart_category.dart';

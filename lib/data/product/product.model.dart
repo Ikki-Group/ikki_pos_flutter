@@ -55,3 +55,13 @@ sealed class ProductCategory with _$ProductCategory {
     ProductCategory(id: kIdFavorite, name: 'Favorite', outletId: ''),
   ];
 }
+
+@freezed
+abstract class ProductState with _$ProductState {
+  const factory ProductState({
+    @Default([]) List<ProductModel> products,
+    @Default([]) List<ProductCategory> categories,
+  }) = _ProductState;
+
+  factory ProductState.fromJson(Map<String, dynamic> json) => _$ProductStateFromJson(json);
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ikki_pos_flutter/widgets/scaffold/home/home_app_bar.dart';
-import 'package:ikki_pos_flutter/widgets/scaffold/home/home_app_drawer.dart';
+
+import 'home_app_bar.dart';
+import 'home_app_drawer.dart';
 
 class HomeScaffold extends StatelessWidget {
   const HomeScaffold({required this.child, super.key});
@@ -14,8 +15,8 @@ class HomeScaffold extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: HomeAppBar(),
-        drawer: HomeAppDrawer(),
+        appBar: const HomeAppBar(),
+        drawer: const HomeAppDrawer(),
         body: child,
       ),
     );

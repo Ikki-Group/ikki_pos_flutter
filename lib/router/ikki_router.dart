@@ -7,6 +7,9 @@ enum IkkiRouter {
 
   userSelect,
 
+  // Pos
+  pos,
+
   // Home
   home,
   history,

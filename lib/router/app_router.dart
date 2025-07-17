@@ -1,10 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/pages/auth_device_page.dart';
+import '../features/pos/pages/pos_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/sync/pages/sync_global_page.dart';
 import '../features/user/pages/user_select_page.dart';
+import '../widgets/scaffold/pos/pos_scaffold.dart';
 import 'ikki_router.dart';
 
 part 'app_router.g.dart';
@@ -36,6 +39,19 @@ GoRouter goRouter(Ref ref) {
         path: '/user-select',
         name: IkkiRouter.userSelect.name,
         builder: (context, state) => const UserSelectPage(),
+      ),
+
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return PosScaffold(child: child);
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/pos',
+            name: IkkiRouter.pos.name,
+            builder: (context, state) => const PosPage(),
+          ),
+        ],
       ),
 
       // ShellRoute(

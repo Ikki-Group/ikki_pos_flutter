@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
 import '../../../data/user/user.repo.dart';
+import '../../../router/ikki_router.dart';
 import '../../../widgets/ui/numpad_pin.dart';
 import '../widgets/user_select_dialog.dart';
 
@@ -58,7 +60,8 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           final isValid = selectedUser!.comparePin(displayValue);
           if (isValid) {
             ref.read(currentUserProvider.notifier).setUser(selectedUser!);
-            // context.go(IkkiRouter.home.path);
+            print('Pos');
+            context.goNamed(IkkiRouter.pos.name);
             return;
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -12,7 +12,8 @@ enum SharedPrefsKeys {
   authToken,
   outlet,
   receiptCode,
-  users
+  users,
+  products
   //
   ;
 

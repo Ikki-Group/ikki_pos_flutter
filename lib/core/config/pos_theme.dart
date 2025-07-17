@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_transitions/go_transitions.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class POSTheme {
   // Primary Colors
@@ -157,7 +158,7 @@ abstract class POSTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryBlue,
-          side: const BorderSide(color: borderMedium, width: 1),
+          side: const BorderSide(color: borderMedium),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -211,11 +212,11 @@ abstract class POSTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: borderLight, width: 1),
+          borderSide: const BorderSide(color: borderLight),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: borderLight, width: 1),
+          borderSide: const BorderSide(color: borderLight),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -223,7 +224,7 @@ abstract class POSTheme {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: statusError, width: 1),
+          borderSide: const BorderSide(color: statusError),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -262,9 +263,9 @@ abstract class POSTheme {
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
-        iconTheme: IconThemeData(color: textOnPrimary),
+        iconTheme: const IconThemeData(color: textOnPrimary),
 
-        side: const BorderSide(color: borderLight, width: 1),
+        side: const BorderSide(color: borderLight),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -438,6 +439,10 @@ extension POSColors on BuildContext {
   Color get textSecondary => POSTheme.textSecondary;
   Color get surfaceCard => POSTheme.surfaceCard;
   Color get borderLight => POSTheme.borderLight;
+}
+
+extension POSTextStylesX on BuildContext {
+  TextStyle get textStyle => GoogleFonts.poppins(letterSpacing: .5);
 }
 
 // Custom Text Styles

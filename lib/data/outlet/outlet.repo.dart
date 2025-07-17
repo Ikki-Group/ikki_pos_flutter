@@ -15,14 +15,15 @@ part 'outlet.repo.g.dart';
 OutletRepo outletRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   final sp = ref.watch(sharedPrefsProvider);
-  return OutletRepo(dio: dio, sp: sp);
+  return OutletRepo(dio: dio, sp: sp, ref: ref);
 }
 
 class OutletRepo {
-  OutletRepo({required this.dio, required this.sp});
+  OutletRepo({required this.dio, required this.sp, required this.ref});
 
   final Dio dio;
   final SharedPreferences sp;
+  final Ref ref;
 
   Future<OutletModel> getLocal() async {
     print('[OutletRepo] getLocal');

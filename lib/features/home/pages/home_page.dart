@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ikki_pos_flutter/features/home/manager/home_tab_item.dart';
-import 'package:ikki_pos_flutter/features/home/widgets/home_topbar.dart';
 import 'package:intl/intl.dart';
+
+import '../manager/home_tab_item.dart';
+import '../widgets/home_topbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,11 +12,11 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
       length: HomeTabItem.values.length,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
           spacing: 8,
           children: [
-            HomeTopBar(),
+            const HomeTopBar(),
             Flexible(
               child: Row(
                 spacing: 8,
@@ -24,10 +25,10 @@ class HomePage extends StatelessWidget {
                     flex: 2,
                     child: Container(
                       height: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
@@ -35,10 +36,10 @@ class HomePage extends StatelessWidget {
                     flex: 3,
                     child: Container(
                       height: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
@@ -71,31 +72,23 @@ enum PaymentStatus {
 
 // Represents a single item within an order
 class OrderItem {
-  final String productName;
-  final String? description; // e.g., "Ice/Hot: Hot"
-  final double price;
-  final String? notes; // e.g., "Done by Ikki Coff @ 03:45"
+  // e.g., "Done by Ikki Coff @ 03:45"
 
   OrderItem({
     required this.productName,
-    this.description,
     required this.price,
+    this.description,
     this.notes,
   });
+  final String productName;
+  final String? description; // e.g., "Ice/Hot: Hot"
+  final double price;
+  final String? notes;
 }
 
 // Represents an entire order
 class Order {
-  final String id;
-  final DateTime orderDate;
-  final String orderNumber;
-  final double totalAmount;
-  final OrderStatus orderStatus;
-  final PaymentStatus paymentStatus;
-  final String cashierName;
-  final String tableInfo; // e.g., "Meja" or "Open Bill"
-  final List<OrderItem> items;
-  final String? timeAgo; // e.g., "+30mins", "-15mins"
+  // e.g., "+30mins", "-15mins"
 
   Order({
     required this.id,
@@ -109,6 +102,16 @@ class Order {
     required this.items,
     this.timeAgo,
   });
+  final String id;
+  final DateTime orderDate;
+  final String orderNumber;
+  final double totalAmount;
+  final OrderStatus orderStatus;
+  final PaymentStatus paymentStatus;
+  final String cashierName;
+  final String tableInfo; // e.g., "Meja" or "Open Bill"
+  final List<OrderItem> items;
+  final String? timeAgo;
 }
 
 // --- 2. State Management (Provider) ---
@@ -278,9 +281,8 @@ class _PosDashboardScreenState extends State<PosDashboardScreen> with SingleTick
 // --- 5. Custom App Bar Widget ---
 
 class _CustomAppBar extends StatelessWidget {
-  final TabController tabController;
-
   const _CustomAppBar({required this.tabController});
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -288,15 +290,15 @@ class _CustomAppBar extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextField(
                       decoration: InputDecoration(
@@ -307,25 +309,25 @@ class _CustomAppBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                    vertical: 8.0,
+                    horizontal: 12,
+                    vertical: 8,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     children: [
                       Icon(Icons.filter_list, color: Colors.grey[600]),
-                      const SizedBox(width: 4.0),
+                      const SizedBox(width: 4),
                       Text('Filter', style: TextStyle(color: Colors.grey[800])),
                     ],
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 8),
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.add),
@@ -334,11 +336,11 @@ class _CustomAppBar extends StatelessWidget {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 10.0,
+                      horizontal: 12,
+                      vertical: 10,
                     ),
                   ),
                 ),
@@ -356,9 +358,8 @@ class _CustomAppBar extends StatelessWidget {
 // --- 6. Order Status Tabs Widget ---
 
 class _OrderStatusTabs extends StatelessWidget {
-  final TabController tabController;
-
   const _OrderStatusTabs({required this.tabController});
+  final TabController tabController;
 
   String _getTabLabel(OrderStatus status) {
     switch (status) {
@@ -403,7 +404,7 @@ class _OrderStatusTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dummy counts for tabs, you'd fetch these from actual data
-    final Map<OrderStatus, int> orderCounts = {
+    final orderCounts = <OrderStatus, int>{
       OrderStatus.notPaid: 5, // Example count
       OrderStatus.readyToProcess: 0,
       OrderStatus.shipped: 0,
@@ -417,7 +418,7 @@ class _OrderStatusTabs extends StatelessWidget {
       labelColor: Colors.blue,
       unselectedLabelColor: Colors.grey[600],
       indicatorColor: Colors.blue,
-      indicatorWeight: 3.0,
+      indicatorWeight: 3,
       labelStyle: const TextStyle(fontWeight: FontWeight.bold),
       tabs: OrderStatus.values.map((status) {
         return _buildTab(status, orderCounts[status] ?? 0);
@@ -429,18 +430,17 @@ class _OrderStatusTabs extends StatelessWidget {
 // --- 7. Order List Panel Widget ---
 
 class _OrderListPanel extends StatelessWidget {
-  final List<Order> orders;
-
   const _OrderListPanel({required this.orders});
+  final List<Order> orders;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(color: Colors.grey[300]!, width: 1.0)),
+        border: Border(right: BorderSide(color: Colors.grey[300]!)),
       ),
       child: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         itemCount: orders.length,
         itemBuilder: (context, index) {
           final order = orders[index];
@@ -454,9 +454,8 @@ class _OrderListPanel extends StatelessWidget {
 // --- 8. Order Card Widget ---
 
 class OrderCard extends StatelessWidget {
+  const OrderCard({required this.order, super.key});
   final Order order;
-
-  const OrderCard({super.key, required this.order});
 
   Color _getPaymentStatusColor(PaymentStatus status) {
     switch (status) {
@@ -479,7 +478,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final orderProvider = Provider.of<OrderProvider>(context);
-    final isSelected = true;
+    const isSelected = true;
 
     return GestureDetector(
       onTap: () {
@@ -489,13 +488,13 @@ class OrderCard extends StatelessWidget {
         // color: isSelected ? Colors.blue : Colors.white,
         color: Colors.blue,
         elevation: 0, // No shadow for individual cards as per UI
-        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        margin: const EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8),
           side: isSelected ? const BorderSide(color: Colors.blue, width: 1.5) : BorderSide.none,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -529,7 +528,7 @@ class OrderCard extends StatelessWidget {
                       color: _getPaymentStatusColor(
                         order.paymentStatus,
                       ).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4.0),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       _getPaymentStatusText(order.paymentStatus),
@@ -542,7 +541,7 @@ class OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -555,7 +554,7 @@ class OrderCard extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(width: 4.0),
+                      const SizedBox(width: 4),
                       Text(
                         '#${order.orderNumber}',
                         style: const TextStyle(
@@ -565,7 +564,7 @@ class OrderCard extends StatelessWidget {
                         ),
                       ),
                       if (order.timeAgo != null) ...[
-                        const SizedBox(width: 8.0),
+                        const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 6,
@@ -595,7 +594,7 @@ class OrderCard extends StatelessWidget {
                       color: Colors.blue.withOpacity(
                         0.1,
                       ), // Example color for table/bill
-                      borderRadius: BorderRadius.circular(4.0),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       order.tableInfo,
@@ -608,7 +607,7 @@ class OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -634,15 +633,14 @@ class OrderCard extends StatelessWidget {
 // --- 9. Order Details Panel Widget ---
 
 class _OrderDetailsPanel extends StatelessWidget {
-  final Order order;
-
   const _OrderDetailsPanel({required this.order});
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -651,10 +649,10 @@ class _OrderDetailsPanel extends StatelessWidget {
             elevation: 0,
             color: Colors.red.withOpacity(0.1),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -678,7 +676,7 @@ class _OrderDetailsPanel extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.orange.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(4.0),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       order.timeAgo ?? '00:00:00', // Use a default if timeAgo is null
@@ -693,7 +691,7 @@ class _OrderDetailsPanel extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 16),
           // Cashier and Order Info
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -716,7 +714,7 @@ class _OrderDetailsPanel extends StatelessWidget {
                       order.tableInfo,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 8),
                     TextButton(
                       onPressed: () {
                         // Handle "Lihat Detail"
@@ -743,7 +741,7 @@ class _OrderDetailsPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 16),
           // Order Items Section
           Text(
             'Rincian Pesanan',
@@ -755,7 +753,7 @@ class _OrderDetailsPanel extends StatelessWidget {
             'Order #${order.orderNumber} (${DateFormat('dd MMM yyyy, HH:mm').format(order.orderDate)} WIB)',
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
               itemCount: order.items.length,
@@ -767,7 +765,7 @@ class _OrderDetailsPanel extends StatelessWidget {
           ),
           // Actions for order details (e.g., Pay, Print) - not fully implemented in UI but common
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -826,15 +824,14 @@ class _OrderDetailsPanel extends StatelessWidget {
 // --- 10. Order Detail Item Widget ---
 
 class _OrderDetailItem extends StatelessWidget {
+  const _OrderDetailItem({required this.item, required this.itemNumber});
   final OrderItem item;
   final int itemNumber;
-
-  const _OrderDetailItem({required this.item, required this.itemNumber});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

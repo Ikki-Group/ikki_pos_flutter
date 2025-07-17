@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ikki_pos_flutter/features/home/manager/home_tab_item.dart';
+
+import '../manager/home_tab_item.dart';
 
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({super.key});
@@ -15,7 +16,7 @@ class HomeTopBar extends StatelessWidget {
             length: 4,
             child: TabBar(
               tabs: [
-                for (var item in HomeTabItem.values) Tab(text: item.label),
+                for (final item in HomeTabItem.values) Tab(text: item.label),
               ],
               labelColor: Colors.blueAccent,
             ),

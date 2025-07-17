@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/data/cart/cart_notifier.dart';
-import 'package:ikki_pos_flutter/data/sale/sale_model.dart';
-import 'package:ikki_pos_flutter/router/ikki_router.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
-import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
 
-class SalesModeModal extends ConsumerStatefulWidget {
-  const SalesModeModal({super.key});
+import '../../data/sale/sale_model.dart';
+import '../ui/button_variants.dart';
+import '../ui/ikki_dialog.dart';
+
+class SalesModeDialog extends ConsumerStatefulWidget {
+  const SalesModeDialog({super.key});
 
   static void show(BuildContext context) {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return SalesModeModal();
+        return const SalesModeDialog();
       },
     );
   }
 
   @override
-  ConsumerState createState() => _SalesModeModalState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SalesModeDialogState();
 }
 
-class _SalesModeModalState extends ConsumerState<SalesModeModal> {
+class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
+  static const double _chipWidth = 50;
+  static const double _chipSpacing = 8;
+  static const double _itemWidth = _chipWidth + _chipSpacing;
+
   late ScrollController _scrollController;
   late List<SaleMode> _saleModes;
 
@@ -34,32 +36,15 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
   @override
   void initState() {
     super.initState();
-    final cart = ref.read(cartNotifierProvider);
 
     _saleModes = SaleMode.values;
-    _selectedSaleMode = cart.saleMode.id.isNotEmpty ? cart.saleMode : _saleModes[0];
-    _pax = cart.pax;
+    _selectedSaleMode = _saleModes[0];
+    _pax = 1;
     _scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToSelectedPax();
     });
-  }
-
-  void _onClose() {
-    Navigator.of(context).pop();
-  }
-
-  void _onProcessPressed() async {
-    final cart = ref.read(cartNotifierProvider.notifier);
-    await cart.newCart(_pax, _selectedSaleMode);
-
-    final String? routeName = GoRouter.of(context).state.name;
-    if (routeName == IkkiRouter.cartSelection.name) {
-      _onClose();
-    } else {
-      context.go(IkkiRouter.cartSelection.path);
-    }
   }
 
   void _scrollToSelectedPax() {
@@ -73,14 +58,10 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
     }
   }
 
-  static const double _chipWidth = 50.0;
-  static const double _chipSpacing = 8.0;
-  static const double _itemWidth = _chipWidth + _chipSpacing;
-
   double _calculateScrollOffset(int pax) {
     final itemOffset = (pax - 1) * _itemWidth;
     final viewportCenter = _scrollController.position.viewportDimension / 2;
-    final itemCenter = _chipWidth / 2;
+    const itemCenter = _chipWidth / 2;
 
     return (itemOffset - viewportCenter + itemCenter).clamp(
       0.0,
@@ -88,10 +69,26 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
     );
   }
 
+  void _onClose() {
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _onProcessPressed() async {
+    // final cart = ref.read(cartNotifierProvider.notifier);
+    // await cart.newCart(_pax, _selectedSaleMode);
+
+    // if (!mounted) return;
+
+    // final routeName = GoRouter.of(context).state.name;
+    // if (routeName == IkkiRouter.cartSelection.name) {
+    //   _onClose();
+    // } else {
+    //   context.goNamed(IkkiRouter.cartSelection.name);
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isAllowedToProceed = _pax > 0;
-
     return IkkiDialog(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 700),
@@ -99,16 +96,16 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            IkkiDialogTitle(title: "Mode Penjualan"),
+            const IkkiDialogTitle(title: 'Mode Penjualan'),
             const SizedBox(height: 24),
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Jumlah Pax",
+                    const Text(
+                      'Jumlah Pax',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -135,8 +132,8 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
                                 height: 50,
                                 child: Center(
                                   child: Text(
-                                    "$value",
-                                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                                    '$value',
+                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                                   ),
                                 ),
                               ),
@@ -156,8 +153,8 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    Text(
-                      "Mode Penjualan",
+                    const Text(
+                      'Mode Penjualan',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -187,7 +184,7 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
                             },
                             label: Text(
                               saleMode.name,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           );
@@ -207,7 +204,7 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
                 ),
                 const SizedBox(width: 8),
                 ThemedButton.process(
-                  onPressed: isAllowedToProceed ? _onProcessPressed : null,
+                  onPressed: _onProcessPressed,
                 ),
               ],
             ),

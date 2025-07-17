@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
-import 'package:ikki_pos_flutter/features/home/widgets/home_create_order_button.dart';
+
+import '../../../data/outlet/outlet_notifier.dart';
+import '../../../features/home/widgets/home_create_order_button.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -15,7 +16,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: preferredSize.height,
       leading: IconButton(
         onPressed: Scaffold.of(context).openDrawer,
-        icon: Center(
+        icon: const Center(
           child: Icon(
             Icons.menu_rounded,
             size: 32,
@@ -24,8 +25,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
 
-      title: _LeftInfo(),
-      actions: [HomeCreateOrderButton()],
+      title: const _LeftInfo(),
+      actions: const [HomeCreateOrderButton()],
       actionsPadding: const EdgeInsets.only(right: 16),
     );
   }
@@ -45,11 +46,9 @@ class _LeftInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        const Row(
           children: [_NetInfoWidget(), SizedBox(width: 8), _ShiftInfoWidget()],
         ),
       ],
@@ -62,12 +61,12 @@ class _NetInfoWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
+    return const Row(
       children: [
         Icon(Icons.network_cell, color: Colors.white70, size: 10),
         SizedBox(width: 8),
         Text(
-          "Online",
+          'Online',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ],
@@ -82,15 +81,15 @@ class _ShiftInfoWidget extends ConsumerWidget {
     final outlet = ref.watch(outletNotifierProvider);
     final isOpen = outlet.isOpen();
 
-    final Color? color = isOpen ? Colors.greenAccent[400] : Colors.redAccent[200];
+    final color = isOpen ? Colors.greenAccent[400] : Colors.redAccent[200];
 
     return Row(
       children: [
         Icon(Icons.circle, color: color, size: 10),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Text(
-          isOpen ? "Shift Open" : "Shift Closed",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          isOpen ? 'Shift Open' : 'Shift Closed',
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
       ],
     );

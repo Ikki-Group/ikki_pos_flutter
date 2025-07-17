@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class IkkiDialog extends StatelessWidget {
   const IkkiDialog({
-    super.key,
     required this.child,
+    super.key,
     this.padding = const EdgeInsets.all(12),
   });
 
@@ -23,8 +23,8 @@ class IkkiDialog extends StatelessWidget {
 
 class IkkiDialogTitle extends StatelessWidget {
   const IkkiDialogTitle({
-    super.key,
     required this.title,
+    super.key,
     this.icon = const Icon(
       Icons.play_arrow,
       color: Colors.white,
@@ -50,7 +50,7 @@ class IkkiDialogTitle extends StatelessWidget {
               icon,
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
                   color: Colors.white,

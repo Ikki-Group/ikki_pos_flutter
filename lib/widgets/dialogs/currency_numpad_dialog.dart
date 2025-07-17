@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
-import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
-import 'package:ikki_pos_flutter/widgets/ui/numpad_pin.dart';
+
+import '../../shared/utils/formatter.dart';
+import '../ui/button_variants.dart';
+import '../ui/ikki_dialog.dart';
+import '../ui/numpad_pin.dart';
 
 class CurrencyNumpadDialog extends ConsumerStatefulWidget {
   const CurrencyNumpadDialog({super.key, this.initialValue});
@@ -37,7 +38,7 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
 
   void onInputChanged(String? value) {
     setState(() {
-      _input = int.tryParse(value ?? "") ?? 0;
+      _input = int.tryParse(value ?? '') ?? 0;
     });
   }
 
@@ -47,10 +48,10 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final placeholder = "Masukkan Kas Awal";
+    const placeholder = 'Masukkan Kas Awal';
 
-    bool isEmptyInput = _input == null || _input == 0;
-    String? value = isEmptyInput ? null : Formatter.toIdr.format(_input!);
+    final isEmptyInput = _input == null || _input == 0;
+    final value = isEmptyInput ? null : Formatter.toIdr.format(_input);
 
     return IkkiDialog(
       padding: const EdgeInsets.all(16),
@@ -70,12 +71,10 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
                   border: BoxBorder.fromLTRB(
                     bottom: BorderSide(
                       color: isEmptyInput ? Colors.grey[500]! : Colors.black,
-                      width: 1,
                     ),
                   ),
                 ),
                 child: Align(
-                  alignment: Alignment.center,
                   child: Text(
                     value ?? placeholder,
                     style: TextStyle(
@@ -91,13 +90,12 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
             NumpadPin(
               aspectRatio: 4 / 2,
               onKeyPressed: (key) {
-                final inputStr = _input?.toString() ?? "";
+                final inputStr = _input?.toString() ?? '';
                 switch (key) {
                   case NumpadKey.backspace:
                     if (inputStr.isNotEmpty) {
                       onInputChanged(inputStr.substring(0, inputStr.length - 1));
                     }
-                    break;
                   case NumpadKey.empty:
                   case NumpadKey.decimal:
                     break;
@@ -110,11 +108,9 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
             ),
             const SizedBox(height: 32),
             Row(
-              mainAxisSize: MainAxisSize.max,
               spacing: 8,
               children: [
                 Flexible(
-                  flex: 1,
                   fit: FlexFit.tight,
                   child: ThemedButton.cancel(
                     onPressed: () {
@@ -123,10 +119,9 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
                   ),
                 ),
                 Flexible(
-                  flex: 1,
                   fit: FlexFit.tight,
                   child: ThemedButton.process(
-                    text: Text("Simpan"),
+                    text: const Text('Simpan'),
                     onPressed: isEmptyInput ? null : onSubmit,
                   ),
                 ),
