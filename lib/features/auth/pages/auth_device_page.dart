@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import "package:pinput/pinput.dart";
+import 'package:go_router/go_router.dart';
+import 'package:pinput/pinput.dart';
 
-import '../manager/auth_device_manager.dart';
+import '../../../router/ikki_router.dart';
+import '../providers/auth_device_provider.dart';
 
 const _kCodeLen = 6;
 
@@ -16,7 +19,7 @@ class AuthDevicePage extends ConsumerStatefulWidget {
 class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   late TextEditingController pinController;
   final focusNode = FocusNode();
-  String code = "";
+  String code = '';
 
   @override
   void initState() {
@@ -36,26 +39,32 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     super.dispose();
   }
 
-  Future<void> _authenticate() async {
-    await ref.read(authDeviceManagerProvider.notifier).authenticate(code.toUpperCase());
+  Future<void> submit() async {
+    await ref.read(authDeviceProvider.notifier).authenticate(code.toUpperCase());
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final mnger = ref.watch(authDeviceManagerProvider);
+    final provider = ref.watch(authDeviceProvider);
 
-    ref.listen(authDeviceManagerProvider, (_, next) {
+    final messenger = ScaffoldMessenger.of(context);
+
+    ref.listen(authDeviceProvider, (_, next) {
       next.whenOrNull(
         data: (res) {
           if (res != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(res), backgroundColor: Colors.greenAccent),
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text(res),
+                backgroundColor: Colors.greenAccent,
+              ),
             );
+            context.goNamed(IkkiRouter.syncGlobal.name);
           }
         },
         error: (e, _) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          messenger.showSnackBar(
             SnackBar(
               content: Text(e.toString()),
               backgroundColor: Colors.redAccent,
@@ -69,7 +78,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     return Scaffold(
       body: Center(
         child: GestureDetector(
-          onTap: () => focusNode.unfocus(),
+          onTap: focusNode.unfocus,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -79,7 +88,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 'Please copy the code from backoffice',
                 style: theme.textTheme.bodyLarge,
@@ -91,16 +100,23 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                 focusNode: focusNode,
                 hapticFeedbackType: HapticFeedbackType.lightImpact,
                 textCapitalization: TextCapitalization.characters,
+                inputFormatters: [
+                  TextInputFormatter.withFunction(
+                    (oldValue, newValue) {
+                      return newValue.copyWith(text: newValue.text.toUpperCase());
+                    },
+                  ),
+                ],
                 defaultPinTheme: PinTheme(
                   width: 56,
                   height: 56,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 20,
                     color: Color.fromRGBO(30, 60, 87, 1),
                     fontWeight: FontWeight.w600,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+                    border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -114,9 +130,9 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: mnger.maybeWhen<VoidCallback?>(
+                onPressed: provider.maybeWhen<VoidCallback?>(
                   loading: () => null,
-                  orElse: () => code.length == _kCodeLen ? _authenticate : null,
+                  orElse: () => code.length == _kCodeLen ? submit : null,
                 ),
                 child: const Text('Authenticate Device'),
               ),

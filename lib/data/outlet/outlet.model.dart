@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../json.dart';
+
 part 'outlet.model.freezed.dart';
 part 'outlet.model.g.dart';
 
@@ -16,7 +18,7 @@ abstract class OutletModel with _$OutletModel {
     required String updatedBy,
   }) = _OutletModel;
 
-  factory OutletModel.fromJson(Map<String, dynamic> json) => _$OutletModelFromJson(json);
+  factory OutletModel.fromJson(Json json) => _$OutletModelFromJson(json);
 }
 
 @freezed

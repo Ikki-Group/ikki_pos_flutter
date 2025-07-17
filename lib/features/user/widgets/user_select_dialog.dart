@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
-import 'package:ikki_pos_flutter/data/user/user_model.dart';
-import 'package:ikki_pos_flutter/data/user/user_repo.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
-import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
+
+import '../../../core/config/pos_theme.dart';
+import '../../../data/user/user.model.dart';
+import '../../../widgets/ui/button_variants.dart';
+import '../../../widgets/ui/ikki_dialog.dart';
 
 class UserSelectDialog extends ConsumerStatefulWidget {
-  const UserSelectDialog({super.key, this.initialValue});
+  const UserSelectDialog({required this.users, super.key, this.initialValue});
 
-  final User? initialValue;
+  final UserModel? initialValue;
+  final List<UserModel> users;
 
   @override
-  createState() => _UserSelectDialogState();
+  ConsumerState createState() => _UserSelectDialogState();
 }
 
 class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
   late ScrollController _scrollController;
-
-  late List<User> _users;
-  User? _selectedUser;
+  late List<UserModel> _users;
+  UserModel? _selectedUser;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _selectedUser = widget.initialValue;
-    _users = ref.read(userRepoProvider).list();
+    _users = widget.users;
 
     final scrollIndex = _selectedUser != null ? _users.indexWhere((user) => user.id == _selectedUser!.id) : 0;
     if (scrollIndex != -1) {
@@ -42,7 +42,7 @@ class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
     super.dispose();
   }
 
-  _scrollTo(int index) {
+  void _scrollTo(int index) {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         index * 32.0,
@@ -64,9 +64,8 @@ class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            IkkiDialogTitle(title: "Pilih Karyawan"),
+            const IkkiDialogTitle(title: 'Pilih Karyawan'),
             Flexible(
-              flex: 1,
               child: ListView.builder(
                 padding: const EdgeInsets.all(8),
                 controller: _scrollController,
@@ -79,7 +78,7 @@ class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
                     title: Text(user.name),
                     subtitle: Text(user.email),
                     value: isSelected,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                     checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                     selectedTileColor: Colors.red,
                     activeColor: Colors.red,
@@ -108,13 +107,13 @@ class _UserSelectDialogState extends ConsumerState<UserSelectDialog> {
 
   Widget _buildFooter(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ThemedButton.cancel(
             onPressed: () {
-              Navigator.pop(context, null);
+              Navigator.pop(context);
             },
           ),
 

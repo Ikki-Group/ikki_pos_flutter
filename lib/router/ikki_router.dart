@@ -3,6 +3,7 @@ enum IkkiRouter {
 
   splash,
   authDevice,
+  syncGlobal,
 
   userSelect,
 

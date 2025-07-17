@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class FadeTransitionPage extends CustomTransitionPage {
+class FadeTransitionPage extends CustomTransitionPage<dynamic> {
   FadeTransitionPage({required LocalKey super.key, required super.child})
     : super(
         transitionsBuilder:

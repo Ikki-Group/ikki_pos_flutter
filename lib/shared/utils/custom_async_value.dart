@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ikki_pos_flutter/shared/utils/exception.dart';
+
+import 'exception.dart';
 
 part 'custom_async_value.freezed.dart';
 

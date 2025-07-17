@@ -29,4 +29,28 @@ class AuthRepo {
 
     return AuthResponse.fromJson(res.data!);
   }
+
+  Future<AuthResponse> authenticateMock(
+    AuthRequest req,
+  ) async {
+    return const AuthResponse(
+      id: 'id',
+      token: 'token',
+      outletId: 'outletId',
+      deviceName: 'deviceName',
+      receipt: AuthReceiptConfig(
+        prefix: 'prefix',
+        counter: 1,
+      ),
+    );
+  }
+
+  Future<AuthDeviceInfo> getDeviceInfo() async {
+    return const AuthDeviceInfo(
+      os: 'os',
+      model: 'model',
+      appVersion: 'appVersion',
+      deviceId: 'deviceId',
+    );
+  }
 }

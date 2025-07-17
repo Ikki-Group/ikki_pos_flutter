@@ -18,7 +18,7 @@ abstract class UserModel with _$UserModel {
 
   static const int kPinLength = 4;
 
-  // bool comparePin(String pin) {
-  //   return pin == this.pin;
-  // }
+  bool comparePin(String pin) {
+    return pin == this.pin;
+  }
 }

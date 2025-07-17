@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/core/db/sembast.dart';
-import 'package:ikki_pos_flutter/core/db/shared_prefs.dart';
-import 'package:ikki_pos_flutter/router/ikki_pos_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'core/db/sembast.dart';
+import 'core/db/shared_prefs.dart';
+import 'router/ikki_pos_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

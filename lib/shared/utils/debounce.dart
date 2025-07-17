@@ -10,7 +10,7 @@ class Debouncer {
   Timer? _debounceTimer;
 
   void debounce({
-    required Function() onDebounce,
+    required void Function() onDebounce,
     Duration duration = const Duration(milliseconds: 100),
     BehaviorType type = BehaviorType.trailingEdge,
   }) {

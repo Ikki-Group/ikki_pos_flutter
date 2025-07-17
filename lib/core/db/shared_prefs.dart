@@ -11,7 +11,8 @@ SharedPreferences sharedPrefs(Ref ref) {
 enum SharedPrefsKeys {
   authToken,
   outlet,
-  receiptCode
+  receiptCode,
+  users
   //
   ;
 

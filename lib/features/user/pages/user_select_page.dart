@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
-import 'package:ikki_pos_flutter/data/user/user_model.dart';
-import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
-import 'package:ikki_pos_flutter/features/user/widgets/user_select_dialog.dart';
-import 'package:ikki_pos_flutter/router/ikki_router.dart';
-import 'package:ikki_pos_flutter/widgets/ui/numpad_pin.dart';
+
+import '../../../core/config/pos_theme.dart';
+import '../../../data/outlet/outlet.provider.dart';
+import '../../../data/user/user.model.dart';
+import '../../../data/user/user.provider.dart';
+import '../../../data/user/user.repo.dart';
+import '../../../widgets/ui/numpad_pin.dart';
+import '../widgets/user_select_dialog.dart';
 
 class UserSelectPage extends ConsumerStatefulWidget {
   const UserSelectPage({super.key});
@@ -17,102 +17,102 @@ class UserSelectPage extends ConsumerStatefulWidget {
 }
 
 class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProviderStateMixin {
-  final int maxPinLength = User.kPinLength;
-  User? selectedUser;
-  String _displayValue = "";
+  final int maxPinLength = UserModel.kPinLength;
+  UserModel? selectedUser;
+  String displayValue = '';
 
-  Future<void> _openDialog() async {
-    final user = await showDialog<User?>(
+  Future<void> openDialog() async {
+    final users = await ref.watch(userRepoProvider).fetch();
+
+    if (!mounted) return;
+    final user = await showDialog<UserModel?>(
       context: context,
       builder: (context) => UserSelectDialog(
         initialValue: selectedUser,
+        users: users,
       ),
     );
 
-    if (user == null) return;
-
-    setState(() {
-      selectedUser = user;
-    });
+    if (user != null) selectedUser = user;
+    setState(() {});
   }
 
-  void _handleKeyPress(NumpadKey key) {
+  void handleKeyPress(NumpadKey key) {
     if (selectedUser == null) {
-      _openDialog();
+      openDialog();
       return;
     }
 
     setState(() {
-      switch (key) {
-        case NumpadKey.backspace:
-          if (_displayValue.isNotEmpty) {
-            _displayValue = _displayValue.substring(0, _displayValue.length - 1);
-          }
-          break;
-        case NumpadKey.empty:
-          break;
-        default:
-          // Add the digit only if we haven't reached max length
-          if (_displayValue.length < maxPinLength) {
-            _displayValue += key.value;
-          }
+      if (key case NumpadKey.backspace) {
+        if (displayValue.isNotEmpty) {
+          displayValue = displayValue.substring(0, displayValue.length - 1);
+        }
+      } else if (key case NumpadKey.empty) {
+      } else {
+        if (displayValue.length < maxPinLength) {
+          displayValue += key.value;
+        }
 
-          if (_displayValue.length == maxPinLength) {
-            final isValid = selectedUser!.comparePin(_displayValue);
-            if (isValid) {
-              ref.read(userNotifierProvider.notifier).setUser(selectedUser!);
-              context.go(IkkiRouter.home.path);
-              return;
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    "PIN tidak valid",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+        if (displayValue.length == maxPinLength) {
+          final isValid = selectedUser!.comparePin(displayValue);
+          if (isValid) {
+            ref.read(currentUserProvider.notifier).setUser(selectedUser!);
+            // context.go(IkkiRouter.home.path);
+            return;
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'PIN tidak valid',
+                  style: TextStyle(
+                    color: Colors.black,
                   ),
-                  backgroundColor: Colors.red,
                 ),
-              );
-              _displayValue = "";
-              return;
-            }
+                backgroundColor: Colors.red,
+              ),
+            );
+            displayValue = '';
+            return;
           }
-          break;
+        }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final outlet = ref.watch(outletNotifierProvider).outlet!;
+    final outlet = ref.watch(outletProvider).requireValue;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Selamat Datang',
-              style: POSTextStyles.headerTitle.copyWith(color: Colors.black),
+              style: POSTextStyles.headerTitle.copyWith(
+                color: Colors.black,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               '-- ${outlet.name} --',
-              style: POSTextStyles.headerTitle.copyWith(color: Colors.black),
+              style: POSTextStyles.headerTitle.copyWith(
+                color: Colors.black,
+              ),
             ),
             const SizedBox(height: 32),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 fixedSize: const Size.fromWidth(320),
                 foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 12,
+                ),
               ),
-              onPressed: () {
-                _openDialog();
-              },
+              onPressed: openDialog,
               child: Row(
                 children: [
                   const Icon(Icons.person, size: 24),
@@ -131,8 +131,8 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
             ),
             const SizedBox(height: 42),
             PinIndicator(
-              pinLength: _displayValue.length,
-              maxLength: maxPinLength,
+              pinLength: displayValue.length,
+              maxLength: UserModel.kPinLength,
               boxSize: 52,
             ),
             const SizedBox(height: 24),
@@ -141,7 +141,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
               child: Column(
                 children: [
                   NumpadPin(
-                    onKeyPressed: _handleKeyPress,
+                    onKeyPressed: handleKeyPress,
                   ),
                 ],
               ),
