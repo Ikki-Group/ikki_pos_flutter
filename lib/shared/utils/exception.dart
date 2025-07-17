@@ -4,14 +4,6 @@ import 'package:dio/dio.dart';
 /// - DioException
 /// - Exception
 class AppException implements Exception {
-  final String msg;
-  final String code;
-
-  /// The original error/exception object;
-  final Object? error;
-
-  final StackTrace? stackTrace;
-
   AppException({
     required this.msg,
     this.code = 'AppException',
@@ -21,11 +13,11 @@ class AppException implements Exception {
 
   factory AppException.fromDio(DioException e) {
     final data = e.response?.data;
-    var msg = "DioException: ${e.type.toString()}";
+    var msg = 'DioException: ${e.type}';
     if (data is Map) {
       print(data);
       if (data['msg'] != null) {
-        msg = data['msg'];
+        msg = data['msg'] as String;
       }
     }
 
@@ -58,6 +50,13 @@ class AppException implements Exception {
       stackTrace: stackTrace,
     );
   }
+  final String msg;
+  final String code;
+
+  /// The original error/exception object;
+  final Object? error;
+
+  final StackTrace? stackTrace;
 
   @override
   String toString() {

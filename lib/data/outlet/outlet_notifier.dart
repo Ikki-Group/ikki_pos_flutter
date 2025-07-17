@@ -1,14 +1,15 @@
-import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part "outlet_notifier.g.dart";
+import 'outlet.model.dart';
+import 'outlet_repo.dart';
+
+part 'outlet_notifier.g.dart';
 
 @Riverpod(keepAlive: true)
 class OutletNotifier extends _$OutletNotifier {
   @override
   OutletState build() {
-    return OutletState();
+    return const OutletState();
   }
 
   Future<bool> load() async {
@@ -25,7 +26,7 @@ class OutletNotifier extends _$OutletNotifier {
 
   Future<void> setOpen(OutletSessionOpen open) async {
     if (state.session != null) {
-      throw Exception("OutletNotifier.setOpen: session is not null");
+      throw Exception('OutletNotifier.setOpen: session is not null');
     }
 
     final session = OutletSession.initial(open);

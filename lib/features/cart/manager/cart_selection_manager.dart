@@ -1,36 +1,31 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ikki_pos_flutter/data/product/product_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part "cart_selection_manager.g.dart";
+import '../../../data/product/product.model.dart';
 
-@riverpod
-class SearchProductNotifier extends _$SearchProductNotifier {
-  @override
-  String build() => '';
-
-  void setSearch(String value) => state = value;
-}
-
-@riverpod
-class CategoryFilterNotifier extends _$CategoryFilterNotifier {
-  @override
-  ProductCategory build() => ProductCategory(
-    id: '',
-    outletId: '',
-    name: '',
-    productCount: 0,
-  );
-
-  void setFilter(ProductCategory value) => state = value;
-}
+part 'cart_selection_manager.freezed.dart';
+part 'cart_selection_manager.g.dart';
 
 @freezed
-class CartSelectionManagerState {
-  const CartSelectionManagerState._();
-
+sealed class CartSelectionManagerState with _$CartSelectionManagerState {
   const factory CartSelectionManagerState({
-    required String saleMode,
-    required int pax,
+    required String search,
+    required String categoryId,
   }) = _CartSelectionManagerState;
+  const CartSelectionManagerState._();
+}
+
+@riverpod
+class CartSelectionManager extends _$CartSelectionManager {
+  @override
+  CartSelectionManagerState build() {
+    return const CartSelectionManagerState(
+      search: '',
+      categoryId: ProductCategory.kIdAll,
+    );
+  }
+
+  void setSearch(String value) => state = state.copyWith(search: value);
+  void clearSearch() => state = state.copyWith(search: '');
+  void setCategory(String value) => state = state.copyWith(categoryId: value);
 }

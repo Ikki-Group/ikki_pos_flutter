@@ -10,7 +10,7 @@ get:
 
 generate:
 	echo "Generating needed codes.." ; \
-	dart run build_runner build --delete-conflicting-outputs ; \
+	flutter run build_runner build ; \
 
 generate-watch:
 	echo "Generating needed codes.." ; \

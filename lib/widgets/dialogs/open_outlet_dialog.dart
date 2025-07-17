@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
-import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
-import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
-import 'package:ikki_pos_flutter/widgets/dialogs/currency_numpad_dialog.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
-import 'package:ikki_pos_flutter/widgets/ui/ikki_dialog.dart';
+import '../../core/config/pos_theme.dart';
+import '../../data/outlet/outlet.model.dart';
+import '../../data/outlet/outlet_notifier.dart';
+import '../../data/user/user_notifier.dart';
+import '../../shared/utils/formatter.dart';
+import 'currency_numpad_dialog.dart';
+import '../ui/button_variants.dart';
+import '../ui/ikki_dialog.dart';
 
 class OpenOutletDialog extends ConsumerStatefulWidget {
   const OpenOutletDialog({super.key});
@@ -17,7 +17,7 @@ class OpenOutletDialog extends ConsumerStatefulWidget {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return OpenOutletDialog();
+        return const OpenOutletDialog();
       },
     );
   }
@@ -46,7 +46,7 @@ class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
     }
   }
 
-  _onClose() {
+  void void _onClose() {
     Navigator.of(context).pop();
   }
 
@@ -77,45 +77,45 @@ class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 8,
           children: [
-            IkkiDialogTitle(title: "Mulai Penjualan"),
+            const IkkiDialogTitle(title: 'Mulai Penjualan'),
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4,
                   children: [
-                    Text("Kasir"),
+                    const Text('Kasir'),
                     Text(
                       user!.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text("Outlet"),
+                    const Text('Outlet'),
                     Text(
                       outlet.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text("Kas Awal"),
+                    const Text('Kas Awal'),
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed: _onCashInPressed,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: POSTheme.primaryBlueLight,
-                          side: const BorderSide(color: POSTheme.primaryBlueLight, width: 1),
+                          side: const BorderSide(color: POSTheme.primaryBlueLight),
                           shape: const LinearBorder(
                             side: BorderSide(color: Colors.blue),
                             bottom: LinearBorderEdge(),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -131,12 +131,10 @@ class _OpenOutletDialogState extends ConsumerState<OpenOutletDialog> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ThemedButton.cancel(
-                  size: ButtonSize.large,
                   onPressed: _onClose,
                 ),
                 const SizedBox(width: 8),
                 ThemedButton.process(
-                  size: ButtonSize.large,
                   onPressed: _openingCash == 0 ? null : _onProcessPressed,
                 ),
               ],

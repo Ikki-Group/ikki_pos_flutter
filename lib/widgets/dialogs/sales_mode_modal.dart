@@ -37,7 +37,7 @@ class _SalesModeModalState extends ConsumerState<SalesModeModal> {
     final cart = ref.read(cartNotifierProvider);
 
     _saleModes = SaleMode.values;
-    _selectedSaleMode = cart.saleMode.name.isNotEmpty ? cart.saleMode : _saleModes[0];
+    _selectedSaleMode = cart.saleMode.id.isNotEmpty ? cart.saleMode : _saleModes[0];
     _pax = cart.pax;
     _scrollController = ScrollController();
 

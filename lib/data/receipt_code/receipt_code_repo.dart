@@ -1,27 +1,27 @@
-import 'package:ikki_pos_flutter/core/db/shared_prefs.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/db/shared_prefs.dart';
+
 part 'receipt_code_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ReceiptCodeRepo receiptCodeRepo(Ref ref) {
   final sp = ref.watch(sharedPrefsProvider);
   return ReceiptCodeRepo(sp: sp);
 }
 
 class ReceiptCodeRepo {
-  final SharedPreferences sp;
-
   ReceiptCodeRepo({required this.sp});
+  final SharedPreferences sp;
 
   Future<String> getCode(String sessionId) async {
     final queue = getLocalQueue();
-    return "$sessionId/$queue";
+    return '$sessionId/$queue';
   }
 
   Future<bool> commit(String code) async {
-    final [_, queue] = code.split("/");
+    final [_, queue] = code.split('/');
     final queueInt = int.parse(queue);
     return setLocalQueue(queueInt + 1);
   }

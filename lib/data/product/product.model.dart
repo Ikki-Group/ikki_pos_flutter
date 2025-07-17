@@ -1,23 +1,25 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'product_model.freezed.dart';
-part 'product_model.g.dart';
+import '../json.dart';
+
+part 'product.model.freezed.dart';
+part 'product.model.g.dart';
 
 @freezed
-sealed class Product with _$Product {
-  const factory Product({
+sealed class ProductModel with _$ProductModel {
+  const factory ProductModel({
     required String id,
     required String outletId,
-    String? mokaId,
     required String name,
     required double price,
     required bool hasVariant,
     required String categoryId,
+    String? mokaId,
     @Default([]) List<ProductVariant> variants,
     @Default(false) bool isFavorite,
-  }) = _Product;
+  }) = _ProductModel;
 
-  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+  factory ProductModel.fromJson(Json json) => _$ProductModelFromJson(json);
 }
 
 @freezed
@@ -29,7 +31,7 @@ sealed class ProductVariant with _$ProductVariant {
     String? mokaId,
   }) = _ProductVariant;
 
-  factory ProductVariant.fromJson(Map<String, dynamic> json) => _$ProductVariantFromJson(json);
+  factory ProductVariant.fromJson(Json json) => _$ProductVariantFromJson(json);
 }
 
 @freezed
@@ -43,13 +45,13 @@ sealed class ProductCategory with _$ProductCategory {
     @Default(0) int productCount,
   }) = _ProductCategory;
 
-  factory ProductCategory.fromJson(Map<String, dynamic> json) => _$ProductCategoryFromJson(json);
+  factory ProductCategory.fromJson(Json json) => _$ProductCategoryFromJson(json);
 
-  static const kIdAll = "all";
-  static const kIdFavorite = "favorite";
+  static const kIdAll = 'all';
+  static const kIdFavorite = 'favorite';
 
   static const kCustomCategories = <ProductCategory>[
-    ProductCategory(id: kIdAll, name: "All", productCount: 0, outletId: ''),
-    ProductCategory(id: kIdFavorite, name: "Favorite", productCount: 0, outletId: ''),
+    ProductCategory(id: kIdAll, name: 'All', outletId: ''),
+    ProductCategory(id: kIdFavorite, name: 'Favorite', outletId: ''),
   ];
 }

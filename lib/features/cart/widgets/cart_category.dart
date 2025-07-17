@@ -6,13 +6,13 @@ import 'package:ikki_pos_flutter/features/cart/manager/cart_selection_manager.da
 
 const _kChipHeight = 45.0;
 
-class CategorySelection extends ConsumerWidget {
-  const CategorySelection({super.key});
+class CartCategory extends ConsumerWidget {
+  const CartCategory({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(productDataProvider.select((v) => v.categories));
-    final selectedId = ref.watch(categoryFilterNotifierProvider.select((v) => v.id));
+    final selectedId = ref.watch(cartSelectionManagerProvider).categoryId;
 
     return SizedBox(
       height: _kChipHeight,
@@ -42,7 +42,7 @@ class CategorySelection extends ConsumerWidget {
             selected: selected,
             showCheckmark: false,
             onSelected: (bool value) {
-              ref.read(categoryFilterNotifierProvider.notifier).setFilter(category);
+              ref.read(cartSelectionManagerProvider.notifier).setCategory(category.id);
             },
           );
         },

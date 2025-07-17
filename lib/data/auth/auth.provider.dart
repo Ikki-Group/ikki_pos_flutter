@@ -1,14 +1,14 @@
-import 'package:ikki_pos_flutter/core/db/shared_prefs.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'app_token.g.dart';
+import '../../core/db/shared_prefs.dart';
+
+part 'auth.provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class AppToken extends _$AppToken {
+class AuthToken extends _$AuthToken {
   @override
-  Future<String?> build() async {
-    final token = await getToken();
-    return token;
+  FutureOr<String?> build() async {
+    return getToken();
   }
 
   Future<void> setToken(String token) async {
@@ -18,7 +18,6 @@ class AppToken extends _$AppToken {
 
   Future<String?> getToken() async {
     final token = ref.read(sharedPrefsProvider).getString(SharedPrefsKeys.authToken.key);
-
     state = AsyncValue.data(token);
     return token;
   }

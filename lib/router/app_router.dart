@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_notifier.dart';
-import 'package:ikki_pos_flutter/data/user/user_notifier.dart';
-import 'package:ikki_pos_flutter/features/auth/pages/auth_device_page.dart';
-import 'package:ikki_pos_flutter/features/cart/pages/cart_selection_page.dart';
-import 'package:ikki_pos_flutter/features/home/pages/home_page.dart';
-import 'package:ikki_pos_flutter/features/user/pages/user_select_page.dart';
-import 'package:ikki_pos_flutter/features/widgetsbook/pages/pos_theme_showcase_page.dart';
-import 'package:ikki_pos_flutter/router/ikki_router.dart';
-import 'package:ikki_pos_flutter/shared/providers/app_provider.dart';
-import 'package:ikki_pos_flutter/shared/providers/app_token.dart';
-import 'package:ikki_pos_flutter/widgets/scaffold/home/home_scaffold.dart';
 import 'package:keyboard_service/keyboard_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../data/outlet/outlet_notifier.dart';
+import '../data/user/user_notifier.dart';
+import '../features/auth/pages/auth_device_page.dart';
+import '../features/cart/pages/cart_selection_page.dart';
+import '../features/home/pages/home_page.dart';
+import '../features/user/pages/user_select_page.dart';
+import '../features/widgetsbook/pages/pos_theme_showcase_page.dart';
+import '../shared/providers/app_provider.dart';
+import '../shared/providers/app_token.dart';
+import '../widgets/scaffold/home/home_scaffold.dart';
+import 'ikki_router.dart';
 
 part 'app_router.g.dart';
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  final listener = ValueNotifier<AppState>(AppState.loading());
-  // final initialLocation = IkkiRouter.widgetsbook.path;
-  final initialLocation = IkkiRouter.splash.path;
+  final listener = ValueNotifier<AppState>(const AppState.loading());
 
   ref
     ..onDispose(listener.dispose)
@@ -52,7 +51,7 @@ GoRouter goRouter(Ref ref) {
         path: IkkiRouter.splash.path,
         name: IkkiRouter.splash.name,
         builder: (context, state) {
-          return const Scaffold(body: Center(child: Text("Loading...")));
+          return const Scaffold(body: Center(child: Text('Loading...')));
         },
       ),
 
@@ -83,7 +82,7 @@ GoRouter goRouter(Ref ref) {
         redirect: (context, state) {
           final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
           if (!hasOutlet) {
-            throw Exception("outlet is null");
+            throw Exception('outlet is null');
           }
 
           final hasUser = ref.read(userNotifierProvider) != null;
@@ -105,7 +104,7 @@ GoRouter goRouter(Ref ref) {
             path: IkkiRouter.history.path,
             name: IkkiRouter.history.name,
             builder: (context, state) {
-              return const Center(child: Text("History"));
+              return const Center(child: Text('History'));
             },
           ),
         ],
@@ -125,7 +124,7 @@ GoRouter goRouter(Ref ref) {
         redirect: (context, state) {
           final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
           if (!hasOutlet) {
-            throw Exception("outlet is null");
+            throw Exception('outlet is null');
           }
 
           final hasUser = ref.read(userNotifierProvider) != null;

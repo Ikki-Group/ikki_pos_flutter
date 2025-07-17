@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ikki_pos_flutter/core/config/app_palette.dart';
-import 'package:ikki_pos_flutter/data/cart/cart_notifier.dart';
-import 'package:ikki_pos_flutter/data/product/product_model.dart';
-import 'package:ikki_pos_flutter/data/product/product_provider.dart';
-import 'package:ikki_pos_flutter/features/cart/manager/cart_selection_manager.dart';
-import 'package:ikki_pos_flutter/features/cart/widgets/category_selection.dart';
-import 'package:ikki_pos_flutter/router/ikki_router.dart';
-import 'package:ikki_pos_flutter/shared/utils/debounce.dart';
-import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
-import 'package:ikki_pos_flutter/widgets/dialogs/sales_mode_modal.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
+
+import '../../../core/config/app_palette.dart';
+import '../../../data/cart/cart_notifier.dart';
+import '../../../data/product/product_provider.dart';
+import '../../../router/ikki_router.dart';
+import '../../../shared/utils/debounce.dart';
+import '../../../widgets/dialogs/sales_mode_modal.dart';
+import '../../../widgets/ui/button_variants.dart';
+import '../manager/cart_selection_manager.dart';
+import '../widgets/cart_category.dart';
+import '../widgets/cart_order_item.dart';
+import '../widgets/cart_products.dart';
 
 const int kFlexLeft = 70;
 const int kFlexRight = 30;
@@ -34,7 +35,7 @@ class _CartSelectionPageState extends ConsumerState<CartSelectionPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
             Padding(
@@ -47,38 +48,38 @@ class _CartSelectionPageState extends ConsumerState<CartSelectionPage> {
                     child: Row(
                       spacing: 8,
                       children: [
-                        HomeButton(),
-                        GridViewButton(),
+                        const HomeButton(),
+                        const GridViewButton(),
                         Expanded(child: SearchProductInput()),
-                        AddCustomAmountButton(),
+                        const AddCustomAmountButton(),
                       ],
                     ),
                   ),
-                  Expanded(flex: kFlexRight, child: AddCustomerButton()),
+                  const Expanded(flex: kFlexRight, child: AddCustomerButton()),
                 ],
               ),
             ),
-            Divider(color: Colors.grey, height: 1),
+            const Divider(color: Colors.grey, height: 1),
             Expanded(
               child: Row(
                 spacing: 8,
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: kFlexLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 12),
+                      padding: EdgeInsets.only(top: 12),
                       child: Column(
                         spacing: 12,
                         children: [
-                          CategorySelection(),
+                          CartCategory(),
                           Expanded(
-                            child: ProductList(),
+                            child: CartProducts(),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  VerticalDivider(color: Colors.grey, width: 1),
+                  const VerticalDivider(color: Colors.grey, width: 1),
                   Expanded(
                     flex: kFlexRight,
                     child: Padding(
@@ -87,47 +88,44 @@ class _CartSelectionPageState extends ConsumerState<CartSelectionPage> {
                         spacing: 4,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          OrderModeInfo(),
-                          Expanded(child: OrderItemList()),
+                          const OrderModeInfo(),
+                          const Expanded(child: CartOrderList()),
                           Row(
                             spacing: 4,
                             children: [
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.icon(
                                   style: FilledButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   ),
                                   onPressed: () {},
-                                  label: Text("Simpan"),
+                                  label: const Text('Simpan'),
                                   icon: const Icon(Icons.save),
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.icon(
                                   style: FilledButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   ),
                                   onPressed: () {},
-                                  label: Text("Diskon"),
+                                  label: const Text('Diskon'),
                                   icon: const Icon(Icons.discount),
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
                                 child: FilledButton.icon(
                                   style: FilledButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   ),
                                   onPressed: () {},
-                                  label: Text("Batal"),
+                                  label: const Text('Batal'),
                                   icon: const Icon(Icons.cancel),
                                 ),
                               ),
                             ],
                           ),
-                          PayButton(),
+                          const PayButton(),
                         ],
                       ),
                     ),
@@ -187,11 +185,11 @@ class SearchProductInput extends ConsumerWidget {
     return TextField(
       onChanged: (v) {
         _debouncer.debounce(
-          onDebounce: () => ref.read(searchProductNotifierProvider.notifier).setSearch(v),
+          onDebounce: () => ref.read(cartSelectionManagerProvider.notifier).setSearch(v),
         );
       },
       decoration: InputDecoration(
-        hintText: "Cari Produk",
+        hintText: 'Cari Produk',
         constraints: const BoxConstraints(maxHeight: 40),
         contentPadding: const EdgeInsets.all(0),
         prefixIcon: Icon(
@@ -208,14 +206,17 @@ class SearchProductInput extends ConsumerWidget {
 class AddCustomAmountButton extends ConsumerWidget {
   const AddCustomAmountButton({super.key});
 
+  ({int pax, String saleMode, bool test}) test() {
+    return (pax: 1, saleMode: 'test', test: true);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ts = ref.watch(searchProductNotifierProvider);
     return ThemedButton(
       onPressed: () {},
       size: ButtonSize.large,
       icon: const Icon(Icons.add),
-      text: Text('Custom Amount $ts'),
+      text: const Text('Custom Amount'),
       variant: ButtonVariant.ghost,
     );
   }
@@ -227,13 +228,13 @@ class AddCustomerButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(left: 2.0),
+      padding: const EdgeInsets.only(left: 2),
       child: ThemedButton(
         size: ButtonSize.large,
         variant: ButtonVariant.outline,
         onPressed: () {},
         icon: const Icon(Icons.person_add),
-        text: Text('Pelanggan'),
+        text: const Text('Pelanggan'),
       ),
     );
   }
@@ -245,7 +246,7 @@ class OrderModeInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartNotifierProvider);
-    final buttonText = "${cart.saleMode.name} (${cart.pax} Pax)";
+    final buttonText = '${cart.saleMode.name} (${cart.pax} Pax)';
 
     return ThemedButton(
       size: ButtonSize.large,
@@ -266,145 +267,7 @@ class PayButton extends ConsumerWidget {
         fixedSize: const Size.fromWidth(double.infinity),
       ),
       onPressed: () {},
-      child: Text("Bayar  |  Rp. 10.000"),
-    );
-  }
-}
-
-class ProductList extends ConsumerWidget {
-  const ProductList({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final search = ref.watch(searchProductNotifierProvider);
-    final category = ref.watch(categoryFilterNotifierProvider);
-    var products = ref.watch(productDataProvider).products;
-
-    if (category.id != ProductCategory.kIdAll) {
-      products = products.where((p) => p.categoryId == category.id).toList();
-    }
-
-    if (search.isNotEmpty) {
-      products = products.where((p) => p.name.contains(search)).toList();
-    }
-
-    return GridView.builder(
-      itemCount: products.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 19 / 8,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-      ),
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductCard(product: product);
-      },
-    );
-  }
-}
-
-class ProductCard extends ConsumerWidget {
-  const ProductCard({super.key, required this.product});
-  final Product product;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        side: const BorderSide(color: Colors.grey, width: 1),
-      ),
-      onPressed: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 4,
-        children: [
-          Text(
-            product.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          Text(
-            Formatter.toIdr.format(product.price),
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class OrderItemList extends ConsumerWidget {
-  const OrderItemList({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
-      physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: 10,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      separatorBuilder: (context, index) => SizedBox(
-        height: 10,
-      ),
-      itemBuilder: (context, index) {
-        return OrderItemCard();
-      },
-    );
-  }
-}
-
-class OrderItemCard extends ConsumerWidget {
-  const OrderItemCard({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      spacing: 4,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 32,
-          child: Text("100"),
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Nama produk",
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "Variant",
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Text(
-                "Note",
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
-        ),
-        IconButton(onPressed: () {}, icon: Icon(Icons.clear)),
-      ],
+      child: const Text('Bayar  |  Rp. 10.000'),
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ikki_pos_flutter/data/product/product_model.dart';
-import 'package:ikki_pos_flutter/data/product/product_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'product.model.dart';
+import 'product_repo.dart';
 
 part 'product_provider.freezed.dart';
 part 'product_provider.g.dart';
@@ -21,7 +22,7 @@ class ProductData extends _$ProductData {
   @override
   ProductDataState build() {
     unawaited(load());
-    return ProductDataState(
+    return const ProductDataState(
       categories: [],
       products: [],
     );
@@ -37,7 +38,7 @@ class ProductData extends _$ProductData {
       ProductCategory.kIdFavorite: 0,
     };
 
-    for (var product in products) {
+    for (final product in products) {
       cc.update(
         product.categoryId,
         (o) => o + 1,

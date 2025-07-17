@@ -1,28 +1,28 @@
 import 'dart:convert';
 
-import 'package:ikki_pos_flutter/core/db/shared_prefs.dart';
-import 'package:ikki_pos_flutter/core/network/api_client.dart';
-import 'package:ikki_pos_flutter/data/outlet/outlet_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/db/shared_prefs.dart';
+import '../../core/network/api_client.dart';
+import 'outlet.model.dart';
 
 part 'outlet_repo.g.dart';
 
 @riverpod
-OutletRepo outletRepo(ref) {
+OutletRepo outletRepo(Ref ref) {
   final api = ref.watch(apiClientProvider);
   final prefs = ref.watch(sharedPrefsProvider);
   return OutletRepo(api: api, sharedPrefs: prefs);
 }
 
 class OutletRepo {
+  OutletRepo({required this.api, required this.sharedPrefs});
   final ApiClient api;
   final SharedPreferences sharedPrefs;
 
-  OutletRepo({required this.api, required this.sharedPrefs});
-
   Future<OutletModel> getRemote() async {
-    OutletModel outlet = OutletModel.getMock();
+    final outlet = OutletModel.getMock();
     await saveState(OutletState(outlet: outlet));
     return outlet;
   }
@@ -30,11 +30,11 @@ class OutletRepo {
   Future<OutletState?> getState() async {
     final state = sharedPrefs.getString(SharedPrefsKeys.outlet.key);
     if (state == null) {
-      OutletModel outlet = await getRemote();
+      final outlet = await getRemote();
       return OutletState(outlet: outlet);
     }
 
-    return OutletState.fromJson(jsonDecode(state));
+    return OutletState.fromJson(jsonDecode(state) as Map<String, dynamic>);
   }
 
   Future<bool> saveState(OutletState state) async {

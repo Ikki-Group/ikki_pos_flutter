@@ -1,21 +1,16 @@
 enum IkkiRouter {
-  widgetsbook(path: "/widgetsbook"),
+  widgetsbook,
 
-  splash(path: "/splash"),
-  authDevice(path: "/auth-device"),
+  splash,
+  authDevice,
 
-  userSelect(path: "/user-select"),
+  userSelect,
 
   // Home
-  home(path: "/home"),
-  history(path: "/history"),
+  home,
+  history,
 
   // Cart
-  cartSelection(path: "/cart-selection"),
-  cartPayment(path: "/cart-payment")
-  //
-  ;
-
-  const IkkiRouter({required this.path});
-  final String path;
+  cartSelection,
+  cartPayment,
 }

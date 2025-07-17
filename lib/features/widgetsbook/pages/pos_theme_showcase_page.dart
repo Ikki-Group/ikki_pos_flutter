@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
-import 'package:ikki_pos_flutter/widgets/ui/button_variants.dart';
+
+import '../../../core/config/pos_theme.dart';
+import '../../../widgets/ui/button_variants.dart';
 
 // Import your POSTheme class here
 // import 'pos_theme.dart';
@@ -13,10 +14,9 @@ class POSThemeShowcasePage extends StatefulWidget {
 }
 
 class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
-  final bool _isDarkMode = false;
   String _selectedCategory = 'Minuman';
   bool _switchValue = true;
-  double _sliderValue = 50.0;
+  double _sliderValue = 50;
   String _searchText = '';
 
   final List<String> categories = ['Minuman', 'Makanan', 'Snack', 'Dessert'];
@@ -25,19 +25,19 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('POS Theme Showcase'),
+        title: const Text('POS Theme Showcase'),
         actions: [
           IconButton(
-            icon: Icon(Icons.palette),
+            icon: const Icon(Icons.palette),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {},
           ),
           Container(
-            margin: EdgeInsets.only(right: 16),
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            margin: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(12),
@@ -53,8 +53,8 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-                SizedBox(width: 6),
-                Text(
+                const SizedBox(width: 6),
+                const Text(
                   'Online',
                   style: TextStyle(
                     color: Colors.white,
@@ -68,11 +68,11 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ButtonExamples(),
+            const ButtonExamples(),
 
             // Typography Section
             _buildSection(
@@ -81,42 +81,42 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Display Large', style: Theme.of(context).textTheme.displayLarge),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Display Medium', style: Theme.of(context).textTheme.displayMedium),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Display Small', style: Theme.of(context).textTheme.displaySmall),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Headline Large', style: Theme.of(context).textTheme.headlineLarge),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Headline Medium', style: Theme.of(context).textTheme.headlineMedium),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Headline Small', style: Theme.of(context).textTheme.headlineSmall),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Title Large', style: Theme.of(context).textTheme.titleLarge),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Title Medium', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Title Small', style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     'Body Large - Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Body Medium - Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Body Small - Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text('Label Large', style: Theme.of(context).textTheme.labelLarge),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Label Medium', style: Theme.of(context).textTheme.labelMedium),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Label Small', style: Theme.of(context).textTheme.labelSmall),
                 ],
               ),
@@ -125,7 +125,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
             // Custom Text Styles
             _buildSection(
               'Custom POS Text Styles',
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Header Title', style: POSTextStyles.headerTitle),
@@ -151,90 +151,90 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                 children: [
                   // Elevated Buttons
                   Text('Elevated Buttons', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: [
                       ElevatedButton(
                         onPressed: () {},
-                        child: Text('Primary Button'),
+                        child: const Text('Primary Button'),
                       ),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.add),
-                        label: Text('Add Item'),
+                        icon: const Icon(Icons.add),
+                        label: const Text('Add Item'),
                       ),
-                      ElevatedButton(
+                      const ElevatedButton(
                         onPressed: null,
                         child: Text('Disabled'),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
                   // Outlined Buttons
                   Text('Outlined Buttons', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: [
                       OutlinedButton(
                         onPressed: () {},
-                        child: Text('Secondary Button'),
+                        child: const Text('Secondary Button'),
                       ),
                       OutlinedButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.edit),
-                        label: Text('Edit'),
+                        icon: const Icon(Icons.edit),
+                        label: const Text('Edit'),
                       ),
-                      OutlinedButton(
+                      const OutlinedButton(
                         onPressed: null,
                         child: Text('Disabled'),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
                   // Text Buttons
                   Text('Text Buttons', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: [
                       TextButton(
                         onPressed: () {},
-                        child: Text('Text Button'),
+                        child: const Text('Text Button'),
                       ),
                       TextButton.icon(
                         onPressed: () {},
-                        icon: Icon(Icons.delete),
-                        label: Text('Delete'),
+                        icon: const Icon(Icons.delete),
+                        label: const Text('Delete'),
                       ),
-                      TextButton(
+                      const TextButton(
                         onPressed: null,
                         child: Text('Disabled'),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
                   // Floating Action Button
                   Text('Floating Action Button', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       FloatingActionButton(
                         onPressed: () {},
-                        child: Icon(Icons.add),
+                        child: const Icon(Icons.add),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       FloatingActionButton.extended(
                         onPressed: () {},
-                        icon: Icon(Icons.shopping_cart),
-                        label: Text('Checkout'),
+                        icon: const Icon(Icons.shopping_cart),
+                        label: const Text('Checkout'),
                       ),
                     ],
                   ),
@@ -250,12 +250,12 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                   // Basic Card
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Basic Card', style: Theme.of(context).textTheme.titleMedium),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
                             'This is a basic card with default styling.',
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -264,12 +264,12 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Product Card
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Row(
                         children: [
                           Container(
@@ -285,8 +285,8 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                               size: 32,
                             ),
                           ),
-                          SizedBox(width: 16),
-                          Expanded(
+                          const SizedBox(width: 16),
+                          const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -300,27 +300,27 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                           ),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text('Add'),
+                            child: const Text('Add'),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Transaction Card
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Order #001', style: POSTextStyles.cardTitle),
+                              const Text('Order #001', style: POSTextStyles.cardTitle),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.tertiaryContainer,
                                   borderRadius: BorderRadius.circular(12),
@@ -336,14 +336,14 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
-                          Text('Dine In - 2 items', style: POSTextStyles.cardSubtitle),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
+                          const Text('Dine In - 2 items', style: POSTextStyles.cardSubtitle),
+                          const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Total:', style: Theme.of(context).textTheme.bodyMedium),
-                              Text('Rp 35.000', style: POSTextStyles.priceText),
+                              const Text('Rp 35.000', style: POSTextStyles.priceText),
                             ],
                           ),
                         ],
@@ -361,7 +361,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                 children: [
                   // Text Fields
                   TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Search Product',
                       hintText: 'Enter product name...',
                       prefixIcon: Icon(Icons.search),
@@ -372,24 +372,24 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Customer Name',
                       hintText: 'Enter customer name...',
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: const Icon(Icons.person),
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.clear),
+                        icon: const Icon(Icons.clear),
                         onPressed: () {},
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Dropdown
                   DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Payment Method',
                       prefixIcon: Icon(Icons.payment),
                     ),
@@ -403,11 +403,11 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                         .toList(),
                     onChanged: (value) {},
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Switch
                   SwitchListTile(
-                    title: Text('Include Tax'),
+                    title: const Text('Include Tax'),
                     value: _switchValue,
                     onChanged: (value) {
                       setState(() {
@@ -421,7 +421,6 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                     title: Text('Discount (${_sliderValue.round()}%)'),
                     subtitle: Slider(
                       value: _sliderValue,
-                      min: 0,
                       max: 100,
                       divisions: 10,
                       label: '${_sliderValue.round()}%',
@@ -443,7 +442,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Category Selection', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -461,52 +460,50 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                       );
                     }).toList(),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   Text('Filter Chips', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       FilterChip(
-                        label: Text('Available'),
+                        label: const Text('Available'),
                         selected: true,
                         onSelected: (selected) {},
                       ),
                       FilterChip(
-                        label: Text('Promotions'),
-                        selected: false,
+                        label: const Text('Promotions'),
                         onSelected: (selected) {},
                       ),
                       FilterChip(
-                        label: Text('New Items'),
-                        selected: false,
+                        label: const Text('New Items'),
                         onSelected: (selected) {},
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   Text('Action Chips', style: Theme.of(context).textTheme.titleMedium),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       ActionChip(
-                        label: Text('Add to Cart'),
-                        avatar: Icon(Icons.add_shopping_cart, size: 18),
+                        label: const Text('Add to Cart'),
+                        avatar: const Icon(Icons.add_shopping_cart, size: 18),
                         onPressed: () {},
                       ),
                       ActionChip(
-                        label: Text('Quick Sale'),
-                        avatar: Icon(Icons.flash_on, size: 18),
+                        label: const Text('Quick Sale'),
+                        avatar: const Icon(Icons.flash_on, size: 18),
                         onPressed: () {},
                       ),
                       ActionChip(
-                        label: Text('Print Receipt'),
-                        avatar: Icon(Icons.print, size: 18),
+                        label: const Text('Print Receipt'),
+                        avatar: const Icon(Icons.print, size: 18),
                         onPressed: () {},
                       ),
                     ],
@@ -529,7 +526,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                       _buildStatusIndicator('Info', Colors.blue, Icons.info),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Progress Indicators
                   Row(
@@ -537,18 +534,18 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                     children: [
                       Column(
                         children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 8),
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 8),
                           Text('Loading', style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
                       Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 100,
                             child: LinearProgressIndicator(value: 0.7),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text('70%', style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
@@ -567,26 +564,26 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Icon(Icons.receipt),
-                          title: Text('Transaction History'),
-                          subtitle: Text('View all transactions'),
-                          trailing: Icon(Icons.arrow_forward_ios),
+                          leading: const Icon(Icons.receipt),
+                          title: const Text('Transaction History'),
+                          subtitle: const Text('View all transactions'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {},
                         ),
-                        Divider(height: 1),
+                        const Divider(height: 1),
                         ListTile(
-                          leading: Icon(Icons.inventory),
-                          title: Text('Inventory'),
-                          subtitle: Text('Manage products'),
-                          trailing: Icon(Icons.arrow_forward_ios),
+                          leading: const Icon(Icons.inventory),
+                          title: const Text('Inventory'),
+                          subtitle: const Text('Manage products'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {},
                         ),
-                        Divider(height: 1),
+                        const Divider(height: 1),
                         ListTile(
-                          leading: Icon(Icons.analytics),
-                          title: Text('Reports'),
-                          subtitle: Text('Sales analytics'),
-                          trailing: Icon(Icons.arrow_forward_ios),
+                          leading: const Icon(Icons.analytics),
+                          title: const Text('Reports'),
+                          subtitle: const Text('Sales analytics'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {},
                         ),
                       ],
@@ -613,7 +610,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
 
   Widget _buildSection(String title, Widget content) {
     return Container(
-      margin: EdgeInsets.only(bottom: 32),
+      margin: const EdgeInsets.only(bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -623,7 +620,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           content,
         ],
       ),
@@ -634,14 +631,14 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: color, size: 24),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(label, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
@@ -655,13 +652,13 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
           {'name': 'Secondary', 'color': Theme.of(context).colorScheme.secondary},
           {'name': 'Tertiary', 'color': Theme.of(context).colorScheme.tertiary},
         ]),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         _buildColorRow('Surface Colors', [
           {'name': 'Surface', 'color': Theme.of(context).colorScheme.surface},
           {'name': 'Background', 'color': Theme.of(context).colorScheme.surface},
           {'name': 'Card', 'color': Theme.of(context).cardColor},
         ]),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         _buildColorRow('Status Colors', [
           {'name': 'Success', 'color': Colors.green},
           {'name': 'Warning', 'color': Colors.orange},
@@ -676,25 +673,25 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: Theme.of(context).textTheme.titleMedium),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           children: colors.map((colorData) {
             return Expanded(
               child: Container(
-                margin: EdgeInsets.only(right: 8),
+                margin: const EdgeInsets.only(right: 8),
                 child: Column(
                   children: [
                     Container(
                       height: 60,
                       decoration: BoxDecoration(
-                        color: colorData['color'],
+                        color: colorData['color'] as Color,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey.withOpacity(0.3)),
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      colorData['name'],
+                      colorData['name'] as String,
                       style: Theme.of(context).textTheme.bodySmall,
                       textAlign: TextAlign.center,
                     ),
