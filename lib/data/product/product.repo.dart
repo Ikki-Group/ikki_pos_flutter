@@ -14,7 +14,7 @@ part 'product.repo.g.dart';
 
 const jsonPath = 'assets/mock/product.json';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ProductRepo productRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   final sp = ref.watch(sharedPrefsProvider);
@@ -60,7 +60,7 @@ class ProductRepo {
 
     final state = ProductState(
       products: res.products,
-      categories: res.categories
+      categories: [...ProductCategory.kCustomCategories, ...res.categories]
           .map(
             (category) => category.copyWith(
               productCount: cc[category.id] ?? 0,

@@ -12,7 +12,7 @@ extension OutletX on OutletModel {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Outlet extends _$Outlet {
   @override
   FutureOr<OutletModel> build() {

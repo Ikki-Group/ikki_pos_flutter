@@ -6,4 +6,10 @@ abstract class Formatter {
     symbol: 'Rp ',
     decimalDigits: 0,
   );
+
+  static NumberFormat toIdrNoSymbol = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: '',
+    decimalDigits: 0,
+  );
 }

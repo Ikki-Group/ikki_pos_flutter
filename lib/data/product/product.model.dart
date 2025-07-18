@@ -50,7 +50,7 @@ sealed class ProductCategory with _$ProductCategory {
   static const kIdAll = 'all';
   static const kIdFavorite = 'favorite';
 
-  static const kCustomCategories = <ProductCategory>[
+  static const List<ProductCategory> kCustomCategories = <ProductCategory>[
     ProductCategory(id: kIdAll, name: 'All', outletId: ''),
     ProductCategory(id: kIdFavorite, name: 'Favorite', outletId: ''),
   ];

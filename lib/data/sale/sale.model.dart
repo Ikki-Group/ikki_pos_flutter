@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'sale_model.freezed.dart';
-part 'sale_model.g.dart';
+part 'sale.model.freezed.dart';
+part 'sale.model.g.dart';
 
 @freezed
 sealed class SaleMode with _$SaleMode {

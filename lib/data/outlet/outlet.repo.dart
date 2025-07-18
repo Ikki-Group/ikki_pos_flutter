@@ -11,7 +11,7 @@ import 'outlet.model.dart';
 
 part 'outlet.repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 OutletRepo outletRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   final sp = ref.watch(sharedPrefsProvider);

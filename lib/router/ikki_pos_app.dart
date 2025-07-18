@@ -15,6 +15,7 @@ class IkkiPosApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       theme: POSTheme.lightTheme,
+      // theme: AppThemeFlex.light,
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
     );

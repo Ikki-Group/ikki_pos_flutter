@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../sale/sale_model.dart';
+import '../sale/sale.model.dart';
 
-part 'cart_model.freezed.dart';
+part 'cart.model.freezed.dart';
 
 @freezed
 sealed class Cart with _$Cart {

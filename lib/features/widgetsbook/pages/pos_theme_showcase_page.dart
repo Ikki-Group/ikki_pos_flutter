@@ -17,7 +17,6 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
   String _selectedCategory = 'Minuman';
   bool _switchValue = true;
   double _sliderValue = 50;
-  String _searchText = '';
 
   final List<String> categories = ['Minuman', 'Makanan', 'Snack', 'Dessert'];
 
@@ -366,11 +365,7 @@ class POSThemeShowcasePageState extends State<POSThemeShowcasePage> {
                       hintText: 'Enter product name...',
                       prefixIcon: Icon(Icons.search),
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchText = value;
-                      });
-                    },
+                    onChanged: (value) {},
                   ),
                   const SizedBox(height: 16),
 

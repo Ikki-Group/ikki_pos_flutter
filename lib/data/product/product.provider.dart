@@ -5,7 +5,7 @@ import 'product.repo.dart';
 
 part 'product.provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<ProductState> product(Ref ref) async {
   return ref.watch(productRepoProvider).getLocal();
 }

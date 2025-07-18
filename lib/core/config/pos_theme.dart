@@ -59,6 +59,8 @@ abstract class POSTheme {
       // Basic Theme Setup
       useMaterial3: true,
       brightness: Brightness.light,
+      // primarySwatch: Colors.blue,
+      // colorSchemeSeed: primaryBlue,
 
       // Color Scheme
       colorScheme: const ColorScheme(

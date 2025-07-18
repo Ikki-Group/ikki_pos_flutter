@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/sale/sale_model.dart';
+import '../../data/cart/cart.provider.dart';
+import '../../data/sale/sale.model.dart';
 import '../../router/ikki_router.dart';
 import '../ui/button_variants.dart';
 import '../ui/ikki_dialog.dart';
@@ -39,9 +40,11 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   void initState() {
     super.initState();
 
+    final cart = ref.read(cartStateProvider);
+
     _saleModes = SaleMode.values;
-    _selectedSaleMode = _saleModes[0];
-    _pax = 1;
+    _selectedSaleMode = cart.saleMode.id.isNotEmpty ? cart.saleMode : _saleModes[0];
+    _pax = cart.pax;
     _scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -76,18 +79,22 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   }
 
   Future<void> _onProcessPressed() async {
-    context.goNamed(IkkiRouter.cart.name);
-    // final cart = ref.read(cartNotifierProvider.notifier);
-    // await cart.newCart(_pax, _selectedSaleMode);
-
-    // if (!mounted) return;
-
-    // final routeName = GoRouter.of(context).state.name;
-    // if (routeName == IkkiRouter.cartSelection.name) {
-    //   _onClose();
-    // } else {
-    //   context.goNamed(IkkiRouter.cartSelection.name);
-    // }
+    final routeName = GoRouter.of(context).state.name;
+    if (routeName == IkkiRouter.cart.name) {
+      ref
+          .read(cartStateProvider.notifier)
+          .setState(
+            (old) => old.copyWith(
+              pax: _pax,
+              saleMode: _selectedSaleMode,
+            ),
+          );
+      _onClose();
+    } else {
+      await ref.read(cartStateProvider.notifier).newCart(_pax, _selectedSaleMode);
+      if (!mounted) return;
+      context.goNamed(IkkiRouter.cart.name);
+    }
   }
 
   @override
@@ -129,7 +136,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
                           return AspectRatio(
                             aspectRatio: 1,
                             child: ChoiceChip.elevated(
-                              padding: const EdgeInsets.all(0),
+                              padding: EdgeInsets.zero,
                               label: SizedBox(
                                 width: 50,
                                 height: 50,

@@ -4,8 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/pages/auth_device_page.dart';
 import '../features/cart/pages/cart_index_page.dart';
-import '../features/cart/pages/cart_payment_rnd_page.dart';
 import '../features/cart/pages/cart_rnd.dart';
+import '../features/pos/pages/pos_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/sync/pages/sync_global_page.dart';
 import '../features/user/pages/user_select_page.dart';
@@ -51,8 +51,8 @@ GoRouter goRouter(Ref ref) {
           GoRoute(
             path: '/pos',
             name: IkkiRouter.pos.name,
-            // builder: (context, state) => const PosPage(),
-            builder: (context, state) => const PaymentScreen(),
+            builder: (context, state) => const PosPage(),
+            // builder: (context, state) => const PaymentScreen(),
           ),
         ],
       ),

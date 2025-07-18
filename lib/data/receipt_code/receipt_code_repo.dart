@@ -17,7 +17,7 @@ class ReceiptCodeRepo {
 
   Future<String> getCode(String sessionId) async {
     final queue = getLocalQueue();
-    return '$sessionId/$queue';
+    return 'POS-Test/$queue';
   }
 
   Future<bool> commit(String code) async {

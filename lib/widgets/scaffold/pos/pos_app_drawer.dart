@@ -10,7 +10,7 @@ class PosAppDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final location = GoRouterState.of(context).fullPath;
+    final pathName = GoRouter.of(context).state.name;
 
     return Drawer(
       child: Column(
@@ -43,9 +43,9 @@ class PosAppDrawer extends ConsumerWidget {
                     context,
                     item: item,
                     index: item.index,
-                    isSelected: item.path == location,
+                    isSelected: item.route.name == pathName,
                     onTap: () {
-                      context.go(item.path);
+                      context.goNamed(item.route.name);
                       Navigator.pop(context);
                     },
                   ),
@@ -154,21 +154,21 @@ class _UserInfo extends ConsumerWidget {
 }
 
 enum SGDrawerItem {
-  home(name: 'Mulai Penjualan', icon: Icons.point_of_sale, path: '/home'),
-  sales(name: 'Riwayat Penjualan', icon: Icons.history, path: '/history'),
-  finance(name: 'Laporan Keuangan', icon: Icons.attach_money, path: '/finance'),
-  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, path: '/shift'),
-  input(name: 'Input Pembukuan', icon: Icons.attach_money, path: '/input'),
-  printers(name: 'Printer', icon: Icons.print, path: '/printers'),
-  settings(name: 'Pengaturan', icon: Icons.settings, path: '/settings');
+  pos(name: 'Mulai Penjualan', icon: Icons.point_of_sale, route: IkkiRouter.pos),
+  // sales(name: 'Riwayat Penjualan', icon: Icons.history, route: IkkiRouter.cart),
+  // finance(name: 'Laporan Keuangan', icon: Icons.attach_money, route: IkkiRouter.cart),
+  // shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: IkkiRouter.cart),
+  // input(name: 'Input Pembukuan', icon: Icons.attach_money, route: IkkiRouter.cart),
+  printers(name: 'Printer', icon: Icons.print, route: IkkiRouter.cart),
+  settings(name: 'Pengaturan', icon: Icons.settings, route: IkkiRouter.cart);
 
   const SGDrawerItem({
     required this.name,
     required this.icon,
-    required this.path,
+    required this.route,
   });
 
   final String name;
   final IconData icon;
-  final String path;
+  final IkkiRouter route;
 }
