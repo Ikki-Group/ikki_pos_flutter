@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/core/config/pos_theme.dart';
-import 'package:ikki_pos_flutter/data/product/product_provider.dart';
-import 'package:ikki_pos_flutter/features/cart/manager/cart_selection_manager.dart';
+
+import '../../../core/config/pos_theme.dart';
+import '../../../data/product/product_provider.dart';
+import '../manager/cart_selection_manager.dart';
 
 const _kChipHeight = 45.0;
 
@@ -21,12 +22,12 @@ class CartCategory extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final category = categories[index];
-          final label = "${category.name} (${category.productCount})";
+          final label = '${category.name} (${category.productCount})';
           final selected = category.id == selectedId;
 
           return ChoiceChip.elevated(
-            side: const BorderSide(color: POSTheme.borderDark, width: 1),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+            side: const BorderSide(color: POSTheme.borderDark),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             label: SizedBox(
               height: _kChipHeight,
               child: Center(

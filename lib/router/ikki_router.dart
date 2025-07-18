@@ -15,6 +15,7 @@ enum IkkiRouter {
   history,
 
   // Cart
-  cartSelection,
+  cart,
+  cartRnd,
   cartPayment,
 }

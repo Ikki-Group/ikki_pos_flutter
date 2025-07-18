@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ikki_pos_flutter/data/cart/cart_model.dart';
-import 'package:ikki_pos_flutter/data/cart/cart_notifier.dart';
+
+import '../../../data/cart/cart_model.dart';
+import '../../../data/cart/cart_notifier.dart';
 
 class CartOrderList extends ConsumerWidget {
   const CartOrderList({super.key});
@@ -10,11 +11,11 @@ class CartOrderList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(cartNotifierProvider.select((s) => s.items));
     return ListView.separated(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: items.length,
       padding: const EdgeInsets.symmetric(vertical: 16),
-      separatorBuilder: (context, index) => SizedBox(
+      separatorBuilder: (context, index) => const SizedBox(
         height: 10,
       ),
       itemBuilder: (context, index) {
@@ -39,17 +40,16 @@ class _CartOrderItem extends ConsumerWidget {
       children: [
         SizedBox(
           width: 32,
-          child: Center(child: Text("${item.qty}")),
+          child: Center(child: Text('${item.qty}')),
         ),
         Expanded(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 item.product.name,
                 textAlign: TextAlign.start,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
@@ -70,7 +70,7 @@ class _CartOrderItem extends ConsumerWidget {
             ],
           ),
         ),
-        IconButton(onPressed: () {}, icon: Icon(Icons.clear)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.clear)),
       ],
     );
   }

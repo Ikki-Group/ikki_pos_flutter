@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../data/sale/sale_model.dart';
+import '../../router/ikki_router.dart';
 import '../ui/button_variants.dart';
 import '../ui/ikki_dialog.dart';
 
@@ -74,6 +76,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   }
 
   Future<void> _onProcessPressed() async {
+    context.goNamed(IkkiRouter.cart.name);
     // final cart = ref.read(cartNotifierProvider.notifier);
     // await cart.newCart(_pax, _selectedSaleMode);
 
