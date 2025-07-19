@@ -5,6 +5,7 @@ import '../outlet/outlet.provider.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale.model.dart';
+import 'cart.extension.dart';
 import 'cart.model.dart';
 
 part 'cart.provider.g.dart';
@@ -46,13 +47,7 @@ class CartState extends _$CartState {
 
     if (existingItemIndex != -1 && items[existingItemIndex].note.isEmpty) {
       final item = items[existingItemIndex];
-      final qty = item.qty + 1;
-      // Update quantity if item exists and has no note
-      final updatedItem = item.copyWith(
-        qty: item.qty + 1,
-        gross: qty * item.price,
-        net: qty * item.price,
-      );
+      final updatedItem = item.changeQty(1);
 
       state = state.copyWith(
         items: [

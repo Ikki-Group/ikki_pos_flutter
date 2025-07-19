@@ -4,8 +4,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/pages/auth_device_page.dart';
 import '../features/cart/pages/cart_index_page.dart';
+import '../features/cart/pages/cart_payment_page.dart';
+import '../features/cart/pages/cart_payment_rnd_two.dart';
+import '../features/cart/pages/cart_payment_success.dart';
 import '../features/cart/pages/cart_rnd.dart';
 import '../features/pos/pages/pos_page.dart';
+import '../features/settings/pages/setting_index_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/sync/pages/sync_global_page.dart';
 import '../features/user/pages/user_select_page.dart';
@@ -52,7 +56,11 @@ GoRouter goRouter(Ref ref) {
             path: '/pos',
             name: IkkiRouter.pos.name,
             builder: (context, state) => const PosPage(),
-            // builder: (context, state) => const PaymentScreen(),
+          ),
+          GoRoute(
+            path: '/settings',
+            name: IkkiRouter.settings.name,
+            builder: (context, state) => const SettingIndexPage(),
           ),
         ],
       ),
@@ -68,102 +76,30 @@ GoRouter goRouter(Ref ref) {
             builder: (context, state) => const CartIndexPage(),
           ),
           GoRoute(
+            path: '/cart-payment',
+            name: IkkiRouter.cartPayment.name,
+            builder: (context, state) => const CartPaymentPage(),
+          ),
+          GoRoute(
+            path: '/cart-payment-rnd-two',
+            name: IkkiRouter.cartRndTwo.name,
+            builder: (context, state) => const CartPaymentRndTwo(
+              orderItems: [],
+              subtotal: 1000,
+            ),
+          ),
+          GoRoute(
+            path: '/cart-payment-success',
+            name: IkkiRouter.cartPaymentSuccess.name,
+            builder: (context, state) => const CartPaymentSuccess(),
+          ),
+          GoRoute(
             path: '/cart_rnd',
             name: IkkiRouter.cartRnd.name,
             builder: (context, state) => const CartRnd(),
           ),
         ],
       ),
-
-      // ShellRoute(
-      //   builder: (BuildContext context, GoRouterState state, Widget child) {
-      //     return HomeScaffold(child: child);
-      //   },
-      //   redirect: (context, state) {
-      //     final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
-      //     if (!hasOutlet) {
-      //       throw Exception('outlet is null');
-      //     }
-
-      //     final hasUser = ref.read(userNotifierProvider) != null;
-      //     if (!hasUser) {
-      //       return IkkiRouter.userSelect.path;
-      //     }
-
-      //     return null;
-      //   },
-      //   routes: <RouteBase>[
-      //     GoRoute(
-      //       path: IkkiRouter.home.path,
-      //       name: IkkiRouter.home.name,
-      //       builder: (context, state) {
-      //         return const HomePage();
-      //       },
-      //     ),
-      //     GoRoute(
-      //       path: IkkiRouter.history.path,
-      //       name: IkkiRouter.history.name,
-      //       builder: (context, state) {
-      //         return const Center(child: Text('History'));
-      //       },
-      //     ),
-      //   ],
-      // ),
-
-      // ShellRoute(
-      //   builder: (BuildContext context, GoRouterState state, Widget child) {
-      //     return KeyboardAutoDismiss(
-      //       scaffold: Scaffold(
-      //         body: AnnotatedRegion<SystemUiOverlayStyle>(
-      //           value: SystemUiOverlayStyle.dark,
-      //           child: child,
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   redirect: (context, state) {
-      //     final hasOutlet = ref.read(outletNotifierProvider).outlet != null;
-      //     if (!hasOutlet) {
-      //       throw Exception('outlet is null');
-      //     }
-
-      //     final hasUser = ref.read(userNotifierProvider) != null;
-      //     if (!hasUser) {
-      //       return IkkiRouter.userSelect.path;
-      //     }
-
-      //     return null;
-      //   },
-      //   routes: <RouteBase>[
-      //     GoRoute(
-      //       path: IkkiRouter.cartSelection.path,
-      //       name: IkkiRouter.cartSelection.name,
-      //       builder: (context, state) {
-      //         return const CartSelectionPage();
-      //       },
-      //     ),
-      //   ],
-      // ),
-
-      // ShellRoute(
-      //   builder: (BuildContext context, GoRouterState state, Widget child) {
-      //     return Scaffold(
-      //       body: AnnotatedRegion<SystemUiOverlayStyle>(
-      //         value: SystemUiOverlayStyle.dark,
-      //         child: child,
-      //       ),
-      //     );
-      //   },
-      //   routes: <RouteBase>[
-      //     GoRoute(
-      //       path: IkkiRouter.widgetsbook.path,
-      //       name: IkkiRouter.widgetsbook.name,
-      //       builder: (context, state) {
-      //         return const POSThemeShowcasePage();
-      //       },
-      //     ),
-      //   ],
-      // ),
     ],
   );
 
