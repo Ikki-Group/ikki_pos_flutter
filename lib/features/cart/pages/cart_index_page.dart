@@ -10,6 +10,7 @@ import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
 import '../providers/cart_index_provider.dart';
+import '../widgets/cart_product_picker_dialog.dart';
 
 class CartIndexPage extends ConsumerWidget {
   const CartIndexPage({super.key});
@@ -314,18 +315,18 @@ class _ProductSection extends ConsumerWidget {
     }
 
     void onPress(ProductModel product) {
-      ref.read(cartStateProvider.notifier).addProductDirectly(product);
-      // CartProductPickerDialog.show(
-      //   context,
-      //   product: product,
-      //   onConfirm: (product, quantity, note, variant) {
-      //     print('Product: ${product.name}');
-      //     print('Quantity: $quantity');
-      //     print('Note: $note');
-      //     print('Variant: $variant');
-      //     print('Total: Rp ${(product.price * quantity).toStringAsFixed(0)}');
-      //   },
-      // );
+      // ref.read(cartStateProvider.notifier).addProductDirectly(product);
+      CartProductPickerDialog.show(
+        context,
+        product: product,
+        onConfirm: (product, quantity, note, variant) {
+          print('Product: ${product.name}');
+          print('Quantity: $quantity');
+          print('Note: $note');
+          print('Variant: $variant');
+          print('Total: Rp ${(product.price * quantity).toStringAsFixed(0)}');
+        },
+      );
     }
 
     return Expanded(

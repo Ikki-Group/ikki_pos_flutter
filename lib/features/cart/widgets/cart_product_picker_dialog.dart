@@ -309,13 +309,17 @@ class CartProductPickerDialogState extends State<CartProductPickerDialog> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
                       ),
                       child: const Text(
                         'Cancel',
-                        style: TextStyle(
-                          color: Color(0xFF6B7280),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        // style: TextStyle(
+                        //   color: Color(0xFF6B7280),
+                        //   fontWeight: FontWeight.w500,
+                        // ),
                       ),
                     ),
                   ),
@@ -334,11 +338,11 @@ class CartProductPickerDialogState extends State<CartProductPickerDialog> {
                       ),
                       child: const Text(
                         'Add to Cart',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+                        // style: TextStyle(
+                        //   color: Colors.white,
+                        //   fontWeight: FontWeight.w600,
+                        //   fontSize: 16,
+                        // ),
                       ),
                     ),
                   ),

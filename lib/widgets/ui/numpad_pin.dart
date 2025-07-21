@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/theme/pos_theme.dart';
+
 // --- NumpadKey Enum for type-safe key values ---
 enum NumpadKey {
-  digit0("0"),
-  digit1("1"),
-  digit2("2"),
-  digit3("3"),
-  digit4("4"),
-  digit5("5"),
-  digit6("6"),
-  digit7("7"),
-  digit8("8"),
-  digit9("9"),
-  decimal("."),
-  backspace("backspace"),
-  empty("");
+  digit0('0'),
+  digit1('1'),
+  digit2('2'),
+  digit3('3'),
+  digit4('4'),
+  digit5('5'),
+  digit6('6'),
+  digit7('7'),
+  digit8('8'),
+  digit9('9'),
+  decimal('.'),
+  backspace('backspace'),
+  empty('');
 
   const NumpadKey(this.value);
   final String value;
@@ -36,6 +38,16 @@ const List<List<NumpadKey>> _numpadLayout = [
 typedef NumpadKeyPressed = void Function(NumpadKey key);
 
 class NumpadPin extends StatelessWidget {
+  const NumpadPin({
+    super.key,
+    this.onKeyPressed,
+    this.buttonStyle,
+    this.textStyle,
+    this.spacing = 8.0,
+    this.aspectRatio = 1.5,
+    this.enableHapticFeedback = true,
+  });
+
   /// Callback function triggered when a numpad key is pressed
   final NumpadKeyPressed? onKeyPressed;
 
@@ -53,16 +65,6 @@ class NumpadPin extends StatelessWidget {
 
   /// Whether to show haptic feedback on button press
   final bool enableHapticFeedback;
-
-  const NumpadPin({
-    super.key,
-    this.onKeyPressed,
-    this.buttonStyle,
-    this.textStyle,
-    this.spacing = 8.0,
-    this.aspectRatio = 1.5,
-    this.enableHapticFeedback = true,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -89,12 +91,6 @@ class NumpadPin extends StatelessWidget {
 }
 
 class _NumpadButton extends StatelessWidget {
-  final NumpadKey keyType;
-  final VoidCallback onTap;
-  final ButtonStyle? buttonStyle;
-  final TextStyle? textStyle;
-  final bool enableHapticFeedback;
-
   const _NumpadButton({
     required this.keyType,
     required this.onTap,
@@ -102,6 +98,12 @@ class _NumpadButton extends StatelessWidget {
     this.textStyle,
     this.enableHapticFeedback = true,
   });
+
+  final NumpadKey keyType;
+  final VoidCallback onTap;
+  final ButtonStyle? buttonStyle;
+  final TextStyle? textStyle;
+  final bool enableHapticFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -137,12 +139,13 @@ class _NumpadButton extends StatelessWidget {
       style:
           buttonStyle ??
           OutlinedButton.styleFrom(
-            padding: const EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
-            foregroundColor: Theme.of(context).colorScheme.onSurface,
+            foregroundColor: POSTheme.neutral900,
             backgroundColor: Colors.transparent,
+            side: const BorderSide(color: POSTheme.neutral200),
           ),
       onPressed: () {
         // Add haptic feedback for better UX
@@ -161,6 +164,16 @@ class _NumpadButton extends StatelessWidget {
 // ----------------------------------------------------------------------
 
 class PinIndicator extends StatelessWidget {
+  const PinIndicator({
+    required this.pinLength,
+    required this.maxLength,
+    super.key,
+    this.boxSize = 50.0,
+    this.filledColor = Colors.black,
+    this.emptyColor = Colors.transparent,
+    this.borderColor = Colors.grey,
+  });
+
   final int pinLength;
   final int maxLength;
   final double boxSize;
@@ -168,22 +181,12 @@ class PinIndicator extends StatelessWidget {
   final Color emptyColor;
   final Color borderColor;
 
-  const PinIndicator({
-    super.key,
-    required this.pinLength,
-    required this.maxLength,
-    this.boxSize = 50.0,
-    this.filledColor = Colors.black,
-    this.emptyColor = Colors.transparent,
-    this.borderColor = Colors.grey,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(maxLength, (index) {
-        bool isFilled = index < pinLength;
+        final isFilled = index < pinLength;
 
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -194,7 +197,6 @@ class PinIndicator extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
               color: borderColor,
-              width: 1,
             ),
             borderRadius: BorderRadius.circular(14),
             color: emptyColor,
