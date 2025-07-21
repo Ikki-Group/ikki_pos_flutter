@@ -16,13 +16,7 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: preferredSize.height,
       leading: IconButton(
         onPressed: Scaffold.of(context).openDrawer,
-        icon: const Center(
-          child: Icon(
-            Icons.menu_rounded,
-            size: 32,
-            weight: 1,
-          ),
-        ),
+        icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),
       title: const _PosInfo(),
       actions: const [

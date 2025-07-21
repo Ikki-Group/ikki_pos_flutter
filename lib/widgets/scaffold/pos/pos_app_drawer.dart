@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
 import '../../../router/ikki_router.dart';
 
@@ -94,61 +95,60 @@ class PosAppDrawer extends ConsumerWidget {
   }
 }
 
-class _UserInfo extends ConsumerWidget {
+class _UserInfo extends ConsumerStatefulWidget {
   const _UserInfo();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentUserProvider);
+  ConsumerState<_UserInfo> createState() => _UserInfoState();
+}
 
-    if (user == null) {
-      return const SizedBox.shrink();
-    }
+class _UserInfoState extends ConsumerState<_UserInfo> {
+  late UserModel user;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person, color: Color(0xFF003366)),
-            ),
-            const SizedBox(width: 12),
-            Column(
+  @override
+  void initState() {
+    super.initState();
+    user = ref.read(currentUserProvider)!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   user.name,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text(
-                  user.id,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                const Text(
+                  'Kasir',
+                  style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
-          ],
-        ),
-        TextButton(
-          onPressed: () {
-            context.goNamed(IkkiRouter.userSelect.name);
-          },
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
           ),
-          child: const Icon(
-            Icons.logout,
-            color: Colors.white,
-            size: 24,
+          TextButton(
+            onPressed: () => context.goNamed(IkkiRouter.userSelect.name),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              fixedSize: const Size.square(24),
+              minimumSize: Size.zero,
+            ),
+            child: const Icon(Icons.logout, color: Colors.white, size: 24),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
