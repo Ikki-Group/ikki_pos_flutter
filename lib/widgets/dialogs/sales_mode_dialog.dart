@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/theme/pos_theme.dart';
 import '../../data/cart/cart.provider.dart';
 import '../../data/sale/sale.model.dart';
 import '../../router/ikki_router.dart';
 import '../ui/button_variants.dart';
-import '../ui/ikki_dialog.dart';
+import 'ikki_dialog.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
   const SalesModeDialog({super.key});
@@ -14,7 +15,6 @@ class SalesModeDialog extends ConsumerStatefulWidget {
   static void show(BuildContext context) {
     showDialog<void>(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return const SalesModeDialog();
       },
@@ -100,126 +100,95 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   @override
   Widget build(BuildContext context) {
     return IkkiDialog(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 700),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const IkkiDialogTitle(title: 'Mode Penjualan'),
-            const SizedBox(height: 24),
-            Flexible(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text(
-                      'Jumlah Pax',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 50,
-                      child: ListView.separated(
-                        controller: _scrollController,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: 100,
-                        itemBuilder: (context, index) {
-                          final value = index + 1;
-                          final selected = _pax == value;
+      title: 'Mode Penjualan',
+      constraints: const BoxConstraints(maxWidth: 700),
+      mainAxisSize: MainAxisSize.min,
+      footer: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ThemedButton.cancel(
+            onPressed: _onClose,
+          ),
+          const SizedBox(width: 8),
+          ThemedButton.process(
+            onPressed: _onProcessPressed,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Jumlah Pax', style: context.textTheme.labelMedium),
+          const SizedBox(height: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 50),
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: 100,
+              itemBuilder: (context, index) {
+                final value = index + 1;
+                final selected = _pax == value;
 
-                          return AspectRatio(
-                            aspectRatio: 1,
-                            child: ChoiceChip.elevated(
-                              padding: EdgeInsets.zero,
-                              label: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Center(
-                                  child: Text(
-                                    '$value',
-                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                                  ),
-                                ),
-                              ),
-                              selected: selected,
-                              showCheckmark: false,
-                              onSelected: (selected) {
-                                setState(() {
-                                  _pax = value;
-                                });
-                              },
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(width: 8);
-                        },
+                return AspectRatio(
+                  aspectRatio: 1,
+                  child: ChoiceChip.elevated(
+                    padding: EdgeInsets.zero,
+                    label: SizedBox.square(
+                      dimension: 50,
+                      child: Center(
+                        child: Text('$value', style: const TextStyle(fontWeight: FontWeight.w600)),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Mode Penjualan',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 50,
-                      child: ListView.separated(
-                        itemCount: _saleModes.length,
-                        scrollDirection: Axis.horizontal,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(width: 8);
-                        },
-                        itemBuilder: (context, index) {
-                          final saleMode = _saleModes[index];
-                          final isSelected = _selectedSaleMode.id == saleMode.id;
+                    selected: selected,
+                    showCheckmark: false,
+                    onSelected: (selected) {
+                      _pax = value;
+                      setState(() {});
+                    },
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(width: 8);
+              },
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text('Mode Penjualan', style: context.textTheme.labelMedium),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              itemCount: _saleModes.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) {
+                return const SizedBox(width: 8);
+              },
+              itemBuilder: (context, index) {
+                final saleMode = _saleModes[index];
+                final isSelected = _selectedSaleMode.id == saleMode.id;
 
-                          return ChoiceChip.elevated(
-                            padding: const EdgeInsets.all(16),
-                            showCheckmark: false,
-                            selected: isSelected,
-                            onSelected: (selected) {
-                              setState(() {
-                                _selectedSaleMode = saleMode;
-                              });
-                            },
-                            label: Text(
-                              saleMode.name,
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                return ChoiceChip(
+                  padding: const EdgeInsets.all(16),
+                  showCheckmark: false,
+                  selected: isSelected,
+                  onSelected: (selected) {
+                    _selectedSaleMode = saleMode;
+                    setState(() {});
+                  },
+                  label: Text(
+                    saleMode.name,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ThemedButton.cancel(
-                  onPressed: _onClose,
-                ),
-                const SizedBox(width: 8),
-                ThemedButton.process(
-                  onPressed: _onProcessPressed,
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
