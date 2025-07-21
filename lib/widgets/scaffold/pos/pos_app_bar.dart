@@ -47,14 +47,13 @@ class _PosInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: theme.textTheme.headlineMedium?.copyWith(
-            color: theme.colorScheme.onSecondary,
-          ),
+          style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
         ),
+        const SizedBox(height: 4),
         const Row(
-          children: [
+          children: <Widget>[
             _NetInfo(),
-            SizedBox(width: 8),
+            SizedBox(width: 12),
             _ShiftInfo(),
           ],
         ),
@@ -70,11 +69,17 @@ class _NetInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    const color = Color.fromARGB(255, 24, 255, 182);
     return Row(
       children: [
+        const Icon(Icons.wifi_rounded, size: 20, color: color),
+        const SizedBox(width: 4),
         Text(
           'Online',
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -87,11 +92,18 @@ class _ShiftInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    const color = Color.fromARGB(255, 24, 255, 182);
+
     return Row(
       children: [
+        const Icon(Icons.schedule_rounded, size: 20, color: color),
+        const SizedBox(width: 4),
         Text(
           'Open',
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
