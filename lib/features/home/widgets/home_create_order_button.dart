@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/outlet/outlet.provider.dart';
-import '../../../widgets/dialogs/outlet_session_open_dialog.dart';
+import '../../../widgets/dialogs/pos_cash_open.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
 
 class HomeCreateOrderButton extends ConsumerStatefulWidget {
@@ -14,14 +14,13 @@ class HomeCreateOrderButton extends ConsumerStatefulWidget {
 
 class _HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
   Future<void> _onPressed() async {
-    final outlet = ref.read(outletProvider).requireValue;
+    final outlet = await ref.read(outletProvider.future);
+    if (!mounted) return;
 
-    print(outlet.isOpen);
-
-    if (outlet.isOpen) {
-      SalesModeDialog.show(context);
+    if (!outlet.isOpen) {
+      await PosCashOpen.show(context);
     } else {
-      OutletSessionOpenDialog.show(context);
+      SalesModeDialog.show(context);
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:bson/bson.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../user/user.model.dart';
 import 'outlet.model.dart';
 import 'outlet.repo.dart';
 
@@ -19,7 +20,7 @@ class Outlet extends _$Outlet {
     return ref.watch(outletRepoProvider).getLocal();
   }
 
-  Future<bool> open(int cash, String by) async {
+  Future<bool> open(int cash, UserModel user) async {
     var outlet = state.requireValue;
     if (outlet.isOpen) {
       return false;
@@ -30,7 +31,7 @@ class Outlet extends _$Outlet {
         id: ObjectId().toString(),
         open: OutletSessionInfo(
           at: DateTime.now().toIso8601String(),
-          by: by,
+          by: user.id,
           balance: cash,
           note: '',
         ),

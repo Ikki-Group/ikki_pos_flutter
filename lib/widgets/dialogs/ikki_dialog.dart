@@ -3,18 +3,58 @@ import 'package:flutter/material.dart';
 import '../../core/theme/pos_theme.dart';
 
 class IkkiDialog extends StatelessWidget {
-  const IkkiDialog({required this.title, required this.child, this.footer, super.key});
+  const IkkiDialog({
+    required this.child,
+    this.title,
+    this.footer,
+    super.key,
+    this.mainAxisSize = MainAxisSize.max,
+    this.width,
+    this.constraints = const BoxConstraints(maxWidth: 500),
+  });
 
-  final String title;
+  final String? title;
   final Widget? child;
   final Widget? footer;
+  final MainAxisSize mainAxisSize;
+  final double? width;
+  final BoxConstraints? constraints;
 
   @override
   Widget build(BuildContext context) {
+    Widget? header;
+
+    if (title != null && title!.isNotEmpty) {
+      header = Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(color: POSTheme.primaryBlue),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Dialog(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        constraints: const BoxConstraints(maxWidth: 500),
+        width: width ?? MediaQuery.of(context).size.width * 0.9,
+        constraints: constraints,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -29,32 +69,9 @@ class IkkiDialog extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: mainAxisSize,
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(color: POSTheme.cardColor),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            if (header != null) header,
             const SizedBox(height: 8),
             if (child != null)
               Padding(
@@ -63,7 +80,7 @@ class IkkiDialog extends StatelessWidget {
               ),
             if (footer != null)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding: const EdgeInsets.all(16),
                 child: footer,
               ),
           ],

@@ -132,9 +132,9 @@ abstract class POSTheme {
           color: neutral800,
         ),
         bodyMedium: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: neutral700,
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: neutral900,
         ),
         bodySmall: TextStyle(
           fontSize: 12,
@@ -144,18 +144,19 @@ abstract class POSTheme {
 
         // Label styles
         labelLarge: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
           color: neutral700,
         ),
         labelMedium: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: neutral600,
+          fontSize: 15,
+          fontWeight: FontWeight.normal,
+          color: neutral700,
+          letterSpacing: -0.05,
         ),
         labelSmall: TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
           color: neutral500,
         ),
       ),
@@ -169,8 +170,8 @@ abstract class POSTheme {
         surfaceTintColor: secondaryOrange,
         shadowColor: shadowColor,
         titleTextStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
         toolbarHeight: 68,

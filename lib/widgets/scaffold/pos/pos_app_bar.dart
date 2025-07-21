@@ -73,6 +73,7 @@ class _NetInfo extends ConsumerWidget {
           style: theme.textTheme.bodyMedium?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w600,
+            fontSize: 14,
           ),
         ),
       ],
@@ -97,6 +98,7 @@ class _ShiftInfo extends ConsumerWidget {
           style: theme.textTheme.bodyMedium?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w600,
+            fontSize: 14,
           ),
         ),
       ],
