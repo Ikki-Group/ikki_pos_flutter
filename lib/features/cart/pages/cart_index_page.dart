@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/theme/pos_theme.dart';
 import '../../../data/cart/cart.provider.dart';
 import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
@@ -9,20 +10,12 @@ import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
 import '../providers/cart_index_provider.dart';
-import '../widgets/cart_product_picker_dialog.dart';
 
-class CartIndexPage extends ConsumerStatefulWidget {
+class CartIndexPage extends ConsumerWidget {
   const CartIndexPage({super.key});
 
   @override
-  ConsumerState<CartIndexPage> createState() => _CartIndexPageState();
-}
-
-class _CartIndexPageState extends ConsumerState<CartIndexPage> {
-  bool _isDetailExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ColoredBox(
@@ -46,130 +39,21 @@ class _CartIndexPageState extends ConsumerState<CartIndexPage> {
                 ),
               ),
             ),
-            Expanded(
+            const Expanded(
               child: ColoredBox(
                 color: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _SalesModeButton(),
-                      const SizedBox(height: 16),
-                      const _CartItems(),
-                      const SizedBox(height: 16),
-                      // Order Summary
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            _isDetailExpanded = !_isDetailExpanded;
-                          });
-                        },
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 150),
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.grey[200]!),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Items',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                    Text(
-                                      '10',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Subtotal',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                    Text(
-                                      'Rp 10.000',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          IconButton.outlined(
-                            icon: const Icon(Icons.delete_sweep_outlined),
-                            onPressed: () {
-                              ref.read(cartStateProvider.notifier).clearAllItems();
-                            },
-                            style: IconButton.styleFrom(foregroundColor: Colors.red),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextButton.icon(
-                              icon: const Icon(Icons.discount_outlined),
-                              label: const Text('Discount'),
-                              onPressed: () {},
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextButton.icon(
-                              icon: const Icon(Icons.discount_outlined),
-                              label: const Text('Discount'),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton.icon(
-                              icon: const Icon(Icons.discount_outlined),
-                              iconAlignment: IconAlignment.start,
-                              label: const Row(
-                                children: [
-                                  Icon(Icons.discount_outlined),
-                                  SizedBox(width: 8),
-                                  Text('Bayar'),
-                                ],
-                              ),
-                              onPressed: () {
-                                context.goNamed(IkkiRouter.cartRndTwo.name);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                      _SalesModeButton(),
+                      SizedBox(height: 12),
+                      _CartItems(),
+                      SizedBox(height: 12),
+                      _CartSummary(),
+                      SizedBox(height: 12),
+                      _CartAction(),
                     ],
                   ),
                 ),
@@ -198,58 +82,70 @@ class _Header extends ConsumerWidget {
           },
         ),
         const SizedBox(width: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(8),
+        _buildReceiptCode(rc),
+        const Spacer(),
+        _buildCustomerInfo('name', 'email@email.com'),
+      ],
+    );
+  }
+
+  Widget _buildReceiptCode(String rc) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      constraints: const BoxConstraints(maxWidth: 300),
+      decoration: BoxDecoration(
+        color: POSTheme.neutral200,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.receipt, size: 16, color: Colors.grey[600]),
+          const SizedBox(width: 8),
+          Text(
+            'Order ID: $rc',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: POSTheme.neutral600,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          const SizedBox(width: 8),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomerInfo(String name, String email) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 200),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.receipt, size: 16, color: Colors.grey[600]),
-              const SizedBox(width: 8),
               Text(
-                'Order ID: $rc',
+                name,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey.shade800,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+              ),
+              Text(
+                email,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[800],
                 ),
               ),
             ],
           ),
-        ),
-        const Spacer(),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 200),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Rizqy Nugroho',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Text(
-                    '08324872374',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                ],
-              ),
-              Icon(Icons.edit, size: 20, color: Colors.grey[600]),
-            ],
-          ),
-        ),
-      ],
+          const Spacer(),
+          Icon(Icons.edit, size: 20, color: Colors.grey[600]),
+        ],
+      ),
     );
   }
 }
@@ -266,13 +162,20 @@ class _CategoriesSection extends ConsumerWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          for (final category in categories) _buildCategoryItem(category, categoryId == category.id, ref),
+          for (final category in categories)
+            _buildCategoryItem(
+              category,
+              categoryId == category.id,
+              () {
+                ref.read(cartIndexProvider.notifier).setCategory(category.id);
+              },
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryItem(ProductCategory category, bool isSelected, WidgetRef ref) {
+  Widget _buildCategoryItem(ProductCategory category, bool isSelected, void Function() onPressed) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       constraints: const BoxConstraints(minWidth: 120),
@@ -287,9 +190,7 @@ class _CategoriesSection extends ConsumerWidget {
           side: BorderSide(color: Colors.grey[200]!),
           fixedSize: Size.infinite,
         ),
-        onPressed: () {
-          ref.read(cartIndexProvider.notifier).setCategory(category.id);
-        },
+        onPressed: onPressed,
         child: Column(
           children: <Widget>[
             Text(
@@ -325,7 +226,7 @@ class _ProductFilterSection extends ConsumerWidget {
     print('search: $search');
     return Row(
       children: <Widget>[
-        IconButton.outlined(
+        IconButton(
           onPressed: () {},
           style: OutlinedButton.styleFrom(
             fixedSize: const Size.square(48),
@@ -345,6 +246,7 @@ class _ProductFilterSection extends ConsumerWidget {
             autocorrect: false,
             enableSuggestions: false,
             style: const TextStyle(fontSize: 16),
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
             onChanged: (value) {
               ref.read(cartIndexProvider.notifier).setSearch(value);
             },
@@ -371,7 +273,7 @@ class _ProductFilterSection extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 8),
-        OutlinedButton.icon(
+        TextButton.icon(
           onPressed: () {},
           style: OutlinedButton.styleFrom(
             fixedSize: const Size.fromHeight(48),
@@ -411,6 +313,21 @@ class _ProductSection extends ConsumerWidget {
       products = products.where((product) => product.name.toLowerCase().contains(state.search.toLowerCase())).toList();
     }
 
+    void onPress(ProductModel product) {
+      ref.read(cartStateProvider.notifier).addProductDirectly(product);
+      // CartProductPickerDialog.show(
+      //   context,
+      //   product: product,
+      //   onConfirm: (product, quantity, note, variant) {
+      //     print('Product: ${product.name}');
+      //     print('Quantity: $quantity');
+      //     print('Note: $note');
+      //     print('Variant: $variant');
+      //     print('Total: Rp ${(product.price * quantity).toStringAsFixed(0)}');
+      //   },
+      // );
+    }
+
     return Expanded(
       child: GridView.builder(
         padding: EdgeInsets.zero,
@@ -426,33 +343,29 @@ class _ProductSection extends ConsumerWidget {
 
           return OutlinedButton(
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.black,
+              foregroundColor: POSTheme.neutral800,
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              side: const BorderSide(color: POSTheme.neutral200),
             ),
-            onPressed: () {
-              // ref.read(cartStateProvider.notifier).addProductDirectly(product);
-              CartProductPickerDialog.show(
-                context,
-                product: product,
-                onConfirm: (product, quantity, note, variant) {
-                  print('Product: ${product.name}');
-                  print('Quantity: $quantity');
-                  print('Note: $note');
-                  print('Variant: $variant');
-                  print('Total: Rp ${(product.price * quantity).toStringAsFixed(0)}');
-                },
-              );
-            },
+            onPressed: () => onPress(product),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(product.name),
-                const SizedBox(height: 4),
-                Text(Formatter.toIdr.format(product.price), style: const TextStyle(fontSize: 14)),
+                Text(
+                  product.name,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  Formatter.toIdr.format(product.price),
+                  style: const TextStyle(fontSize: 14, color: POSTheme.neutral600),
+                ),
               ],
             ),
           );
@@ -523,6 +436,7 @@ class _CartItems extends ConsumerWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         item.product.name,
@@ -553,13 +467,14 @@ class _CartItems extends ConsumerWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 8),
                 Text(Formatter.toIdrNoSymbol.format(item.gross)),
                 const SizedBox(width: 8),
                 IconButton(
                   icon: const Icon(Icons.highlight_off),
-                  style: IconButton.styleFrom(foregroundColor: Colors.redAccent),
+                  style: IconButton.styleFrom(
+                    foregroundColor: Colors.redAccent,
+                  ),
                   onPressed: () {
                     ref.read(cartStateProvider.notifier).removeItem(item);
                   },
@@ -569,6 +484,116 @@ class _CartItems extends ConsumerWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _CartSummary extends ConsumerStatefulWidget {
+  const _CartSummary();
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => __CartSummaryState();
+}
+
+class __CartSummaryState extends ConsumerState<_CartSummary> {
+  bool _isDetailExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _isDetailExpanded = !_isDetailExpanded;
+        });
+      },
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 150),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: POSTheme.lightOrange.withValues(alpha: .2),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey[200]!),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Items', style: textTheme.titleMedium),
+                  Text('10', style: textTheme.titleMedium),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Subtotal', style: textTheme.titleLarge),
+                  Text('Rp 10.000', style: textTheme.titleLarge),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CartAction extends ConsumerWidget {
+  const _CartAction();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            IconButton.outlined(
+              icon: const Icon(Icons.delete_sweep_outlined),
+              onPressed: () => ref.read(cartStateProvider.notifier).clearAllItems(),
+              style: IconButton.styleFrom(
+                foregroundColor: POSTheme.errorRedLight,
+                side: const BorderSide(color: POSTheme.errorRedLight),
+              ),
+            ),
+            const SizedBox(width: 8),
+            IconButton.outlined(
+              icon: const Icon(Icons.save),
+              onPressed: () => ref.read(cartStateProvider.notifier).clearAllItems(),
+              style: IconButton.styleFrom(
+                foregroundColor: POSTheme.primaryBlue,
+                side: const BorderSide(color: POSTheme.primaryBlue),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.discount_outlined),
+                label: const Text('Discount'),
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: FilledButton(
+                child: const Text('Bayar'),
+                onPressed: () {
+                  context.goNamed(IkkiRouter.cartPayment.name);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

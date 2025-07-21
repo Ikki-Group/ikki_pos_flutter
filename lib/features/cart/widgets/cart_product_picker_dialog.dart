@@ -9,7 +9,7 @@ class CartProductPickerDialog extends StatefulWidget {
     super.key,
   });
   final ProductModel product;
-  final Function(ProductModel product, int quantity, String? note, String? variant) onConfirm;
+  final void Function(ProductModel product, int quantity, String? note, String? variant) onConfirm;
 
   @override
   State<CartProductPickerDialog> createState() => CartProductPickerDialogState();
@@ -17,7 +17,7 @@ class CartProductPickerDialog extends StatefulWidget {
   static Future<void> show(
     BuildContext context, {
     required ProductModel product,
-    required Function(ProductModel product, int quantity, String? note, String? variant) onConfirm,
+    required void Function(ProductModel product, int quantity, String? note, String? variant) onConfirm,
   }) {
     return showDialog(
       context: context,

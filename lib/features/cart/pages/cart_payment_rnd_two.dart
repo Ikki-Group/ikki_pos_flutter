@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../router/ikki_router.dart';
 
 class CartPaymentRndTwo extends StatefulWidget {
   const CartPaymentRndTwo({
@@ -103,7 +106,7 @@ class _CartPaymentRndTwoState extends State<CartPaymentRndTwo> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.goNamed(IkkiRouter.cart.name),
         ),
       ),
       body: Row(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../features/home/widgets/home_create_order_button.dart';
 
@@ -9,7 +8,7 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PosAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(64);
+  Size get preferredSize => const Size.fromHeight(72);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class _PosInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final outlet = ref.watch(outletProvider).requireValue;
-    final textStyle = context.textStyle;
+    final theme = Theme.of(context);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -48,30 +47,53 @@ class _PosInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: textStyle.copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: theme.textTheme.headlineMedium?.copyWith(
+            color: theme.colorScheme.onSecondary,
           ),
         ),
-        Row(
+        const Row(
           children: [
-            Text(
-              'Online',
-              style: textStyle.copyWith(
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Online',
-              style: textStyle.copyWith(
-                fontSize: 12,
-              ),
-            ),
+            _NetInfo(),
+            SizedBox(width: 8),
+            _ShiftInfo(),
           ],
         ),
       ],
       // const _ShiftInfoWidget(),
+    );
+  }
+}
+
+class _NetInfo extends ConsumerWidget {
+  const _NetInfo();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Text(
+          'Online',
+          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShiftInfo extends ConsumerWidget {
+  const _ShiftInfo();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Text(
+          'Open',
+          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSecondary),
+        ),
+      ],
     );
   }
 }
