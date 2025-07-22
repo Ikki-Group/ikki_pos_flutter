@@ -79,63 +79,27 @@ class CartState extends _$CartState {
     }
   }
 
-  // void addProductDirectly(ProductModel product) {
-  //   final items = state.items;
-
-  //   final targetIdx = items.indexWhere(
-  //     (item) => item.product.id == product.id && item.note.isEmpty,
-  //   );
-
-  //   if (targetIdx != -1) {
-  //     final item = items[targetIdx];
-  //     final updatedItem = item.changeQty(1);
-
-  //     state = state.copyWith(
-  //       items: [
-  //         ...items.sublist(0, targetIdx),
-  //         updatedItem,
-  //         ...items.sublist(targetIdx + 1),
-  //       ],
-  //       gross: state.gross,
-  //       net: state.net,
-  //     );
-  //   } else {
-  //     // Add new item to cart
-  //     final newItem = CartItem(
-  //       id: ObjectId().toString(),
-  //       batch: 1,
-  //       product: CartItemProduct(
-  //         id: product.id,
-  //         name: product.name,
-  //         price: product.price,
-  //       ),
-  //       qty: 1,
-  //       price: product.price,
-  //       gross: product.price,
-  //       net: product.price,
-  //     );
-
-  //     state = state.copyWith(
-  //       items: [...items, newItem],
-  //       gross: state.gross + (product.price),
-  //       net: state.net + (product.price),
-  //     );
-  //   }
-  // }
-
-  void removeItem(CartItem item) {
-    final items = state.items;
+  void addCartItem(CartItem item) {
+    final items = state.items.toList();
     final index = items.indexWhere((i) => i.id == item.id);
     if (index != -1) {
-      state = state.copyWith(
-        items: [
-          ...items.sublist(0, index),
-          ...items.sublist(index + 1),
-        ],
-        gross: state.gross - (item.gross),
-        net: state.net - (item.net),
-      );
+      items[index] = item;
+    } else {
+      items.add(item);
     }
+
+    state = state.copyWith(items: items);
+    _recalculateCart();
+  }
+
+  void removeItem(CartItem item) {
+    final items = state.items.toList();
+    final index = items.indexWhere((i) => i.id == item.id);
+    if (index == -1) return;
+
+    items.removeAt(index);
+    state = state.copyWith(items: items);
+    _recalculateCart();
   }
 
   void _recalculateCart() {

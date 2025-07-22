@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
+  flutter_keyboard_visibility: ^6.0.0
   flutter_riverpod: ^3.0.0-dev.15
   fpdart: ^1.1.1
   freezed_annotation: ^3.0.0

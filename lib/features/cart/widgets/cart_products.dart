@@ -32,13 +32,6 @@ class CartProducts extends ConsumerWidget {
         CartProductPickerDialog.show(
           context,
           product: product,
-          onConfirm: (product, quantity, note, variant) {
-            print('Product: ${product.name}');
-            print('Quantity: $quantity');
-            print('Note: $note');
-            print('Variant: $variant');
-            print('Total: Rp ${(product.price * quantity).toStringAsFixed(0)}');
-          },
         );
       } else {
         ref.read(cartStateProvider.notifier).addProductDirectly(product);
@@ -102,7 +95,7 @@ class _ProductItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "${product.name} ${product.hasVariant ? '(Variant)' : 'no'}",
+            "${product.hasVariant ? '🧩' : ''} ${product.name}",
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
