@@ -14,7 +14,6 @@ part 'cart.provider.g.dart';
 class CartState extends _$CartState {
   @override
   Cart build() {
-    ref.keepAlive();
     return const Cart();
   }
 
@@ -39,30 +38,28 @@ class CartState extends _$CartState {
   }
 
   void addProductDirectly(ProductModel product) {
-    final items = state.items;
+    final items = List<CartItem>.from(state.items); // Create mutable copy
 
-    final existingItemIndex = items.indexWhere(
+    final targetIdx = items.indexWhere(
       (item) => item.product.id == product.id && item.note.isEmpty,
     );
 
-    if (existingItemIndex != -1 && items[existingItemIndex].note.isEmpty) {
-      final item = items[existingItemIndex];
+    if (targetIdx != -1) {
+      // Update existing item
+      final item = items[targetIdx];
       final updatedItem = item.changeQty(1);
 
-      state = state.copyWith(
-        items: [
-          ...items.sublist(0, existingItemIndex),
-          updatedItem,
-          ...items.sublist(existingItemIndex + 1),
-        ],
-        gross: state.gross,
-        net: state.net,
-      );
+      // Replace item in list
+      items[targetIdx] = updatedItem;
+
+      // Update state with recalculated totals
+      state = state.copyWith(items: items);
+      _recalculateCart();
     } else {
       // Add new item to cart
       final newItem = CartItem(
         id: ObjectId().toString(),
-        batch: 1,
+        batch: state.batchId, // Use current batch from state
         product: CartItemProduct(
           id: product.id,
           name: product.name,
@@ -70,17 +67,61 @@ class CartState extends _$CartState {
         ),
         qty: 1,
         price: product.price,
-        gross: product.price,
-        net: product.price,
+        gross: product.price * 1, // qty = 1
+        net: product.price * 1, // no discount initially
       );
 
-      state = state.copyWith(
-        items: [...items, newItem],
-        gross: state.gross + (product.price),
-        net: state.net + (product.price),
-      );
+      items.add(newItem);
+
+      // Update state and recalculate
+      state = state.copyWith(items: items);
+      _recalculateCart();
     }
   }
+
+  // void addProductDirectly(ProductModel product) {
+  //   final items = state.items;
+
+  //   final targetIdx = items.indexWhere(
+  //     (item) => item.product.id == product.id && item.note.isEmpty,
+  //   );
+
+  //   if (targetIdx != -1) {
+  //     final item = items[targetIdx];
+  //     final updatedItem = item.changeQty(1);
+
+  //     state = state.copyWith(
+  //       items: [
+  //         ...items.sublist(0, targetIdx),
+  //         updatedItem,
+  //         ...items.sublist(targetIdx + 1),
+  //       ],
+  //       gross: state.gross,
+  //       net: state.net,
+  //     );
+  //   } else {
+  //     // Add new item to cart
+  //     final newItem = CartItem(
+  //       id: ObjectId().toString(),
+  //       batch: 1,
+  //       product: CartItemProduct(
+  //         id: product.id,
+  //         name: product.name,
+  //         price: product.price,
+  //       ),
+  //       qty: 1,
+  //       price: product.price,
+  //       gross: product.price,
+  //       net: product.price,
+  //     );
+
+  //     state = state.copyWith(
+  //       items: [...items, newItem],
+  //       gross: state.gross + (product.price),
+  //       net: state.net + (product.price),
+  //     );
+  //   }
+  // }
 
   void removeItem(CartItem item) {
     final items = state.items;
@@ -95,6 +136,21 @@ class CartState extends _$CartState {
         net: state.net - (item.net),
       );
     }
+  }
+
+  void _recalculateCart() {
+    final items = state.items;
+    final itemsGross = items.fold<double>(0, (sum, item) => sum + item.gross);
+    final itemsNet = items.fold<double>(0, (sum, item) => sum + item.net);
+
+    const cartDiscountAmount = 0.0;
+    final finalNet = itemsNet - cartDiscountAmount;
+
+    state = state.copyWith(
+      discount: cartDiscountAmount,
+      gross: itemsGross,
+      net: finalNet,
+    );
   }
 
   void clearAllItems() {

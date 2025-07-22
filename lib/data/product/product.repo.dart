@@ -30,7 +30,8 @@ class ProductRepo {
   Future<ProductState> fetch() async {
     final res = await getMock();
 
-    print(res);
+    final sortedProducts = res.products.toList()..sort((a, b) => a.name.compareTo(b.name));
+    final sortedCategories = res.categories.toList()..sort((a, b) => a.name.compareTo(b.name));
 
     final cc = <String, int>{
       ProductCategory.kIdAll: 0,
@@ -59,8 +60,8 @@ class ProductRepo {
     }
 
     final state = ProductState(
-      products: res.products,
-      categories: [...ProductCategory.kCustomCategories, ...res.categories]
+      products: sortedProducts,
+      categories: [...ProductCategory.kCustomCategories, ...sortedCategories]
           .map(
             (category) => category.copyWith(
               productCount: cc[category.id] ?? 0,

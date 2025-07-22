@@ -5,6 +5,8 @@ extension CartItemX on CartItem {
     final newQty = qty + actionQty;
     final gross = newQty * product.price;
     final net = gross;
-    return copyWith(qty: qty, gross: gross, net: net);
+    return copyWith(qty: newQty, gross: gross, net: net);
   }
 }
+
+extension CartX on Cart {}

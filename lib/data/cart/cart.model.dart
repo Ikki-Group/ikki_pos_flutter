@@ -11,6 +11,7 @@ sealed class Cart with _$Cart {
     @Default('') String rc,
     @Default(SaleMode(id: '', name: '')) SaleMode saleMode,
     @Default(1) int pax,
+    @Default(1) int batchId,
     @Default([]) List<CartItem> items,
     @Default('') String note,
     @Default(0) double gross,
