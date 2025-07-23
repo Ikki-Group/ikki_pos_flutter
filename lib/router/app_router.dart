@@ -21,44 +21,49 @@ part 'app_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: IkkiRouter.splash.path,
     routes: <RouteBase>[
       GoRoute(
-        path: '/splash',
+        path: IkkiRouter.splash.path,
         name: IkkiRouter.splash.name,
         builder: (context, state) => const SplashPage(),
       ),
 
       GoRoute(
-        path: '/auth-device',
+        path: IkkiRouter.authDevice.path,
         name: IkkiRouter.authDevice.name,
         builder: (context, state) => const AuthDevicePage(),
       ),
 
       GoRoute(
-        path: '/sync-global',
+        path: IkkiRouter.syncGlobal.path,
         name: IkkiRouter.syncGlobal.name,
         builder: (context, state) => const SyncGlobalPage(),
       ),
 
       GoRoute(
-        path: '/user-select',
+        path: IkkiRouter.userSelect.path,
         name: IkkiRouter.userSelect.name,
         builder: (context, state) => const UserSelectPage(),
       ),
 
       ShellRoute(
         builder: (BuildContext context, GoRouterState state, Widget child) {
-          return PosScaffold(child: child);
+          final ikkiRouter = GoRouter.of(context).currentRouteIkki;
+          print(ikkiRouter);
+          return PosScaffold(
+            router: ikkiRouter,
+            child: child,
+          );
         },
         routes: <RouteBase>[
           GoRoute(
-            path: '/pos',
+            path: IkkiRouter.pos.path,
             name: IkkiRouter.pos.name,
             builder: (context, state) => const PosPage(),
           ),
           GoRoute(
-            path: '/settings',
+            path: IkkiRouter.settings.path,
             name: IkkiRouter.settings.name,
             builder: (context, state) => const SettingIndexPage(),
           ),
@@ -66,22 +71,23 @@ GoRouter goRouter(Ref ref) {
       ),
 
       ShellRoute(
-        builder: (BuildContext context, GoRouterState state, Widget child) {
-          return Scaffold(body: child);
+        pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
+          return MaterialPage(child: Scaffold(body: child));
         },
+
         routes: <RouteBase>[
           GoRoute(
-            path: '/cart',
+            path: IkkiRouter.cart.path,
             name: IkkiRouter.cart.name,
             builder: (context, state) => const CartIndexPage(),
           ),
           GoRoute(
-            path: '/cart-payment',
+            path: IkkiRouter.cartPayment.path,
             name: IkkiRouter.cartPayment.name,
             builder: (context, state) => const CartPaymentPage(),
           ),
           GoRoute(
-            path: '/cart-payment-rnd-two',
+            path: IkkiRouter.cartRndTwo.path,
             name: IkkiRouter.cartRndTwo.name,
             builder: (context, state) => const CartPaymentRndTwo(
               orderItems: [],
@@ -89,12 +95,12 @@ GoRouter goRouter(Ref ref) {
             ),
           ),
           GoRoute(
-            path: '/cart-payment-success',
+            path: IkkiRouter.cartPaymentSuccess.path,
             name: IkkiRouter.cartPaymentSuccess.name,
             builder: (context, state) => const CartPaymentSuccess(),
           ),
           GoRoute(
-            path: '/cart_rnd',
+            path: IkkiRouter.cartRnd.path,
             name: IkkiRouter.cartRnd.name,
             builder: (context, state) => const CartRnd(),
           ),

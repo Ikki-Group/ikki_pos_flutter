@@ -160,7 +160,7 @@ enum SGDrawerItem {
   // shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: IkkiRouter.cart),
   // input(name: 'Input Pembukuan', icon: Icons.attach_money, route: IkkiRouter.cart),
   printers(name: 'Printer', icon: Icons.print, route: IkkiRouter.cart),
-  settings(name: 'Pengaturan', icon: Icons.settings, route: IkkiRouter.cart);
+  settings(name: 'Pengaturan', icon: Icons.settings, route: IkkiRouter.settings);
 
   const SGDrawerItem({
     required this.name,

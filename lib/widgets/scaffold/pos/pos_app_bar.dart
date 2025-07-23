@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../features/home/widgets/home_create_order_button.dart';
+import '../../../router/ikki_router.dart';
 
 class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const PosAppBar({super.key});
+  const PosAppBar({required this.router, super.key});
+
+  final IkkiRouter? router;
 
   @override
   Size get preferredSize => const Size.fromHeight(72);
@@ -18,7 +21,8 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: Scaffold.of(context).openDrawer,
         icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),
-      title: const _PosInfo(),
+      // title: const _PosInfo(),
+      title: _Title(router),
       actions: const [
         HomeCreateOrderButton(),
         SizedBox(width: 8),
@@ -103,5 +107,26 @@ class _ShiftInfo extends ConsumerWidget {
         ),
       ],
     );
+  }
+}
+
+class _Title extends StatelessWidget {
+  const _Title(this.router);
+
+  final IkkiRouter? router;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (router) {
+      case IkkiRouter.pos:
+        return const _PosInfo();
+      case IkkiRouter.cart:
+        return const Text('Cart');
+      case IkkiRouter.settings:
+        return const Text('Pengaturan');
+      // ignore: no_default_cases
+      default:
+        return const Text('IKKI Pos');
+    }
   }
 }

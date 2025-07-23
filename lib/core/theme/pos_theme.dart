@@ -489,6 +489,13 @@ abstract class POSTheme {
           fontWeight: FontWeight.w500,
         ),
       ),
+
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+        },
+      ),
     );
   }
 
