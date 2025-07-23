@@ -5,6 +5,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
+  flutter: 3.32.1
 
 dependencies:
   bson: ^5.0.7
