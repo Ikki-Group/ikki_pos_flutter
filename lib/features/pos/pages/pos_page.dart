@@ -14,7 +14,7 @@ class _PosPageState extends ConsumerState<PosPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ColoredBox(
-        color: Colors.white38,
+        color: const Color.fromARGB(255, 242, 242, 242),
         child: DefaultTabController(
           length: PosTabItem.values.length,
           child: Padding(
@@ -29,7 +29,10 @@ class _PosPageState extends ConsumerState<PosPage> {
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: TabBar(
                         tabs: [
-                          for (final item in PosTabItem.values) Tab(text: item.label),
+                          for (final item in PosTabItem.values)
+                            Tab(
+                              child: Text(item.label, style: const TextStyle(fontSize: 16)),
+                            ),
                         ],
                       ),
                     ),
@@ -49,7 +52,75 @@ class _PosPageState extends ConsumerState<PosPage> {
                     ),
                   ],
                 ),
-                const Expanded(child: Text('data')),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ListView.builder(
+                              itemCount: 10,
+                              itemExtent: 160,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: Colors.grey[300]!),
+                                  ),
+                                  child: const Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('POSIC-001'),
+                                            Text('LUNAS'),
+                                          ],
+                                        ),
+                                      ),
+                                      Divider(),
+                                      Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Rizqy Nugroho'),
+                                            Text('Rp. 10.000'),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 5,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Column(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

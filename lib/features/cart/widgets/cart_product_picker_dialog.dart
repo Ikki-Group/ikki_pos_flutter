@@ -6,6 +6,7 @@ import '../../../core/theme/pos_theme.dart';
 import '../../../data/cart/cart.model.dart';
 import '../../../data/cart/cart.provider.dart';
 import '../../../data/product/product.model.dart';
+import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/button_variants.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {
@@ -186,7 +187,10 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                             enabled: quantity > 1,
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            constraints: const BoxConstraints(minWidth: 46),
+                            alignment: Alignment.center,
+                            color: const Color.fromARGB(69, 203, 203, 203),
                             child: Text(
                               quantity.toString(),
                               style: const TextStyle(
@@ -199,14 +203,14 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                           _buildQuantityButton(
                             icon: Icons.add,
                             onPressed: _incrementQuantity,
-                            enabled: true,
+                            enabled: quantity < 99,
                           ),
                         ],
                       ),
                     ),
 
                     // Variants Section (if available)
-                    if (widget.product.variants.isNotEmpty == true) ...[
+                    if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
                       const SizedBox(height: 24),
                       const Text(
                         'Varian',
@@ -222,13 +226,14 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                         runSpacing: 8,
                         children: widget.product.variants.map((variant) {
                           final isSelected = selectedVariant == variant.id;
-                          return GestureDetector(
+                          return InkWell(
                             onTap: () {
                               selectedVariant = variant.id;
                               setState(() {});
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              constraints: const BoxConstraints(minWidth: 160),
                               decoration: BoxDecoration(
                                 color: isSelected ? const Color(0xFF4F7DF3) : Colors.white,
                                 border: Border.all(
@@ -236,12 +241,25 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text(
-                                variant.name,
-                                style: TextStyle(
-                                  color: isSelected ? Colors.white : const Color(0xFF374151),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    variant.name,
+                                    style: TextStyle(
+                                      color: isSelected ? Colors.white : const Color(0xFF374151),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    Formatter.toIdr.format(variant.price),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: isSelected ? Colors.white : const Color(0xFF374151),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -308,7 +326,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                             ),
                           ),
                           Text(
-                            'Rp ${(widget.product.price * quantity).toStringAsFixed(0)}',
+                            Formatter.toIdr.format(widget.product.price * quantity),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -344,7 +362,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
       onTap: enabled ? onPressed : null,
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Icon(
           icon,
           color: enabled ? const Color(0xFF4F7DF3) : const Color(0xFF9CA3AF),

@@ -77,7 +77,7 @@ class _Item extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          // color: const Color.fromARGB(137, 240, 240, 240),
+          color: const Color.fromARGB(137, 240, 240, 240),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
