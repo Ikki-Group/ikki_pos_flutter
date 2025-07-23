@@ -34,6 +34,13 @@ jobs:
           DATE=$(date +'%Y-%m-%d')
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-$DATE.apk
 
+      - name: Upload to Google Drive
+        uses: samuelint/google-drive-upload@v1.1.3
+        with:
+          folder_id: 1FqKt0a-G4tMf5ogZ0_pGbtertZ7Sj3Ds
+          service_account: ${{ secrets.GOOGLE_DRIVE_SERVICE_ACCOUNT }}
+          source_path: build/app/outputs/flutter-apk/app-release-*.apk
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
