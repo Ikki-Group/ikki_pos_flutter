@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../printer/printer_provider.dart';
+import '../../../data/printer/printer_provider.dart';
 import '../widgets/add_printer_dialog.dart';
 
 class SettingsPrinterPage extends ConsumerStatefulWidget {

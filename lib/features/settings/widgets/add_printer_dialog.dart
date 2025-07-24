@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/printer/printer_enum.dart';
+import '../../../data/printer/printer_provider.dart';
 import '../../../widgets/dialogs/ikki_dialog.dart';
-import '../../printer/printer_enum.dart';
 
 class AddPrinterDialog extends StatefulWidget {
   const AddPrinterDialog({super.key});
@@ -114,6 +115,20 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
     Navigator.of(context).pop();
   }
 
+  void _scan() {
+    ref.read(printerProviderProvider.notifier).startScan().catchError((_) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Tidak dapat menemukan printer'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final allowNext = selected != null;
@@ -146,7 +161,10 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
             children: [
               const Text('Daftar Printer'),
               const Spacer(),
-              TextButton(onPressed: () {}, child: const Text('Pindai')),
+              TextButton(
+                onPressed: _scan,
+                child: const Text('Pindai'),
+              ),
             ],
           ),
           const Divider(),

@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
-import '../../data/json.dart';
+import '../json.dart';
 import 'printer_model.dart';
 
 part 'printer_repo.g.dart';
@@ -27,12 +27,13 @@ class PrinterRepo {
 
   Future<List<PrinterModel>> load() async {
     final raw = sp.getString(SharedPrefsKeys.printers.name);
-    late List<PrinterModel> printers;
+    var printers = <PrinterModel>[];
     if (raw != null) {
       printers = List<PrinterModel>.from((jsonDecode(raw) as JsonList).map(PrinterModel.fromJson));
     } else {
       printers = await fetch();
     }
+    print(printers);
     return printers;
   }
 
