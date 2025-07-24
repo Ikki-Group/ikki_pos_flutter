@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, no_default_cases, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 enum ButtonVariant {
@@ -193,7 +195,7 @@ class ButtonVariants {
       foregroundColor: destructiveColor,
       disabledBackgroundColor: Colors.transparent,
       disabledForegroundColor: textSecondaryColor,
-      side: BorderSide(color: borderColor, width: 1),
+      side: BorderSide(color: borderColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -215,12 +217,12 @@ class ButtonVariants {
       }),
       side: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return BorderSide(color: Color(0xFFE5E7EB), width: 1);
+          return BorderSide(color: Color(0xFFE5E7EB));
         }
         if (states.contains(WidgetState.hovered)) {
-          return BorderSide(color: Color(0xFFDC2626), width: 1);
+          return BorderSide(color: Color(0xFFDC2626));
         }
-        return BorderSide(color: destructiveColor, width: 1);
+        return BorderSide(color: destructiveColor);
       }),
       foregroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
@@ -240,7 +242,7 @@ class ButtonVariants {
       foregroundColor: textPrimaryColor,
       disabledBackgroundColor: Colors.transparent,
       disabledForegroundColor: textSecondaryColor,
-      side: BorderSide(color: borderColor, width: 1),
+      side: BorderSide(color: borderColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -262,12 +264,12 @@ class ButtonVariants {
       }),
       side: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return BorderSide(color: Color(0xFFE5E7EB), width: 1);
+          return BorderSide(color: Color(0xFFE5E7EB));
         }
         if (states.contains(WidgetState.hovered)) {
-          return BorderSide(color: primaryColor, width: 1);
+          return BorderSide(color: primaryColor);
         }
-        return BorderSide(color: borderColor, width: 1);
+        return BorderSide(color: borderColor);
       }),
       foregroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
@@ -353,17 +355,9 @@ class ButtonVariants {
 
 // Custom Button Widget
 class ThemedButton extends StatelessWidget {
-  final Widget text;
-  final VoidCallback? onPressed;
-  final ButtonVariant variant;
-  final ButtonSize size;
-  final Widget? icon;
-  final bool isLoading;
-  final double? width;
-
   const ThemedButton({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.variant = ButtonVariant.primary,
     this.size = ButtonSize.medium,
@@ -374,7 +368,7 @@ class ThemedButton extends StatelessWidget {
 
   const ThemedButton.cancel({
     super.key,
-    this.text = const Text("Batal"),
+    this.text = const Text('Batal'),
     this.onPressed,
     this.variant = ButtonVariant.outlinedDestructive,
     this.size = ButtonSize.large,
@@ -385,7 +379,7 @@ class ThemedButton extends StatelessWidget {
 
   const ThemedButton.process({
     super.key,
-    this.text = const Text("Proses"),
+    this.text = const Text('Proses'),
     this.onPressed,
     this.variant = ButtonVariant.primary,
     this.size = ButtonSize.large,
@@ -393,6 +387,13 @@ class ThemedButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
   });
+  final Widget text;
+  final VoidCallback? onPressed;
+  final ButtonVariant variant;
+  final ButtonSize size;
+  final Widget? icon;
+  final bool isLoading;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -446,7 +447,7 @@ class ThemedButton extends StatelessWidget {
         return OutlinedButton.icon(
           onPressed: onPressed,
           style: style,
-          icon: icon!,
+          icon: icon,
           label: text,
         );
       case ButtonVariant.ghost:
@@ -454,14 +455,14 @@ class ThemedButton extends StatelessWidget {
         return TextButton.icon(
           onPressed: onPressed,
           style: style,
-          icon: icon!,
+          icon: icon,
           label: text,
         );
       default:
         return ElevatedButton.icon(
           onPressed: onPressed,
           style: style,
-          icon: icon!,
+          icon: icon,
           label: text,
         );
     }
@@ -552,7 +553,7 @@ class ButtonExamples extends StatefulWidget {
   const ButtonExamples({super.key});
 
   @override
-  createState() => _ButtonExamplesState();
+  _ButtonExamplesState createState() => _ButtonExamplesState();
 }
 
 class _ButtonExamplesState extends State<ButtonExamples> {

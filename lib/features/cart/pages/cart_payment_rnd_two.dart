@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_invocation, cascade_invocations, inference_failure_on_function_return_type, deprecated_member_use, prefer_null_aware_method_calls
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';

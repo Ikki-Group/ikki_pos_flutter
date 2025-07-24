@@ -18,7 +18,6 @@ abstract final class AppTheme {
     primaryColor: primaryColor,
     colorScheme: ColorScheme.fromSeed(
       seedColor: primaryColor,
-      brightness: Brightness.light,
     ),
 
     scaffoldBackgroundColor: background,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ikki_pos_flutter/core/config/app_palette.dart';
-import 'package:ikki_pos_flutter/shared/utils/formatter.dart';
+
+import '../../core/config/app_palette.dart';
+import '../../shared/utils/formatter.dart';
 
 typedef ListKeys = List<List<String>>;
 
@@ -12,12 +13,6 @@ const _defaultKeys = [
 ];
 
 class Numpad extends StatefulWidget {
-  final int maxLength;
-  final int? initialValue;
-  final String? placeholder;
-  final ValueChanged<int?>? onInputChanged;
-  final ListKeys customKeys;
-
   const Numpad({
     super.key,
     this.maxLength = 9,
@@ -26,6 +21,11 @@ class Numpad extends StatefulWidget {
     this.onInputChanged,
     this.customKeys = _defaultKeys,
   });
+  final int maxLength;
+  final int? initialValue;
+  final String? placeholder;
+  final ValueChanged<int?>? onInputChanged;
+  final ListKeys customKeys;
 
   @override
   State<Numpad> createState() => _NumpadState();
@@ -42,7 +42,7 @@ class _NumpadState extends State<Numpad> {
   }
 
   String get currentInput {
-    int valInt = int.tryParse(input) ?? 0;
+    final valInt = int.tryParse(input) ?? 0;
     return Formatter.toIdr.format(valInt);
   }
 
@@ -57,18 +57,15 @@ class _NumpadState extends State<Numpad> {
   void onTap(String code) {
     setState(() {
       switch (code) {
-        case "C":
+        case 'C':
           input = '';
-          break;
-        case "DEL":
+        case 'DEL':
           if (input.isNotEmpty) {
             input = input.substring(0, input.length - 1);
           }
-          break;
         default:
-          if (input.isEmpty && code == "0") break;
+          if (input.isEmpty && code == '0') break;
           if (input.length < widget.maxLength) input += code;
-          break;
       }
     });
     // Call the callback to notify parent of input change
@@ -77,16 +74,15 @@ class _NumpadState extends State<Numpad> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isEmptyInput = input.isEmpty;
-    final Color borderColor = isEmptyInput ? Colors.grey : Palette.primary;
-    final Color textColor = isEmptyInput ? Colors.grey[500]! : Colors.black;
-    final FontWeight textFontWeight = isEmptyInput ? FontWeight.normal : FontWeight.bold;
-    final double textFontSize = isEmptyInput ? 20 : 24;
+    final isEmptyInput = input.isEmpty;
+    final borderColor = isEmptyInput ? Colors.grey : Palette.primary;
+    final textColor = isEmptyInput ? Colors.grey[500]! : Colors.black;
+    final textFontWeight = isEmptyInput ? FontWeight.normal : FontWeight.bold;
+    final textFontSize = isEmptyInput ? 20 : 24;
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: 320,
@@ -97,20 +93,20 @@ class _NumpadState extends State<Numpad> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
                     width: double.infinity,
-                    height: 56.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 40.0),
-                    padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                    height: 56,
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: borderColor, width: 2.0),
+                        bottom: BorderSide(color: borderColor, width: 2),
                       ),
                     ),
                     child: Center(
                       child: Text(
-                        isEmptyInput ? widget.placeholder ?? "" : currentInput,
+                        isEmptyInput ? widget.placeholder ?? '' : currentInput,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: textFontSize,
+                          fontSize: textFontSize.toDouble(),
                           color: textColor,
                           fontWeight: textFontWeight,
                         ),
@@ -121,7 +117,7 @@ class _NumpadState extends State<Numpad> {
                 const SizedBox(height: 20),
                 ...widget.customKeys.map((rowKeys) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: rowKeys.map((code) {
@@ -142,19 +138,18 @@ class _NumpadState extends State<Numpad> {
                         }
 
                         return Expanded(
-                          flex: 1,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0,
+                              horizontal: 4,
                             ),
                             child: ElevatedButton(
                               onPressed: () => onTap(code),
                               style: ElevatedButton.styleFrom(
-                                fixedSize: const Size.fromHeight(56.0),
+                                fixedSize: const Size.fromHeight(56),
                                 foregroundColor: buttonForegroundColor,
                                 elevation: 0,
                                 textStyle: const TextStyle(
-                                  fontSize: 24.0,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -167,7 +162,7 @@ class _NumpadState extends State<Numpad> {
                   );
                 }),
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.all(24),
                   child: Row(
                     children: [
                       Expanded(
