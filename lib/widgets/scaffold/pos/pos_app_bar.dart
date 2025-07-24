@@ -21,7 +21,6 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: Scaffold.of(context).openDrawer,
         icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),
-      // title: const _PosInfo(),
       title: _Title(router),
       actions: const [
         HomeCreateOrderButton(),
