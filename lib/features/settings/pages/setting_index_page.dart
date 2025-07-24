@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/pos_theme.dart';
+import 'settings_printer_page.dart';
+
 class SettingIndexPage extends ConsumerStatefulWidget {
   const SettingIndexPage({super.key});
 
@@ -46,20 +49,7 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            for (final item in SettingIndexPageTab.values)
-                              TextButton(
-                                style: const ButtonStyle(
-                                  alignment: Alignment.centerLeft,
-                                ),
-                                onPressed: () => _onTabChanged(item),
-                                child: Text(
-                                  item.name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                            for (final tab in SettingIndexPageTab.values) _buildTab(tab),
                           ],
                         ),
                       ),
@@ -77,15 +67,11 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(selectedTab.name),
-                      const SizedBox(height: 16),
-                      const SingleChildScrollView(),
-                    ],
-                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: switch (selectedTab) {
+                    SettingIndexPageTab.printer => const SettingsPrinterPage(),
+                    _ => const Placeholder(),
+                  },
                 ),
               ),
             ),
@@ -94,18 +80,37 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
       ),
     );
   }
+
+  Widget _buildTab(SettingIndexPageTab tab) {
+    final isSelected = tab == selectedTab;
+
+    return TextButton(
+      style: ButtonStyle(
+        alignment: Alignment.centerLeft,
+        backgroundColor: WidgetStateColor.fromMap({
+          WidgetState.any: isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .3) : Colors.transparent,
+        }),
+        foregroundColor: WidgetStateColor.fromMap({
+          WidgetState.any: isSelected ? POSTheme.primaryBlueDark : POSTheme.neutral500,
+        }),
+      ),
+      onPressed: () => _onTabChanged(tab),
+      child: Text(
+        tab.label,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
 }
 
 enum SettingIndexPageTab {
-  printer,
-  logs;
+  printer(label: 'Printer'),
+  logs(label: 'Catatan Aktivitas');
 
-  String get name {
-    switch (this) {
-      case printer:
-        return 'Printer';
-      case logs:
-        return 'Catatan Aktivitas';
-    }
-  }
+  const SettingIndexPageTab({required this.label});
+
+  final String label;
 }

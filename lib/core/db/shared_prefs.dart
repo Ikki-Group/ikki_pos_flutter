@@ -14,7 +14,8 @@ enum SharedPrefsKeys {
   receiptCode,
   users,
   products,
-  paymentOptions
+  paymentOptions,
+  printers
   //
   ;
 
