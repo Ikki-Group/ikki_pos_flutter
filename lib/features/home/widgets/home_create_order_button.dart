@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../widgets/dialogs/pos_cash_open.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
@@ -27,6 +28,14 @@ class _HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: POSTheme.backgroundPrimary,
+        foregroundColor: POSTheme.primaryBlueDark,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
       onPressed: _onPressed,
       icon: const Icon(Icons.add),
       label: const Text('Buat Pesanan'),

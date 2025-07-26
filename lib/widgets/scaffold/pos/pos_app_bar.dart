@@ -44,7 +44,7 @@ class _PosInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 4),
         const Row(

@@ -5,7 +5,7 @@ import 'package:sembast/sembast.dart';
 
 import '../../core/db/sembast.dart';
 import '../json.dart';
-import 'cart.model.dart';
+import 'cart_model.dart';
 
 part 'cart_repo.g.dart';
 

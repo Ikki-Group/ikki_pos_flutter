@@ -7,13 +7,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../outlet/outlet.provider.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
-import '../sale/sale.model.dart';
+import '../sale/sale_enum.dart';
 import '../user/user.provider.dart';
-import 'cart.extension.dart';
-import 'cart.model.dart';
+import 'cart_extension.dart';
+import 'cart_model.dart';
 import 'cart_repo.dart';
 
-part 'cart.provider.g.dart';
+part 'cart_state.g.dart';
 
 enum CartLogAction {
   create;
@@ -27,11 +27,7 @@ enum CartLogAction {
 @Riverpod(keepAlive: true)
 class CartState extends _$CartState {
   @override
-  Cart build() {
-    return const Cart(
-      // saleMode: SaleMode.values.first,
-    );
-  }
+  Cart build() => const Cart();
 
   // ignore: use_setters_to_change_properties
   void setCart(Cart cart) => state = cart;
@@ -46,12 +42,12 @@ class CartState extends _$CartState {
     final rc = await ref.read(receiptCodeRepoProvider).getCode(outlet.session.id);
     final user = ref.read(currentUserProvider.notifier).requireUser();
 
-    print(saleMode);
+    print(rc);
 
     state = state.copyWith(
       id: ObjectId().hexString,
       rc: rc,
-      // saleMode: saleMode,
+      saleMode: saleMode,
       pax: pax,
       batches: [
         CartBatch(id: 1, at: DateTime.now().toString(), by: user.id),

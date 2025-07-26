@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 abstract final class AppThemeFlex {
   // The FlexColorScheme defined light mode ThemeData.
   static ThemeData light = FlexThemeData.light(
-    // Using FlexColorScheme built-in FlexScheme enum based colors
     scheme: FlexScheme.shadBlue,
-    // Input color modifiers.
     swapLegacyOnMaterial3: true,
     // Surface color adjustments.
     lightIsWhite: true,
@@ -46,7 +44,7 @@ abstract final class AppThemeFlex {
       chipSelectedSchemeColor: SchemeColor.primary,
       chipDeleteIconSchemeColor: SchemeColor.error,
       chipFontSize: 12,
-      chipIconSize: 16,
+      chipIconSize: 10,
       chipPadding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
       cardRadius: 8,
       popupMenuRadius: 8,

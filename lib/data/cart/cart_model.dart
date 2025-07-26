@@ -1,18 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../json.dart';
+import '../sale/sale_enum.dart';
 import 'cart_enum.dart';
 
-part 'cart.model.freezed.dart';
-part 'cart.model.g.dart';
+part 'cart_model.freezed.dart';
+part 'cart_model.g.dart';
 
 @freezed
 sealed class Cart with _$Cart {
   const factory Cart({
-    // SaleMode? saleMode,
     @Default('') String id,
-    @Default(CartStatus.init) CartStatus status,
     @Default('') String rc,
+    @Default(CartStatus.init) CartStatus status,
+    @Default(SaleMode.dineIn) SaleMode saleMode,
     @Default(1) int pax,
     @Default(1) int batchId,
     @Default([]) List<CartBatch> batches,

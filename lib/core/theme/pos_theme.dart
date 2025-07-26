@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@Deprecated('Use POSTheme instead')
 abstract class POSTheme {
   // Primary Light Blue Colors
   static const Color primaryBlue = Color(0xFF4F7DF3); // Custom light blue

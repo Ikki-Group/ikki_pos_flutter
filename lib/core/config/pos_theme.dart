@@ -370,7 +370,7 @@ abstract class POSTheme {
           color: textPrimary,
           fontSize: 22,
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.5,
+          letterSpacing: -0.2,
         ),
         titleMedium: TextStyle(
           color: textPrimary,

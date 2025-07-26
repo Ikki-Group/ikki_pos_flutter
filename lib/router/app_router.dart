@@ -10,6 +10,7 @@ import '../features/cart/pages/cart_payment_success.dart';
 import '../features/cart/pages/cart_rnd.dart';
 import '../features/pos/pages/pos_page.dart';
 import '../features/settings/pages/setting_index_page.dart';
+import '../features/showcase/pages/showcase_index_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/sync/pages/sync_global_page.dart';
 import '../features/user/pages/user_select_page.dart';
@@ -22,6 +23,7 @@ part 'app_router.g.dart';
 GoRouter goRouter(Ref ref) {
   final router = GoRouter(
     initialLocation: IkkiRouter.splash.path,
+    // initialLocation: IkkiRouter.showcase.path,
     observers: [],
     routes: <RouteBase>[
       GoRoute(
@@ -103,6 +105,25 @@ GoRouter goRouter(Ref ref) {
             path: IkkiRouter.cartRnd.path,
             name: IkkiRouter.cartRnd.name,
             builder: (context, state) => const CartRnd(),
+          ),
+        ],
+      ),
+
+      // Showcase
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Showcase'),
+            ),
+            body: child,
+          );
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: IkkiRouter.showcase.path,
+            name: IkkiRouter.showcase.name,
+            builder: (context, state) => const ShowcaseIndexPage(),
           ),
         ],
       ),

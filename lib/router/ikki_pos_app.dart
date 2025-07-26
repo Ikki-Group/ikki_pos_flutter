@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/config/app_constants.dart';
-import '../core/theme/pos_theme.dart';
+import '../core/config/pos_theme.dart';
 import 'app_router.dart';
 
 class IkkiPosApp extends ConsumerWidget {
@@ -18,14 +18,6 @@ class IkkiPosApp extends ConsumerWidget {
       // theme: AppThemeFlex.light,
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      // builder: (ctx, child) {
-      //   ScreenUtil.init(ctx, designSize: const Size(2000, 1920));
-      //   print('object');
-      //   return Theme(
-      //     data: POSTheme.lightTheme,
-      //     child: child!,
-      //   );
-      // },
     );
   }
 }

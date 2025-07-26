@@ -24,7 +24,10 @@ enum IkkiRouter {
   cartPaymentSuccess,
 
   // Settings
-  settings
+  settings,
+
+  // Showcase
+  showcase
   //
   ;
 

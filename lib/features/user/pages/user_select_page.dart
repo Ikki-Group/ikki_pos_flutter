@@ -53,7 +53,6 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           final isValid = selectedUser!.comparePin(displayValue);
           if (isValid) {
             ref.read(currentUserProvider.notifier).setUser(selectedUser!);
-            print('Pos');
             context.goNamed(IkkiRouter.pos.name);
             return;
           } else {
@@ -79,11 +78,6 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
   @override
   Widget build(BuildContext context) {
     final outlet = ref.watch(outletProvider).requireValue;
-    final mq = MediaQuery.of(context);
-
-    print('ratio: ${mq.devicePixelRatio}');
-    print('size: ${mq.size}');
-    print('padding: ${mq.padding}');
 
     return Scaffold(
       body: Center(

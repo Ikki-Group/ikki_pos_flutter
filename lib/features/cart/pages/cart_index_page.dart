@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/pos_theme.dart';
-import '../../../data/cart/cart.provider.dart';
+import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 import '../widgets/cart_categories.dart';

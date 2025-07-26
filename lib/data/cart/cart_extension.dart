@@ -1,5 +1,5 @@
 import '../product/product.model.dart';
-import 'cart.model.dart';
+import 'cart_model.dart';
 
 extension CartItemX on CartItem {
   CartItem changeQty(int actionQty) {
