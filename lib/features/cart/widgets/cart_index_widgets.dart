@@ -148,7 +148,8 @@ class CartSalesModeInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartStateProvider);
-    final text = '${cart.saleMode.name} (${cart.pax} Pax)';
+    // final text = '${cart.saleMode?.name} (${cart.pax} Pax)';
+    const text = '';
 
     void onPressed() {
       SalesModeDialog.show(context);
@@ -156,7 +157,7 @@ class CartSalesModeInfo extends ConsumerWidget {
 
     return SizedBox(
       width: double.infinity,
-      child: FilledButton.tonal(onPressed: onPressed, child: Text(text)),
+      child: FilledButton.tonal(onPressed: onPressed, child: const Text(text)),
     );
   }
 }

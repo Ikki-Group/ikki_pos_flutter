@@ -1,20 +1,36 @@
-import 'package:bson/bson.dart';
+import 'dart:convert';
+import 'dart:developer' as dev;
+
+import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../outlet/outlet.provider.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale.model.dart';
+import '../user/user.provider.dart';
 import 'cart.extension.dart';
 import 'cart.model.dart';
+import 'cart_repo.dart';
 
 part 'cart.provider.g.dart';
+
+enum CartLogAction {
+  create;
+
+  @override
+  String toString() {
+    return name.split('.').last.toUpperCase();
+  }
+}
 
 @Riverpod(keepAlive: true)
 class CartState extends _$CartState {
   @override
   Cart build() {
-    return const Cart();
+    return const Cart(
+      // saleMode: SaleMode.values.first,
+    );
   }
 
   // ignore: use_setters_to_change_properties
@@ -28,52 +44,50 @@ class CartState extends _$CartState {
   ) async {
     final outlet = await ref.read(outletProvider.future);
     final rc = await ref.read(receiptCodeRepoProvider).getCode(outlet.session.id);
+    final user = ref.read(currentUserProvider.notifier).requireUser();
 
-    state = Cart(
-      id: ObjectId().toString(),
+    print(saleMode);
+
+    state = state.copyWith(
+      id: ObjectId().hexString,
       rc: rc,
-      saleMode: saleMode,
+      // saleMode: saleMode,
       pax: pax,
+      batches: [
+        CartBatch(id: 1, at: DateTime.now().toString(), by: user.id),
+      ],
+      logs: [log(action: CartLogAction.create, message: 'Cart created')],
     );
   }
 
-  void addProductDirectly(ProductModel product) {
-    final items = List<CartItem>.from(state.items); // Create mutable copy
+  String log({
+    required CartLogAction action,
+    String? message,
+  }) {
+    final user = ref.read(currentUserProvider.notifier).requireUser();
+    final msg =
+        '[${DateTime.now().toIso8601String()}]-[$action]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
+    dev.log(msg);
+    return msg;
+  }
 
-    final targetIdx = items.indexWhere(
-      (item) => item.product.id == product.id && item.note.isEmpty,
-    );
+  void addProductDirectly(ProductModel product) {
+    final items = state.items.toList();
+    final targetIdx = items.indexWhere((i) => i.product.id == product.id && i.note.isEmpty);
 
     if (targetIdx != -1) {
-      // Update existing item
-      final item = items[targetIdx];
-      final updatedItem = item.changeQty(1);
-
-      // Replace item in list
-      items[targetIdx] = updatedItem;
-
-      // Update state with recalculated totals
+      items[targetIdx] = items[targetIdx].changeQty(1);
       state = state.copyWith(items: items);
       _recalculateCart();
     } else {
-      // Add new item to cart
       final newItem = CartItem(
-        id: ObjectId().toString(),
-        batch: state.batchId, // Use current batch from state
-        product: CartItemProduct(
-          id: product.id,
-          name: product.name,
-          price: product.price,
-        ),
-        qty: 1,
+        id: ObjectId().hexString,
+        batchId: state.batchId,
+        product: product.toCartItemProduct(),
         price: product.price,
-        gross: product.price * 1, // qty = 1
-        net: product.price * 1, // no discount initially
-      );
+      ).changeQty(1);
 
       items.add(newItem);
-
-      // Update state and recalculate
       state = state.copyWith(items: items);
       _recalculateCart();
     }
@@ -126,6 +140,12 @@ class CartState extends _$CartState {
   }
 
   void reset() {
-    state = const Cart();
+    state = const Cart(
+      // saleMode: SaleMode.values.first,
+    );
+  }
+
+  Future<void> save() async {
+    await ref.read(cartRepoProvider).save(state);
   }
 }

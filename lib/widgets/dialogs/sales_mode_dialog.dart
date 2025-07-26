@@ -34,7 +34,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   late List<SaleMode> _saleModes;
 
   late int _pax;
-  late SaleMode _selectedSaleMode;
+  late SaleMode? _selectedSaleMode;
 
   @override
   void initState() {
@@ -43,7 +43,8 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
     final cart = ref.read(cartStateProvider);
 
     _saleModes = SaleMode.values;
-    _selectedSaleMode = cart.saleMode.id.isNotEmpty ? cart.saleMode : _saleModes[0];
+    // _selectedSaleMode = cart.saleMode!.id.isNotEmpty ? cart.saleMode : _saleModes[0];
+    _selectedSaleMode = _saleModes[0];
     _pax = cart.pax;
     _scrollController = ScrollController();
 
@@ -86,12 +87,12 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
           .setState(
             (old) => old.copyWith(
               pax: _pax,
-              saleMode: _selectedSaleMode,
+              // saleMode: _selectedSaleMode,
             ),
           );
       _onClose();
     } else {
-      await ref.read(cartStateProvider.notifier).newCart(_pax, _selectedSaleMode);
+      await ref.read(cartStateProvider.notifier).newCart(_pax, _selectedSaleMode!);
       if (!mounted) return;
       context.goNamed(IkkiRouter.cart.name);
     }
@@ -169,7 +170,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
               },
               itemBuilder: (context, index) {
                 final saleMode = _saleModes[index];
-                final isSelected = _selectedSaleMode.id == saleMode.id;
+                final isSelected = _selectedSaleMode?.id == saleMode.id;
 
                 return ChoiceChip(
                   padding: const EdgeInsets.all(16),

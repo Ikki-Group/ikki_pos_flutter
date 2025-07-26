@@ -12,6 +12,14 @@ class CurrentUser extends _$CurrentUser {
     return null;
   }
 
+  UserModel requireUser() {
+    final user = state;
+    if (user == null) {
+      throw Exception('[CurrentUser] User is null');
+    }
+    return user;
+  }
+
   Future<void> setUser(UserModel user) async {
     state = user;
   }

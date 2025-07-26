@@ -18,6 +18,14 @@ class IkkiPosApp extends ConsumerWidget {
       // theme: AppThemeFlex.light,
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
+      // builder: (ctx, child) {
+      //   ScreenUtil.init(ctx, designSize: const Size(2000, 1920));
+      //   print('object');
+      //   return Theme(
+      //     data: POSTheme.lightTheme,
+      //     child: child!,
+      //   );
+      // },
     );
   }
 }
@@ -25,6 +33,6 @@ class IkkiPosApp extends ConsumerWidget {
 Future<void> setPreferredOrientations() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.black));
   return SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
   ]);
 }

@@ -86,7 +86,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
     cart.addCartItem(
       CartItem(
         id: widget.cartItem?.id ?? ObjectId().toString(),
-        batch: 1,
+        batchId: 1,
         product: CartItemProduct(
           id: widget.product.id,
           name: widget.product.name,

@@ -165,7 +165,7 @@ class _CartAction extends ConsumerWidget {
             const SizedBox(width: 8),
             IconButton.outlined(
               icon: const Icon(Icons.save),
-              onPressed: () => ref.read(cartStateProvider.notifier).clearAllItems(),
+              onPressed: () => ref.read(cartStateProvider.notifier).save(),
               style: IconButton.styleFrom(
                 foregroundColor: POSTheme.primaryBlue,
                 side: const BorderSide(color: POSTheme.primaryBlue),

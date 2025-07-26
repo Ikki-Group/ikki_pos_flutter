@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
+import 'package:flutter_thermal_printer/utils/printer.dart';
+import 'package:fpdart/fpdart.dart' as fp;
 
 import '../../../data/printer/printer_enum.dart';
 import '../../../data/printer/printer_provider.dart';
+import '../../../data/printer/sample.dart';
 import '../../../widgets/dialogs/ikki_dialog.dart';
 
 class AddPrinterDialog extends StatefulWidget {
@@ -105,33 +111,64 @@ class _PrinterBluetoothDialog extends ConsumerStatefulWidget {
 }
 
 class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialog> {
-  String? selected;
+  final FlutterThermalPrinter instance = FlutterThermalPrinter.instance;
 
-  void _onClose() {
+  Printer? selectedPrinter;
+  bool isScanning = false;
+  bool isLoading = false;
+  List<Printer> printers = [];
+  StreamSubscription<List<Printer>>? devicesStreamSubscription;
+
+  void onClose() {
     Navigator.of(context).pop();
   }
 
-  void _onConfirm() {
+  Future<void> onConfirm() async {
+    if (selectedPrinter == null) return;
+    isLoading = true;
+    setState(() {});
+
     Navigator.of(context).pop();
   }
 
-  void _scan() {
-    ref.read(printerProviderProvider.notifier).startScan().catchError((_) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Tidak dapat menemukan printer'),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      );
+  Future<void> scan() async {
+    isScanning = true;
+    selectedPrinter = null;
+    setState(() {});
+
+    await ref.read(printerProviderProvider.notifier).requestBluetoothPermissions();
+    await instance.getPrinters(connectionTypes: [ConnectionType.BLE]);
+
+    devicesStreamSubscription = instance.devicesStream.listen((List<Printer> rawPrinters) async {
+      printers = rawPrinters.filter((p) => p.name != null && p.name!.isNotEmpty).toList();
+      setState(() {});
     });
+
+    Future.delayed(const Duration(seconds: 5), () {
+      print('[PrinterProvider] stopScan');
+      devicesStreamSubscription?.cancel();
+      instance.stopScan();
+      isScanning = false;
+      setState(() {});
+    });
+  }
+
+  Future<void> onTest(Printer printer) async {
+    print('Test Printer: ${printer.name}');
+    try {
+      final bytes = await receiptSample();
+      final chunks = bytes.splitByLength(100);
+      for (final chunk in chunks) {
+        await instance.printData(printer, chunk, longData: true);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final allowNext = selected != null;
+    final allowNext = selectedPrinter != null;
 
     return IkkiDialog(
       title: 'Printer Bluetooth',
@@ -140,14 +177,14 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
         children: <Widget>[
           Expanded(
             child: OutlinedButton(
-              onPressed: _onClose,
+              onPressed: onClose,
               child: const Text('Batal'),
             ),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: ElevatedButton(
-              onPressed: allowNext ? _onConfirm : null,
+              onPressed: allowNext ? onConfirm : null,
               child: const Text('Sambungkan'),
             ),
           ),
@@ -161,32 +198,34 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
             children: [
               const Text('Daftar Printer'),
               const Spacer(),
-              TextButton(
-                onPressed: _scan,
-                child: const Text('Pindai'),
+              TextButton.icon(
+                onPressed: scan,
+                icon: isScanning ? null : const Icon(Icons.search),
+                label: Text(isScanning ? 'Scanning...' : 'Scan'),
               ),
             ],
           ),
           const Divider(),
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
-            child: ListView.builder(
-              itemCount: 100,
-              itemBuilder: (BuildContext context, int index) {
-                final value = index.toString();
-                return CheckboxListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 2),
-                  title: Text('Printer $index'),
-                  subtitle: const Text('IP: 192.168.1.1'),
-                  value: selected == value,
-                  onChanged: (_) {
-                    setState(() {
-                      selected = value;
-                    });
-                  },
-                );
-              },
-            ),
+            child: isScanning
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: printers.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final printer = printers.elementAt(index);
+                      return CheckboxListTile(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 2),
+                        title: Text(printer.name!),
+                        subtitle: Text(printer.address!),
+                        value: printer.address == selectedPrinter?.address,
+                        onChanged: (bool? value) {
+                          selectedPrinter = printer;
+                          setState(() {});
+                        },
+                      );
+                    },
+                  ),
           ),
         ],
       ),

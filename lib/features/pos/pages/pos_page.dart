@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/cart/cart_repo.dart';
+
 class PosPage extends ConsumerStatefulWidget {
   const PosPage({super.key});
 
@@ -11,6 +13,7 @@ class PosPage extends ConsumerStatefulWidget {
 class _PosPageState extends ConsumerState<PosPage> {
   @override
   Widget build(BuildContext context) {
+    ref.read(cartRepoProvider).list().then(print);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ColoredBox(

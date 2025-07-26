@@ -29,7 +29,7 @@ class PrinterRepo {
     final raw = sp.getString(SharedPrefsKeys.printers.name);
     var printers = <PrinterModel>[];
     if (raw != null) {
-      printers = List<PrinterModel>.from((jsonDecode(raw) as JsonList).map(PrinterModel.fromJson));
+      printers = (jsonDecode(raw) as JsonList).map(PrinterModel.fromJson).toList();
     } else {
       printers = await fetch();
     }

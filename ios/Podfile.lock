@@ -9,9 +9,15 @@ PODS:
     - Flutter
   - flutter_thermal_printer (0.0.1):
     - Flutter
+  - newrelic_mobile (1.1.12):
+    - Flutter
+    - NewRelicAgent (~> 7.5.6)
+  - NewRelicAgent (7.5.6)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.3.0):
+    - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -25,9 +31,15 @@ DEPENDENCIES:
   - flutter_blue_plus_darwin (from `.symlinks/plugins/flutter_blue_plus_darwin/darwin`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_thermal_printer (from `.symlinks/plugins/flutter_thermal_printer/ios`)
+  - newrelic_mobile (from `.symlinks/plugins/newrelic_mobile/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - NewRelicAgent
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -40,8 +52,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_thermal_printer:
     :path: ".symlinks/plugins/flutter_thermal_printer/ios"
+  newrelic_mobile:
+    :path: ".symlinks/plugins/newrelic_mobile/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
@@ -53,7 +69,10 @@ SPEC CHECKSUMS:
   flutter_blue_plus_darwin: 20a08bfeaa0f7804d524858d3d8744bcc1b6dbc3
   flutter_keyboard_visibility: 4625131e43015dbbe759d9b20daaf77e0e3f6619
   flutter_thermal_printer: 56e0926d5ac26e5f407cdf760013313dee05a318
+  newrelic_mobile: 040c012295a3ca2d4af8493095d81a7f54cbcd19
+  NewRelicAgent: d5628f58fa2928b1377fe866c6f52750d21c1a4b
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
 
