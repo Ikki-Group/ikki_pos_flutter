@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:newrelic_mobile/newrelic_navigation_observer.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/pages/auth_device_page.dart';
@@ -23,9 +22,7 @@ part 'app_router.g.dart';
 GoRouter goRouter(Ref ref) {
   final router = GoRouter(
     initialLocation: IkkiRouter.splash.path,
-    observers: [
-      NewRelicNavigationObserver(),
-    ],
+    observers: [],
     routes: <RouteBase>[
       GoRoute(
         path: IkkiRouter.splash.path,
