@@ -1,6 +1,6 @@
-// ignore_for_file: prefer_const_constructors, no_default_cases, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
+
+import '../../core/config/pos_theme.dart';
 
 enum ButtonVariant {
   primary,
@@ -19,15 +19,14 @@ enum ButtonSize {
 }
 
 class ButtonVariants {
-  // Base colors (define these in your theme)
-  static const Color primaryColor = Color(0xFF3B82F6);
-  static const Color secondaryColor = Color(0xFF6B7280);
-  static const Color destructiveColor = Color(0xFFEF4444);
+  static const Color primaryColor = POSTheme.primaryBlue;
+  static const Color secondaryColor = POSTheme.secondaryOrange;
+  static const Color destructiveColor = POSTheme.accentRed;
   static const Color surfaceColor = Color(0xFFF9FAFB);
-  static const Color borderColor = Color(0xFFE5E7EB);
-  static const Color textPrimaryColor = Color(0xFF111827);
-  static const Color textSecondaryColor = Color(0xFF6B7280);
-  static const Color textOnPrimaryColor = Color(0xFFFFFFFF);
+  static const Color borderColor = POSTheme.borderLight;
+  static const Color textPrimaryColor = POSTheme.textPrimary;
+  static const Color textSecondaryColor = POSTheme.textSecondary;
+  static const Color textOnPrimaryColor = POSTheme.textOnPrimary;
 
   static ButtonStyle getVariant(ButtonVariant variant, {ButtonSize size = ButtonSize.medium}) {
     switch (variant) {
@@ -85,7 +84,7 @@ class ButtonVariants {
     return ElevatedButton.styleFrom(
       backgroundColor: primaryColor,
       foregroundColor: textOnPrimaryColor,
-      disabledBackgroundColor: Color(0xFFE5E7EB),
+      disabledBackgroundColor: const Color(0xFFE5E7EB),
       disabledForegroundColor: textSecondaryColor,
       elevation: 0,
       shadowColor: Colors.transparent,
@@ -102,13 +101,13 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return Color(0xFFE5E7EB);
+          return const Color(0xFFE5E7EB);
         }
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFF2563EB); // Darker blue on hover
+          return const Color(0xFF2563EB); // Darker blue on hover
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFF1D4ED8); // Even darker on press
+          return const Color(0xFF1D4ED8); // Even darker on press
         }
         return primaryColor;
       }),
@@ -125,7 +124,7 @@ class ButtonVariants {
     return ElevatedButton.styleFrom(
       backgroundColor: secondaryColor,
       foregroundColor: textOnPrimaryColor,
-      disabledBackgroundColor: Color(0xFFE5E7EB),
+      disabledBackgroundColor: const Color(0xFFE5E7EB),
       disabledForegroundColor: textSecondaryColor,
       elevation: 0,
       shadowColor: Colors.transparent,
@@ -142,13 +141,13 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return Color(0xFFE5E7EB);
+          return const Color(0xFFE5E7EB);
         }
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFF4B5563);
+          return const Color(0xFF4B5563);
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFF374151);
+          return const Color(0xFF374151);
         }
         return secondaryColor;
       }),
@@ -159,7 +158,7 @@ class ButtonVariants {
     return ElevatedButton.styleFrom(
       backgroundColor: destructiveColor,
       foregroundColor: textOnPrimaryColor,
-      disabledBackgroundColor: Color(0xFFE5E7EB),
+      disabledBackgroundColor: const Color(0xFFE5E7EB),
       disabledForegroundColor: textSecondaryColor,
       elevation: 0,
       shadowColor: Colors.transparent,
@@ -176,13 +175,13 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return Color(0xFFE5E7EB);
+          return const Color(0xFFE5E7EB);
         }
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFFDC2626);
+          return const Color(0xFFDC2626);
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFFB91C1C);
+          return const Color(0xFFB91C1C);
         }
         return destructiveColor;
       }),
@@ -195,7 +194,7 @@ class ButtonVariants {
       foregroundColor: destructiveColor,
       disabledBackgroundColor: Colors.transparent,
       disabledForegroundColor: textSecondaryColor,
-      side: BorderSide(color: borderColor),
+      side: const BorderSide(color: borderColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -208,21 +207,21 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFFF9FAFB);
+          return const Color(0xFFF9FAFB);
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFFF3F4F6);
+          return const Color(0xFFF3F4F6);
         }
         return Colors.transparent;
       }),
       side: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return BorderSide(color: Color(0xFFE5E7EB));
+          return const BorderSide(color: Color(0xFFE5E7EB));
         }
         if (states.contains(WidgetState.hovered)) {
-          return BorderSide(color: Color(0xFFDC2626));
+          return const BorderSide(color: Color(0xFFDC2626));
         }
-        return BorderSide(color: destructiveColor);
+        return const BorderSide(color: destructiveColor);
       }),
       foregroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
@@ -242,7 +241,7 @@ class ButtonVariants {
       foregroundColor: textPrimaryColor,
       disabledBackgroundColor: Colors.transparent,
       disabledForegroundColor: textSecondaryColor,
-      side: BorderSide(color: borderColor),
+      side: const BorderSide(color: borderColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -255,21 +254,21 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFFF9FAFB);
+          return const Color(0xFFF9FAFB);
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFFF3F4F6);
+          return const Color(0xFFF3F4F6);
         }
         return Colors.transparent;
       }),
       side: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return BorderSide(color: Color(0xFFE5E7EB));
+          return const BorderSide(color: Color(0xFFE5E7EB));
         }
         if (states.contains(WidgetState.hovered)) {
-          return BorderSide(color: primaryColor);
+          return const BorderSide(color: primaryColor);
         }
-        return BorderSide(color: borderColor);
+        return const BorderSide(color: borderColor);
       }),
       foregroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
@@ -301,10 +300,10 @@ class ButtonVariants {
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFFF9FAFB);
+          return const Color(0xFFF9FAFB);
         }
         if (states.contains(WidgetState.pressed)) {
-          return Color(0xFFF3F4F6);
+          return const Color(0xFFF3F4F6);
         }
         return Colors.transparent;
       }),
@@ -345,7 +344,7 @@ class ButtonVariants {
           return textSecondaryColor;
         }
         if (states.contains(WidgetState.hovered)) {
-          return Color(0xFF2563EB);
+          return const Color(0xFF2563EB);
         }
         return primaryColor;
       }),
@@ -494,7 +493,7 @@ class ThemedButton extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               text,
             ],
           ),
@@ -510,14 +509,14 @@ class ThemedButton extends StatelessWidget {
               SizedBox(
                 width: loadingSize,
                 height: loadingSize,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     ButtonVariants.primaryColor,
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               text,
             ],
           ),
@@ -532,14 +531,14 @@ class ThemedButton extends StatelessWidget {
               SizedBox(
                 width: loadingSize,
                 height: loadingSize,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     ButtonVariants.textOnPrimaryColor,
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               text,
             ],
           ),

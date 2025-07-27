@@ -808,14 +808,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.6"
-  newrelic_mobile:
-    dependency: "direct main"
-    description:
-      name: newrelic_mobile
-      sha256: d88995b47869da144434586ff7e525a624a6d585370ad64214ba119a5424ed89
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.12"
   node_preamble:
     dependency: transitive
     description:
