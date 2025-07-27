@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
@@ -44,12 +44,9 @@ class CartProducts extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.shopping_cart, size: 64, color: POSTheme.neutral500),
+                  const Icon(Icons.no_meals, size: 48, color: POSTheme.borderDark),
                   const SizedBox(height: 16),
-                  Text(
-                    'Tidak ada produk yang ditemukan',
-                    style: context.textTheme.headlineSmall,
-                  ),
+                  Text('Tidak ada produk yang ditemukan', style: context.textTheme.bodyLarge),
                 ],
               ),
             )
@@ -82,28 +79,25 @@ class _ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final name = "${product.hasVariant ? '🧩' : ''} ${product.name}";
+
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        foregroundColor: POSTheme.neutral800,
+        foregroundColor: POSTheme.textPrimary,
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        side: const BorderSide(color: POSTheme.neutral200),
+        side: const BorderSide(color: POSTheme.borderLight),
       ),
       onPressed: onPress,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "${product.hasVariant ? '🧩' : ''} ${product.name}",
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Text(name, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 6),
           Text(
             Formatter.toIdr.format(product.price),
-            style: const TextStyle(fontSize: 14, color: POSTheme.neutral600),
+            style: const TextStyle(fontSize: 14, color: POSTheme.textOnSecondary),
           ),
         ],
       ),

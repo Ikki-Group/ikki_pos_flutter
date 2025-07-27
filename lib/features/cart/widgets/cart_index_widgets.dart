@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
@@ -18,7 +18,7 @@ class BadgeReceiptCode extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       constraints: const BoxConstraints(maxWidth: 300),
       decoration: BoxDecoration(
-        color: POSTheme.neutral200,
+        color: POSTheme.borderLight,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -31,7 +31,7 @@ class BadgeReceiptCode extends ConsumerWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: POSTheme.neutral600,
+              color: POSTheme.textOnSecondary,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -132,7 +132,7 @@ class _CartSearchProductState extends ConsumerState<CartSearchProduct> {
           suffixIcon: search.isNotEmpty
               ? InkWell(
                   onTap: onClear,
-                  child: const Icon(Icons.highlight_off, color: POSTheme.errorRedLight),
+                  child: const Icon(Icons.highlight_off, color: POSTheme.accentRed),
                 )
               : null,
           constraints: const BoxConstraints(minHeight: 48),
@@ -148,8 +148,7 @@ class CartSalesModeInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartStateProvider);
-    // final text = '${cart.saleMode?.name} (${cart.pax} Pax)';
-    const text = '';
+    final text = '${cart.saleMode.value} (${cart.pax} Pax)';
 
     void onPressed() {
       SalesModeDialog.show(context);
@@ -157,7 +156,7 @@ class CartSalesModeInfo extends ConsumerWidget {
 
     return SizedBox(
       width: double.infinity,
-      child: FilledButton.tonal(onPressed: onPressed, child: const Text(text)),
+      child: FilledButton.tonal(onPressed: onPressed, child: Text(text)),
     );
   }
 }
@@ -175,6 +174,7 @@ class _CartSummaryExpandedState extends ConsumerState<CartSummaryExpanded> {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+
     final subtotal = ref.watch(cartStateProvider.select((s) => s.net));
     final itemCount = ref.watch(cartStateProvider.select((s) => s.items.fold<int>(0, (prev, curr) => prev + curr.qty)));
 
@@ -189,7 +189,7 @@ class _CartSummaryExpandedState extends ConsumerState<CartSummaryExpanded> {
           width: double.infinity,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: POSTheme.lightOrange.withValues(alpha: .4),
+            color: POSTheme.statusWarning.withValues(alpha: .1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: POSTheme.secondaryOrangeDark.withValues(alpha: .2)),
           ),
@@ -199,16 +199,16 @@ class _CartSummaryExpandedState extends ConsumerState<CartSummaryExpanded> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Items', style: textTheme.titleMedium),
-                  Text('$itemCount item', style: textTheme.titleMedium),
+                  Text('Items', style: textTheme.labelMedium),
+                  Text('$itemCount item', style: textTheme.labelMedium),
                 ],
               ),
               const SizedBox(height: 4),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Subtotal', style: textTheme.titleLarge),
-                  Text(Formatter.toIdr.format(subtotal), style: textTheme.titleLarge),
+                  Text('Subtotal', style: textTheme.labelLarge),
+                  Text(Formatter.toIdr.format(subtotal), style: textTheme.labelLarge),
                 ],
               ),
             ],

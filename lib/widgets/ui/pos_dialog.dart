@@ -38,8 +38,9 @@ class PosDialog extends StatelessWidget {
               title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
+                letterSpacing: -0.2,
               ),
             ),
             if (subtitle != null)

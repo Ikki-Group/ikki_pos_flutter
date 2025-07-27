@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
@@ -19,7 +19,7 @@ class CartIndexPage extends ConsumerWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: const ColoredBox(
-        color: Color.fromARGB(255, 244, 247, 253),
+        color: POSTheme.backgroundSecondary,
         child: Row(
           children: <Widget>[
             Expanded(
@@ -158,8 +158,8 @@ class _CartAction extends ConsumerWidget {
               icon: const Icon(Icons.delete_sweep_outlined),
               onPressed: () => ref.read(cartStateProvider.notifier).clearAllItems(),
               style: IconButton.styleFrom(
-                foregroundColor: POSTheme.errorRedLight,
-                side: const BorderSide(color: POSTheme.errorRedLight),
+                foregroundColor: POSTheme.accentRed,
+                side: const BorderSide(color: POSTheme.accentRed),
               ),
             ),
             const SizedBox(width: 8),

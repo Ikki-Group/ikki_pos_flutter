@@ -2,12 +2,13 @@ import 'package:bson/bson.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../data/product/product.model.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/button_variants.dart';
+import '../../../widgets/ui/pos_dialog.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {
   const CartProductPickerDialog({
@@ -110,246 +111,156 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+
     var allowToProcess = quantity > 0;
     if (allowToProcess && widget.product.hasVariant) {
       allowToProcess = selectedVariant != null;
     }
 
-    return Dialog(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        constraints: const BoxConstraints(maxWidth: 600),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: .2),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(color: POSTheme.primaryBlue),
+    return PosDialog(
+      title: widget.product.name,
+      constraints: const BoxConstraints(maxWidth: 700),
+      footer: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF9FAFB),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+              ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.product.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                      ],
-                    ),
+                  Text('Total', style: textTheme.titleMedium),
+                  Text(
+                    Formatter.toIdr.format(widget.product.price * quantity),
+                    style: textTheme.titleMedium?.copyWith(color: POSTheme.primaryBlue),
                   ),
                 ],
               ),
             ),
-            Flexible(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Kuantitas',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF374151),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFE5E7EB)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildQuantityButton(
-                            icon: Icons.remove,
-                            onPressed: _decrementQuantity,
-                            enabled: quantity > 1,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            constraints: const BoxConstraints(minWidth: 46),
-                            alignment: Alignment.center,
-                            color: const Color.fromARGB(69, 203, 203, 203),
-                            child: Text(
-                              quantity.toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF374151),
-                              ),
-                            ),
-                          ),
-                          _buildQuantityButton(
-                            icon: Icons.add,
-                            onPressed: _incrementQuantity,
-                            enabled: quantity < 99,
-                          ),
-                        ],
-                      ),
-                    ),
+          ),
+          const SizedBox(width: 32),
+          Expanded(child: ThemedButton.cancel(onPressed: _onClose)),
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 2,
+            child: ThemedButton.process(onPressed: allowToProcess ? _onConfirm : null),
+          ),
+        ],
+      ),
+      children: [
+        Text('Kuantitas', style: textTheme.labelLarge),
+        const SizedBox(height: 12),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border.all(color: POSTheme.borderLight),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildQuantityButton(
+                  icon: Icons.remove,
+                  onPressed: _decrementQuantity,
+                  enabled: quantity > 1,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  constraints: const BoxConstraints(minWidth: 46),
+                  alignment: Alignment.center,
+                  color: POSTheme.borderLight,
+                  child: Text(quantity.toString(), style: textTheme.labelLarge),
+                ),
+                _buildQuantityButton(
+                  icon: Icons.add,
+                  onPressed: _incrementQuantity,
+                  enabled: quantity < 99,
+                ),
+              ],
+            ),
+          ),
+        ),
 
-                    // Variants Section (if available)
-                    if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
-                      const SizedBox(height: 24),
-                      const Text(
-                        'Varian',
+        // Variants Section (if available)
+        if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
+          const SizedBox(height: 24),
+          Text('Varian', style: textTheme.labelLarge),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: widget.product.variants.map((variant) {
+              final isSelected = selectedVariant == variant.id;
+              return InkWell(
+                onTap: () {
+                  selectedVariant = variant.id;
+                  setState(() {});
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  constraints: const BoxConstraints(minWidth: 160),
+                  decoration: BoxDecoration(
+                    color: isSelected ? POSTheme.primaryBlue : Colors.white,
+                    border: Border.all(
+                      color: isSelected ? POSTheme.primaryBlue : const Color(0xFFE5E7EB),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        variant.name,
                         style: TextStyle(
-                          fontSize: 16,
+                          color: isSelected ? Colors.white : const Color(0xFF374151),
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF374151),
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: widget.product.variants.map((variant) {
-                          final isSelected = selectedVariant == variant.id;
-                          return InkWell(
-                            onTap: () {
-                              selectedVariant = variant.id;
-                              setState(() {});
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                              constraints: const BoxConstraints(minWidth: 160),
-                              decoration: BoxDecoration(
-                                color: isSelected ? const Color(0xFF4F7DF3) : Colors.white,
-                                border: Border.all(
-                                  color: isSelected ? const Color(0xFF4F7DF3) : const Color(0xFFE5E7EB),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    variant.name,
-                                    style: TextStyle(
-                                      color: isSelected ? Colors.white : const Color(0xFF374151),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    Formatter.toIdr.format(variant.price),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isSelected ? Colors.white : const Color(0xFF374151),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                      const SizedBox(height: 4),
+                      Text(
+                        Formatter.toIdr.format(variant.price),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: isSelected ? Colors.white : const Color(0xFF374151),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
-
-                    // Notes Section
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Catatan (Opsional)',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF374151),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: TextField(
-                        controller: noteController,
-                        maxLines: 3,
-                        onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                        decoration: const InputDecoration(
-                          hintText: 'Tambah Catatan...',
-                          hintStyle: TextStyle(fontSize: 14),
-                        ),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF374151),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              );
+            }).toList(),
+          ),
+        ],
+
+        // Notes Section
+        const SizedBox(height: 24),
+        Text('Catatan (Opsional)', style: textTheme.labelLarge),
+        const SizedBox(height: 12),
+        Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: TextField(
+            controller: noteController,
+            maxLines: 3,
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            decoration: const InputDecoration(
+              hintText: 'Tambah Catatan...',
+              hintStyle: TextStyle(fontSize: 14),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF9FAFB),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE5E7EB)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Total',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF374151),
-                            ),
-                          ),
-                          Text(
-                            Formatter.toIdr.format(widget.product.price * quantity),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF4F7DF3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 32),
-                  Expanded(child: ThemedButton.cancel(onPressed: _onClose)),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    flex: 2,
-                    child: ThemedButton.process(onPressed: allowToProcess ? _onConfirm : null),
-                  ),
-                ],
-              ),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF374151),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -362,10 +273,10 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
       onTap: enabled ? onPressed : null,
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Icon(
           icon,
-          color: enabled ? const Color(0xFF4F7DF3) : const Color(0xFF9CA3AF),
+          color: enabled ? POSTheme.primaryBlueDark : const Color(0xFF9CA3AF),
           size: 20,
         ),
       ),

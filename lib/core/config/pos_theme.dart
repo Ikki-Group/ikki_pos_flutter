@@ -27,7 +27,7 @@ abstract class POSTheme {
 
   // Background Colors
   static const Color backgroundPrimary = Color(0xFFF8FAFC);
-  static const Color backgroundSecondary = Color(0xFFE2E8F0);
+  static const Color backgroundSecondary = Color(0xFFF4F7FD);
   static const Color backgroundAccent = Color(0xFFDEF7EC);
 
   // Text Colors
@@ -160,7 +160,7 @@ abstract class POSTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryBlue,
-          side: const BorderSide(color: borderMedium),
+          side: const BorderSide(color: primaryBlue),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -197,6 +197,17 @@ abstract class POSTheme {
         ),
       ),
 
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: primaryBlue,
+          padding: const EdgeInsets.all(12),
+          iconSize: 24,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+
       // Floating Action Button Theme - Orange like competitor
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: secondaryOrange,
@@ -211,25 +222,25 @@ abstract class POSTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surfaceSecondary,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: borderLight),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: borderLight),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: primaryBlue, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: statusError),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: statusError, width: 2),
         ),
         hintStyle: const TextStyle(
@@ -336,86 +347,71 @@ abstract class POSTheme {
       // Text Theme
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          color: textPrimary,
           fontSize: 57,
           fontWeight: FontWeight.w400,
           letterSpacing: -0.25,
         ),
         displayMedium: TextStyle(
-          color: textPrimary,
           fontSize: 45,
           fontWeight: FontWeight.w400,
         ),
         displaySmall: TextStyle(
-          color: textPrimary,
           fontSize: 36,
           fontWeight: FontWeight.w400,
         ),
         headlineLarge: TextStyle(
-          color: textPrimary,
           fontSize: 32,
           fontWeight: FontWeight.w400,
         ),
         headlineMedium: TextStyle(
-          color: textPrimary,
           fontSize: 28,
           fontWeight: FontWeight.w400,
         ),
         headlineSmall: TextStyle(
-          color: textPrimary,
           fontSize: 24,
           fontWeight: FontWeight.w400,
         ),
         titleLarge: TextStyle(
-          color: textPrimary,
           fontSize: 22,
           fontWeight: FontWeight.w600,
           letterSpacing: -0.2,
         ),
         titleMedium: TextStyle(
-          color: textPrimary,
           fontSize: 18,
           fontWeight: FontWeight.w600,
           letterSpacing: -0.25,
         ),
         titleSmall: TextStyle(
-          color: textPrimary,
           fontSize: 16,
           fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
         ),
         bodyLarge: TextStyle(
-          color: textPrimary,
           fontSize: 16,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
         ),
         bodyMedium: TextStyle(
-          color: textPrimary,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
         ),
         bodySmall: TextStyle(
-          color: textSecondary,
           fontSize: 12,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.4,
         ),
         labelLarge: TextStyle(
-          color: textPrimary,
           fontSize: 14,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.1,
         ),
         labelMedium: TextStyle(
-          color: textSecondary,
           fontSize: 12,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.5,
         ),
         labelSmall: TextStyle(
-          color: textTertiary,
           fontSize: 11,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.5,
@@ -486,4 +482,8 @@ abstract class POSTextStyles {
     fontWeight: FontWeight.w500,
     color: POSTheme.textSecondary,
   );
+}
+
+extension TextThemeX on BuildContext {
+  TextTheme get textTheme => Theme.of(this).textTheme;
 }

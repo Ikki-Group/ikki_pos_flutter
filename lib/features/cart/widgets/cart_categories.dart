@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/pos_theme.dart';
 import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
 import '../providers/cart_index_provider.dart';
@@ -50,12 +51,12 @@ class _CategoryItem extends StatelessWidget {
       child: FilledButton(
         style: FilledButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          foregroundColor: isSelected ? Colors.white : Colors.grey[800],
-          backgroundColor: isSelected ? const Color(0xFF4285F4) : Colors.white,
+          foregroundColor: isSelected ? POSTheme.textOnPrimary : POSTheme.textOnSecondary,
+          backgroundColor: isSelected ? POSTheme.primaryBlue : POSTheme.textOnPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          side: BorderSide(color: Colors.grey[200]!),
+          side: const BorderSide(color: POSTheme.borderLight),
           fixedSize: Size.infinite,
         ),
         onPressed: onPressed,
