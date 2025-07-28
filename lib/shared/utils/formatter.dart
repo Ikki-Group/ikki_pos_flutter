@@ -12,4 +12,9 @@ abstract class Formatter {
     symbol: '',
     decimalDigits: 0,
   );
+
+  static DateFormat date = DateFormat(
+    'EEEE, d MMMM yyyy',
+    'id_ID',
+  );
 }

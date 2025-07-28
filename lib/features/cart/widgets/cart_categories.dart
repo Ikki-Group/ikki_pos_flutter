@@ -14,6 +14,10 @@ class CartCategories extends ConsumerWidget {
     final categories = ref.watch(productProvider).requireValue.categories;
     final categoryId = ref.watch(cartIndexProvider).categoryId;
 
+    void onPressed(ProductCategory category) {
+      ref.read(cartIndexProvider.notifier).setCategory(category.id);
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -22,9 +26,7 @@ class CartCategories extends ConsumerWidget {
             _CategoryItem(
               category: category,
               isSelected: categoryId == category.id,
-              onPressed: () {
-                ref.read(cartIndexProvider.notifier).setCategory(category.id);
-              },
+              onPressed: () => onPressed(category),
             ),
         ],
       ),
@@ -62,20 +64,11 @@ class _CategoryItem extends StatelessWidget {
         onPressed: onPressed,
         child: Column(
           children: <Widget>[
-            Text(
-              category.name,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text(category.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             const SizedBox(height: 4),
             Text(
               '${category.productCount} Items',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ],
         ),

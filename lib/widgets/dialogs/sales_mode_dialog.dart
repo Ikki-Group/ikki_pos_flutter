@@ -11,6 +11,9 @@ import '../ui/pos_dialog.dart';
 class SalesModeDialog extends ConsumerStatefulWidget {
   const SalesModeDialog({super.key});
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _SalesModeDialogState();
+
   static void show(BuildContext context) {
     showDialog<void>(
       context: context,
@@ -19,9 +22,6 @@ class SalesModeDialog extends ConsumerStatefulWidget {
       },
     );
   }
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SalesModeDialogState();
 }
 
 const _kChipWidth = 50.0;
@@ -29,7 +29,7 @@ const _kChipSpacing = 8.0;
 const double _kItemWidth = _kChipWidth + _kChipSpacing;
 
 class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
-  late ScrollController _scrollController;
+  late ScrollController scrollController;
 
   int pax = 1;
   SaleMode selectedSaleMode = SaleMode.dineIn;
@@ -41,17 +41,17 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
 
     selectedSaleMode = cart.saleMode;
     pax = cart.pax;
-    _scrollController = ScrollController();
+    scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToSelectedPax();
+      scrollToSelectedPax();
     });
   }
 
-  void _scrollToSelectedPax() {
-    if (_scrollController.hasClients) {
-      final targetOffset = _calculateScrollOffset(pax);
-      _scrollController.animateTo(
+  void scrollToSelectedPax() {
+    if (scrollController.hasClients) {
+      final targetOffset = calculateScrollOffset(pax);
+      scrollController.animateTo(
         targetOffset,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -59,33 +59,26 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
     }
   }
 
-  double _calculateScrollOffset(int pax) {
+  double calculateScrollOffset(int pax) {
     final itemOffset = (pax - 1) * _kItemWidth;
-    final viewportCenter = _scrollController.position.viewportDimension / 2;
+    final viewportCenter = scrollController.position.viewportDimension / 2;
     const itemCenter = _kChipWidth / 2;
 
     return (itemOffset - viewportCenter + itemCenter).clamp(
       0.0,
-      _scrollController.position.maxScrollExtent,
+      scrollController.position.maxScrollExtent,
     );
   }
 
-  void _onClose() {
+  void onClose() {
     Navigator.of(context).pop();
   }
 
-  Future<void> _onProcessPressed() async {
+  Future<void> onProcessPressed() async {
     final routeName = GoRouter.of(context).state.name;
     if (routeName == IkkiRouter.cart.name) {
-      ref
-          .read(cartStateProvider.notifier)
-          .setState(
-            (old) => old.copyWith(
-              pax: pax,
-              saleMode: selectedSaleMode,
-            ),
-          );
-      _onClose();
+      ref.read(cartStateProvider.notifier).updateSalesAndPax(selectedSaleMode, pax);
+      onClose();
     } else {
       await ref.read(cartStateProvider.notifier).newCart(pax, selectedSaleMode);
       if (!mounted) return;
@@ -104,9 +97,9 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          ThemedButton.cancel(onPressed: _onClose),
+          ThemedButton.cancel(onPressed: onClose),
           const SizedBox(width: 8),
-          ThemedButton.process(onPressed: _onProcessPressed),
+          ThemedButton.process(onPressed: onProcessPressed),
         ],
       ),
       children: [
@@ -115,7 +108,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
         ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 50),
           child: ListView.separated(
-            controller: _scrollController,
+            controller: scrollController,
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemCount: 100,

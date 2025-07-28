@@ -9,3 +9,13 @@ part 'pos_provider.g.dart';
 FutureOr<List<Cart>> posCartList(Ref ref) async {
   return ref.watch(cartRepoProvider).list();
 }
+
+enum PosTabItem {
+  process(label: 'Process'),
+  done(label: 'Success'),
+  canceled(label: 'Void');
+
+  const PosTabItem({required this.label});
+
+  final String label;
+}

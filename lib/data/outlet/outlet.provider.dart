@@ -7,12 +7,6 @@ import 'outlet.repo.dart';
 
 part 'outlet.provider.g.dart';
 
-extension OutletX on OutletModel {
-  bool get isOpen {
-    return session.id.isNotEmpty;
-  }
-}
-
 @Riverpod(keepAlive: true)
 class Outlet extends _$Outlet {
   @override
@@ -42,5 +36,18 @@ class Outlet extends _$Outlet {
     state = AsyncValue.data(outlet);
 
     return true;
+  }
+}
+
+extension OutletX on OutletModel {
+  bool get isOpen {
+    return session.id.isNotEmpty;
+  }
+
+  OutletModel get requireOpen {
+    if (!isOpen) {
+      throw Exception('Outlet session is not open');
+    }
+    return this;
   }
 }

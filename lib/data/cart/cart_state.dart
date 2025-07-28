@@ -8,6 +8,7 @@ import '../outlet/outlet.provider.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
+import '../user/user.model.dart';
 import '../user/user.provider.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
@@ -38,33 +39,32 @@ class CartState extends _$CartState {
     int pax,
     SaleMode saleMode,
   ) async {
-    final outlet = await ref.read(outletProvider.future);
-    final rc = await ref.read(receiptCodeRepoProvider).getCode(outlet.session.id);
-    final user = ref.read(currentUserProvider.notifier).requireUser();
+    final outlet = await ref.read(outletProvider.future).then((value) => value.requireOpen);
+    final sessionId = outlet.session.id;
+    final rc = await ref.read(receiptCodeRepoProvider).getCode(sessionId);
+    final user = _getUser();
 
-    print(rc);
+    final initialLog = _buildLog(action: CartLogAction.create, message: 'Cart created');
+    final initialBatch = CartBatch(id: 1, at: DateTime.now().toString(), by: user.id);
 
-    state = state.copyWith(
+    state = Cart(
       id: ObjectId().hexString,
       rc: rc,
       saleMode: saleMode,
       pax: pax,
-      batches: [
-        CartBatch(id: 1, at: DateTime.now().toString(), by: user.id),
-      ],
-      logs: [log(action: CartLogAction.create, message: 'Cart created')],
+      outletId: outlet.id,
+      sessionId: sessionId,
+      batches: [initialBatch],
+      logs: [initialLog],
+      createdAt: DateTime.now().toIso8601String(),
+      createdBy: user.id,
+      updatedAt: DateTime.now().toIso8601String(),
+      updatedBy: user.id,
     );
   }
 
-  String log({
-    required CartLogAction action,
-    String? message,
-  }) {
-    final user = ref.read(currentUserProvider.notifier).requireUser();
-    final msg =
-        '[${DateTime.now().toIso8601String()}]-[$action]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
-    dev.log(msg);
-    return msg;
+  void updateSalesAndPax(SaleMode saleMode, int pax) {
+    state = state.copyWith(saleMode: saleMode, pax: pax);
   }
 
   void addProductDirectly(ProductModel product) {
@@ -112,6 +112,46 @@ class CartState extends _$CartState {
     _recalculateCart();
   }
 
+  void clearAllItems() {
+    state = state.copyWith(
+      items: [],
+      gross: 0,
+      net: 0,
+    );
+  }
+
+  void reset() {
+    state = const Cart();
+  }
+
+  Future<void> save() async {
+    state = state.copyWith(
+      updatedAt: DateTime.now().toIso8601String(),
+      updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
+    );
+
+    await ref.read(cartRepoProvider).save(state);
+    await ref.read(receiptCodeRepoProvider).commit(state.rc);
+    reset();
+  }
+
+  // Internal methods
+
+  UserModel _getUser() {
+    return ref.read(currentUserProvider.notifier).requireUser();
+  }
+
+  String _buildLog({
+    required CartLogAction action,
+    String? message,
+  }) {
+    final user = ref.read(currentUserProvider.notifier).requireUser();
+    final msg =
+        '[${DateTime.now().toIso8601String()}]-[$action]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
+    dev.log(msg);
+    return msg;
+  }
+
   void _recalculateCart() {
     final items = state.items;
     final itemsGross = items.fold<double>(0, (sum, item) => sum + item.gross);
@@ -125,23 +165,5 @@ class CartState extends _$CartState {
       gross: itemsGross,
       net: finalNet,
     );
-  }
-
-  void clearAllItems() {
-    state = state.copyWith(
-      items: [],
-      gross: 0,
-      net: 0,
-    );
-  }
-
-  void reset() {
-    state = const Cart(
-      // saleMode: SaleMode.values.first,
-    );
-  }
-
-  Future<void> save() async {
-    await ref.read(cartRepoProvider).save(state);
   }
 }

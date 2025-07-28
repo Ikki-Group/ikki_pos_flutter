@@ -10,7 +10,10 @@ extension CartItemX on CartItem {
   }
 }
 
-extension CartX on Cart {}
+extension CartX on Cart {
+  bool get isItemInBatchEmpty => items.indexWhere((item) => item.batchId == batchId).isNegative;
+  bool get isItemEmpty => items.isEmpty;
+}
 
 extension ProductModelX on ProductModel {
   CartItemProduct toCartItemProduct() {

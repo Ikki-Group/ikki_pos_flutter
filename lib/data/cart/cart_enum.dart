@@ -4,3 +4,5 @@ enum CartStatus {
   success,
   canceled,
 }
+
+enum BillType { open, close }

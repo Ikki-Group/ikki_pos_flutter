@@ -20,6 +20,7 @@ class BadgeReceiptCode extends ConsumerWidget {
       decoration: BoxDecoration(
         color: POSTheme.borderLight,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: POSTheme.borderDark),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
+import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
 import '../../../shared/utils/formatter.dart';
 import 'cart_product_picker_dialog.dart';
@@ -15,6 +16,14 @@ class CartItems extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(cartStateProvider.select((s) => s.items));
     final noRecord = items.isEmpty;
+
+    void openPicker(ProductModel product, CartItem cartItem) {
+      CartProductPickerDialog.show(
+        context,
+        product: product,
+        cartItem: cartItem,
+      );
+    }
 
     return Expanded(
       child: noRecord
@@ -44,16 +53,10 @@ class CartItems extends ConsumerWidget {
                   item: item,
                   onRemoved: () => ref.read(cartStateProvider.notifier).removeItem(item),
                   onPressed: () async {
-                    final product = await ref
+                    await ref
                         .read(productProvider.future)
-                        .then((value) => value.products.firstWhere((p) => p.id == item.product.id));
-
-                    await CartProductPickerDialog.show(
-                      // ignore: use_build_context_synchronously
-                      context,
-                      product: product,
-                      cartItem: item,
-                    );
+                        .then((value) => value.products.firstWhere((p) => p.id == item.product.id))
+                        .then((value) => openPicker(value, item));
                   },
                 );
               },
@@ -77,76 +80,85 @@ class _Item extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(137, 240, 240, 240),
+          color: POSTheme.backgroundSecondary,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
-          children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFE0B2),
-                borderRadius: BorderRadius.circular(8),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE0B2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '${item.qty}',
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              alignment: Alignment.center,
-              child: Text(
-                '${item.qty}',
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    item.product.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800],
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      item.product.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
+                    if (item.variant != null && item.variant!.name.isNotEmpty)
+                      Text(
+                        item.variant!.name,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    if (item.note.isNotEmpty) Text('Catatan: ${item.note}', style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              SizedBox(
+                height: 32,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    Formatter.toIdrNoSymbol.format(item.gross),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -.25),
                   ),
-                  if (item.variant != null && item.variant!.name.isNotEmpty)
-                    Text(
-                      item.variant!.name,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                  if (item.note.isNotEmpty)
-                    Text(
-                      item.note,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                ],
+                ),
               ),
-            ),
-            const SizedBox(width: 4),
-            Text(Formatter.toIdrNoSymbol.format(item.gross), style: const TextStyle(fontSize: 14)),
-            // const SizedBox(width: 4),
-            IconButton(
-              icon: const Icon(
-                Icons.highlight_off,
-                size: 24,
+              const SizedBox(width: 4),
+              InkWell(
+                onTap: onRemoved,
+                child: const SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: Icon(
+                    Icons.highlight_off,
+                    size: 24,
+                    color: POSTheme.accentRed,
+                  ),
+                ),
               ),
-              style: IconButton.styleFrom(
-                foregroundColor: Colors.redAccent,
-                padding: EdgeInsets.zero,
-              ),
-              onPressed: onRemoved,
-            ),
-          ],
+              // IconButton(
+              //   icon: ,
+              //   style: IconButton.styleFrom(
+              //     foregroundColor: Colors.redAccent,
+              //     padding: EdgeInsets.zero,
+              //     backgroundColor: Colors.red,
+              //     fixedSize: const Size.square(32),
+              //     minimumSize: Size.zero,
+              //   ),
+              //   onPressed: onRemoved,
+              // ),
+            ],
+          ),
         ),
       ),
     );

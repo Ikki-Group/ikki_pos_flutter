@@ -23,3 +23,4 @@ lint:
 format:
 	echo "Formatting the project.." ; \
 	dart format . ; \
+	

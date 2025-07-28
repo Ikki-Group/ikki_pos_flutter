@@ -17,13 +17,17 @@ class ReceiptCodeRepo {
 
   Future<String> getCode(String sessionId) async {
     final queue = getLocalQueue();
-    return 'POS-Test/$queue';
+    final date = DateTime.now().toString().substring(0, 10);
+    final queuePad = queue.toString().padLeft(4, '0');
+    return 'PT/$date/$queuePad';
   }
 
   Future<bool> commit(String code) async {
-    final [_, queue] = code.split('/');
-    final queueInt = int.parse(queue);
-    return setLocalQueue(queueInt + 1);
+    final queue = getLocalQueue();
+    // final [_, _, queue] = code.split('/');
+    // print(queue);
+    // final queueInt = int.parse(queue);
+    return setLocalQueue(queue + 1);
   }
 
   int getLocalQueue() {

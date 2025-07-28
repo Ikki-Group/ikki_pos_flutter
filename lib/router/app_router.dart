@@ -14,6 +14,7 @@ import '../features/showcase/pages/showcase_index_page.dart';
 import '../features/splash/pages/splash_page.dart';
 import '../features/sync/pages/sync_global_page.dart';
 import '../features/user/pages/user_select_page.dart';
+import '../shared/utils/talker.dart';
 import '../widgets/scaffold/pos/pos_scaffold.dart';
 import 'ikki_router.dart';
 
@@ -24,7 +25,7 @@ GoRouter goRouter(Ref ref) {
   final router = GoRouter(
     initialLocation: IkkiRouter.splash.path,
     // initialLocation: IkkiRouter.showcase.path,
-    observers: [],
+    observers: [initTalkerRouteObserver()],
     routes: <RouteBase>[
       GoRoute(
         path: IkkiRouter.splash.path,

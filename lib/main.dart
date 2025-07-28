@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:scaled_app/scaled_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/db/sembast.dart';
 import 'core/db/shared_prefs.dart';
 import 'router/ikki_pos_app.dart';
+import 'shared/utils/talker.dart';
 
 //
 // Devlopment device (iPad)
@@ -45,14 +47,18 @@ void main() async {
   // await NewrelicMobile.instance.setMaxEventBufferTime(200);
   // await NewrelicMobile.instance.setMaxOfflineStorageSize(200);
 
-  runApp(
-    ProviderScope(
-      // observers: [TalkerStateLogger()],
-      overrides: [
-        sembastServiceProvider.overrideWithValue(SembastService(db: db)),
-        sharedPrefsProvider.overrideWithValue(sp),
-      ],
-      child: const IkkiPosApp(),
-    ),
-  );
+  await initializeDateFormatting(
+    'id_ID',
+  ).then((_) {
+    runApp(
+      ProviderScope(
+        observers: const [TalkerStateLogger()],
+        overrides: [
+          sembastServiceProvider.overrideWithValue(SembastService(db: db)),
+          sharedPrefsProvider.overrideWithValue(sp),
+        ],
+        child: const IkkiPosApp(),
+      ),
+    );
+  });
 }

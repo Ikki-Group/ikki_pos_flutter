@@ -38,4 +38,10 @@
       "source.organizeImports": "explicit"
     }
   },
+  "workbench.colorCustomizations": {
+    "debugConsole.errorForeground": "#0000ff",
+    "debugConsole.infoForeground": "#00ff00",
+    "debugConsole.sourceForeground": "#ffdd00",
+    "debugConsole.warningForeground": "#ffdd00",
+  }
 }

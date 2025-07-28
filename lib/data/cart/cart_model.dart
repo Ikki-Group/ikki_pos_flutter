@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../features/payment/payment_model.dart';
 import '../json.dart';
 import '../sale/sale_enum.dart';
 import 'cart_enum.dart';
@@ -12,19 +13,38 @@ sealed class Cart with _$Cart {
   const factory Cart({
     @Default('') String id,
     @Default('') String rc,
+    @Default(BillType.open) BillType billType,
     @Default(CartStatus.init) CartStatus status,
     @Default(SaleMode.dineIn) SaleMode saleMode,
     @Default(1) int pax,
+    @Default('') String note,
+    @Default(null) CartCustomer? customer,
+
+    // Outlet info
+    @Default('') String outletId,
+    @Default('') String sessionId,
+
+    // Cart control
     @Default(1) int batchId,
     @Default([]) List<CartBatch> batches,
     @Default([]) List<CartItem> items,
-    @Default('') String note,
+
+    // Calculated value
     @Default(0) double gross,
     @Default(0) double discount,
     @Default(0) double net,
+
+    // Payments
+    @Default([]) List<CartPayment> payments,
+
+    // Change log
     @Default([]) List<String> logs,
+
+    // Timestamp & actor
     @Default('') String createdAt,
+    @Default('') String createdBy,
     @Default('') String updatedAt,
+    @Default('') String updatedBy,
   }) = _Cart;
 
   factory Cart.fromJson(Json json) => _$CartFromJson(json);
@@ -79,4 +99,29 @@ sealed class CartBatch with _$CartBatch {
   }) = _CartBatch;
 
   factory CartBatch.fromJson(Json json) => _$CartBatchFromJson(json);
+}
+
+@freezed
+sealed class CartPayment with _$CartPayment {
+  const factory CartPayment({
+    required String id,
+    required double amount,
+    required PaymentModel payment,
+    required String at,
+    required String by,
+  }) = _CartPayment;
+
+  factory CartPayment.fromJson(Json json) => _$CartPaymentFromJson(json);
+}
+
+@freezed
+sealed class CartCustomer with _$CartCustomer {
+  const factory CartCustomer({
+    @Default('') String id,
+    @Default('') String name,
+    @Default('') String email,
+    @Default('') String phone,
+  }) = _CartCustomer;
+
+  factory CartCustomer.fromJson(Json json) => _$CartCustomerFromJson(json);
 }

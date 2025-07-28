@@ -160,7 +160,11 @@ abstract class POSTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryBlue,
-          side: const BorderSide(color: primaryBlue),
+          // side: const BorderSide(color: primaryBlue),
+          // side: WidgetStateBorderSide.fromMap({
+          //   WidgetState.disabled: BorderSide(color: Colors.grey.shade300),
+          //   WidgetState.any: const BorderSide(color: primaryBlue),
+          // }),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -282,7 +286,7 @@ abstract class POSTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         elevation: 0,
         pressElevation: 1,
         shadowColor: Colors.transparent,
