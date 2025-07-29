@@ -17,9 +17,9 @@ class PosOrderListSection extends ConsumerWidget {
   });
 
   final String search;
-  final String selectedId;
+  final String? selectedId;
   final PosTabItem selectedTab;
-  final void Function(String) onSelected;
+  final void Function(Cart) onSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +43,7 @@ class PosOrderListSection extends ConsumerWidget {
             final cart = carts[index];
             return _PosOrderItem(
               cart: cart,
-              onPressed: () => onSelected(cart.id),
+              onPressed: () => onSelected(cart),
               isSelected: selectedId == cart.id,
             );
           },

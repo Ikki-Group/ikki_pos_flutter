@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
+import 'setting_dev_page.dart';
 import 'settings_printer_page.dart';
 
 class SettingIndexPage extends ConsumerStatefulWidget {
@@ -40,9 +41,9 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Text('Menu Pengaturan'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: Text('Menu Pengaturan', style: context.textTheme.titleMedium),
                       ),
                       const SizedBox(height: 8),
                       SingleChildScrollView(
@@ -70,7 +71,8 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
                   padding: const EdgeInsets.all(16),
                   child: switch (selectedTab) {
                     SettingIndexPageTab.printer => const SettingsPrinterPage(),
-                    _ => const Placeholder(),
+                    SettingIndexPageTab.logs => const SettingDevPage(),
+                    SettingIndexPageTab.dev => const SettingDevPage(),
                   },
                 ),
               ),
@@ -85,14 +87,10 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
     final isSelected = tab == selectedTab;
 
     return TextButton(
-      style: ButtonStyle(
+      style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
-        backgroundColor: WidgetStateColor.fromMap({
-          WidgetState.any: isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .3) : Colors.transparent,
-        }),
-        foregroundColor: WidgetStateColor.fromMap({
-          WidgetState.any: isSelected ? POSTheme.primaryBlueDark : POSTheme.neutral500,
-        }),
+        backgroundColor: isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .3) : Colors.transparent,
+        foregroundColor: isSelected ? POSTheme.primaryBlueDark : POSTheme.borderDark,
       ),
       onPressed: () => _onTabChanged(tab),
       child: Text(
@@ -108,7 +106,8 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
 
 enum SettingIndexPageTab {
   printer(label: 'Printer'),
-  logs(label: 'Catatan Aktivitas');
+  logs(label: 'Catatan Aktivitas'),
+  dev(label: 'Pengembang');
 
   const SettingIndexPageTab({required this.label});
 

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/cart/cart_model.dart';
@@ -7,7 +8,8 @@ part 'pos_provider.g.dart';
 
 @riverpod
 FutureOr<List<Cart>> posCartList(Ref ref) async {
-  return ref.watch(cartRepoProvider).list();
+  final cartList = await ref.watch(cartRepoProvider).list();
+  return cartList.sortedBy((c) => c.createdAt).toList();
 }
 
 enum PosTabItem {

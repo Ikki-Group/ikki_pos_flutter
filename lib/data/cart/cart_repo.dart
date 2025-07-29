@@ -16,8 +16,8 @@ CartRepo cartRepo(Ref ref) {
 
 class CartRepo {
   CartRepo({required this.ss});
-  final SembastService ss;
 
+  final SembastService ss;
   final StoreRef store = StoreRef('carts');
 
   Future<List<Cart>> list() async {
@@ -69,7 +69,7 @@ class CartRepo {
   }
 
   // ignore: unused_element
-  Future<void> _unsafeClear() async {
+  Future<void> unsafeClear() async {
     try {
       await store.delete(ss.db);
       log('Carts deleted successfully');

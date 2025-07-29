@@ -7,6 +7,7 @@ import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
+import '../../pos/provider/pos_provider.dart';
 import '../widgets/cart_categories.dart';
 import '../widgets/cart_index_widgets.dart';
 import '../widgets/cart_items.dart';
@@ -123,6 +124,7 @@ class _CartAction extends ConsumerWidget {
     void onSave() {
       ref.read(cartStateProvider.notifier).save();
       context.goNamed(IkkiRouter.pos.name);
+      ref.invalidate(posCartListProvider);
     }
 
     return Column(

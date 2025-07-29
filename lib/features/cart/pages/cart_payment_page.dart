@@ -6,6 +6,8 @@ import 'package:objectid/objectid.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
+import '../../../data/user/user.model.dart';
+import '../../../data/user/user.provider.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../payment/payment_enum.dart';
@@ -24,6 +26,11 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
 
   List<CartPayment> payments = [];
 
+  void onPay() {
+    ref.read(cartStateProvider);
+    context.goNamed(IkkiRouter.pos.name);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +42,16 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final tendered = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
-    final change = tendered - net;
+    var change = tendered - net;
+    var unpaid = net - tendered;
+
+    if (change < 0) change = 0;
+    if (unpaid < 0) unpaid = 0;
+
+    final disablePaymentSelection = unpaid == 0;
+    final allowToPay = unpaid <= 0;
+
+    final user = ref.read(currentUserProvider)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +60,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
           onPressed: () => context.goNamed(IkkiRouter.cart.name),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('Pembayaran', style: TextStyle(fontSize: 18)),
+        title: const Text('Pembayaran'),
       ),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -55,7 +71,8 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
               children: [
                 _Summary(
                   net: net,
-                  payments: payments,
+                  change: change,
+                  unpaid: unpaid,
                 ),
                 const Divider(),
                 IntrinsicHeight(
@@ -96,11 +113,12 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                   ),
                 ),
                 const Divider(),
-
                 _CartPaymentMethod(
-                  cart: cart,
+                  net: net,
                   payments: payments,
                   onPaymentsChanged: (p) => setState(() => payments = p),
+                  user: user,
+                  disablePaymentSelection: disablePaymentSelection,
                 ),
               ],
             ),
@@ -155,7 +173,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                       shape: const RoundedRectangleBorder(),
                       fixedSize: const Size.fromHeight(64),
                     ),
-                    onPressed: () {},
+                    onPressed: allowToPay ? onPay : null,
                     child: const Text('Proses Pembayaran'),
                   ),
                 ],
@@ -209,14 +227,31 @@ final kCashless = <String>['BCA', 'Mandiri', 'QRIS'];
 
 class _CartPaymentMethod extends StatelessWidget {
   const _CartPaymentMethod({
-    required this.cart,
+    required this.net,
     required this.payments,
     required this.onPaymentsChanged,
+    required this.user,
+    required this.disablePaymentSelection,
   });
 
-  final Cart cart;
+  final double net;
   final List<CartPayment> payments;
   final void Function(List<CartPayment>) onPaymentsChanged;
+  final UserModel user;
+  final bool disablePaymentSelection;
+
+  void onAdd(PaymentModel payment, double amount) {
+    onPaymentsChanged([
+      ...payments,
+      CartPayment(
+        amount: amount,
+        payment: payment,
+        at: DateTime.now().toString(),
+        id: ObjectId().hexString,
+        by: user.id,
+      ),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -271,51 +306,18 @@ class _CartPaymentMethod extends StatelessWidget {
               buildChip(
                 label: 'Uang Pas',
                 selected: false,
-                onSelected: () {
-                  onPaymentsChanged([
-                    ...payments,
-                    CartPayment(
-                      amount: cart.net,
-                      payment: PaymentModel.cash,
-                      at: DateTime.now().toString(),
-                      by: 'Rizqy Nugroho',
-                      id: ObjectId().hexString,
-                    ),
-                  ]);
-                },
+                onSelected: () => onAdd(PaymentModel.cash, net),
               ),
-              for (final cash in generateCashRecommendationsIDR(cart.net))
+              for (final cash in generateCashRecommendationsIDR(net))
                 buildChip(
                   label: Formatter.toIdr.format(cash),
                   selected: false,
-                  onSelected: () {
-                    onPaymentsChanged([
-                      ...payments,
-                      CartPayment(
-                        amount: cash,
-                        payment: PaymentModel.cash,
-                        at: DateTime.now().toString(),
-                        by: 'Rizqy Nugroho',
-                        id: ObjectId().hexString,
-                      ),
-                    ]);
-                  },
+                  onSelected: () => onAdd(PaymentModel.cash, cash),
                 ),
               buildChip(
                 label: 'Nominal Lain',
                 selected: false,
-                onSelected: () {
-                  onPaymentsChanged([
-                    ...payments,
-                    CartPayment(
-                      amount: cart.net,
-                      payment: PaymentModel.cash,
-                      at: DateTime.now().toString(),
-                      by: 'Rizqy Nugroho',
-                      id: ObjectId().hexString,
-                    ),
-                  ]);
-                },
+                onSelected: () => onAdd(PaymentModel.cash, net),
               ),
             ]),
             const SizedBox(height: 16),
@@ -324,18 +326,7 @@ class _CartPaymentMethod extends StatelessWidget {
                 buildChip(
                   label: payment.label,
                   selected: false,
-                  onSelected: () {
-                    onPaymentsChanged([
-                      ...payments,
-                      CartPayment(
-                        amount: cart.net,
-                        payment: payment,
-                        at: DateTime.now().toString(),
-                        by: 'Rizqy Nugroho',
-                        id: ObjectId().hexString,
-                      ),
-                    ]);
-                  },
+                  onSelected: () => onAdd(payment, net),
                 ),
             ]),
           ],
@@ -368,7 +359,7 @@ class _CartPaymentMethod extends StatelessWidget {
     return ChoiceChip(
       label: Text(label),
       showCheckmark: false,
-      onSelected: onSelected != null ? (_) => onSelected() : null,
+      onSelected: disablePaymentSelection ? null : (_) => onSelected!(),
       selected: selected,
       backgroundColor: selected ? POSTheme.primaryBlue : Colors.white,
     );
@@ -388,22 +379,16 @@ class _CartPaymentMethod extends StatelessWidget {
 class _Summary extends StatelessWidget {
   const _Summary({
     required this.net,
-    required this.payments,
+    required this.change,
+    required this.unpaid,
   });
 
   final double net;
-  final List<CartPayment> payments;
+  final double change;
+  final double unpaid;
 
   @override
   Widget build(BuildContext context) {
-    final paid = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
-
-    var unpaid = net - paid;
-    if (unpaid < 0) unpaid = 0;
-
-    var change = paid - net;
-    if (change < 0) change = 0;
-
     return ColoredBox(
       color: Colors.white,
       child: IntrinsicHeight(

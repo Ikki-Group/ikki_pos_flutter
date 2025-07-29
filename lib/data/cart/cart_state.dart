@@ -10,6 +10,7 @@ import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
 import '../user/user.model.dart';
 import '../user/user.provider.dart';
+import 'cart_enum.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
 import 'cart_repo.dart';
@@ -30,8 +31,7 @@ class CartState extends _$CartState {
   @override
   Cart build() => const Cart();
 
-  // ignore: use_setters_to_change_properties
-  void setCart(Cart cart) => state = cart;
+  void setCart(Cart cart) => state = cart.copyWith();
 
   void setState(Cart Function(Cart) fn) => state = fn(state);
 
@@ -126,10 +126,24 @@ class CartState extends _$CartState {
 
   Future<void> save() async {
     state = state.copyWith(
+      status: CartStatus.process,
+      billType: BillType.open,
       updatedAt: DateTime.now().toIso8601String(),
       updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
     );
 
+    await ref.read(cartRepoProvider).save(state);
+    await ref.read(receiptCodeRepoProvider).commit(state.rc);
+    reset();
+  }
+
+  Future<void> pay() async {
+    state = state.copyWith(
+      status: CartStatus.success,
+      billType: BillType.close,
+      updatedAt: DateTime.now().toIso8601String(),
+      updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
+    );
     await ref.read(cartRepoProvider).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
     reset();

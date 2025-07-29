@@ -17,7 +17,10 @@ abstract class CartIndexState with _$CartIndexState {
 @riverpod
 class CartIndex extends _$CartIndex {
   @override
-  CartIndexState build() => const CartIndexState(search: '', categoryId: ProductCategory.kIdAll);
+  CartIndexState build() => const CartIndexState(
+    search: '',
+    categoryId: ProductCategory.kIdAll,
+  );
 
   void setSearch(String value) => state = state.copyWith(search: value);
   void clearSearch() => state = state.copyWith(search: '');

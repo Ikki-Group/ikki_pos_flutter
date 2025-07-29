@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/pos_theme.dart';
 import '../../../data/printer/printer_provider.dart';
 import '../widgets/add_printer_dialog.dart';
 
@@ -22,7 +23,7 @@ class _SettingsPrinterPageState extends ConsumerState<SettingsPrinterPage> {
       children: [
         Row(
           children: [
-            const Text('Koneksi Printer'),
+            Text('Koneksi Printer', style: context.textTheme.titleLarge),
             const Spacer(),
             FilledButton(onPressed: () => AddPrinterDialog.show(context), child: const Text('Tambah Printer')),
           ],

@@ -14,7 +14,7 @@ sealed class Cart with _$Cart {
     @Default('') String id,
     @Default('') String rc,
     @Default(BillType.open) BillType billType,
-    @Default(CartStatus.init) CartStatus status,
+    @Default(CartStatus.process) CartStatus status,
     @Default(SaleMode.dineIn) SaleMode saleMode,
     @Default(1) int pax,
     @Default('') String note,
@@ -109,6 +109,7 @@ sealed class CartPayment with _$CartPayment {
     required PaymentModel payment,
     required String at,
     required String by,
+    @Default(false) bool isDraft,
   }) = _CartPayment;
 
   factory CartPayment.fromJson(Json json) => _$CartPaymentFromJson(json);
