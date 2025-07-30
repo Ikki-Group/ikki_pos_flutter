@@ -144,61 +144,105 @@ class _ButtonsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Section(
       title: 'Buttons',
-      content: Wrap(
+      content: Column(
         spacing: 8,
-        runSpacing: 8,
         children: [
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Primary Button'),
+          Row(
+            spacing: 8,
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Primary Button'),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Add Item'),
+              ),
+              const ElevatedButton(
+                onPressed: null,
+                child: Text('Disabled'),
+              ),
+              ElevatedButton.icon(
+                onPressed: null,
+                icon: const Icon(Icons.add),
+                label: const Text('Add Item'),
+              ),
+            ],
           ),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Item'),
+          Row(
+            spacing: 8,
+            children: [
+              FilledButton(
+                onPressed: () {},
+                child: const Text('FB'),
+              ),
+              FilledButton.tonal(
+                onPressed: () {},
+                child: const Text('FB Tonal'),
+              ),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('FB Icon'),
+              ),
+              FilledButton.tonalIcon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('FB Tonal Icon'),
+              ),
+              FilledButton.tonalIcon(
+                onPressed: null,
+                icon: const Icon(Icons.add),
+                label: const Text('FB Tonal Icon'),
+              ),
+            ],
           ),
-          const ElevatedButton(
-            onPressed: null,
-            child: Text('Disabled'),
+          Row(
+            spacing: 8,
+            children: [
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('OB'),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('OB Icon'),
+              ),
+              OutlinedButton.icon(
+                onPressed: null,
+                icon: const Icon(Icons.add),
+                label: const Text('OB'),
+              ),
+            ],
           ),
-          ElevatedButton.icon(
-            onPressed: null,
-            icon: const Icon(Icons.add),
-            label: const Text('Add Item'),
+          Row(
+            spacing: 8,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: const Text('TB'),
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.delete),
+                label: const Text('Delete'),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () {},
-            child: const Text('Filled Button'),
+          Row(
+            spacing: 8,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                color: Colors.red,
+              ),
+              IconButton.filled(onPressed: () {}, icon: const Icon(Icons.add)),
+              IconButton.outlined(onPressed: () {}, icon: const Icon(Icons.add)),
+            ],
           ),
-          FilledButton.tonal(
-            onPressed: () {},
-            child: const Text('Filled Button Tonal'),
-          ),
-          OutlinedButton(
-            onPressed: () {},
-            child: const Text('Outlined Button'),
-          ),
-          OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Item'),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text('Text Button'),
-          ),
-          TextButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.delete),
-            label: const Text('Delete'),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            color: Colors.red,
-          ),
-          IconButton.filled(onPressed: () {}, icon: const Icon(Icons.add)),
-          IconButton.outlined(onPressed: () {}, icon: const Icon(Icons.add)),
         ],
       ),
     );

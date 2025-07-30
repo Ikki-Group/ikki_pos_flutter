@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/pos_theme.dart';
+import '../../core/config/pos_theme.dart';
 
 class IkkiDialog extends StatelessWidget {
   const IkkiDialog({

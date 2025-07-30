@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/pos_theme.dart';
+import '../../core/config/pos_theme.dart';
 import '../../data/user/user.model.dart';
 
 class SelectUserDialog extends StatefulWidget {
@@ -99,9 +99,6 @@ class _SelectUserDialogState extends State<SelectUserDialog> {
             // Header
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: POSTheme.cardColor,
-              ),
               child: const Row(
                 children: [
                   Expanded(

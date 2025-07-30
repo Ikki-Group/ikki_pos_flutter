@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../core/theme/pos_theme.dart';
+import '../../core/config/pos_theme.dart';
 
 // --- NumpadKey Enum for type-safe key values ---
 enum NumpadKey {
@@ -143,9 +143,9 @@ class _NumpadButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            foregroundColor: POSTheme.neutral900,
+            foregroundColor: POSTheme.borderDark,
             backgroundColor: Colors.transparent,
-            side: const BorderSide(color: POSTheme.neutral200),
+            side: const BorderSide(color: POSTheme.borderMedium),
           ),
       onPressed: () {
         // Add haptic feedback for better UX

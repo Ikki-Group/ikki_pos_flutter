@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/theme/pos_theme.dart';
+import '../../core/config/pos_theme.dart';
 import '../../data/outlet/outlet.provider.dart';
 import '../../data/user/user.model.dart';
 import '../../data/user/user.provider.dart';

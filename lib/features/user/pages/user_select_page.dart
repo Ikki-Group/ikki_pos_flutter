@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/pos_theme.dart';
+import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
@@ -98,9 +98,8 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
               const SizedBox(height: 32),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  side: const BorderSide(color: POSTheme.neutral300),
+                  side: const BorderSide(color: POSTheme.borderDark),
                 ),
                 onPressed: openDialog,
                 child: Row(

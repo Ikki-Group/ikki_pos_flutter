@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config/pos_theme.dart';
 import '../providers/splash_provider.dart';
 
 class SplashPage extends ConsumerWidget {
@@ -17,13 +18,13 @@ class SplashPage extends ConsumerWidget {
         child: switch (splash) {
           AsyncData(:final value) =>
             const Icon(
-                  Icons.sentiment_very_satisfied,
-                  color: Colors.red,
+                  Icons.point_of_sale,
+                  color: POSTheme.primaryBlue,
                   size: 100,
                 )
                 .animate()
-                .fadeIn(duration: 100.milliseconds)
-                .fadeOut(duration: 400.milliseconds)
+                .fadeIn(duration: 100.ms)
+                .fadeOut(duration: 400.ms)
                 .then()
                 .callback(
                   callback: (_) => context.goNamed(value.name),

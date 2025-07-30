@@ -23,8 +23,8 @@ part 'app_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final router = GoRouter(
-    initialLocation: IkkiRouter.splash.path,
-    // initialLocation: IkkiRouter.showcase.path,
+    // initialLocation: IkkiRouter.splash.path,
+    initialLocation: IkkiRouter.showcase.path,
     observers: [initTalkerRouteObserver()],
     routes: <RouteBase>[
       GoRoute(

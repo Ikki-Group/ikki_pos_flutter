@@ -53,6 +53,11 @@ abstract class POSTheme {
   static const Color shadowMedium = Color(0x1A000000);
   static const Color shadowDark = Color(0x25000000);
 
+  static const TextStyle buttonText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
   // Main Theme Data
   static ThemeData get lightTheme {
     return ThemeData(
@@ -122,7 +127,6 @@ abstract class POSTheme {
         ),
       ),
 
-      // Card Theme - For product cards and panels
       cardTheme: CardThemeData(
         color: surfaceCard,
         elevation: 2,
@@ -139,37 +143,36 @@ abstract class POSTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryBlue,
           foregroundColor: textOnPrimary,
-          elevation: 0,
-          shadowColor: Colors.transparent,
+          elevation: 2,
+          shadowColor: Colors.black,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.25,
-          ),
+          textStyle: buttonText,
+          iconSize: 18,
         ),
       ),
 
       // Outlined Button Theme - Secondary actions
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: primaryBlue,
-          // side: WidgetStateBorderSide.fromMap({
-          //   WidgetState.disabled: BorderSide(color: Colors.grey.shade300),
-          //   WidgetState.any: const BorderSide(color: primaryBlue),
-          // }),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+        style: ButtonStyle(
+          side: const WidgetStateBorderSide.fromMap({
+            WidgetState.disabled: BorderSide(color: textTertiary, width: 1.5),
+            WidgetState.any: BorderSide(color: primaryBlue, width: 1.5),
+          }),
+          padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 24, vertical: 16)),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: const BorderSide(
+                color: primaryBlue,
+                width: 1.5,
+              ),
+            ),
           ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.25,
-          ),
+          textStyle: WidgetStateProperty.all(buttonText),
+          iconSize: WidgetStateProperty.all(18),
         ),
       ),
 
@@ -181,11 +184,8 @@ abstract class POSTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.25,
-          ),
+          textStyle: buttonText,
+          iconSize: 18,
         ),
       ),
 
@@ -197,31 +197,24 @@ abstract class POSTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+          textStyle: buttonText,
+          iconSize: 18,
         ),
       ),
 
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           foregroundColor: primaryBlue,
+          backgroundColor: Colors.white,
           padding: const EdgeInsets.all(12),
           iconSize: 24,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+          side: const BorderSide(color: primaryBlue),
         ),
       ),
 
-      // Floating Action Button Theme - Orange like competitor
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: secondaryOrange,
-        foregroundColor: textOnPrimary,
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-      ),
-
-      // Input Decoration Theme - Search bars and forms
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surfaceSecondary,
