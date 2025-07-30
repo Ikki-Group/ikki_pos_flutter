@@ -35,7 +35,6 @@ class CartRepo {
   Future<void> save(Cart cart) async {
     try {
       final json = cart.toJson();
-
       await store.record(cart.id).put(ss.db, json);
       log('Cart saved successfully to Sembast with ID: ${cart.id}');
     } catch (e, stackTrace) {

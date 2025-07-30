@@ -14,7 +14,12 @@ abstract class Formatter {
   );
 
   static DateFormat date = DateFormat(
-    'EEEE, d MMMM yyyy',
+    'EEEE, d MMMM yyyy HH:mm',
+    'id_ID',
+  );
+
+  static DateFormat dateTime = DateFormat(
+    'd MMMM yyyy HH:mm',
     'id_ID',
   );
 }

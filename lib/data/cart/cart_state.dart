@@ -13,7 +13,7 @@ import '../user/user.provider.dart';
 import 'cart_enum.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
-import 'cart_repo.dart';
+import 'cart_provider.dart';
 
 part 'cart_state.g.dart';
 
@@ -132,7 +132,7 @@ class CartState extends _$CartState {
       updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
     );
 
-    await ref.read(cartRepoProvider).save(state);
+    await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
     reset();
   }
@@ -144,7 +144,7 @@ class CartState extends _$CartState {
       updatedAt: DateTime.now().toIso8601String(),
       updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
     );
-    await ref.read(cartRepoProvider).save(state);
+    await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
     reset();
   }

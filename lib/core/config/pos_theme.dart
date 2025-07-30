@@ -56,11 +56,8 @@ abstract class POSTheme {
   // Main Theme Data
   static ThemeData get lightTheme {
     return ThemeData(
-      // Basic Theme Setup
       useMaterial3: true,
       brightness: Brightness.light,
-      // primarySwatch: Colors.blue,
-      // colorSchemeSeed: primaryBlue,
 
       // Color Scheme
       colorScheme: const ColorScheme(
@@ -160,7 +157,6 @@ abstract class POSTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryBlue,
-          // side: const BorderSide(color: primaryBlue),
           // side: WidgetStateBorderSide.fromMap({
           //   WidgetState.disabled: BorderSide(color: Colors.grey.shade300),
           //   WidgetState.any: const BorderSide(color: primaryBlue),
@@ -270,30 +266,24 @@ abstract class POSTheme {
       // Chip Theme - Category buttons
       chipTheme: ChipThemeData(
         backgroundColor: surfaceSecondary,
-        selectedColor: primaryBlue,
+        selectedColor: primaryBlueDark,
         disabledColor: surfaceTertiary,
-        labelStyle: TextStyle(
-          color: WidgetStateColor.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return textOnPrimary; // White/light text on selected blue background
-            } else {
-              return textPrimary; // Dark text on unselected background
-            }
-          }),
+        labelStyle: const TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
+          color: WidgetStateColor.fromMap({
+            WidgetState.selected: textOnPrimary,
+            WidgetState.disabled: textTertiary,
+            WidgetState.any: textOnSecondary,
+          }),
         ),
-        iconTheme: const IconThemeData(color: textOnPrimary),
-
         side: const BorderSide(color: borderLight),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        elevation: 0,
-        pressElevation: 1,
-        shadowColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
+        elevation: 5,
+        pressElevation: 0,
       ),
 
       // Tab Bar Theme

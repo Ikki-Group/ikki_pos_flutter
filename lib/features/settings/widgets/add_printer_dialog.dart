@@ -6,10 +6,11 @@ import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 import 'package:fpdart/fpdart.dart' as fp;
 
+import '../../../core/config/pos_theme.dart';
 import '../../../data/printer/printer_enum.dart';
 import '../../../data/printer/printer_provider.dart';
 import '../../../data/printer/sample.dart';
-import '../../../widgets/dialogs/ikki_dialog.dart';
+import '../../../widgets/ui/pos_dialog.dart';
 
 class AddPrinterDialog extends StatefulWidget {
   const AddPrinterDialog({super.key});
@@ -62,9 +63,9 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
   Widget build(BuildContext context) {
     final allowNext = value != null;
 
-    return IkkiDialog(
+    return PosDialog(
       title: 'Pilih Koneksi Printer',
-      mainAxisSize: MainAxisSize.min,
+      constraints: const BoxConstraints(maxWidth: 480),
       footer: Row(
         children: <Widget>[
           Expanded(
@@ -82,23 +83,15 @@ class _AddPrinterDialogState extends State<AddPrinterDialog> {
           ),
         ],
       ),
-      child: Column(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                for (final conn in PrinterConnectionType.values)
-                  CheckboxListTile(
-                    value: value == conn,
-                    onChanged: (v) => setState(() => value = conn),
-                    checkboxScaleFactor: 1.2,
-                    title: Text(conn.label),
-                  ),
-              ],
-            ),
+      children: [
+        for (final conn in PrinterConnectionType.values)
+          CheckboxListTile(
+            value: value == conn,
+            onChanged: (v) => setState(() => value = conn),
+            checkboxScaleFactor: 1.2,
+            title: Text(conn.label),
           ),
-        ],
-      ),
+      ],
     );
   }
 }
@@ -126,9 +119,11 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
   Future<void> onConfirm() async {
     if (selectedPrinter == null) return;
     isLoading = true;
+    await instance.connect(selectedPrinter!);
+    await onTest(selectedPrinter!);
     setState(() {});
 
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   Future<void> scan() async {
@@ -170,9 +165,9 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
   Widget build(BuildContext context) {
     final allowNext = selectedPrinter != null;
 
-    return IkkiDialog(
+    return PosDialog(
       title: 'Printer Bluetooth',
-      mainAxisSize: MainAxisSize.min,
+      constraints: const BoxConstraints(maxWidth: 480),
       footer: Row(
         children: <Widget>[
           Expanded(
@@ -190,45 +185,41 @@ class __PrinterBluetoothDialogState extends ConsumerState<_PrinterBluetoothDialo
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              const Text('Daftar Printer'),
-              const Spacer(),
-              TextButton.icon(
-                onPressed: scan,
-                icon: isScanning ? null : const Icon(Icons.search),
-                label: Text(isScanning ? 'Scanning...' : 'Scan'),
-              ),
-            ],
-          ),
-          const Divider(),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
-            child: isScanning
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: printers.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final printer = printers.elementAt(index);
-                      return CheckboxListTile(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 2),
-                        title: Text(printer.name!),
-                        subtitle: Text(printer.address!),
-                        value: printer.address == selectedPrinter?.address,
-                        onChanged: (bool? value) {
-                          selectedPrinter = printer;
-                          setState(() {});
-                        },
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
+      children: [
+        Row(
+          children: [
+            Text('Daftar Printer', style: context.textTheme.titleMedium),
+            const Spacer(),
+            TextButton.icon(
+              onPressed: scan,
+              icon: isScanning ? null : const Icon(Icons.search),
+              label: Text(isScanning ? 'Scanning...' : 'Scan'),
+            ),
+          ],
+        ),
+        const Divider(),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
+          child: isScanning
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: printers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final printer = printers.elementAt(index);
+                    return CheckboxListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 2),
+                      title: Text(printer.name!),
+                      subtitle: Text(printer.address!),
+                      value: printer.address == selectedPrinter?.address,
+                      onChanged: (bool? value) {
+                        selectedPrinter = printer;
+                        setState(() {});
+                      },
+                    );
+                  },
+                ),
+        ),
+      ],
     );
   }
 }
@@ -255,9 +246,9 @@ class __PrinterLanDialogState extends ConsumerState<_PrinterLanDialog> {
   Widget build(BuildContext context) {
     // final allowNext = selected != null;
 
-    return IkkiDialog(
+    return PosDialog(
       title: 'Printer LAN/WIFI',
-      mainAxisSize: MainAxisSize.min,
+      constraints: const BoxConstraints(maxWidth: 480),
       footer: Row(
         children: <Widget>[
           Expanded(
@@ -275,33 +266,27 @@ class __PrinterLanDialogState extends ConsumerState<_PrinterLanDialog> {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Host'),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'Masukkan Host',
-              ),
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              keyboardType: TextInputType.url,
-            ),
-            const SizedBox(height: 8),
-            const Text('Port'),
-            const SizedBox(height: 8),
-            TextField(
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              decoration: const InputDecoration(
-                hintText: 'Masukkan Port',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-          ],
+      children: [
+        const Text('Host'),
+        const SizedBox(height: 8),
+        TextField(
+          decoration: const InputDecoration(
+            hintText: 'Masukkan Host',
+          ),
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
+          keyboardType: TextInputType.url,
         ),
-      ),
+        const SizedBox(height: 8),
+        const Text('Port'),
+        const SizedBox(height: 8),
+        TextField(
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
+          decoration: const InputDecoration(
+            hintText: 'Masukkan Port',
+          ),
+          keyboardType: TextInputType.number,
+        ),
+      ],
     );
   }
 }

@@ -33,6 +33,7 @@ void main() async {
     scaleFactor: (deviceSize) {
       // screen width used in your UI design
       const double widthOfDesign = 1180;
+      // const double widthOfDesign = 460;
       return deviceSize.width / widthOfDesign;
     },
   );

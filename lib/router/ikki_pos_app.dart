@@ -26,5 +26,6 @@ Future<void> setPreferredOrientations() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.black));
   return SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
+    DeviceOrientation.portraitUp,
   ]);
 }
