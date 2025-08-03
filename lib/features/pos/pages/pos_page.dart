@@ -16,7 +16,7 @@ class PosPage extends ConsumerStatefulWidget {
 
 class _PosPageState extends ConsumerState<PosPage> {
   final searchController = TextEditingController();
-  PosTabItem selectedTab = PosTabItem.process;
+  PosTabItem selectedTab = PosTabItem.all;
   Cart? selectedCart;
 
   @override
@@ -72,16 +72,19 @@ class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         spacing: 8,
         children: [
-          FilterChip(label: const Text('Semua (10)'), onSelected: (_) {}, selected: true, showCheckmark: false),
-          FilterChip(label: const Text('Kasir (1)'), onSelected: (_) {}),
-          FilterChip(label: const Text('Order Online (3)'), onSelected: (_) {}),
+          for (final tab in PosTabItem.values) ...[
+            FilterChip(
+              label: Text('${tab.label} (0)'),
+              onSelected: (_) => {},
+              showCheckmark: false,
+            ),
+          ],
           const Spacer(),
-          const Flexible(
-            flex: 2,
+          const Expanded(
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Cari Order...',
@@ -111,20 +114,35 @@ class _CartListSection extends ConsumerWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: ListView.separated(
+      child: Padding(
         padding: const EdgeInsets.all(8),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return _CartListItem(
-            cart: item,
-            onTap: onTap,
-            isSelected: item.id == selectedCart?.id,
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 8);
-        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              height: 30,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Daftar Pesanan', style: Theme.of(context).textTheme.labelLarge),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.separated(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  return _CartListItem(
+                    cart: item,
+                    onTap: onTap,
+                    isSelected: item.id == selectedCart?.id,
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -141,6 +159,7 @@ class _CartListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final borderColor = isSelected ? POSTheme.primaryBlue.withValues(alpha: .5) : POSTheme.borderLight;
+    final backgroundColor = isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .05) : Colors.white;
 
     return InkWell(
       onTap: () => onTap(cart),
@@ -148,7 +167,7 @@ class _CartListItem extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: borderColor),
-          color: isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .05) : Colors.white,
+          color: backgroundColor,
         ),
         child: Column(
           children: [
@@ -159,11 +178,11 @@ class _CartListItem extends StatelessWidget {
                 children: [
                   Text(
                     Formatter.dateTime.format(DateTime.parse(cart.createdAt)),
-                    style: textTheme.labelLarge,
+                    style: textTheme.labelMedium,
                   ),
                   Text(
                     cart.rc,
-                    style: textTheme.labelLarge,
+                    style: textTheme.labelMedium,
                   ),
                 ],
               ),
@@ -176,16 +195,16 @@ class _CartListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Rizqy Nugroho', style: textTheme.labelLarge),
-                      Text(Formatter.toIdr.format(cart.net), style: textTheme.labelLarge),
+                      Text('Rizqy Nugroho', style: textTheme.labelMedium),
+                      Text(Formatter.toIdr.format(cart.net), style: textTheme.labelMedium),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('-', style: textTheme.labelLarge),
-                      Text('Belum Lunas', style: textTheme.labelLarge?.copyWith(color: POSTheme.accentRed)),
+                      Text('-', style: textTheme.labelMedium),
+                      Text('Belum Lunas', style: textTheme.labelMedium?.copyWith(color: POSTheme.accentRed)),
                     ],
                   ),
                 ],
@@ -231,132 +250,142 @@ class _CartDetailsSections extends StatelessWidget {
                     ),
                   ],
                 )
-              : Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
+              : _CartDetailsView(cart!),
+        ),
+      ),
+    );
+  }
+}
+
+class _CartDetailsView extends StatelessWidget {
+  const _CartDetailsView(this.cart);
+
+  final Cart cart;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Rizqy Nugroho', style: textTheme.titleSmall),
+                  const SizedBox(height: 8),
+                  Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(cart!.rc, style: textTheme.labelLarge),
-                              const SizedBox(height: 8),
-                              Text(
-                                Formatter.dateTime.format(DateTime.parse(cart!.createdAt)),
-                                style: textTheme.labelLarge,
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14),
-                            child: Text(
-                              'LUNAS',
-                              style: textTheme.titleLarge?.copyWith(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: POSTheme.accentGreen,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        Formatter.dateTime.format(DateTime.parse(cart.createdAt)),
+                        style: textTheme.labelMedium,
                       ),
-                      const SizedBox(height: 8),
-                      const Divider(),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Rincian Pesanan', style: textTheme.labelLarge, textAlign: TextAlign.left),
-                            TextButton.icon(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              onPressed: () {},
-                              icon: const Icon(Icons.add),
-                              label: const Text('Tambah Pesanan'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: SingleChildScrollView(
-                            padding: EdgeInsets.zero,
-                            child: Column(
-                              children: [
-                                for (final batch in cart!.batches) ...[
-                                  Row(
-                                    children: [
-                                      Checkbox(
-                                        value: true,
-                                        onChanged: (_) {},
-                                        visualDensity: VisualDensity.compact,
-                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                        side: const BorderSide(color: POSTheme.borderLight),
-                                      ),
-                                      Text('Pesanan ${batch.id}', style: textTheme.labelLarge),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        Formatter.dateTime.format(DateTime.parse(batch.at)),
-                                        style: textTheme.bodySmall,
-                                      ),
-                                      const Spacer(),
-                                      Text('Rp 100.000', style: textTheme.labelLarge),
-                                    ],
-                                  ),
-                                  for (final item in cart!.items.toList().where((i) => i.batchId == batch.id)) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-                                      child: Row(
-                                        children: [
-                                          Checkbox(
-                                            value: true,
-                                            onChanged: (_) {},
-                                            visualDensity: VisualDensity.compact,
-                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            side: const BorderSide(color: POSTheme.borderLight),
-                                          ),
-                                          Expanded(child: Text(item.product.name, style: textTheme.bodyMedium)),
-                                          const Text('Rp 100.000'),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                  const SizedBox(height: 8),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          OutlinedButton(onPressed: () {}, child: const Text('Void')),
-                          const Spacer(),
-                          OutlinedButton.icon(
-                            onPressed: () {},
-                            label: const Text('Cetak'),
-                            icon: const Icon(Icons.print),
-                          ),
-                          const SizedBox(width: 8),
-                          ElevatedButton.icon(
-                            onPressed: () {},
-                            label: const Text('Bayar'),
-                            icon: const Icon(Icons.payments_outlined),
-                          ),
-                        ],
+                      const SizedBox(width: 8),
+                      Text(
+                        cart.rc,
+                        style: textTheme.labelMedium,
                       ),
                     ],
                   ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Text(
+                  'LUNAS',
+                  style: textTheme.titleMedium?.copyWith(color: POSTheme.statusSuccess),
                 ),
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Divider(),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Rincian Pesanan',
+                  style: textTheme.labelLarge,
+                  textAlign: TextAlign.left,
+                ),
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  onPressed: () {},
+                  icon: const Icon(Icons.add),
+                  label: const Text('Tambah Pesanan'),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    for (final batch in cart.batches) ...[
+                      Row(
+                        children: [
+                          Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
+                          const SizedBox(width: 8),
+                          Text(
+                            Formatter.dateTime.format(DateTime.parse(batch.at)),
+                            style: textTheme.bodySmall,
+                          ),
+                          const Spacer(),
+                          Text('Rp 100.000', style: textTheme.titleSmall),
+                        ],
+                      ),
+                      for (final item in cart.items.toList().where((i) => i.batchId == batch.id)) ...[
+                        const SizedBox(height: 4),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                          child: Row(
+                            children: [
+                              Expanded(child: Text(item.product.name, style: textTheme.bodySmall)),
+                              Text('Rp 100.000', style: textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 8),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              OutlinedButton(onPressed: () {}, child: const Text('Void')),
+              const Spacer(),
+              OutlinedButton.icon(
+                onPressed: () {},
+                label: const Text('Cetak'),
+                icon: const Icon(Icons.print),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: () {},
+                label: const Text('Bayar'),
+                icon: const Icon(Icons.payments_outlined),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

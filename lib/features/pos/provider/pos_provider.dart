@@ -13,9 +13,9 @@ FutureOr<List<Cart>> posCartList(Ref ref) async {
 }
 
 enum PosTabItem {
-  process(label: 'Process'),
-  done(label: 'Success'),
-  canceled(label: 'Void');
+  all(label: 'Semua'),
+  cashier(label: 'Kasir'),
+  online(label: 'Online');
 
   const PosTabItem({required this.label});
 
