@@ -242,11 +242,12 @@ class _CartDetailsSections extends StatelessWidget {
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.receipt_long_rounded, size: 48, color: POSTheme.primaryBlueDark),
+                    const Icon(Icons.receipt_long_rounded, size: 48, color: POSTheme.primaryBlueLight),
                     const SizedBox(height: 8),
                     Text(
-                      'Pilih item untuk melihat details',
-                      style: textTheme.titleMedium?.copyWith(color: POSTheme.primaryBlueDark),
+                      'Pilih item untuk melihat rincian',
+                      style: textTheme.titleSmall?.copyWith(color: POSTheme.primaryBlueLight),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 )

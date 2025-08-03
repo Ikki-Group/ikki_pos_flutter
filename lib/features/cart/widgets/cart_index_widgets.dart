@@ -25,17 +25,12 @@ class BadgeReceiptCode extends ConsumerWidget {
       child: Row(
         // mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.receipt, size: 16, color: Colors.grey[600]),
+          const Icon(Icons.receipt, size: 16, color: POSTheme.textOnSecondary),
           const SizedBox(width: 8),
           Flexible(
             child: Text(
-              'Order ID: $rc',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: POSTheme.textOnSecondary,
-                overflow: TextOverflow.ellipsis,
-              ),
+              'ID: $rc',
+              style: context.textTheme.labelMedium,
             ),
           ),
         ],

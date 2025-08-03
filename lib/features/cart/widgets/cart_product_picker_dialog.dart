@@ -7,7 +7,7 @@ import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../data/product/product.model.dart';
 import '../../../shared/utils/formatter.dart';
-import '../../../widgets/ui/button_variants.dart';
+import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {
@@ -136,21 +136,21 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total', style: textTheme.titleMedium),
+                  Text('Total', style: textTheme.labelLarge),
                   Text(
                     Formatter.toIdr.format(widget.product.price * quantity),
-                    style: textTheme.titleMedium?.copyWith(color: POSTheme.primaryBlue),
+                    style: textTheme.labelLarge?.copyWith(color: POSTheme.primaryBlue),
                   ),
                 ],
               ),
             ),
           ),
           const SizedBox(width: 32),
-          Expanded(child: ThemedButton.cancel(onPressed: _onClose)),
+          Expanded(child: PosButton.cancel(onPressed: _onClose)),
           const SizedBox(width: 8),
           Expanded(
             flex: 2,
-            child: ThemedButton.process(onPressed: allowToProcess ? _onConfirm : null),
+            child: PosButton.process(onPressed: allowToProcess ? _onConfirm : null),
           ),
         ],
       ),
@@ -191,7 +191,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
 
         // Variants Section (if available)
         if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
           Text('Varian', style: textTheme.labelLarge),
           const SizedBox(height: 12),
           Wrap(
@@ -199,49 +199,40 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
             runSpacing: 8,
             children: widget.product.variants.map((variant) {
               final isSelected = selectedVariant == variant.id;
-              return InkWell(
-                onTap: () {
+
+              return FilterChip(
+                label: Column(
+                  children: [
+                    Text(
+                      variant.name,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      Formatter.toIdr.format(variant.price),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                selected: isSelected,
+                onSelected: (selected) {
                   selectedVariant = variant.id;
                   setState(() {});
                 },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  constraints: const BoxConstraints(minWidth: 160),
-                  decoration: BoxDecoration(
-                    color: isSelected ? POSTheme.primaryBlue : Colors.white,
-                    border: Border.all(
-                      color: isSelected ? POSTheme.primaryBlue : const Color(0xFFE5E7EB),
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        variant.name,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : const Color(0xFF374151),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        Formatter.toIdr.format(variant.price),
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isSelected ? Colors.white : const Color(0xFF374151),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                showCheckmark: false,
               );
             }).toList(),
           ),
         ],
 
         // Notes Section
-        const SizedBox(height: 24),
+        const SizedBox(height: 20),
         Text('Catatan (Opsional)', style: textTheme.labelLarge),
         const SizedBox(height: 12),
         Container(

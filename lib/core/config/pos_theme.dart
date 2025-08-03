@@ -60,7 +60,7 @@ abstract class POSTheme {
     fontWeight: FontWeight.w600,
   );
 
-  static const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 14);
+  static const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 28, vertical: 16);
 
   // Main Theme Data
   static ThemeData get lightTheme {
@@ -119,7 +119,6 @@ abstract class POSTheme {
           size: 24,
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
-          // statusBarColor: Colors.red,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.dark,
         ),

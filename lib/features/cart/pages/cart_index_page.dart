@@ -13,11 +13,21 @@ import '../widgets/cart_index_widgets.dart';
 import '../widgets/cart_items.dart';
 import '../widgets/cart_products.dart';
 
-class CartIndexPage extends ConsumerWidget {
+class CartIndexPage extends ConsumerStatefulWidget {
   const CartIndexPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CartIndexPage> createState() => _CartIndexPageState();
+}
+
+class _CartIndexPageState extends ConsumerState<CartIndexPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return const ColoredBox(
       color: POSTheme.backgroundSecondary,
       child: Row(
@@ -29,9 +39,9 @@ class CartIndexPage extends ConsumerWidget {
               child: Column(
                 children: [
                   _Header(),
-                  SizedBox(height: 16),
+                  SizedBox(height: 8),
                   CartCategories(),
-                  SizedBox(height: 16),
+                  SizedBox(height: 14),
                   _ProductFilterSection(),
                   SizedBox(height: 16),
                   CartProducts(),
@@ -46,7 +56,7 @@ class CartIndexPage extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     CartSalesModeInfo(),
                     SizedBox(height: 12),
                     CartItems(),
@@ -80,6 +90,7 @@ class _Header extends ConsumerWidget {
         IconButton(
           icon: const Icon(Icons.home, size: 24, color: POSTheme.textOnSecondary),
           onPressed: onBack,
+          style: IconButton.styleFrom(side: const BorderSide(style: BorderStyle.none)),
         ),
         const SizedBox(width: 8),
         const BadgeReceiptCode(),
@@ -97,7 +108,11 @@ class _ProductFilterSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: <Widget>[
-        const IconButton(onPressed: null, icon: Icon(Icons.align_horizontal_left_sharp)),
+        IconButton(
+          onPressed: null,
+          icon: const Icon(Icons.align_horizontal_left_sharp),
+          style: IconButton.styleFrom(side: const BorderSide(style: BorderStyle.none)),
+        ),
         const SizedBox(width: 8),
         const CartSearchProduct(),
         const SizedBox(width: 8),
@@ -115,7 +130,7 @@ class _CartAction extends ConsumerWidget {
     final cart = ref.watch(cartStateProvider);
 
     var label = 'Bayar';
-    if (cart.isItemEmpty) label += '  |  ${Formatter.toIdr.format(cart.net)}';
+    if (!cart.isItemEmpty) label += '  |  ${Formatter.toIdr.format(cart.net)}';
 
     void onPressed() {
       context.goNamed(IkkiRouter.cartPayment.name);

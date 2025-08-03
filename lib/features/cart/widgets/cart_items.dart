@@ -34,9 +34,9 @@ class CartItems extends ConsumerWidget {
                   Icon(Icons.add_shopping_cart_rounded, size: 32, color: POSTheme.primaryBlueDark),
                   SizedBox(height: 16),
                   Text(
-                    'Keranjang kosong',
+                    'Tambahkan item',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: POSTheme.primaryBlueDark,
                     ),
@@ -97,7 +97,7 @@ class _Item extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   '${item.qty}',
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -111,14 +111,24 @@ class _Item extends StatelessWidget {
                     Text(
                       item.product.name,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
-                    if (item.variant != null && item.variant!.name.isNotEmpty)
+                    if (item.variant != null && item.variant!.name.isNotEmpty) ...[
+                      const SizedBox(height: 2),
                       Text(
                         item.variant!.name,
-                        style: const TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 12),
                       ),
-                    if (item.note.isNotEmpty) Text('Catatan: ${item.note}', style: const TextStyle(fontSize: 14)),
+                    ],
+                    if (item.note.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        'Note: ${item.note}',
+                        style: const TextStyle(fontSize: 12),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -129,16 +139,15 @@ class _Item extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     Formatter.toIdrNoSymbol.format(item.gross),
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -.25),
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -.25),
                   ),
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: 2),
               InkWell(
                 onTap: onRemoved,
-                child: const SizedBox(
-                  width: 32,
-                  height: 32,
+                child: const SizedBox.square(
+                  dimension: 32,
                   child: Icon(
                     Icons.highlight_off,
                     size: 24,
@@ -146,17 +155,6 @@ class _Item extends StatelessWidget {
                   ),
                 ),
               ),
-              // IconButton(
-              //   icon: ,
-              //   style: IconButton.styleFrom(
-              //     foregroundColor: Colors.redAccent,
-              //     padding: EdgeInsets.zero,
-              //     backgroundColor: Colors.red,
-              //     fixedSize: const Size.square(32),
-              //     minimumSize: Size.zero,
-              //   ),
-              //   onPressed: onRemoved,
-              // ),
             ],
           ),
         ),

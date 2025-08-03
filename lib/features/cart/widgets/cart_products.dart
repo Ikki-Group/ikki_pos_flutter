@@ -46,7 +46,10 @@ class CartProducts extends ConsumerWidget {
                 children: [
                   const Icon(Icons.no_meals, size: 48, color: POSTheme.borderDark),
                   const SizedBox(height: 16),
-                  Text('Tidak ada produk yang ditemukan', style: context.textTheme.bodyLarge),
+                  Text(
+                    'Tidak ada produk yang ditemukan',
+                    style: context.textTheme.bodyMedium?.copyWith(color: POSTheme.textOnSecondary),
+                  ),
                 ],
               ),
             )
@@ -88,16 +91,24 @@ class _ProductItem extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         side: const BorderSide(color: POSTheme.borderLight),
+        elevation: 5,
+        shadowColor: Colors.black.withValues(alpha: .1),
       ),
       onPressed: onPress,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(name, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 6),
+          Text(
+            name,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 8),
           Text(
             Formatter.toIdr.format(product.price),
-            style: const TextStyle(fontSize: 14, color: POSTheme.textOnSecondary),
+            style: const TextStyle(fontSize: 12, color: POSTheme.textOnSecondary),
           ),
         ],
       ),

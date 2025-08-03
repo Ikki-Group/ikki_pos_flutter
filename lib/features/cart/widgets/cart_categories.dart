@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/config/pos_theme.dart';
 import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
 import '../providers/cart_index_provider.dart';
@@ -21,13 +20,15 @@ class CartCategories extends ConsumerWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: <_CategoryItem>[
-          for (final category in categories)
+        children: <Widget>[
+          for (final category in categories) ...[
             _CategoryItem(
               category: category,
               isSelected: categoryId == category.id,
               onPressed: () => onPressed(category),
             ),
+            const SizedBox(width: 8),
+          ],
         ],
       ),
     );
@@ -47,32 +48,26 @@ class _CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      constraints: const BoxConstraints(minWidth: 120),
-      child: FilledButton(
-        style: FilledButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          foregroundColor: isSelected ? POSTheme.textOnPrimary : POSTheme.textOnSecondary,
-          backgroundColor: isSelected ? POSTheme.primaryBlue : POSTheme.textOnPrimary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          side: const BorderSide(color: POSTheme.borderLight),
-          fixedSize: Size.infinite,
-        ),
-        onPressed: onPressed,
-        child: Column(
-          children: <Widget>[
-            Text(category.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 4),
-            Text(
-              '${category.productCount} Items',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+    return FilterChip(
+      label: Column(
+        children: [
+          Text(
+            category.name,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${category.productCount} Items',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+          ),
+        ],
       ),
+      selected: isSelected,
+      onSelected: (_) => onPressed(),
+      showCheckmark: false,
     );
   }
 }
