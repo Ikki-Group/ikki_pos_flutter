@@ -18,11 +18,6 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       toolbarHeight: preferredSize.height,
       leading: IconButton(
-        style: IconButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-        ),
         onPressed: Scaffold.of(context).openDrawer,
         icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),
@@ -49,9 +44,9 @@ class _PosInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+          style: theme.textTheme.titleSmall?.copyWith(color: Colors.white, fontSize: 16, height: 1),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         const Row(
           children: <Widget>[
             _NetInfo(),
@@ -74,15 +69,11 @@ class _NetInfo extends ConsumerWidget {
     const color = Color.fromARGB(255, 24, 255, 182);
     return Row(
       children: [
-        const Icon(Icons.wifi_rounded, size: 20, color: color),
+        const Icon(Icons.wifi_rounded, size: 16, color: color),
         const SizedBox(width: 4),
         Text(
           'Online',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
+          style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
         ),
       ],
     );
@@ -103,11 +94,7 @@ class _ShiftInfo extends ConsumerWidget {
         const SizedBox(width: 4),
         Text(
           'Open',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
+          style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
         ),
       ],
     );
