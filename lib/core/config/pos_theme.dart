@@ -53,16 +53,21 @@ abstract class POSTheme {
   static const Color shadowMedium = Color(0x1A000000);
   static const Color shadowDark = Color(0x25000000);
 
+  static BorderRadius radius8 = BorderRadius.circular(8);
+
   static const TextStyle buttonText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
   );
+
+  static const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 14);
 
   // Main Theme Data
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      fontFamily: 'Inter',
 
       // Color Scheme
       colorScheme: const ColorScheme(
@@ -104,88 +109,34 @@ abstract class POSTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryBlue,
         foregroundColor: textOnPrimary,
-        elevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
           color: textOnPrimary,
-          fontSize: 20,
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.5,
         ),
         iconTheme: IconThemeData(
           color: textOnPrimary,
           size: 24,
         ),
-        actionsIconTheme: IconThemeData(
-          color: textOnPrimary,
-          size: 24,
-        ),
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
+          // statusBarColor: Colors.red,
+          statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.dark,
         ),
+        toolbarHeight: 68,
       ),
 
-      cardTheme: CardThemeData(
-        color: surfaceCard,
-        elevation: 2,
-        shadowColor: shadowLight,
-        surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        margin: const EdgeInsets.all(4),
-      ),
-
-      // Elevated Button Theme - Primary actions
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryBlue,
           foregroundColor: textOnPrimary,
           elevation: 2,
           shadowColor: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: buttonPadding,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: radius8,
           ),
           textStyle: buttonText,
-          iconSize: 18,
-        ),
-      ),
-
-      // Outlined Button Theme - Secondary actions
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          side: const WidgetStateBorderSide.fromMap({
-            WidgetState.disabled: BorderSide(color: textTertiary, width: 1.5),
-            WidgetState.any: BorderSide(color: primaryBlue, width: 1.5),
-          }),
-          padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 24, vertical: 16)),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(
-                color: primaryBlue,
-                width: 1.5,
-              ),
-            ),
-          ),
-          textStyle: WidgetStateProperty.all(buttonText),
-          iconSize: WidgetStateProperty.all(18),
-        ),
-      ),
-
-      // Text Button Theme
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: primaryBlue,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          textStyle: buttonText,
-          iconSize: 18,
         ),
       ),
 
@@ -193,9 +144,38 @@ abstract class POSTheme {
         style: FilledButton.styleFrom(
           backgroundColor: primaryBlue,
           foregroundColor: textOnPrimary,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: buttonPadding,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: radius8,
+          ),
+          textStyle: buttonText,
+          iconSize: 18,
+        ),
+      ),
+
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          side: const WidgetStateBorderSide.fromMap({
+            WidgetState.disabled: BorderSide(color: textTertiary),
+            WidgetState.any: BorderSide(color: primaryBlue),
+          }),
+          padding: const WidgetStatePropertyAll(buttonPadding),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: radius8,
+            ),
+          ),
+          textStyle: WidgetStateProperty.all(buttonText),
+          iconSize: WidgetStateProperty.all(18),
+        ),
+      ),
+
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primaryBlue,
+          padding: buttonPadding,
+          shape: RoundedRectangleBorder(
+            borderRadius: radius8,
           ),
           textStyle: buttonText,
           iconSize: 18,
@@ -205,9 +185,9 @@ abstract class POSTheme {
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           foregroundColor: primaryBlue,
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.all(12),
-          iconSize: 24,
+          backgroundColor: Colors.transparent,
+          padding: const EdgeInsets.all(14),
+          iconSize: 18,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -221,15 +201,15 @@ abstract class POSTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: borderLight),
+          borderSide: const BorderSide(color: borderMedium),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: borderLight),
+          borderSide: const BorderSide(color: borderMedium),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primaryBlue, width: 2),
+          borderSide: const BorderSide(color: primaryBlueLight, width: 2),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -241,12 +221,12 @@ abstract class POSTheme {
         ),
         hintStyle: const TextStyle(
           color: textTertiary,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         ),
         labelStyle: const TextStyle(
-          color: textSecondary,
-          fontSize: 16,
+          color: textTertiary,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
         floatingLabelStyle: const TextStyle(
@@ -258,41 +238,27 @@ abstract class POSTheme {
 
       // Chip Theme - Category buttons
       chipTheme: ChipThemeData(
-        backgroundColor: surfaceSecondary,
-        selectedColor: primaryBlueDark,
+        backgroundColor: backgroundPrimary,
+        selectedColor: primaryBlue,
         disabledColor: surfaceTertiary,
+        checkmarkColor: textOnPrimary,
+        iconTheme: const IconThemeData(color: primaryBlue, size: 14),
         labelStyle: const TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           color: WidgetStateColor.fromMap({
             WidgetState.selected: textOnPrimary,
             WidgetState.disabled: textTertiary,
             WidgetState.any: textOnSecondary,
           }),
         ),
-        side: const BorderSide(color: borderLight),
+        side: const BorderSide(color: borderMedium),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         elevation: 5,
         pressElevation: 0,
-      ),
-
-      // Tab Bar Theme
-      tabBarTheme: const TabBarThemeData(
-        labelColor: primaryBlue,
-        unselectedLabelColor: textSecondary,
-        indicatorColor: primaryBlue,
-        indicatorSize: TabBarIndicatorSize.tab,
-        labelStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
       ),
 
       // List Tile Theme
@@ -300,113 +266,95 @@ abstract class POSTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         titleTextStyle: TextStyle(
           color: textPrimary,
-          fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
         subtitleTextStyle: TextStyle(
           color: textSecondary,
-          fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
         leadingAndTrailingTextStyle: TextStyle(
           color: textSecondary,
-          fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
       ),
 
-      // Divider Theme
       dividerTheme: const DividerThemeData(
-        color: borderLight,
+        color: borderMedium,
         thickness: 1,
         space: 1,
       ),
 
-      // Icon Theme
       iconTheme: const IconThemeData(
         color: textSecondary,
         size: 24,
       ),
 
-      // Primary Icon Theme
       primaryIconTheme: const IconThemeData(
-        color: textOnPrimary,
+        color: primaryBlue,
         size: 24,
       ),
 
-      // Text Theme
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          fontSize: 57,
+          fontSize: 40,
           fontWeight: FontWeight.w400,
           letterSpacing: -0.25,
         ),
         displayMedium: TextStyle(
-          fontSize: 45,
-          fontWeight: FontWeight.w400,
-        ),
-        displaySmall: TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.w400,
-        ),
-        headlineLarge: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.w400,
         ),
-        headlineMedium: TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.w400,
-        ),
-        headlineSmall: TextStyle(
+        displaySmall: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w400,
         ),
+        headlineLarge: TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
+        headlineMedium: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        headlineSmall: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
         titleLarge: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.2,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.1,
         ),
         titleMedium: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.25,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.1,
         ),
         titleSmall: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
           letterSpacing: -0.1,
         ),
         bodyLarge: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.1,
         ),
         bodyMedium: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.25,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.1,
         ),
         bodySmall: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.4,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.1,
         ),
         labelLarge: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.1,
+          fontWeight: FontWeight.bold,
+          letterSpacing: .25,
         ),
         labelMedium: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0.5,
+          fontWeight: FontWeight.w600,
+          letterSpacing: .25,
         ),
         labelSmall: TextStyle(
-          fontSize: 11,
           fontWeight: FontWeight.w500,
-          letterSpacing: 0.5,
+          letterSpacing: .25,
         ),
       ),
+
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: GoTransitions.fadeUpwards,
@@ -431,47 +379,6 @@ extension POSColors on BuildContext {
 
 extension POSTextStylesX on BuildContext {
   TextStyle get textStyle => GoogleFonts.poppins(letterSpacing: .5);
-}
-
-// Custom Text Styles
-abstract class POSTextStyles {
-  static const TextStyle headerTitle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w600,
-    color: POSTheme.textOnPrimary,
-    letterSpacing: -0.5,
-  );
-
-  static const TextStyle cardTitle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: POSTheme.textPrimary,
-    letterSpacing: -0.25,
-  );
-
-  static const TextStyle cardSubtitle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    color: POSTheme.textSecondary,
-  );
-
-  static const TextStyle buttonText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    letterSpacing: -0.25,
-  );
-
-  static const TextStyle priceText = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    color: POSTheme.accentGreen,
-  );
-
-  static const TextStyle categoryText = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: POSTheme.textSecondary,
-  );
 }
 
 extension TextThemeX on BuildContext {

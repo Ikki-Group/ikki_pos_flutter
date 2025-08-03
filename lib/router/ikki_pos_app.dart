@@ -16,6 +16,12 @@ class IkkiPosApp extends ConsumerWidget {
       routerConfig: router,
       theme: POSTheme.lightTheme,
       // theme: AppThemeFlex.light,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.25)),
+          child: child!,
+        );
+      },
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
     );

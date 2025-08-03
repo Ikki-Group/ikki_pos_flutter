@@ -152,7 +152,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
               final isSelected = selectedSaleMode == saleMode;
 
               return ChoiceChip(
-                padding: const EdgeInsets.all(16),
+                // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 showCheckmark: false,
                 selected: isSelected,
                 onSelected: (selected) {

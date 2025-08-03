@@ -18,6 +18,11 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       toolbarHeight: preferredSize.height,
       leading: IconButton(
+        style: IconButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
+          padding: EdgeInsets.zero,
+        ),
         onPressed: Scaffold.of(context).openDrawer,
         icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),

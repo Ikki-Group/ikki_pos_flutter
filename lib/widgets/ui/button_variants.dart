@@ -1,3 +1,5 @@
+// ignore_for_file: no_default_cases
+
 import 'package:flutter/material.dart';
 
 import '../../core/config/pos_theme.dart';
@@ -92,7 +94,7 @@ class ButtonVariants {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: _getPadding(size),
+      // padding: _getPadding(size),
       minimumSize: Size(0, _getMinHeight(size)),
       textStyle: TextStyle(
         fontSize: _getFontSize(size),

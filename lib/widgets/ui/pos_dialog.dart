@@ -30,7 +30,7 @@ class PosDialog extends StatelessWidget {
     final Widget titleWidget = ColoredBox(
       color: POSTheme.primaryBlue,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -38,9 +38,9 @@ class PosDialog extends StatelessWidget {
               title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: -0.2,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.25,
               ),
             ),
             if (subtitle != null)

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
 import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
@@ -39,44 +38,48 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
     }
 
     setState(() {
-      if (key case NumpadKey.backspace) {
-        if (displayValue.isNotEmpty) {
-          displayValue = displayValue.substring(0, displayValue.length - 1);
-        }
-      } else if (key case NumpadKey.empty) {
-      } else {
-        if (displayValue.length < UserModel.kPinLength) {
-          displayValue += key.value;
-        }
-
-        if (displayValue.length == UserModel.kPinLength) {
-          final isValid = selectedUser!.comparePin(displayValue);
-          if (isValid) {
-            ref.read(currentUserProvider.notifier).setUser(selectedUser!);
-            context.goNamed(IkkiRouter.pos.name);
-            return;
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'PIN tidak valid',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-            displayValue = '';
-            return;
+      switch (key) {
+        case NumpadKey.backspace:
+          if (displayValue.isNotEmpty) {
+            displayValue = displayValue.substring(0, displayValue.length - 1);
           }
-        }
+        case NumpadKey.empty:
+          break;
+        // ignore: no_default_cases
+        default:
+          if (displayValue.length < UserModel.kPinLength) {
+            displayValue += key.value;
+          }
+
+          if (displayValue.length == UserModel.kPinLength) {
+            final isValid = selectedUser!.comparePin(displayValue);
+            if (isValid) {
+              ref.read(currentUserProvider.notifier).setUser(selectedUser!);
+              context.goNamed(IkkiRouter.pos.name);
+              return;
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'PIN tidak valid',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              displayValue = '';
+              return;
+            }
+          }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider).requireValue;
 
     return Scaffold(
@@ -86,20 +89,13 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Selamat Datang',
-                style: context.textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                '-- ${outlet.name} --',
-                style: context.textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 32),
+              Text('Selamat Datang', style: textTheme.titleLarge, textAlign: TextAlign.center),
+              const SizedBox(height: 4),
+              Text('-- ${outlet.name} --', style: textTheme.titleMedium, textAlign: TextAlign.center),
+              const SizedBox(height: 20),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  side: const BorderSide(color: POSTheme.borderDark),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 ),
                 onPressed: openDialog,
                 child: Row(
@@ -109,31 +105,23 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
                     Expanded(
                       child: Text(
                         selectedUser?.name ?? 'Pilih Karyawan',
-                        // style: POSTextStyles.buttonText.copyWith(
-                        //   overflow: TextOverflow.ellipsis,
-                        //   fontWeight: FontWeight.w600,
-                        // ),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 42),
+              const SizedBox(height: 24),
               PinIndicator(
                 pinLength: displayValue.length,
                 maxLength: UserModel.kPinLength,
-                boxSize: 52,
+                boxSize: 48,
               ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: 280,
-                child: Column(
-                  children: [
-                    NumpadPin(
-                      onKeyPressed: handleKeyPress,
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 8),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 280),
+                child: NumpadPin(onKeyPressed: handleKeyPress),
               ),
             ],
           ),
