@@ -64,11 +64,11 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
       ),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           Expanded(
             flex: 7,
             child: Column(
-              children: [
+              children: <Widget>[
                 _Summary(
                   net: net,
                   change: change,
@@ -77,15 +77,12 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                 const Divider(),
                 IntrinsicHeight(
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: FilledButton(
                           onPressed: () {},
                           style: FilledButton.styleFrom(
-                            backgroundColor: POSTheme.backgroundSecondary,
-                            elevation: 0,
-                            foregroundColor: POSTheme.textPrimary,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                             shape: const RoundedRectangleBorder(),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             // side: BorderSide(color: POSTheme.),
@@ -98,10 +95,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                         child: FilledButton(
                           onPressed: () {},
                           style: FilledButton.styleFrom(
-                            backgroundColor: POSTheme.backgroundSecondary,
-                            foregroundColor: POSTheme.textPrimary,
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                             shape: const RoundedRectangleBorder(),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             // side: BorderSide(color: POSTheme.),
@@ -130,24 +124,21 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+                children: <Widget>[
                   ColoredBox(
                     color: POSTheme.backgroundSecondary,
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(cart.rc, style: textTheme.titleSmall),
+                        children: <Widget>[
+                          Text(cart.rc, style: textTheme.labelMedium),
                           const SizedBox(height: 12),
                           Row(
-                            children: [
-                              const Icon(
-                                Icons.person,
-                                size: 24,
-                              ),
+                            children: <Widget>[
+                              const Icon(Icons.person, size: 20),
                               const SizedBox(width: 8),
-                              Text('Rizqy Nugroho', style: textTheme.bodyMedium),
+                              Text('Rizqy Nugroho', style: textTheme.labelMedium),
                             ],
                           ),
                         ],
@@ -159,7 +150,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16),
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           for (final batch in cart.batches) ...[
                             buildItemBatch(cart.items.where((item) => item.batchId == batch.id).toList(), batch),
                             const SizedBox(height: 16),
@@ -187,31 +178,34 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
 
   Widget buildItemBatch(List<CartItem> items, CartBatch batch) {
     final textTheme = Theme.of(context).textTheme;
+    final net = items.fold<double>(0, (prev, curr) => prev + curr.gross);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Pesanan ${batch.id}', style: textTheme.labelLarge),
-            Text(Formatter.date.format(DateTime.parse(batch.at)), style: textTheme.labelLarge),
+            Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
+            Text(Formatter.toIdr.format(net), style: textTheme.titleSmall),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
+        Text(Formatter.date.format(DateTime.parse(batch.at)), style: textTheme.bodySmall),
+        const SizedBox(height: 12),
         for (final item in items) ...[
           Row(
             children: [
               Expanded(
                 child: Text(
                   '${item.qty} x ${item.product.name}',
-                  style: textTheme.bodyMedium,
+                  style: textTheme.bodySmall,
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 Formatter.toIdrNoSymbol.format(item.gross),
-                style: textTheme.bodyMedium,
+                style: textTheme.bodySmall,
               ),
             ],
           ),
@@ -263,21 +257,21 @@ class _CartPaymentMethod extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Pilih Metode Pembayaran', style: textTheme.titleMedium),
+            Text('Pilih Metode Pembayaran', style: textTheme.titleSmall),
             if (payments.isNotEmpty) ...[
               const SizedBox(height: 16),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   spacing: 8,
-                  children: [
+                  children: <Widget>[
                     for (final payment in payments)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: POSTheme.borderLight),
+                          border: Border.all(color: POSTheme.borderDark),
                         ),
                         child: Row(
                           children: [
@@ -285,7 +279,7 @@ class _CartPaymentMethod extends StatelessWidget {
                               payment.payment.type == PaymentType.cash
                                   ? 'Tunai: ${Formatter.toIdr.format(payment.amount)}'
                                   : '${payment.payment.label}: ${Formatter.toIdr.format(payment.amount)}',
-                              style: textTheme.labelLarge,
+                              style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(width: 8),
                             InkWell(
@@ -305,18 +299,15 @@ class _CartPaymentMethod extends StatelessWidget {
             buildSection(context, 'Tunai', <Widget>[
               buildChip(
                 label: 'Uang Pas',
-                selected: false,
                 onSelected: () => onAdd(PaymentModel.cash, net),
               ),
               for (final cash in generateCashRecommendationsIDR(net))
                 buildChip(
                   label: Formatter.toIdr.format(cash),
-                  selected: false,
                   onSelected: () => onAdd(PaymentModel.cash, cash),
                 ),
               buildChip(
                 label: 'Nominal Lain',
-                selected: false,
                 onSelected: () => onAdd(PaymentModel.cash, net),
               ),
             ]),
@@ -325,7 +316,6 @@ class _CartPaymentMethod extends StatelessWidget {
               for (final payment in PaymentModel.data.where((e) => e.type == PaymentType.cashless))
                 buildChip(
                   label: payment.label,
-                  selected: false,
                   onSelected: () => onAdd(payment, net),
                 ),
             ]),
@@ -353,15 +343,13 @@ class _CartPaymentMethod extends StatelessWidget {
 
   Widget buildChip({
     required String label,
-    required bool selected,
     required VoidCallback? onSelected,
   }) {
     return ChoiceChip(
       label: Text(label),
       showCheckmark: false,
       onSelected: disablePaymentSelection ? null : (_) => onSelected!(),
-      selected: selected,
-      backgroundColor: selected ? POSTheme.primaryBlue : Colors.white,
+      selected: false,
     );
   }
 
@@ -389,6 +377,26 @@ class _Summary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget buildSummary({
+      required String label,
+      required double amount,
+      required Color color,
+    }) {
+      return Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(label, style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500)),
+            const SizedBox(height: 4),
+            Text(
+              Formatter.toIdr.format(amount),
+              style: context.textTheme.titleMedium?.copyWith(color: color),
+            ),
+          ],
+        ),
+      );
+    }
+
     return ColoredBox(
       color: Colors.white,
       child: IntrinsicHeight(
@@ -396,35 +404,14 @@ class _Summary extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 96),
           child: Row(
             children: <Widget>[
-              buildSummary(context, label: 'Total Tagihan', amount: net, color: POSTheme.accentGreen),
+              buildSummary(label: 'Total Tagihan', amount: net, color: POSTheme.accentGreen),
               const VerticalDivider(),
-              buildSummary(context, label: 'Sisa Tagihan', amount: unpaid, color: POSTheme.accentRed),
+              buildSummary(label: 'Sisa Tagihan', amount: unpaid, color: POSTheme.accentRed),
               const VerticalDivider(),
-              buildSummary(context, label: 'Kembalian', amount: change, color: POSTheme.accentGreen),
+              buildSummary(label: 'Kembalian', amount: change, color: POSTheme.accentGreen),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildSummary(
-    BuildContext context, {
-    required String label,
-    required double amount,
-    required Color color,
-  }) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(label, style: context.textTheme.labelLarge),
-          const SizedBox(height: 4),
-          Text(
-            Formatter.toIdr.format(amount),
-            style: context.textTheme.titleLarge?.copyWith(color: color),
-          ),
-        ],
       ),
     );
   }
