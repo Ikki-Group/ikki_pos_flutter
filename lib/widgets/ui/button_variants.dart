@@ -354,7 +354,7 @@ class ButtonVariants {
   }
 }
 
-// Custom Button Widget
+@Deprecated('Use PosButton instead')
 class ThemedButton extends StatelessWidget {
   const ThemedButton({
     required this.text,
@@ -388,6 +388,7 @@ class ThemedButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
   });
+
   final Widget text;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
@@ -546,174 +547,5 @@ class ThemedButton extends StatelessWidget {
           ),
         );
     }
-  }
-}
-
-// Usage Examples
-class ButtonExamples extends StatefulWidget {
-  const ButtonExamples({super.key});
-
-  @override
-  _ButtonExamplesState createState() => _ButtonExamplesState();
-}
-
-class _ButtonExamplesState extends State<ButtonExamples> {
-  bool isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Primary Buttons
-        Text('Primary Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Small',
-        //         size: ButtonSize.small,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Medium',
-        //         size: ButtonSize.medium,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Large',
-        //         size: ButtonSize.large,
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Secondary Buttons
-        //   Text('Secondary Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Secondary',
-        //         variant: ButtonVariant.secondary,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'With Icon',
-        //         variant: ButtonVariant.secondary,
-        //         icon: Icon(Icons.star),
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Destructive Buttons
-        //   Text('Destructive Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Delete',
-        //         variant: ButtonVariant.destructive,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Remove Item',
-        //         variant: ButtonVariant.destructive,
-        //         icon: Icon(Icons.delete),
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Outline Buttons
-        //   Text('Outline Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Outline',
-        //         variant: ButtonVariant.outline,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Cancel',
-        //         variant: ButtonVariant.outline,
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Ghost Buttons
-        //   Text('Ghost Buttons', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Ghost',
-        //         variant: ButtonVariant.ghost,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Link Style',
-        //         variant: ButtonVariant.link,
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Loading States
-        //   Text('Loading States', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   Wrap(
-        //     spacing: 8,
-        //     runSpacing: 8,
-        //     children: [
-        //       ThemedButton(
-        //         text: 'Loading',
-        //         isLoading: true,
-        //         onPressed: () {},
-        //       ),
-        //       ThemedButton(
-        //         text: 'Processing',
-        //         variant: ButtonVariant.secondary,
-        //         isLoading: true,
-        //         onPressed: () {},
-        //       ),
-        //     ],
-        //   ),
-
-        //   SizedBox(height: 16),
-
-        //   // Full Width
-        //   Text('Full Width', style: Theme.of(context).textTheme.headlineSmall),
-        //   SizedBox(height: 8),
-        //   ThemedButton(
-        //     text: 'Full Width Button',
-        //     width: double.infinity,
-        //     onPressed: () {},
-        //   ),
-      ],
-    );
   }
 }

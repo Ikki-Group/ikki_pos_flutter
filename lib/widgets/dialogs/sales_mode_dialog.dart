@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../data/cart/cart_state.dart';
 import '../../data/sale/sale_enum.dart';
 import '../../router/ikki_router.dart';
-import '../ui/button_variants.dart';
+import '../ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
@@ -97,9 +97,9 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          ThemedButton.cancel(onPressed: onClose),
+          PosButton.cancel(onPressed: onClose),
           const SizedBox(width: 8),
-          ThemedButton.process(onPressed: onProcessPressed),
+          PosButton.process(onPressed: onProcessPressed),
         ],
       ),
       children: [

@@ -26,6 +26,7 @@ class PosDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    final textTheme = Theme.of(context).textTheme;
 
     final Widget titleWidget = ColoredBox(
       color: POSTheme.primaryBlue,
@@ -36,21 +37,12 @@ class PosDialog extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.25,
-              ),
+              style: textTheme.titleMedium?.copyWith(color: Colors.white),
             ),
             if (subtitle != null)
               Text(
                 subtitle!,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: textTheme.titleMedium?.copyWith(color: Colors.white),
               ),
           ],
         ),
