@@ -7,11 +7,11 @@ import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
-import '../../pos/provider/pos_provider.dart';
 import '../widgets/cart_categories.dart';
 import '../widgets/cart_index_widgets.dart';
 import '../widgets/cart_items.dart';
 import '../widgets/cart_products.dart';
+import '../widgets/cart_save_dialog.dart';
 
 class CartIndexPage extends ConsumerStatefulWidget {
   const CartIndexPage({super.key});
@@ -136,10 +136,11 @@ class _CartAction extends ConsumerWidget {
       context.goNamed(IkkiRouter.cartPayment.name);
     }
 
-    void onSave() {
-      ref.read(cartStateProvider.notifier).save();
-      context.goNamed(IkkiRouter.pos.name);
-      ref.invalidate(posCartListProvider);
+    Future<void> onSave() async {
+      CartSaveDialog.show(context);
+      // await ref.read(cartStateProvider.notifier).save();
+      // ref.invalidate(posCartListProvider);
+      // if (context.mounted) context.goNamed(IkkiRouter.pos.name);
     }
 
     return Column(

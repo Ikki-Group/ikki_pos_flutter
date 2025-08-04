@@ -11,6 +11,7 @@ class PosDialog extends StatelessWidget {
     this.width,
     this.height,
     this.footer,
+    this.scrollable = true,
     this.constraints = const BoxConstraints(),
   });
 
@@ -19,6 +20,7 @@ class PosDialog extends StatelessWidget {
   final List<Widget> children;
   final Widget? footer;
 
+  final bool scrollable;
   final BoxConstraints? constraints;
   final double? width;
   final double? height;
@@ -49,14 +51,25 @@ class PosDialog extends StatelessWidget {
       ),
     );
 
-    final contentWidget = Flexible(
-      child: SingleChildScrollView(
+    Widget contentWidget;
+
+    if (scrollable) {
+      contentWidget = Flexible(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: ListBody(
+            children: children,
+          ),
+        ),
+      );
+    } else {
+      contentWidget = Padding(
         padding: const EdgeInsets.all(16),
         child: ListBody(
           children: children,
         ),
-      ),
-    );
+      );
+    }
 
     Widget? footerWidget;
 
@@ -67,7 +80,8 @@ class PosDialog extends StatelessWidget {
       );
     }
 
-    final Widget dialogChild = ConstrainedBox(
+    Widget dialogChild;
+    dialogChild = ConstrainedBox(
       constraints: constraints!,
       child: Column(
         mainAxisSize: MainAxisSize.min,

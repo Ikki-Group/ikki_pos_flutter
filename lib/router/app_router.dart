@@ -5,7 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/auth/pages/auth_device_page.dart';
 import '../features/cart/pages/cart_index_page.dart';
 import '../features/cart/pages/cart_payment_page.dart';
-import '../features/cart/pages/cart_payment_rnd_two.dart';
 import '../features/cart/pages/cart_payment_success.dart';
 import '../features/cart/pages/cart_rnd.dart';
 import '../features/pos/pages/pos_page.dart';
@@ -88,14 +87,6 @@ GoRouter goRouter(Ref ref) {
             path: IkkiRouter.cartPayment.path,
             name: IkkiRouter.cartPayment.name,
             builder: (context, state) => const CartPaymentPage(),
-          ),
-          GoRoute(
-            path: IkkiRouter.cartRndTwo.path,
-            name: IkkiRouter.cartRndTwo.name,
-            builder: (context, state) => const CartPaymentRndTwo(
-              orderItems: [],
-              subtotal: 1000,
-            ),
           ),
           GoRoute(
             path: IkkiRouter.cartPaymentSuccess.path,

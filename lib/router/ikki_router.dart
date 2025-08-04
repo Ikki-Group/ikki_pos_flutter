@@ -19,7 +19,6 @@ enum IkkiRouter {
   // Cart
   cart,
   cartRnd,
-  cartRndTwo,
   cartPayment,
   cartPaymentSuccess,
 

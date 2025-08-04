@@ -5,6 +5,7 @@ import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_provider.dart';
 import '../../../shared/utils/formatter.dart';
+import '../../../widgets/ui/pos_button.dart';
 import '../provider/pos_provider.dart';
 
 class PosPage extends ConsumerStatefulWidget {
@@ -15,46 +16,26 @@ class PosPage extends ConsumerStatefulWidget {
 }
 
 class _PosPageState extends ConsumerState<PosPage> {
-  final searchController = TextEditingController();
-  PosTabItem selectedTab = PosTabItem.all;
-  Cart? selectedCart;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
-  void onTapCart(Cart cart) {
-    selectedCart = cart;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return const ColoredBox(
       color: POSTheme.backgroundSecondary,
       child: Column(
         children: [
-          const _HeaderSection(),
+          _HeaderSection(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+              padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
               child: Row(
                 children: [
                   Expanded(
                     flex: 5,
-                    child: _CartListSection(onTap: onTapCart, selectedCart: selectedCart),
+                    child: _CartListSection(),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Expanded(
                     flex: 8,
-                    child: _CartDetailsSections(cart: selectedCart),
+                    child: _CartDetailsSections(),
                   ),
                 ],
               ),
@@ -66,11 +47,35 @@ class _PosPageState extends ConsumerState<PosPage> {
   }
 }
 
-class _HeaderSection extends StatelessWidget {
+class _HeaderSection extends ConsumerStatefulWidget {
   const _HeaderSection();
 
   @override
+  ConsumerState<_HeaderSection> createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends ConsumerState<_HeaderSection> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController()
+      ..addListener(() {
+        ref.read(posFilterProvider.notifier).setSearch(controller.text);
+      });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final filter = ref.watch(posFilterProvider);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -78,17 +83,29 @@ class _HeaderSection extends StatelessWidget {
         children: [
           for (final tab in PosTabItem.values) ...[
             FilterChip(
-              label: Text('${tab.label} (0)'),
-              onSelected: (_) => {},
+              label: Text(tab.label),
+              onSelected: (_) => {
+                ref.read(posFilterProvider.notifier).setTab(tab),
+              },
               showCheckmark: false,
+              selected: tab == filter.tab,
             ),
           ],
           const Spacer(),
-          const Expanded(
+          Expanded(
             child: TextField(
+              autocorrect: false,
+              enableSuggestions: false,
+              controller: controller,
               decoration: InputDecoration(
                 hintText: 'Cari Order...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: filter.search.isNotEmpty
+                    ? InkWell(
+                        onTap: controller.clear,
+                        child: const Icon(Icons.highlight_off),
+                      )
+                    : null,
               ),
             ),
           ),
@@ -99,15 +116,18 @@ class _HeaderSection extends StatelessWidget {
 }
 
 class _CartListSection extends ConsumerWidget {
-  const _CartListSection({required this.onTap, this.selectedCart});
-
-  final void Function(Cart cart) onTap;
-  final Cart? selectedCart;
+  const _CartListSection();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final filter = ref.watch(posFilterProvider);
     var items = ref.watch(cartDataProvider);
     items = items.toList().reversed.toList();
+
+    if (filter.tab == PosTabItem.online) items = [];
+    if (filter.search.isNotEmpty) {
+      items = items.where((e) => e.rc.contains(filter.search)).toList();
+    }
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -134,8 +154,8 @@ class _CartListSection extends ConsumerWidget {
                   final item = items[index];
                   return _CartListItem(
                     cart: item,
-                    onTap: onTap,
-                    isSelected: item.id == selectedCart?.id,
+                    onTap: (cart) => ref.read(posFilterProvider.notifier).setSelectedCart(cart),
+                    isSelected: item.id == filter.selectedCart?.id,
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
@@ -217,14 +237,13 @@ class _CartListItem extends StatelessWidget {
   }
 }
 
-class _CartDetailsSections extends StatelessWidget {
-  const _CartDetailsSections({required this.cart});
-
-  final Cart? cart;
+class _CartDetailsSections extends ConsumerWidget {
+  const _CartDetailsSections();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    final cart = ref.watch(posFilterProvider.select((value) => value.selectedCart));
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -251,7 +270,7 @@ class _CartDetailsSections extends StatelessWidget {
                     ),
                   ],
                 )
-              : _CartDetailsView(cart!),
+              : _CartDetailsView(cart),
         ),
       ),
     );
@@ -371,7 +390,11 @@ class _CartDetailsView extends StatelessWidget {
           ),
           Row(
             children: [
-              OutlinedButton(onPressed: () {}, child: const Text('Void')),
+              PosButton(
+                text: 'Void',
+                onPressed: () {},
+                variant: ButtonVariant.destructiveOutlined,
+              ),
               const Spacer(),
               OutlinedButton.icon(
                 onPressed: () {},

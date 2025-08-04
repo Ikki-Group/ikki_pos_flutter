@@ -9,9 +9,12 @@ import '../../../data/cart/cart_state.dart';
 import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
 import '../../../router/ikki_router.dart';
+import '../../../shared/utils/cash_generator.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../payment/payment_enum.dart';
 import '../../payment/payment_model.dart';
+import '../widgets/cart_cash_custom.dart';
+import '../widgets/cart_note_dialog.dart';
 
 class CartPaymentPage extends ConsumerStatefulWidget {
   const CartPaymentPage({super.key});
@@ -93,7 +96,9 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
                       const VerticalDivider(),
                       Expanded(
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            CartNoteDialog.show(context);
+                          },
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                             shape: const RoundedRectangleBorder(),
@@ -217,7 +222,6 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
 }
 
 final kCashIDR = <double>[5000, 10000, 20000, 50000, 100000];
-final kCashless = <String>['BCA', 'Mandiri', 'QRIS'];
 
 class _CartPaymentMethod extends StatelessWidget {
   const _CartPaymentMethod({
@@ -254,72 +258,76 @@ class _CartPaymentMethod extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Pilih Metode Pembayaran', style: textTheme.titleSmall),
-            if (payments.isNotEmpty) ...[
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Pilih Metode Pembayaran', style: textTheme.titleSmall),
+              if (payments.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    spacing: 8,
+                    children: <Widget>[
+                      for (final payment in payments)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: POSTheme.borderDark),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                payment.payment.type == PaymentType.cash
+                                    ? 'Tunai: ${Formatter.toIdr.format(payment.amount)}'
+                                    : '${payment.payment.label}: ${Formatter.toIdr.format(payment.amount)}',
+                                style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(width: 8),
+                              InkWell(
+                                onTap: () {
+                                  onPaymentsChanged(payments.where((p) => p.id != payment.id).toList());
+                                },
+                                child: const Icon(Icons.highlight_off, color: POSTheme.accentRed, size: 24),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  spacing: 8,
-                  children: <Widget>[
-                    for (final payment in payments)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: POSTheme.borderDark),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              payment.payment.type == PaymentType.cash
-                                  ? 'Tunai: ${Formatter.toIdr.format(payment.amount)}'
-                                  : '${payment.payment.label}: ${Formatter.toIdr.format(payment.amount)}',
-                              style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(width: 8),
-                            InkWell(
-                              onTap: () {
-                                onPaymentsChanged(payments.where((p) => p.id != payment.id).toList());
-                              },
-                              child: const Icon(Icons.highlight_off, color: POSTheme.accentRed, size: 24),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
+              buildSection(context, 'Tunai', <Widget>[
+                buildChip(
+                  label: 'Uang Pas',
+                  onSelected: () => onAdd(PaymentModel.cash, net),
                 ),
-              ),
+                for (final cash in CashPaymentGenerator.generateCashOptions(net.toInt()))
+                  buildChip(
+                    label: Formatter.toIdr.format(cash),
+                    onSelected: () => onAdd(PaymentModel.cash, cash.toDouble()),
+                  ),
+                buildChip(
+                  label: 'Nominal Lain',
+                  onSelected: () {
+                    CartCashCustom.show(context);
+                  },
+                ),
+              ]),
+              const SizedBox(height: 16),
+              buildSection(context, 'Non Tunai', <Widget>[
+                for (final payment in PaymentModel.data.where((e) => e.type == PaymentType.cashless))
+                  buildChip(
+                    label: payment.label,
+                    onSelected: () => onAdd(payment, net),
+                  ),
+              ]),
             ],
-            const SizedBox(height: 16),
-            buildSection(context, 'Tunai', <Widget>[
-              buildChip(
-                label: 'Uang Pas',
-                onSelected: () => onAdd(PaymentModel.cash, net),
-              ),
-              for (final cash in generateCashRecommendationsIDR(net))
-                buildChip(
-                  label: Formatter.toIdr.format(cash),
-                  onSelected: () => onAdd(PaymentModel.cash, cash),
-                ),
-              buildChip(
-                label: 'Nominal Lain',
-                onSelected: () => onAdd(PaymentModel.cash, net),
-              ),
-            ]),
-            const SizedBox(height: 16),
-            buildSection(context, 'Non Tunai', <Widget>[
-              for (final payment in PaymentModel.data.where((e) => e.type == PaymentType.cashless))
-                buildChip(
-                  label: payment.label,
-                  onSelected: () => onAdd(payment, net),
-                ),
-            ]),
-          ],
+          ),
         ),
       ),
     );
@@ -335,6 +343,7 @@ class _CartPaymentMethod extends StatelessWidget {
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
+          runSpacing: 8,
           children: child,
         ),
       ],
