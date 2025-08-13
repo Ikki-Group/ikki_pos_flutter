@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/config/pos_theme.dart';
-import '../../data/user/user.model.dart';
+import '../../data/user/user_model.dart';
 import '../ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
 

@@ -1,40 +1,19 @@
-import 'dart:convert';
-import 'dart:developer' as dev;
-
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../outlet/outlet.provider.dart';
+import '../outlet/outlet_provider.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
-import '../user/user.model.dart';
-import '../user/user.provider.dart';
+import '../user/user_model.dart';
+import '../user/user_provider.dart';
 import 'cart_enum.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
 import 'cart_provider.dart';
+import 'cart_util.dart';
 
 part 'cart_state.g.dart';
-
-enum CartLogAction {
-  create,
-  pay
-  //
-  ;
-
-  @override
-  String toString() {
-    return name.split('.').last.toUpperCase();
-  }
-
-  String toLog(Cart state, UserModel user, String message) {
-    final msg =
-        '[${DateTime.now().toIso8601String()}]-[$this]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
-    dev.log(msg);
-    return msg;
-  }
-}
 
 @Riverpod(keepAlive: true)
 class CartState extends _$CartState {
@@ -54,7 +33,6 @@ class CartState extends _$CartState {
     final sessionId = outlet.session.id;
     final rc = await ref.read(receiptCodeRepoProvider).getCode(sessionId);
     final now = DateTime.now().toIso8601String();
-
     final initialLog = CartLogAction.create.toLog(state, user, 'Cart created');
     final initialBatch = CartBatch(id: 1, at: now, by: user.id);
 
@@ -140,7 +118,7 @@ class CartState extends _$CartState {
       status: CartStatus.process,
       billType: BillType.open,
       updatedAt: DateTime.now().toIso8601String(),
-      updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
+      updatedBy: ref.read(currentUserProvider.notifier).requiredUser().id,
     );
 
     await ref.read(cartDataProvider.notifier).save(state);
@@ -167,7 +145,7 @@ class CartState extends _$CartState {
   // Internal methods
 
   UserModel _getUser() {
-    return ref.read(currentUserProvider.notifier).requireUser();
+    return ref.read(currentUserProvider.notifier).requiredUser();
   }
 
   void _recalculateCart() {

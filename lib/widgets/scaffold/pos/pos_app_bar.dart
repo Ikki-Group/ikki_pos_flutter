@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/outlet/outlet.provider.dart';
+import '../../../data/outlet/outlet_provider.dart';
 import '../../../features/home/widgets/home_create_order_button.dart';
 import '../../../router/ikki_router.dart';
 

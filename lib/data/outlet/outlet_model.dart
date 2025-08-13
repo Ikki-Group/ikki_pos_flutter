@@ -2,8 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../json.dart';
 
-part 'outlet.model.freezed.dart';
-part 'outlet.model.g.dart';
+part 'outlet_model.freezed.dart';
+part 'outlet_model.g.dart';
 
 @freezed
 abstract class OutletModel with _$OutletModel {

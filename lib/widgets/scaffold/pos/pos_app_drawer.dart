@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../data/user/user.model.dart';
-import '../../../data/user/user.provider.dart';
+import '../../../data/user/user_model.dart';
+import '../../../data/user/user_provider.dart';
 import '../../../router/ikki_router.dart';
 
 class PosAppDrawer extends ConsumerWidget {
@@ -108,7 +108,12 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
   @override
   void initState() {
     super.initState();
-    user = ref.read(currentUserProvider)!;
+    user = ref.read(currentUserProvider.notifier).requiredUser();
+  }
+
+  void onLogout() {
+    context.goNamed(IkkiRouter.userSelect.name);
+    ref.read(currentUserProvider.notifier).logout();
   }
 
   @override
@@ -125,21 +130,14 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
                   user.name,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                const Text(
-                  'Kasir',
-                  style: TextStyle(color: Colors.white70, fontSize: 13),
-                ),
+                const Text('Kasir', style: TextStyle(color: Colors.white70, fontSize: 13)),
               ],
             ),
           ),
           TextButton(
-            onPressed: () => context.goNamed(IkkiRouter.userSelect.name),
+            onPressed: onLogout,
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               fixedSize: const Size.square(24),

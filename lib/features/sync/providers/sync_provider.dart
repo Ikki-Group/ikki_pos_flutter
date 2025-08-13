@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/outlet/outlet.provider.dart';
+import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/user/user_provider.dart';
 
 part 'sync_provider.g.dart';

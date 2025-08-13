@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
-import '../../../data/user/user.provider.dart';
+import '../../../data/user/user_provider.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/cash_generator.dart';
 import '../../../shared/utils/formatter.dart';

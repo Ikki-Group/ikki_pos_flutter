@@ -6,10 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
+import '../../shared/utils/talker.dart';
 import '../json.dart';
-import 'outlet.model.dart';
+import 'outlet_model.dart';
 
-part 'outlet.repo.g.dart';
+part 'outlet_repo.g.dart';
 
 @Riverpod(keepAlive: true)
 OutletRepo outletRepo(Ref ref) {
@@ -25,27 +26,33 @@ class OutletRepo {
   final SharedPreferences sp;
   final Ref ref;
 
+  // Local
+
   Future<OutletModel> getLocal() async {
-    print('[OutletRepo] getLocal');
+    talker.info('[OutletRepo] getLocal');
+
     OutletModel outlet;
-    final outletJson = sp.getString(SharedPrefsKeys.outlet.key);
-    if (outletJson != null) {
-      outlet = OutletModel.fromJson(jsonDecode(outletJson) as Json);
+    final raw = sp.getString(SharedPrefsKeys.outlet.key);
+    if (raw != null) {
+      outlet = OutletModel.fromJson(jsonDecode(raw) as Json);
     } else {
       outlet = await fetch();
     }
     return outlet;
   }
 
-  Future<OutletModel> fetch() async {
-    print('[OutletRepo] fetch');
-    const outlet = _kMock;
-    await save(outlet);
-    return outlet;
+  Future<bool> saveLocal(OutletModel outlet) async {
+    talker.info('[OutletRepo] saveLocal $outlet');
+    return sp.setString(SharedPrefsKeys.outlet.key, jsonEncode(outlet));
   }
 
-  Future<bool> save(OutletModel outlet) async {
-    return sp.setString(SharedPrefsKeys.outlet.key, jsonEncode(outlet));
+  // Remote
+
+  Future<OutletModel> fetch() async {
+    talker.info('[OutletRepo] fetch');
+    const outlet = _kMock;
+    await saveLocal(outlet);
+    return outlet;
   }
 }
 

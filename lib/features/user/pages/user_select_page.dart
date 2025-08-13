@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
-import '../../../data/outlet/outlet.provider.dart';
+import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/user/user_model.dart';
 import '../../../data/user/user_provider.dart';
 import '../../../router/ikki_router.dart';

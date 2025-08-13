@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/config/pos_theme.dart';
-import '../../data/outlet/outlet.provider.dart';
-import '../../data/user/user.model.dart';
-import '../../data/user/user.provider.dart';
+import '../../data/outlet/outlet_provider.dart';
+import '../../data/user/user_model.dart';
+import '../../data/user/user_provider.dart';
 import '../../shared/utils/formatter.dart';
 import 'currency_numpad_dialog.dart';
 import 'ikki_dialog.dart';
@@ -33,7 +33,7 @@ class _PosCashOpenState extends ConsumerState<PosCashOpen> {
   }
 
   Future<void> _onConfirm(UserModel user) async {
-    final result = await ref.read(outletProvider.notifier).open(cash, user);
+    final result = await ref.read(outletProvider.notifier).open(cash: cash, user: user);
     if (!mounted) return;
 
     final messenger = ScaffoldMessenger.of(context);
