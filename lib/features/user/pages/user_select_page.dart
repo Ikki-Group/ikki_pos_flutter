@@ -46,6 +46,9 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
       _ => inputPin,
     };
 
+    inputPin = value;
+    setState(() {});
+
     if (value.length == UserModel.kPinLength) {
       final isValid = selectedUser!.comparePin(value);
 
@@ -55,15 +58,14 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
       } else {
         messenger.showSnackBar(
           const SnackBar(
-            content: Text('PIN tidak valid', style: TextStyle(color: POSTheme.textOnPrimary)),
+            content: Text('PIN Salah', style: TextStyle(color: POSTheme.textOnPrimary)),
             backgroundColor: POSTheme.accentRed,
           ),
         );
         inputPin = '';
+        setState(() {});
       }
     }
-
-    setState(() {});
   }
 
   @override
