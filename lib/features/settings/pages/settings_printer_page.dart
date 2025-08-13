@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/config/pos_theme.dart';
-import '../../../data/printer/printer_provider.dart';
 import '../widgets/add_printer_dialog.dart';
 
 class SettingsPrinterPage extends ConsumerStatefulWidget {
@@ -15,25 +13,28 @@ class SettingsPrinterPage extends ConsumerStatefulWidget {
 class _SettingsPrinterPageState extends ConsumerState<SettingsPrinterPage> {
   @override
   Widget build(BuildContext context) {
-    // TODOS
-    ref.watch(printerProviderProvider);
+    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
-            Text('Koneksi Printer', style: context.textTheme.titleLarge),
+            Text('Koneksi Printer', style: textTheme.titleMedium),
             const Spacer(),
-            FilledButton(onPressed: () => AddPrinterDialog.show(context), child: const Text('Tambah Printer')),
+            FilledButton(
+              onPressed: () => AddPrinterDialog.show(context),
+              child: const Text('Tambah Printer'),
+            ),
           ],
         ),
         Expanded(
           child: SingleChildScrollView(
+            padding: EdgeInsets.zero,
             child: Column(
               children: [
                 // Implement MOCK
-                ...List.generate(10, PrinterItem.new),
+                ...List.generate(2, PrinterItem.new),
               ],
             ),
           ),
@@ -51,7 +52,7 @@ class PrinterItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 2),
+      contentPadding: EdgeInsets.zero,
       title: Text('Printer $index'),
       subtitle: const Text('IP: 192.168.1.1'),
     );

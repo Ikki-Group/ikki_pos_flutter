@@ -22,10 +22,13 @@ class PosAppBar extends StatelessWidget implements PreferredSizeWidget {
         icon: const Center(child: Icon(Icons.menu_rounded, size: 32, weight: 1)),
       ),
       title: _Title(router),
-      actions: const [
-        HomeCreateOrderButton(),
-        SizedBox(width: 8),
-      ],
+      actions: switch (router) {
+        IkkiRouter.pos => [
+          const HomeCreateOrderButton(),
+          const SizedBox(width: 8),
+        ],
+        _ => [],
+      },
     );
   }
 }
