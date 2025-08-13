@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
 import '../json.dart';
-import 'user.model.dart';
+import 'user_model.dart';
 
-part 'user.repo.g.dart';
+part 'user_repo.g.dart';
 
 @riverpod
 UserRepo userRepo(Ref ref) {
@@ -24,23 +24,25 @@ class UserRepo {
   final Dio dio;
   final SharedPreferences sp;
 
-  Future<List<UserModel>> fetch() async {
-    final users = _kMock;
-    await save(users);
-    return users;
-  }
-
+  // Local
   Future<List<UserModel>> getLocal() async {
-    final usersJson = sp.getString(SharedPrefsKeys.users.key);
-    if (usersJson != null) {
-      return (jsonDecode(usersJson) as List<dynamic>).map((e) => UserModel.fromJson(e as Json)).toList();
+    final raw = sp.getString(SharedPrefsKeys.users.key);
+    if (raw != null) {
+      return UserModel.fromJsonList(jsonDecode(raw) as JsonList);
     } else {
       return fetch();
     }
   }
 
-  Future<bool> save(List<UserModel> users) async {
+  Future<bool> saveLocal(List<UserModel> users) async {
     return sp.setString(SharedPrefsKeys.users.key, jsonEncode(users));
+  }
+
+  // Remote
+  Future<List<UserModel>> fetch() async {
+    final users = _kMock;
+    await saveLocal(users);
+    return users;
   }
 }
 

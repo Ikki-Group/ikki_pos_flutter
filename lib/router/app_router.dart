@@ -19,9 +19,12 @@ import 'ikki_router.dart';
 
 part 'app_router.g.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   final router = GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: IkkiRouter.splash.path,
     // initialLocation: IkkiRouter.showcase.path,
     observers: [initTalkerRouteObserver()],

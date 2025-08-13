@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user.model.freezed.dart';
-part 'user.model.g.dart';
+import '../json.dart';
+
+part 'user_model.freezed.dart';
+part 'user_model.g.dart';
 
 @freezed
 abstract class UserModel with _$UserModel {
@@ -14,11 +16,11 @@ abstract class UserModel with _$UserModel {
 
   const UserModel._();
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Json json) => _$UserModelFromJson(json);
+
+  static List<UserModel> fromJsonList(JsonList json) => json.map(UserModel.fromJson).toList();
 
   static const int kPinLength = 4;
 
-  bool comparePin(String pin) {
-    return pin == this.pin;
-  }
+  bool comparePin(String pin) => pin == this.pin;
 }

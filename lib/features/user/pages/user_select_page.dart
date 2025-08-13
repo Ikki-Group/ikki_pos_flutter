@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet.provider.dart';
-import '../../../data/user/user.model.dart';
-import '../../../data/user/user.provider.dart';
+import '../../../data/user/user_model.dart';
+import '../../../data/user/user_provider.dart';
 import '../../../router/ikki_router.dart';
 import '../../../widgets/dialogs/select_user_dialog.dart';
 import '../../../widgets/ui/numpad_pin.dart';
@@ -16,9 +17,9 @@ class UserSelectPage extends ConsumerStatefulWidget {
   ConsumerState<UserSelectPage> createState() => _UserSelectPageState();
 }
 
-class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProviderStateMixin {
+class _UserSelectPageState extends ConsumerState<UserSelectPage> {
   UserModel? selectedUser;
-  String displayValue = '';
+  String inputPin = '';
 
   Future<void> openDialog() async {
     final users = await ref.read(userListProvider.future);
@@ -32,49 +33,37 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
   }
 
   void handleKeyPress(NumpadKey key) {
+    final messenger = ScaffoldMessenger.of(context);
+
     if (selectedUser == null) {
       openDialog();
       return;
     }
 
-    setState(() {
-      switch (key) {
-        case NumpadKey.backspace:
-          if (displayValue.isNotEmpty) {
-            displayValue = displayValue.substring(0, displayValue.length - 1);
-          }
-        case NumpadKey.empty:
-          break;
-        // ignore: no_default_cases
-        default:
-          if (displayValue.length < UserModel.kPinLength) {
-            displayValue += key.value;
-          }
+    final value = switch (key) {
+      NumpadKey.backspace when inputPin.isNotEmpty => inputPin.substring(0, inputPin.length - 1),
+      _ when inputPin.length < UserModel.kPinLength => inputPin + key.value,
+      _ => inputPin,
+    };
 
-          if (displayValue.length == UserModel.kPinLength) {
-            final isValid = selectedUser!.comparePin(displayValue);
-            if (isValid) {
-              ref.read(currentUserProvider.notifier).setUser(selectedUser!);
-              context.goNamed(IkkiRouter.pos.name);
-              return;
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'PIN tidak valid',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
-              displayValue = '';
-              return;
-            }
-          }
+    if (value.length == UserModel.kPinLength) {
+      final isValid = selectedUser!.comparePin(value);
+
+      if (isValid) {
+        ref.read(currentUserProvider.notifier).setUser(selectedUser!);
+        context.goNamed(IkkiRouter.pos.name);
+      } else {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('PIN tidak valid', style: TextStyle(color: POSTheme.textOnPrimary)),
+            backgroundColor: POSTheme.accentRed,
+          ),
+        );
+        inputPin = '';
       }
-    });
+    }
+
+    setState(() {});
   }
 
   @override
@@ -114,7 +103,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> with TickerProv
               ),
               const SizedBox(height: 24),
               PinIndicator(
-                pinLength: displayValue.length,
+                pinLength: inputPin.length,
                 maxLength: UserModel.kPinLength,
                 boxSize: 48,
               ),
