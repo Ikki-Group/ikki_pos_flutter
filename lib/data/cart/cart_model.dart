@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../features/payment/payment_model.dart';
+import '../../features/payment/payment_enum.dart';
 import '../json.dart';
 import '../sale/sale_enum.dart';
 import 'cart_enum.dart';
@@ -19,6 +19,7 @@ sealed class Cart with _$Cart {
     @Default(1) int pax,
     @Default('') String note,
     @Default(null) CartCustomer? customer,
+    @Default(CartSource.cashier) CartSource source,
 
     // Outlet info
     @Default('') String outletId,
@@ -106,9 +107,12 @@ sealed class CartPayment with _$CartPayment {
   const factory CartPayment({
     required String id,
     required double amount,
-    required PaymentModel payment,
+    required String label,
+    required PaymentType type,
     required String at,
     required String by,
+    @Default(null) double? change,
+    @Default(null) double? tender,
     @Default(false) bool isDraft,
   }) = _CartPayment;
 

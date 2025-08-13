@@ -18,11 +18,21 @@ import 'cart_provider.dart';
 part 'cart_state.g.dart';
 
 enum CartLogAction {
-  create;
+  create,
+  pay
+  //
+  ;
 
   @override
   String toString() {
     return name.split('.').last.toUpperCase();
+  }
+
+  String toLog(Cart state, UserModel user, String message) {
+    final msg =
+        '[${DateTime.now().toIso8601String()}]-[$this]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
+    dev.log(msg);
+    return msg;
   }
 }
 
@@ -39,13 +49,14 @@ class CartState extends _$CartState {
     int pax,
     SaleMode saleMode,
   ) async {
+    final user = _getUser();
     final outlet = await ref.read(outletProvider.future).then((value) => value.requireOpen);
     final sessionId = outlet.session.id;
     final rc = await ref.read(receiptCodeRepoProvider).getCode(sessionId);
-    final user = _getUser();
+    final now = DateTime.now().toIso8601String();
 
-    final initialLog = _buildLog(action: CartLogAction.create, message: 'Cart created');
-    final initialBatch = CartBatch(id: 1, at: DateTime.now().toString(), by: user.id);
+    final initialLog = CartLogAction.create.toLog(state, user, 'Cart created');
+    final initialBatch = CartBatch(id: 1, at: now, by: user.id);
 
     state = Cart(
       id: ObjectId().hexString,
@@ -56,9 +67,9 @@ class CartState extends _$CartState {
       sessionId: sessionId,
       batches: [initialBatch],
       logs: [initialLog],
-      createdAt: DateTime.now().toIso8601String(),
+      createdAt: now,
       createdBy: user.id,
-      updatedAt: DateTime.now().toIso8601String(),
+      updatedAt: now,
       updatedBy: user.id,
     );
   }
@@ -137,13 +148,17 @@ class CartState extends _$CartState {
     reset();
   }
 
-  Future<void> pay() async {
+  Future<void> pay(List<CartPayment> payments) async {
+    final user = _getUser();
+    final now = DateTime.now().toIso8601String();
+
     state = state.copyWith(
       status: CartStatus.success,
       billType: BillType.close,
-      updatedAt: DateTime.now().toIso8601String(),
-      updatedBy: ref.read(currentUserProvider.notifier).requireUser().id,
+      updatedAt: now,
+      updatedBy: user.id,
     );
+
     await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
     reset();
@@ -153,17 +168,6 @@ class CartState extends _$CartState {
 
   UserModel _getUser() {
     return ref.read(currentUserProvider.notifier).requireUser();
-  }
-
-  String _buildLog({
-    required CartLogAction action,
-    String? message,
-  }) {
-    final user = ref.read(currentUserProvider.notifier).requireUser();
-    final msg =
-        '[${DateTime.now().toIso8601String()}]-[$action]-[${user.id}-${user.name}]-[${jsonEncode(state.toString())}] $message';
-    dev.log(msg);
-    return msg;
   }
 
   void _recalculateCart() {

@@ -4,4 +4,9 @@ enum CartStatus {
   canceled,
 }
 
+enum CartSource {
+  cashier,
+  online,
+}
+
 enum BillType { open, close }

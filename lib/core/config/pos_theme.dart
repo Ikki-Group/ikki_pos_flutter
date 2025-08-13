@@ -317,15 +317,15 @@ abstract class POSTheme {
           fontWeight: FontWeight.bold,
         ),
         titleLarge: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
         ),
         titleMedium: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
         ),
         titleSmall: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
         ),
         bodyLarge: TextStyle(
@@ -341,7 +341,7 @@ abstract class POSTheme {
           letterSpacing: -0.1,
         ),
         labelLarge: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           letterSpacing: .25,
         ),
         labelMedium: TextStyle(

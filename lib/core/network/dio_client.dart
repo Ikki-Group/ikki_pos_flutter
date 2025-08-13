@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/auth/auth.provider.dart';
+import '../../data/auth/auth_token_provider.dart';
 import '../config/app_config.dart';
 
 part 'dio_client.g.dart';
@@ -19,6 +19,7 @@ Dio dioClient(Ref ref) {
         'Accept': 'application/json',
         'X-Platform': 'Flutter',
         'X-Platform-Version': '1.0.0',
+        'X-Developer': 'Rizqy Nugroho',
       },
       validateStatus: (status) {
         // Only 2xx

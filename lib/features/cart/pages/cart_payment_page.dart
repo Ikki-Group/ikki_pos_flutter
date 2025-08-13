@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:objectid/objectid.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
-import '../../../data/cart/cart_state.dart';
-import '../../../data/user/user.model.dart';
 import '../../../data/user/user.provider.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/cash_generator.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../payment/payment_enum.dart';
 import '../../payment/payment_model.dart';
+import '../providers/cart_payment_state_provider.dart';
 import '../widgets/cart_cash_custom.dart';
 import '../widgets/cart_note_dialog.dart';
 
@@ -24,35 +22,28 @@ class CartPaymentPage extends ConsumerStatefulWidget {
 }
 
 class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
-  late Cart cart;
-  late double net;
-
-  List<CartPayment> payments = [];
-
   void onPay() {
-    ref.read(cartStateProvider);
-    context.goNamed(IkkiRouter.pos.name);
+    context.goNamed(IkkiRouter.cartPaymentSuccess.name);
   }
 
   @override
   void initState() {
     super.initState();
-    cart = ref.read(cartStateProvider);
-    net = cart.net;
+    ref.read(cartPaymentStateNotifierProvider.notifier).load();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final tendered = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
-    var change = tendered - net;
-    var unpaid = net - tendered;
+    // final tendered = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
+    // var change = tendered - net;
+    // var unpaid = net - tendered;
 
-    if (change < 0) change = 0;
-    if (unpaid < 0) unpaid = 0;
+    // if (change < 0) change = 0;
+    // if (unpaid < 0) unpaid = 0;
 
-    final disablePaymentSelection = unpaid == 0;
-    final allowToPay = unpaid <= 0;
+    // final disablePaymentSelection = unpaid == 0;
+    // final allowToPay = unpaid <= 0;
 
     final user = ref.read(currentUserProvider)!;
 
@@ -65,117 +56,75 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
         ),
         title: const Text('Pembayaran'),
       ),
-      body: Row(
+      body: const Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             flex: 7,
             child: Column(
               children: <Widget>[
-                _Summary(
-                  net: net,
-                  change: change,
-                  unpaid: unpaid,
-                ),
-                const Divider(),
-                IntrinsicHeight(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: FilledButton(
-                          onPressed: () {},
-                          style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                            shape: const RoundedRectangleBorder(),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            // side: BorderSide(color: POSTheme.),
-                          ),
-                          child: const Text('Pisah Bayar'),
-                        ),
-                      ),
-                      const VerticalDivider(),
-                      Expanded(
-                        child: FilledButton(
-                          onPressed: () {
-                            CartNoteDialog.show(context);
-                          },
-                          style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                            shape: const RoundedRectangleBorder(),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            // side: BorderSide(color: POSTheme.),
-                          ),
-                          child: const Text('Catatan'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                _CartPaymentMethod(
-                  net: net,
-                  payments: payments,
-                  onPaymentsChanged: (p) => setState(() => payments = p),
-                  user: user,
-                  disablePaymentSelection: disablePaymentSelection,
-                ),
+                _Summary(),
+                Divider(),
+                _Actions(),
+                Divider(),
+                _CartPaymentMethod(),
               ],
             ),
           ),
-          const VerticalDivider(),
-          Expanded(
-            flex: 4,
-            child: ColoredBox(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  ColoredBox(
-                    color: POSTheme.backgroundSecondary,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Text(cart.rc, style: textTheme.labelMedium),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: <Widget>[
-                              const Icon(Icons.person, size: 20),
-                              const SizedBox(width: 8),
-                              Text('Rizqy Nugroho', style: textTheme.labelMedium),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: <Widget>[
-                          for (final batch in cart.batches) ...[
-                            buildItemBatch(cart.items.where((item) => item.batchId == batch.id).toList(), batch),
-                            const SizedBox(height: 16),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      shape: const RoundedRectangleBorder(),
-                      fixedSize: const Size.fromHeight(64),
-                    ),
-                    onPressed: allowToPay ? onPay : null,
-                    child: const Text('Proses Pembayaran'),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          VerticalDivider(),
+          // Expanded(
+          //   flex: 4,
+          //   child: ColoredBox(
+          //     color: Colors.white,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.stretch,
+          //       children: <Widget>[
+          //         ColoredBox(
+          //           color: POSTheme.backgroundSecondary,
+          //           child: Padding(
+          //             padding: const EdgeInsets.all(12),
+          //             child: Column(
+          //               crossAxisAlignment: CrossAxisAlignment.stretch,
+          //               children: <Widget>[
+          //                 Text(cart.rc, style: textTheme.labelMedium),
+          //                 const SizedBox(height: 12),
+          //                 Row(
+          //                   children: <Widget>[
+          //                     const Icon(Icons.person, size: 20),
+          //                     const SizedBox(width: 8),
+          //                     Text('Rizqy Nugroho', style: textTheme.labelMedium),
+          //                   ],
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //         const Divider(),
+          //         Expanded(
+          //           child: SingleChildScrollView(
+          //             padding: const EdgeInsets.all(16),
+          //             child: Column(
+          //               children: <Widget>[
+          //                 for (final batch in cart.batches) ...[
+          //                   buildItemBatch(cart.items.where((item) => item.batchId == batch.id).toList(), batch),
+          //                   const SizedBox(height: 16),
+          //                 ],
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //         FilledButton(
+          //           style: FilledButton.styleFrom(
+          //             shape: const RoundedRectangleBorder(),
+          //             fixedSize: const Size.fromHeight(64),
+          //           ),
+          //           onPressed: allowToPay ? onPay : null,
+          //           child: const Text('Proses Pembayaran'),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -221,39 +170,32 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
   }
 }
 
-final kCashIDR = <double>[5000, 10000, 20000, 50000, 100000];
+class _CartPaymentMethod extends ConsumerWidget {
+  const _CartPaymentMethod();
 
-class _CartPaymentMethod extends StatelessWidget {
-  const _CartPaymentMethod({
-    required this.net,
-    required this.payments,
-    required this.onPaymentsChanged,
-    required this.user,
-    required this.disablePaymentSelection,
-  });
+  // final double net;
+  // final List<CartPayment> payments;
+  // final void Function(List<CartPayment>) onPaymentsChanged;
+  // final UserModel user;
+  // final bool disablePaymentSelection;
 
-  final double net;
-  final List<CartPayment> payments;
-  final void Function(List<CartPayment>) onPaymentsChanged;
-  final UserModel user;
-  final bool disablePaymentSelection;
-
-  void onAdd(PaymentModel payment, double amount) {
-    onPaymentsChanged([
-      ...payments,
-      CartPayment(
-        amount: amount,
-        payment: payment,
-        at: DateTime.now().toString(),
-        id: ObjectId().hexString,
-        by: user.id,
-      ),
-    ]);
-  }
+  // void onAdd(PaymentModel payment, double amount) {
+  //   onPaymentsChanged([
+  //     ...payments,
+  //     CartPayment(
+  //       amount: amount,
+  //       payment: payment,
+  //       at: DateTime.now().toString(),
+  //       id: ObjectId().hexString,
+  //       by: user.id,
+  //     ),
+  //   ]);
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = context.textTheme;
+    final state = ref.watch(cartPaymentStateNotifierProvider);
 
     return Expanded(
       child: Padding(
@@ -263,14 +205,14 @@ class _CartPaymentMethod extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text('Pilih Metode Pembayaran', style: textTheme.titleSmall),
-              if (payments.isNotEmpty) ...[
+              if (state.payments.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     spacing: 8,
                     children: <Widget>[
-                      for (final payment in payments)
+                      for (final payment in state.payments)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
@@ -281,15 +223,13 @@ class _CartPaymentMethod extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                payment.payment.type == PaymentType.cash
-                                    ? 'Tunai: ${Formatter.toIdr.format(payment.amount)}'
-                                    : '${payment.payment.label}: ${Formatter.toIdr.format(payment.amount)}',
+                                payment.formattedLabel,
                                 style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
-                                  onPaymentsChanged(payments.where((p) => p.id != payment.id).toList());
+                                  // onPaymentsChanged(payments.where((p) => p.id != payment.id).toList());
                                 },
                                 child: const Icon(Icons.highlight_off, color: POSTheme.accentRed, size: 24),
                               ),
@@ -303,17 +243,19 @@ class _CartPaymentMethod extends StatelessWidget {
               const SizedBox(height: 16),
               buildSection(context, 'Tunai', <Widget>[
                 buildChip(
-                  label: 'Uang Pas',
-                  onSelected: () => onAdd(PaymentModel.cash, net),
+                  'Uang Pas',
+                  () => ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(PaymentModel.cash, state.total),
                 ),
-                for (final cash in CashPaymentGenerator.generateCashOptions(net.toInt()))
+                for (final cash in CashPaymentGenerator.generateCashOptions(state.total.toInt()))
                   buildChip(
-                    label: Formatter.toIdr.format(cash),
-                    onSelected: () => onAdd(PaymentModel.cash, cash.toDouble()),
+                    Formatter.toIdr.format(cash),
+                    () => ref
+                        .read(cartPaymentStateNotifierProvider.notifier)
+                        .addPayment(PaymentModel.cash, cash.toDouble()),
                   ),
                 buildChip(
-                  label: 'Nominal Lain',
-                  onSelected: () {
+                  'Nominal Lain',
+                  () {
                     CartCashCustom.show(context);
                   },
                 ),
@@ -322,8 +264,8 @@ class _CartPaymentMethod extends StatelessWidget {
               buildSection(context, 'Non Tunai', <Widget>[
                 for (final payment in PaymentModel.data.where((e) => e.type == PaymentType.cashless))
                   buildChip(
-                    label: payment.label,
-                    onSelected: () => onAdd(payment, net),
+                    payment.label,
+                    () => ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(payment, state.total),
                   ),
               ]),
             ],
@@ -350,57 +292,32 @@ class _CartPaymentMethod extends StatelessWidget {
     );
   }
 
-  Widget buildChip({
-    required String label,
-    required VoidCallback? onSelected,
-  }) {
+  Widget buildChip(String label, VoidCallback? onSelected) {
     return ChoiceChip(
       label: Text(label),
       showCheckmark: false,
-      onSelected: disablePaymentSelection ? null : (_) => onSelected!(),
+      // onSelected: disablePaymentSelection ? null : (_) => onSelected!(),
       selected: false,
     );
   }
-
-  List<double> generateCashRecommendationsIDR(double total) {
-    final cashRecommendations = <double>[];
-    for (final cash in kCashIDR) {
-      if (cash >= total) {
-        cashRecommendations.add(cash);
-      }
-    }
-    return cashRecommendations;
-  }
 }
 
-class _Summary extends StatelessWidget {
-  const _Summary({
-    required this.net,
-    required this.change,
-    required this.unpaid,
-  });
-
-  final double net;
-  final double change;
-  final double unpaid;
+class _Summary extends ConsumerWidget {
+  const _Summary();
 
   @override
-  Widget build(BuildContext context) {
-    Widget buildSummary({
-      required String label,
-      required double amount,
-      required Color color,
-    }) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(cartPaymentStateNotifierProvider);
+    final textTheme = Theme.of(context).textTheme;
+
+    Widget buildSummary(String label, double amount, Color color) {
       return Expanded(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(label, style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500)),
+            Text(label, style: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500)),
             const SizedBox(height: 4),
-            Text(
-              Formatter.toIdr.format(amount),
-              style: context.textTheme.titleMedium?.copyWith(color: color),
-            ),
+            Text(Formatter.toIdr.format(amount), style: textTheme.titleMedium?.copyWith(color: color)),
           ],
         ),
       );
@@ -413,14 +330,55 @@ class _Summary extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 96),
           child: Row(
             children: <Widget>[
-              buildSummary(label: 'Total Tagihan', amount: net, color: POSTheme.accentGreen),
+              buildSummary('Total Tagihan', state.total, POSTheme.accentGreen),
               const VerticalDivider(),
-              buildSummary(label: 'Sisa Tagihan', amount: unpaid, color: POSTheme.accentRed),
+              buildSummary('Sisa Tagihan', state.remaining, POSTheme.accentRed),
               const VerticalDivider(),
-              buildSummary(label: 'Kembalian', amount: change, color: POSTheme.accentGreen),
+              buildSummary('Kembalian', state.change, POSTheme.accentGreen),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _Actions extends ConsumerWidget {
+  const _Actions();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IntrinsicHeight(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: FilledButton(
+              onPressed: () {},
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                shape: const RoundedRectangleBorder(),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                // side: BorderSide(color: POSTheme.),
+              ),
+              child: const Text('Pisah Bayar'),
+            ),
+          ),
+          const VerticalDivider(),
+          Expanded(
+            child: FilledButton(
+              onPressed: () {
+                CartNoteDialog.show(context);
+              },
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                shape: const RoundedRectangleBorder(),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                // side: BorderSide(color: POSTheme.),
+              ),
+              child: const Text('Catatan'),
+            ),
+          ),
+        ],
       ),
     );
   }

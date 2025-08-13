@@ -116,10 +116,10 @@ class _NumpadButton extends StatelessWidget {
 
     // Handle backspace key with icon
     if (keyType == NumpadKey.backspace) {
-      buttonChild = Icon(
+      buttonChild = const Icon(
         Icons.backspace_outlined,
-        size: 24,
-        color: Theme.of(context).colorScheme.onSurface,
+        size: 20,
+        color: POSTheme.accentRed,
       );
     } else {
       // Handle digit and decimal keys
@@ -128,7 +128,7 @@ class _NumpadButton extends StatelessWidget {
         style:
             textStyle ??
             TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w500,
               color: Theme.of(context).colorScheme.onSurface,
             ),

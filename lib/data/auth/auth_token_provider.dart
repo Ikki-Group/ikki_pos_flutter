@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/db/shared_prefs.dart';
 
-part 'auth.provider.g.dart';
+part 'auth_token_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class AuthToken extends _$AuthToken {
