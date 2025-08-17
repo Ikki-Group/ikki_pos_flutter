@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 
 import '../../../data/printer/printer_provider.dart';
+import '../../../data/printer/templates/template_print_info.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog.dart';
 
@@ -42,12 +43,21 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
 
   Future<void> onEstablish() async {
     if (selectedPrinter == null) return;
+    await ref.read(printerStateProvider.notifier).instance.connect(selectedPrinter!);
+    await templatePrintInfo(ref.read(printerStateProvider.notifier).instance, selectedPrinter!);
     isEstablishing = true;
     setState(() {});
-    await ref.read(printerStateProvider.notifier).instance.connect(selectedPrinter!);
-    isEstablishing = false;
-    setState(() {});
   }
+
+  // Future<void> retryPrinting(Future<void> Function() callback) async {
+  //   try {
+  //     await callback();
+  //   } catch (e) {
+  //     print(e);
+  //     await retryPrinting(callback);
+  //   }
+  //   return;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +72,12 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
           PosButton.cancel(onPressed: onClose),
           const SizedBox(width: 8),
           PosButton.process(
-            onPressed: selectedPrinter != null ? onConfirm : null,
-            text: selectedPrinter != null && isEstablishing ? 'Hubungkan' : 'Simpan',
+            onPressed: selectedPrinter == null
+                ? null
+                : isEstablishing
+                ? onConfirm
+                : onEstablish,
+            text: selectedPrinter != null && !isEstablishing ? 'Hubungkan' : 'Simpan',
           ),
         ],
       ),
@@ -95,6 +109,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
                       value: printer.address == selectedPrinter?.address,
                       onChanged: (bool? value) {
                         selectedPrinter = printer;
+                        isEstablishing = false;
                         setState(() {});
                       },
                     );

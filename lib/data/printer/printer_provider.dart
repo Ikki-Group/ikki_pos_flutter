@@ -53,7 +53,12 @@ class PrinterState extends _$PrinterState {
     printerStream = instance.devicesStream.listen((List<Printer> event) async {
       for (final element in event) {
         if (element.connectionType == ConnectionType.BLE && element.name != null && element.name!.isNotEmpty) {
-          scannedPrinters.add(element);
+          final isExists = scannedPrinters.any(
+            (element) => element.name == element.name && element.address == element.address,
+          );
+          if (!isExists) {
+            scannedPrinters.add(element);
+          }
         }
       }
     });
