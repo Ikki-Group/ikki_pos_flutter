@@ -11,6 +11,8 @@ import 'printer_model.dart';
 
 part 'printer_repo.g.dart';
 
+typedef PrinterList = List<PrinterModel>;
+
 @Riverpod(keepAlive: true)
 PrinterRepo printerRepo(Ref ref) {
   return PrinterRepo(
@@ -25,28 +27,24 @@ class PrinterRepo {
   final SharedPreferences sp;
   final Dio dio;
 
-  Future<List<PrinterModel>> load() async {
+  // Local
+  Future<PrinterList> getLocal() async {
     final raw = sp.getString(SharedPrefsKeys.printers.name);
-    var printers = <PrinterModel>[];
-    if (raw != null) {
-      printers = (jsonDecode(raw) as JsonList).map(PrinterModel.fromJson).toList();
-    } else {
-      printers = await fetch();
+    if (raw == null) {
+      return getRemote();
     }
-    print(printers);
-    return printers;
+    final json = jsonDecode(raw) as JsonList;
+    return json.map(PrinterModel.fromJson).toList();
   }
 
-  Future<bool> save(List<PrinterModel> printers) async {
+  Future<bool> saveLocal(PrinterList printers) async {
     return sp.setString(SharedPrefsKeys.printers.name, jsonEncode(printers));
   }
 
   // Remote
-  Future<List<PrinterModel>> fetch() async {
-    final printers = <PrinterModel>[];
-    await save(printers);
-    return printers;
+  Future<PrinterList> getRemote() async {
+    return [];
   }
 
-  // Local
+  Future<void> saveRemote() async {}
 }

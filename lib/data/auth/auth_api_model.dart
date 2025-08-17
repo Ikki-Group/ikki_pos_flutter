@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../json.dart';
+
 part 'auth_api_model.freezed.dart';
 part 'auth_api_model.g.dart';
 
@@ -10,7 +12,7 @@ abstract class AuthRequest with _$AuthRequest {
     required AuthDeviceInfo deviceInfo,
   }) = _AuthRequest;
 
-  factory AuthRequest.fromJson(Map<String, dynamic> json) => _$AuthRequestFromJson(json);
+  factory AuthRequest.fromJson(Json json) => _$AuthRequestFromJson(json);
 }
 
 @freezed
@@ -23,7 +25,7 @@ abstract class AuthResponse with _$AuthResponse {
     required AuthReceiptConfig receipt,
   }) = _AuthResponse;
 
-  factory AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
+  factory AuthResponse.fromJson(Json json) => _$AuthResponseFromJson(json);
 }
 
 @freezed
@@ -35,7 +37,7 @@ abstract class AuthDeviceInfo with _$AuthDeviceInfo {
     @Default('') String deviceId,
   }) = _AuthDeviceInfo;
 
-  factory AuthDeviceInfo.fromJson(Map<String, dynamic> json) => _$AuthDeviceInfoFromJson(json);
+  factory AuthDeviceInfo.fromJson(Json json) => _$AuthDeviceInfoFromJson(json);
 }
 
 @freezed
@@ -45,5 +47,5 @@ abstract class AuthReceiptConfig with _$AuthReceiptConfig {
     required int counter,
   }) = _AuthReceiptConfig;
 
-  factory AuthReceiptConfig.fromJson(Map<String, dynamic> json) => _$AuthReceiptConfigFromJson(json);
+  factory AuthReceiptConfig.fromJson(Json json) => _$AuthReceiptConfigFromJson(json);
 }
