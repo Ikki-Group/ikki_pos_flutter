@@ -33,8 +33,8 @@ class PrinterRepo {
     if (raw == null) {
       return getRemote();
     }
-    final json = jsonDecode(raw) as JsonList;
-    return json.map(PrinterModel.fromJson).toList();
+    final json = jsonDecode(raw) as JsonListDynamic;
+    return json.map((val) => PrinterModel.fromJson(val as Json)).toList();
   }
 
   Future<bool> saveLocal(PrinterList printers) async {

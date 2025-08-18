@@ -26,38 +26,27 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
   List<Printer> printers = [];
   Printer? selectedPrinter;
   bool isScanning = false;
-  bool isEstablishing = false;
+  bool isLoading = false;
 
   void onClose() => Navigator.of(context).pop();
-  void onConfirm() => Navigator.of(context).pop();
 
   Future<void> onScan() async {
     isScanning = true;
     setState(() {});
     await ref.read(printerStateProvider.notifier).requestBluetoothPermissions();
-    printers = await ref.read(printerStateProvider.notifier).startScan();
+    printers = await ref.read(printerStateProvider.notifier).startBluetoothScan();
     isScanning = false;
-    isEstablishing = false;
     setState(() {});
   }
 
-  Future<void> onEstablish() async {
-    if (selectedPrinter == null) return;
+  Future<void> onConfirm() async {
+    isLoading = true;
+    setState(() {});
+
     await ref.read(printerStateProvider.notifier).instance.connect(selectedPrinter!);
     await templatePrintInfo(ref.read(printerStateProvider.notifier).instance, selectedPrinter!);
-    isEstablishing = true;
-    setState(() {});
+    onClose();
   }
-
-  // Future<void> retryPrinting(Future<void> Function() callback) async {
-  //   try {
-  //     await callback();
-  //   } catch (e) {
-  //     print(e);
-  //     await retryPrinting(callback);
-  //   }
-  //   return;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +57,12 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
       constraints: const BoxConstraints(maxWidth: 480),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
+        children: <Widget>[
           PosButton.cancel(onPressed: onClose),
           const SizedBox(width: 8),
           PosButton.process(
-            onPressed: selectedPrinter == null
-                ? null
-                : isEstablishing
-                ? onConfirm
-                : onEstablish,
-            text: selectedPrinter != null && !isEstablishing ? 'Hubungkan' : 'Simpan',
+            onPressed: selectedPrinter == null || isLoading ? null : onConfirm,
+            text: 'Hubungkan & Simpan',
           ),
         ],
       ),
@@ -109,7 +94,6 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
                       value: printer.address == selectedPrinter?.address,
                       onChanged: (bool? value) {
                         selectedPrinter = printer;
-                        isEstablishing = false;
                         setState(() {});
                       },
                     );

@@ -1,4 +1,3 @@
-import 'package:flutter_thermal_printer/utils/printer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../json.dart';
@@ -15,7 +14,7 @@ sealed class PrinterModel with _$PrinterModel {
     required PrinterConnectionType connectionType,
     String? host,
     int? port,
-    Printer? printer,
+    String? address,
   }) = _PrinterModel;
 
   factory PrinterModel.fromJson(Json json) => _$PrinterModelFromJson(json);

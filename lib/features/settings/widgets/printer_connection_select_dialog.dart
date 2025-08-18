@@ -4,6 +4,7 @@ import '../../../data/printer/printer_enum.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog.dart';
 import 'printer_connection_bluetooth_dialog.dart';
+import 'printer_connection_lan_dialog.dart';
 
 class PrinterConnectionSelectDialog extends StatefulWidget {
   const PrinterConnectionSelectDialog({super.key});
@@ -18,6 +19,8 @@ class PrinterConnectionSelectDialog extends StatefulWidget {
     if (connectionType != null && context.mounted) {
       if (connectionType == PrinterConnectionType.bluetooth) {
         await PrinterConnectionBluetoothDialog.show(context);
+      } else if (connectionType == PrinterConnectionType.lan) {
+        await PrinterConnectionLanDialog.show(context);
       }
     }
   }

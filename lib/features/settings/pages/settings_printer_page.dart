@@ -65,7 +65,7 @@ class _PrinterItem extends StatelessWidget {
 
     switch (printer.connectionType) {
       case PrinterConnectionType.bluetooth:
-        subtitle = 'Bluetooth ${printer.printer?.address}';
+        subtitle = 'Bluetooth ${printer.address}';
       case PrinterConnectionType.lan:
         subtitle = 'LAN/WIFI ${printer.host}:${printer.port}';
     }
