@@ -11,6 +11,7 @@ dependencies:
   bson: ^5.0.7
   collection: ^1.19.1
   cupertino_icons: ^1.0.8
+  data_table_2: ^2.6.0
   device_info_plus: ^11.4.0
   dio: ^5.8.0+1
   esc_pos_utils_plus: ^2.0.4

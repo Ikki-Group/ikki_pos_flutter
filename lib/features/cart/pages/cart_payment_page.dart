@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_model.dart';
-import '../../../data/user/user_provider.dart';
+import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/cash_generator.dart';
 import '../../../shared/utils/formatter.dart';
@@ -27,26 +27,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    ref.read(cartPaymentStateNotifierProvider.notifier).load();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    // final tendered = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
-    // var change = tendered - net;
-    // var unpaid = net - tendered;
-
-    // if (change < 0) change = 0;
-    // if (unpaid < 0) unpaid = 0;
-
-    // final disablePaymentSelection = unpaid == 0;
-    // final allowToPay = unpaid <= 0;
-
-    final user = ref.read(currentUserProvider)!;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -72,100 +53,18 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
             ),
           ),
           VerticalDivider(),
-          // Expanded(
-          //   flex: 4,
-          //   child: ColoredBox(
-          //     color: Colors.white,
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.stretch,
-          //       children: <Widget>[
-          //         ColoredBox(
-          //           color: POSTheme.backgroundSecondary,
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(12),
-          //             child: Column(
-          //               crossAxisAlignment: CrossAxisAlignment.stretch,
-          //               children: <Widget>[
-          //                 Text(cart.rc, style: textTheme.labelMedium),
-          //                 const SizedBox(height: 12),
-          //                 Row(
-          //                   children: <Widget>[
-          //                     const Icon(Icons.person, size: 20),
-          //                     const SizedBox(width: 8),
-          //                     Text('Rizqy Nugroho', style: textTheme.labelMedium),
-          //                   ],
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //         const Divider(),
-          //         Expanded(
-          //           child: SingleChildScrollView(
-          //             padding: const EdgeInsets.all(16),
-          //             child: Column(
-          //               children: <Widget>[
-          //                 for (final batch in cart.batches) ...[
-          //                   buildItemBatch(cart.items.where((item) => item.batchId == batch.id).toList(), batch),
-          //                   const SizedBox(height: 16),
-          //                 ],
-          //               ],
-          //             ),
-          //           ),
-          //         ),
-          //         FilledButton(
-          //           style: FilledButton.styleFrom(
-          //             shape: const RoundedRectangleBorder(),
-          //             fixedSize: const Size.fromHeight(64),
-          //           ),
-          //           onPressed: allowToPay ? onPay : null,
-          //           child: const Text('Proses Pembayaran'),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            flex: 4,
+            child: ColoredBox(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[_OrderInfo(), Divider(), _OrderItemsPreview(), _PayButton()],
+              ),
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget buildItemBatch(List<CartItem> items, CartBatch batch) {
-    final textTheme = Theme.of(context).textTheme;
-    final net = items.fold<double>(0, (prev, curr) => prev + curr.gross);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
-            Text(Formatter.toIdr.format(net), style: textTheme.titleSmall),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(Formatter.date.format(DateTime.parse(batch.at)), style: textTheme.bodySmall),
-        const SizedBox(height: 12),
-        for (final item in items) ...[
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${item.qty} x ${item.product.name}',
-                  style: textTheme.bodySmall,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                Formatter.toIdrNoSymbol.format(item.gross),
-                style: textTheme.bodySmall,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-        ],
-      ],
     );
   }
 }
@@ -173,28 +72,9 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
 class _CartPaymentMethod extends ConsumerWidget {
   const _CartPaymentMethod();
 
-  // final double net;
-  // final List<CartPayment> payments;
-  // final void Function(List<CartPayment>) onPaymentsChanged;
-  // final UserModel user;
-  // final bool disablePaymentSelection;
-
-  // void onAdd(PaymentModel payment, double amount) {
-  //   onPaymentsChanged([
-  //     ...payments,
-  //     CartPayment(
-  //       amount: amount,
-  //       payment: payment,
-  //       at: DateTime.now().toString(),
-  //       id: ObjectId().hexString,
-  //       by: user.id,
-  //     ),
-  //   ]);
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = context.textTheme;
+    final textTheme = Theme.of(context).textTheme;
     final state = ref.watch(cartPaymentStateNotifierProvider);
 
     return Expanded(
@@ -229,7 +109,7 @@ class _CartPaymentMethod extends ConsumerWidget {
                               const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
-                                  // onPaymentsChanged(payments.where((p) => p.id != payment.id).toList());
+                                  ref.read(cartPaymentStateNotifierProvider.notifier).removePayment(payment.id);
                                 },
                                 child: const Icon(Icons.highlight_off, color: POSTheme.accentRed, size: 24),
                               ),
@@ -244,20 +124,22 @@ class _CartPaymentMethod extends ConsumerWidget {
               buildSection(context, 'Tunai', <Widget>[
                 buildChip(
                   'Uang Pas',
-                  () => ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(PaymentModel.cash, state.total),
+                  disabled: state.allowToPay,
+                  onSelected: () =>
+                      ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(PaymentModel.cash, state.total),
                 ),
                 for (final cash in CashPaymentGenerator.generateCashOptions(state.total.toInt()))
                   buildChip(
                     Formatter.toIdr.format(cash),
-                    () => ref
+                    disabled: state.allowToPay,
+                    onSelected: () => ref
                         .read(cartPaymentStateNotifierProvider.notifier)
                         .addPayment(PaymentModel.cash, cash.toDouble()),
                   ),
                 buildChip(
                   'Nominal Lain',
-                  () {
-                    CartCashCustom.show(context);
-                  },
+                  disabled: state.allowToPay,
+                  onSelected: () => CartCashCustom.show(context),
                 ),
               ]),
               const SizedBox(height: 16),
@@ -265,7 +147,9 @@ class _CartPaymentMethod extends ConsumerWidget {
                 for (final payment in PaymentModel.data.where((e) => e.type == PaymentType.cashless))
                   buildChip(
                     payment.label,
-                    () => ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(payment, state.total),
+                    disabled: state.allowToPay,
+                    onSelected: () =>
+                        ref.read(cartPaymentStateNotifierProvider.notifier).addPayment(payment, state.total),
                   ),
               ]),
             ],
@@ -292,11 +176,15 @@ class _CartPaymentMethod extends ConsumerWidget {
     );
   }
 
-  Widget buildChip(String label, VoidCallback? onSelected) {
+  Widget buildChip(
+    String label, {
+    required bool disabled,
+    required VoidCallback onSelected,
+  }) {
     return ChoiceChip(
       label: Text(label),
       showCheckmark: false,
-      // onSelected: disablePaymentSelection ? null : (_) => onSelected!(),
+      onSelected: disabled ? null : (_) => onSelected(),
       selected: false,
     );
   }
@@ -380,6 +268,121 @@ class _Actions extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _OrderInfo extends ConsumerWidget {
+  const _OrderInfo();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final textTheme = Theme.of(context).textTheme;
+    final cart = ref.watch(cartStateProvider);
+    return ColoredBox(
+      color: POSTheme.backgroundSecondary,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(cart.rc, style: textTheme.labelMedium),
+            const SizedBox(height: 12),
+            Row(
+              children: <Widget>[
+                const Icon(Icons.person, size: 20),
+                const SizedBox(width: 8),
+                Text('Rizqy Nugroho', style: textTheme.labelMedium),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OrderItemsPreview extends ConsumerWidget {
+  const _OrderItemsPreview();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cart = ref.watch(cartStateProvider);
+
+    Widget buildItemBatch(List<CartItem> items, CartBatch batch) {
+      final textTheme = Theme.of(context).textTheme;
+      final net = items.fold<double>(0, (prev, curr) => prev + curr.gross);
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
+              Text(Formatter.toIdr.format(net), style: textTheme.titleSmall),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(Formatter.date.format(DateTime.parse(batch.at)), style: textTheme.bodySmall),
+          const SizedBox(height: 12),
+          for (final item in items) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${item.qty} x ${item.product.name}',
+                    style: textTheme.bodySmall,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  Formatter.toIdrNoSymbol.format(item.gross),
+                  style: textTheme.bodySmall,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+        ],
+      );
+    }
+
+    return Expanded(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: <Widget>[
+            for (final batch in cart.batches) ...[
+              buildItemBatch(cart.items.where((item) => item.batchId == batch.id).toList(), batch),
+              const SizedBox(height: 16),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PayButton extends ConsumerWidget {
+  const _PayButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final payState = ref.watch(cartPaymentStateNotifierProvider);
+
+    void pay() {
+      ref.read(cartStateProvider.notifier).pay(payState.payments);
+      context.goNamed(IkkiRouter.cartPaymentSuccess.name);
+    }
+
+    return FilledButton(
+      style: FilledButton.styleFrom(
+        shape: const RoundedRectangleBorder(),
+        fixedSize: const Size.fromHeight(64),
+      ),
+      onPressed: payState.allowToPay ? pay : null,
+      child: const Text('Proses Pembayaran'),
     );
   }
 }

@@ -111,16 +111,12 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (router) {
-      case IkkiRouter.pos:
-        return const _PosInfo();
-      case IkkiRouter.cart:
-        return const Text('Cart');
-      case IkkiRouter.settings:
-        return const Text('Pengaturan');
-      // ignore: no_default_cases
-      default:
-        return const Text('IKKI Pos');
-    }
+    return switch (router) {
+      IkkiRouter.pos => const _PosInfo(),
+      IkkiRouter.sales => const Text('Riwayat Penjualan'),
+      IkkiRouter.shift => const Text('Pengelolaan Shift'),
+      IkkiRouter.settings => const Text('Pengaturan'),
+      _ => const Text('Ikki Pos'),
+    };
   }
 }

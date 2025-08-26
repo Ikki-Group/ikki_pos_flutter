@@ -111,9 +111,9 @@ sealed class CartPayment with _$CartPayment {
     required PaymentType type,
     required String at,
     required String by,
-    @Default(null) double? change,
-    @Default(null) double? tender,
     @Default(false) bool isDraft,
+    double? change,
+    double? tender,
   }) = _CartPayment;
 
   factory CartPayment.fromJson(Json json) => _$CartPaymentFromJson(json);
@@ -122,10 +122,10 @@ sealed class CartPayment with _$CartPayment {
 @freezed
 sealed class CartCustomer with _$CartCustomer {
   const factory CartCustomer({
-    @Default('') String id,
-    @Default('') String name,
-    @Default('') String email,
-    @Default('') String phone,
+    required String name,
+    String? id,
+    String? email,
+    String? phone,
   }) = _CartCustomer;
 
   factory CartCustomer.fromJson(Json json) => _$CartCustomerFromJson(json);

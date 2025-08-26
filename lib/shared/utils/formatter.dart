@@ -23,3 +23,7 @@ abstract class Formatter {
     'id_ID',
   );
 }
+
+extension DoubleX on double {
+  String get toIdr => Formatter.toIdr.format(this);
+}

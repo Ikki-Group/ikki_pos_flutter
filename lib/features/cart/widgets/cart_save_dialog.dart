@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/cart/cart_state.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog.dart';
 
-class CartSaveDialog extends StatefulWidget {
+class CartSaveDialog extends ConsumerStatefulWidget {
   const CartSaveDialog({super.key});
 
   @override
-  State<CartSaveDialog> createState() => _CartSaveDialogState();
+  ConsumerState<CartSaveDialog> createState() => _CartSaveDialogState();
 
   static void show(BuildContext context) {
     showDialog<void>(
@@ -19,7 +21,7 @@ class CartSaveDialog extends StatefulWidget {
   }
 }
 
-class _CartSaveDialogState extends State<CartSaveDialog> {
+class _CartSaveDialogState extends ConsumerState<CartSaveDialog> {
   late TextEditingController controller;
   bool isValid = false;
 
@@ -42,6 +44,12 @@ class _CartSaveDialogState extends State<CartSaveDialog> {
 
   void onClose() {
     Navigator.of(context).pop();
+  }
+
+  Future<void> onSave() async {
+    final name = controller.text;
+    await ref.read(cartStateProvider.notifier).save(name);
+    onClose();
   }
 
   @override

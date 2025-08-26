@@ -153,10 +153,9 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
 
 enum SGDrawerItem {
   pos(name: 'Mulai Penjualan', icon: Icons.point_of_sale, route: IkkiRouter.pos),
-  sales(name: 'Riwayat Penjualan', icon: Icons.history, route: IkkiRouter.cart),
-  finance(name: 'Laporan Keuangan', icon: Icons.attach_money, route: IkkiRouter.cart),
-  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: IkkiRouter.cart),
-  input(name: 'Input Pembukuan', icon: Icons.attach_money, route: IkkiRouter.cart),
+  sales(name: 'Riwayat Penjualan', icon: Icons.history, route: IkkiRouter.sales),
+  // finance(name: 'Laporan Keuangan', icon: Icons.attach_money, route: IkkiRouter.settings),
+  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: IkkiRouter.shift),
   settings(name: 'Pengaturan', icon: Icons.settings, route: IkkiRouter.settings);
 
   const SGDrawerItem({

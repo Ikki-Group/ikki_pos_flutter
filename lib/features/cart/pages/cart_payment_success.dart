@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
-import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
+import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 
 class CartPaymentSuccess extends ConsumerStatefulWidget {
@@ -14,17 +15,19 @@ class CartPaymentSuccess extends ConsumerStatefulWidget {
 }
 
 class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
-  late Cart cart;
-
   @override
   void initState() {
     super.initState();
-    cart = ref.read(cartStateProvider);
+  }
+
+  void onDone() {
+    context.goNamed(IkkiRouter.pos.name);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final cart = ref.watch(cartStateProvider);
 
     return Scaffold(
       body: Center(
@@ -57,7 +60,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                     Text('Total Tagihan', style: textTheme.bodyMedium),
                     const SizedBox(width: 16),
                     Text(
-                      Formatter.toIdr.format(cart.net),
+                      cart.net.toIdr,
                       style: textTheme.bodyMedium,
                     ),
                   ],
@@ -69,7 +72,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                     Text('Tunai', style: textTheme.bodyMedium),
                     const SizedBox(width: 16),
                     Text(
-                      Formatter.toIdr.format(cart.net),
+                      cart.net.toIdr,
                       style: textTheme.bodyMedium,
                     ),
                   ],
@@ -81,7 +84,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                     Text('Kembalian', style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange)),
                     const SizedBox(width: 16),
                     Text(
-                      Formatter.toIdr.format(cart.net),
+                      cart.net.toIdr,
                       style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange),
                     ),
                   ],
@@ -98,7 +101,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: onDone,
                     child: const Text('Selesai'),
                   ),
                 ),

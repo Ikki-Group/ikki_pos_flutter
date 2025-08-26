@@ -113,12 +113,13 @@ class CartState extends _$CartState {
     state = const Cart();
   }
 
-  Future<void> save() async {
+  Future<void> save(String? name) async {
     state = state.copyWith(
       status: CartStatus.process,
       billType: BillType.open,
       updatedAt: DateTime.now().toIso8601String(),
       updatedBy: ref.read(currentUserProvider.notifier).requiredUser().id,
+      customer: name != null ? CartCustomer(name: name) : state.customer,
     );
 
     await ref.read(cartDataProvider.notifier).save(state);
@@ -139,7 +140,9 @@ class CartState extends _$CartState {
 
     await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
-    reset();
+
+    // Reset after screen success
+    // reset();
   }
 
   // Internal methods

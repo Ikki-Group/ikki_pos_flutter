@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:go_router/go_router.dart';
 
 enum IkkiRouter {
@@ -11,6 +12,15 @@ enum IkkiRouter {
 
   // Pos
   pos,
+
+  // Sales
+  sales,
+
+  // Shift
+  shift,
+
+  // Report
+  report,
 
   // Home
   home,
@@ -34,12 +44,7 @@ enum IkkiRouter {
 
   static IkkiRouter? fromName(String? name) {
     if (name == null) return null;
-    for (final element in IkkiRouter.values) {
-      if (element.name == name) {
-        return element;
-      }
-    }
-    return null;
+    return IkkiRouter.values.firstWhereOrNull((e) => e.name == name);
   }
 }
 
