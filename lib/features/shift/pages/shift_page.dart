@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/outlet/outlet_provider.dart';
 import '../../../shared/utils/formatter.dart';
+import '../provider/shift_page_provider.dart';
 
 class ShiftPage extends ConsumerStatefulWidget {
   const ShiftPage({super.key});
@@ -60,6 +62,11 @@ class _ActionsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final closeAction = ref.watch(closeActionProvider);
+    final outlet = ref.watch(outletProvider).requireValue;
+
+    print(outlet.isOpen);
+
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -78,7 +85,11 @@ class _ActionsSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FilledButton(
-              onPressed: () {},
+              onPressed: switch (closeAction) {
+                // AsyncData() when outlet.isOpen => ref.read(closeActionProvider.notifier).execute,
+                _ => ref.read(closeActionProvider.notifier).execute,
+                // _ => null,
+              },
               style: FilledButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.red,

@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../user/user_model.dart';
 import 'outlet_model.dart';
 import 'outlet_repo.dart';
+import 'outlet_session_repo.dart';
 
 part 'outlet_provider.g.dart';
 
@@ -35,6 +36,30 @@ class Outlet extends _$Outlet {
     await ref.read(outletRepoProvider).saveLocal(outlet);
     state = AsyncValue.data(outlet);
     return true;
+  }
+
+  Future<bool> close({
+    required int cash,
+    required UserModel user,
+    String note = '',
+  }) async {
+    var outlet = state.requireValue;
+    if (!outlet.isOpen) throw Exception('Outlet session is not open');
+
+    final session = outlet.session.copyWith(
+      close: OutletSessionInfo(
+        at: DateTime.now().toIso8601String(),
+        by: user.id,
+        balance: cash,
+        note: note,
+      ),
+    );
+
+    await ref.read(outletSessionRepoProvider).saveLocal(session);
+
+    outlet = outlet.copyWith(session: const OutletSessionModel());
+    state = AsyncValue.data(outlet);
+    return ref.read(outletRepoProvider).saveLocal(outlet);
   }
 }
 
