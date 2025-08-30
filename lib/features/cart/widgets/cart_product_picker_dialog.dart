@@ -154,104 +154,106 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
           ),
         ],
       ),
-      children: [
-        Text('Kuantitas', style: textTheme.labelLarge),
-        const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(color: POSTheme.borderLight),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildQuantityButton(
-                  icon: Icons.remove,
-                  onPressed: _decrementQuantity,
-                  enabled: quantity > 1,
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  constraints: const BoxConstraints(minWidth: 46),
-                  alignment: Alignment.center,
-                  color: POSTheme.borderLight,
-                  child: Text(quantity.toString(), style: textTheme.labelLarge),
-                ),
-                _buildQuantityButton(
-                  icon: Icons.add,
-                  onPressed: _incrementQuantity,
-                  enabled: quantity < 99,
-                ),
-              ],
+      child: Column(
+        children: [
+          Text('Kuantitas', style: textTheme.labelLarge),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: POSTheme.borderLight),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildQuantityButton(
+                    icon: Icons.remove,
+                    onPressed: _decrementQuantity,
+                    enabled: quantity > 1,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    constraints: const BoxConstraints(minWidth: 46),
+                    alignment: Alignment.center,
+                    color: POSTheme.borderLight,
+                    child: Text(quantity.toString(), style: textTheme.labelLarge),
+                  ),
+                  _buildQuantityButton(
+                    icon: Icons.add,
+                    onPressed: _incrementQuantity,
+                    enabled: quantity < 99,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
 
-        // Variants Section (if available)
-        if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
+          // Variants Section (if available)
+          if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
+            const SizedBox(height: 20),
+            Text('Varian', style: textTheme.labelLarge),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: widget.product.variants.map((variant) {
+                final isSelected = selectedVariant == variant.id;
+
+                return FilterChip(
+                  label: Column(
+                    children: [
+                      Text(
+                        variant.name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        Formatter.toIdr.format(variant.price),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  selected: isSelected,
+                  onSelected: (selected) {
+                    selectedVariant = variant.id;
+                    setState(() {});
+                  },
+                  showCheckmark: false,
+                );
+              }).toList(),
+            ),
+          ],
+
+          // Notes Section
           const SizedBox(height: 20),
-          Text('Varian', style: textTheme.labelLarge),
+          Text('Catatan (Opsional)', style: textTheme.labelLarge),
           const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: widget.product.variants.map((variant) {
-              final isSelected = selectedVariant == variant.id;
-
-              return FilterChip(
-                label: Column(
-                  children: [
-                    Text(
-                      variant.name,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      Formatter.toIdr.format(variant.price),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                selected: isSelected,
-                onSelected: (selected) {
-                  selectedVariant = variant.id;
-                  setState(() {});
-                },
-                showCheckmark: false,
-              );
-            }).toList(),
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            child: TextField(
+              controller: noteController,
+              maxLines: 3,
+              onTapOutside: (_) => FocusScope.of(context).unfocus(),
+              decoration: const InputDecoration(
+                hintText: 'Tambah Catatan...',
+                hintStyle: TextStyle(fontSize: 14),
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF374151),
+              ),
+            ),
           ),
         ],
-
-        // Notes Section
-        const SizedBox(height: 20),
-        Text('Catatan (Opsional)', style: textTheme.labelLarge),
-        const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          child: TextField(
-            controller: noteController,
-            maxLines: 3,
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            decoration: const InputDecoration(
-              hintText: 'Tambah Catatan...',
-              hintStyle: TextStyle(fontSize: 14),
-            ),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF374151),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet_provider.dart';
-import '../../../widgets/dialogs/pos_cash_open.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
+import '../../../widgets/dialogs/session_outlet_open_dialog.dart';
 
 class HomeCreateOrderButton extends ConsumerStatefulWidget {
   const HomeCreateOrderButton({super.key});
@@ -19,7 +19,7 @@ class _HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
     if (!mounted) return;
 
     if (!outlet.isOpen) {
-      await PosCashOpen.show(context);
+      await SessionOutletOpenDialog.show(context);
     } else {
       SalesModeDialog.show(context);
     }

@@ -48,8 +48,6 @@ class _CartCashCustomState extends State<CartCashCustom> {
   Widget build(BuildContext context) {
     return PosDialog(
       title: 'Masukkan Nominal',
-      constraints: const BoxConstraints(maxWidth: 500),
-      scrollable: false,
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -58,26 +56,28 @@ class _CartCashCustomState extends State<CartCashCustom> {
           Expanded(child: PosButton.process(onPressed: isValid ? onClose : null)),
         ],
       ),
-      children: [
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          child: TextField(
-            controller: controller,
-            autocorrect: false,
-            enableSuggestions: false,
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: 'Nominal',
-              hintStyle: TextStyle(fontSize: 14),
-            ),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF374151),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            child: TextField(
+              controller: controller,
+              autocorrect: false,
+              enableSuggestions: false,
+              onTapOutside: (_) => FocusScope.of(context).unfocus(),
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Nominal',
+                hintStyle: TextStyle(fontSize: 14),
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF374151),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

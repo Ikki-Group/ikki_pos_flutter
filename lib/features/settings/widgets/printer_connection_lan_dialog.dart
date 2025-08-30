@@ -61,64 +61,66 @@ class _PrinterConnectionLanDialogState extends ConsumerState<PrinterConnectionLa
           ),
         ],
       ),
-      children: <Widget>[
-        Form(
-          key: formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  labelText: 'Nama Printer',
+      child: Column(
+        children: <Widget>[
+          Form(
+            key: formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Nama Printer',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nama printer tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => name = value!,
+                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama printer tidak boleh kosong';
-                  }
-                  return null;
-                },
-                onSaved: (value) => name = value!,
-                onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.url,
-                decoration: const InputDecoration(
-                  labelText: 'Host',
+                const SizedBox(height: 8),
+                TextFormField(
+                  autocorrect: false,
+                  keyboardType: TextInputType.url,
+                  decoration: const InputDecoration(
+                    labelText: 'Host',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Host tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => host = value!,
+                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Host tidak boleh kosong';
-                  }
-                  return null;
-                },
-                onSaved: (value) => host = value!,
-                onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              ),
-              const SizedBox(height: 8),
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Port',
+                const SizedBox(height: 8),
+                TextFormField(
+                  autocorrect: false,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Port',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Port tidak boleh kosong';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Port harus berupa angka';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => port = int.parse(value!),
+                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Port tidak boleh kosong';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Port harus berupa angka';
-                  }
-                  return null;
-                },
-                onSaved: (value) => port = int.parse(value!),
-                onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

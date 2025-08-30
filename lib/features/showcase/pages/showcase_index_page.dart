@@ -68,13 +68,8 @@ class _DialogSection extends StatelessWidget {
       context: context,
       builder: (context) => const PosDialog(
         title: 'IKKI COFFEE',
-        subtitle: 'Order #001',
         width: 400,
-        height: 300,
-        children: [
-          Placeholder(),
-          Placeholder(),
-        ],
+        child: null,
       ),
     );
   }

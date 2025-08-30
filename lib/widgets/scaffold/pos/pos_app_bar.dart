@@ -38,8 +38,8 @@ class _PosInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider).requireValue;
-    final theme = Theme.of(context);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +47,11 @@ class _PosInfo extends ConsumerWidget {
       children: <Widget>[
         Text(
           outlet.name,
-          style: theme.textTheme.titleSmall?.copyWith(color: Colors.white, fontSize: 16, height: 1),
+          style: textTheme.titleSmall?.copyWith(
+            color: Colors.white,
+            fontSize: 16,
+            height: 1,
+          ),
         ),
         const SizedBox(height: 6),
         const Row(
@@ -68,7 +72,7 @@ class _NetInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
     const color = Color.fromARGB(255, 24, 255, 182);
     return Row(
       children: [
@@ -76,7 +80,7 @@ class _NetInfo extends ConsumerWidget {
         const SizedBox(width: 4),
         Text(
           'Online',
-          style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
+          style: textTheme.bodySmall?.copyWith(color: Colors.white),
         ),
       ],
     );
@@ -88,7 +92,7 @@ class _ShiftInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
     const color = Color.fromARGB(255, 24, 255, 182);
 
     return Row(
@@ -97,7 +101,7 @@ class _ShiftInfo extends ConsumerWidget {
         const SizedBox(width: 4),
         Text(
           'Open',
-          style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
+          style: textTheme.bodySmall?.copyWith(color: Colors.white),
         ),
       ],
     );

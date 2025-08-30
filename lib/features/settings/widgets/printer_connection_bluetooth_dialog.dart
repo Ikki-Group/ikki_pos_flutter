@@ -66,41 +66,43 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
           ),
         ],
       ),
-      children: [
-        Row(
-          children: [
-            Text('Daftar Printer', style: textTheme.titleMedium),
-            const Spacer(),
-            TextButton.icon(
-              onPressed: onScan,
-              icon: isScanning ? null : const Icon(Icons.search),
-              label: Text(isScanning ? 'Scanning...' : 'Scan'),
-            ),
-          ],
-        ),
-        const Divider(),
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
-          child: isScanning
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  itemCount: printers.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final printer = printers.elementAt(index);
-                    return CheckboxListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 2),
-                      title: Text(printer.name!),
-                      subtitle: Text(printer.address!),
-                      value: printer.address == selectedPrinter?.address,
-                      onChanged: (bool? value) {
-                        selectedPrinter = printer;
-                        setState(() {});
-                      },
-                    );
-                  },
-                ),
-        ),
-      ],
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text('Daftar Printer', style: textTheme.titleMedium),
+              const Spacer(),
+              TextButton.icon(
+                onPressed: onScan,
+                icon: isScanning ? null : const Icon(Icons.search),
+                label: Text(isScanning ? 'Scanning...' : 'Scan'),
+              ),
+            ],
+          ),
+          const Divider(),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
+            child: isScanning
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: printers.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final printer = printers.elementAt(index);
+                      return CheckboxListTile(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 2),
+                        title: Text(printer.name!),
+                        subtitle: Text(printer.address!),
+                        value: printer.address == selectedPrinter?.address,
+                        onChanged: (bool? value) {
+                          selectedPrinter = printer;
+                          setState(() {});
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

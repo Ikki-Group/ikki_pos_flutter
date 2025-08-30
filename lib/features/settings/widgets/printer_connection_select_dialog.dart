@@ -49,15 +49,17 @@ class _PrinterConnectionSelectDialogState extends State<PrinterConnectionSelectD
           PosButton.process(onPressed: value != null ? onConfirm : null),
         ],
       ),
-      children: [
-        for (final conn in PrinterConnectionType.values)
-          CheckboxListTile(
-            value: value == conn,
-            onChanged: (v) => setState(() => value = conn),
-            checkboxScaleFactor: 1.2,
-            title: Text(conn.label),
-          ),
-      ],
+      child: Column(
+        children: [
+          for (final conn in PrinterConnectionType.values)
+            CheckboxListTile(
+              value: value == conn,
+              onChanged: (v) => setState(() => value = conn),
+              checkboxScaleFactor: 1.2,
+              title: Text(conn.label),
+            ),
+        ],
+      ),
     );
   }
 }

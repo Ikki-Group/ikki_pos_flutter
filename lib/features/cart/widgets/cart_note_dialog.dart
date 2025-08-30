@@ -48,8 +48,6 @@ class _CartNoteDialogState extends State<CartNoteDialog> {
   Widget build(BuildContext context) {
     return PosDialog(
       title: 'Catatan',
-      constraints: const BoxConstraints(maxWidth: 500),
-      scrollable: false,
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -58,26 +56,28 @@ class _CartNoteDialogState extends State<CartNoteDialog> {
           Expanded(child: PosButton.process(onPressed: isValid ? onClose : null)),
         ],
       ),
-      children: [
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-          child: TextField(
-            controller: controller,
-            maxLines: 3,
-            autocorrect: false,
-            enableSuggestions: false,
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            decoration: const InputDecoration(
-              hintText: 'Catatan Pesanan...',
-              hintStyle: TextStyle(fontSize: 14),
-            ),
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF374151),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            child: TextField(
+              controller: controller,
+              maxLines: 3,
+              autocorrect: false,
+              enableSuggestions: false,
+              onTapOutside: (_) => FocusScope.of(context).unfocus(),
+              decoration: const InputDecoration(
+                hintText: 'Catatan Pesanan...',
+                hintStyle: TextStyle(fontSize: 14),
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF374151),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

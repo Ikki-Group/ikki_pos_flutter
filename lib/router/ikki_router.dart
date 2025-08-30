@@ -3,39 +3,21 @@ import 'package:go_router/go_router.dart';
 
 enum IkkiRouter {
   widgetsbook,
-
   splash,
   authDevice,
   syncGlobal,
-
   userSelect,
-
-  // Pos
   pos,
-
-  // Sales
   sales,
-
-  // Shift
   shift,
-
-  // Report
   report,
-
-  // Home
   home,
   history,
-
-  // Cart
   cart,
   cartRnd,
   cartPayment,
   cartPaymentSuccess,
-
-  // Settings
   settings,
-
-  // Showcase
   showcase
   //
   ;

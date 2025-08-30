@@ -26,9 +26,8 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     super.initState();
     pinController = TextEditingController();
     pinController.addListener(() {
-      setState(() {
-        code = pinController.text.trim();
-      });
+      code = pinController.text.trim();
+      setState(() {});
     });
   }
 

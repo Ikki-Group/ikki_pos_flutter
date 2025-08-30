@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../shared/utils/formatter.dart';
 import '../ui/numpad_pin.dart';
-import 'ikki_dialog.dart';
+import '../ui/pos_dialog.dart';
 
 class CurrencyNumpadDialog extends ConsumerStatefulWidget {
   const CurrencyNumpadDialog({
@@ -62,7 +62,7 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
     final isEmptyInput = value == 0;
     final displayValue = isEmptyInput ? widget.placeholder : Formatter.toIdr.format(value);
 
-    return IkkiDialog(
+    return PosDialog(
       mainAxisSize: MainAxisSize.min,
       constraints: const BoxConstraints(maxWidth: 350),
       footer: Row(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/cart/cart_state.dart';
-import '../../data/sale/sale_enum.dart';
-import '../../router/ikki_router.dart';
-import '../ui/pos_button.dart';
+import '../../../data/cart/cart_state.dart';
+import '../../../data/sale/sale_enum.dart';
+import '../../../router/ikki_router.dart';
+import '../../../widgets/ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
@@ -24,9 +24,9 @@ class SalesModeDialog extends ConsumerStatefulWidget {
   }
 }
 
-const _kChipWidth = 50.0;
-const _kChipSpacing = 8.0;
-const double _kItemWidth = _kChipWidth + _kChipSpacing;
+const _chipWidth = 50.0;
+const _chipSpacing = 8.0;
+const double _itemWidth = _chipWidth + _chipSpacing;
 
 class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   late ScrollController scrollController;
@@ -60,9 +60,9 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   }
 
   double calculateScrollOffset(int pax) {
-    final itemOffset = (pax - 1) * _kItemWidth;
+    final itemOffset = (pax - 1) * _itemWidth;
     final viewportCenter = scrollController.position.viewportDimension / 2;
-    const itemCenter = _kChipWidth / 2;
+    const itemCenter = _chipWidth / 2;
 
     return (itemOffset - viewportCenter + itemCenter).clamp(
       0.0,
@@ -102,69 +102,71 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
           PosButton.process(onPressed: onProcessPressed),
         ],
       ),
-      children: [
-        Text('Jumlah Pax', style: textTheme.labelLarge),
-        const SizedBox(height: 8),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 50),
-          child: ListView.separated(
-            controller: scrollController,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: 100,
-            itemBuilder: (context, index) {
-              final value = index + 1;
-              final selected = pax == value;
+      child: Column(
+        children: [
+          Text('Jumlah Pax', style: textTheme.labelLarge),
+          const SizedBox(height: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 50),
+            child: ListView.separated(
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: 100,
+              itemBuilder: (context, index) {
+                final value = index + 1;
+                final selected = pax == value;
 
-              return FilterChip(
-                labelPadding: EdgeInsets.zero,
-                padding: EdgeInsets.zero,
-                label: SizedBox.square(
-                  dimension: 50,
-                  child: Center(
-                    child: Text('$value', style: const TextStyle(fontWeight: FontWeight.w600)),
+                return FilterChip(
+                  labelPadding: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
+                  label: SizedBox.square(
+                    dimension: 50,
+                    child: Center(
+                      child: Text('$value', style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
                   ),
-                ),
-                selected: selected,
-                showCheckmark: false,
-                onSelected: (selected) {
-                  pax = value;
-                  setState(() {});
-                },
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(width: 8);
-            },
+                  selected: selected,
+                  showCheckmark: false,
+                  onSelected: (selected) {
+                    pax = value;
+                    setState(() {});
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(width: 8);
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: 24),
-        Text('Mode Penjualan', style: textTheme.labelLarge),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 50,
-          child: ListView.separated(
-            itemCount: SaleMode.values.length,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => const SizedBox(width: 8),
-            itemBuilder: (context, index) {
-              final saleMode = SaleMode.values[index];
-              final isSelected = selectedSaleMode == saleMode;
+          const SizedBox(height: 24),
+          Text('Mode Penjualan', style: textTheme.labelLarge),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              itemCount: SaleMode.values.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                final saleMode = SaleMode.values[index];
+                final isSelected = selectedSaleMode == saleMode;
 
-              return ChoiceChip(
-                // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                showCheckmark: false,
-                selected: isSelected,
-                onSelected: (selected) {
-                  selectedSaleMode = saleMode;
-                  setState(() {});
-                },
-                label: Text(saleMode.value),
-              );
-            },
+                return ChoiceChip(
+                  // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  showCheckmark: false,
+                  selected: isSelected,
+                  onSelected: (selected) {
+                    selectedSaleMode = saleMode;
+                    setState(() {});
+                  },
+                  label: Text(saleMode.value),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
