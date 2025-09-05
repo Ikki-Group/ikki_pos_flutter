@@ -2,13 +2,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../json.dart';
 
-part 'auth_api_model.freezed.dart';
-part 'auth_api_model.g.dart';
+part 'auth_model.freezed.dart';
+part 'auth_model.g.dart';
 
 @freezed
 abstract class AuthRequest with _$AuthRequest {
   const factory AuthRequest({
-    required String code,
+    required String key,
     required AuthDeviceInfo deviceInfo,
   }) = _AuthRequest;
 
@@ -18,7 +18,11 @@ abstract class AuthRequest with _$AuthRequest {
 @freezed
 abstract class AuthResponse with _$AuthResponse {
   const factory AuthResponse({
+    required String id,
     required String token,
+    required String outletId,
+    required String deviceName,
+    required AuthReceiptConfig receipt,
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Json json) => _$AuthResponseFromJson(json);

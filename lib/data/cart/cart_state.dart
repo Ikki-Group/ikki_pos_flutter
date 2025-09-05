@@ -7,6 +7,7 @@ import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
 import '../user/user_model.dart';
 import '../user/user_provider.dart';
+import '../user/user_utils.dart';
 import 'cart_enum.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
@@ -118,7 +119,7 @@ class CartState extends _$CartState {
       status: CartStatus.process,
       billType: BillType.open,
       updatedAt: DateTime.now().toIso8601String(),
-      updatedBy: ref.read(currentUserProvider.notifier).requiredUser().id,
+      updatedBy: ref.read(currentUserProvider).requireValue.id,
       customer: name != null ? CartCustomer(name: name) : state.customer,
     );
 
@@ -136,6 +137,7 @@ class CartState extends _$CartState {
       billType: BillType.close,
       updatedAt: now,
       updatedBy: user.id,
+      payments: payments,
     );
 
     await ref.read(cartDataProvider.notifier).save(state);
@@ -148,7 +150,7 @@ class CartState extends _$CartState {
   // Internal methods
 
   UserModel _getUser() {
-    return ref.read(currentUserProvider.notifier).requiredUser();
+    return ref.read(currentUserProvider).requireValue;
   }
 
   void _recalculateCart() {

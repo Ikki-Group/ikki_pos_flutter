@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/user/user_model.dart';
 import '../../../data/user/user_provider.dart';
 import '../../../router/ikki_router.dart';
+import '../../../utils/extensions.dart';
 import '../../../widgets/dialogs/select_user_dialog.dart';
 import '../../../widgets/ui/numpad_pin.dart';
+import '../providers/user_select_provider.dart';
 
 class UserSelectPage extends ConsumerStatefulWidget {
   const UserSelectPage({super.key});
@@ -33,8 +34,6 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
   }
 
   void handleKeyPress(NumpadKey key) {
-    final messenger = ScaffoldMessenger.of(context);
-
     if (selectedUser == null) {
       openDialog();
       return;
@@ -56,12 +55,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
         ref.read(currentUserProvider.notifier).setUser(selectedUser!);
         context.goNamed(IkkiRouter.pos.name);
       } else {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text('PIN Salah', style: TextStyle(color: POSTheme.textOnPrimary)),
-            backgroundColor: POSTheme.accentRed,
-          ),
-        );
+        context.showTextSnackBar('PIN Salah', severity: SnackBarSeverity.error);
         inputPin = '';
         setState(() {});
       }

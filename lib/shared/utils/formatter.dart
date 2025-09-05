@@ -26,8 +26,10 @@ abstract class Formatter {
 
 extension DoubleX on double {
   String get toIdr => Formatter.toIdr.format(this);
+  String get toIdrNoSymbol => Formatter.toIdrNoSymbol.format(this);
 }
 
 extension IntX on int {
   String get toIdr => Formatter.toIdr.format(this);
+  String get toIdrNoSymbol => Formatter.toIdrNoSymbol.format(this);
 }

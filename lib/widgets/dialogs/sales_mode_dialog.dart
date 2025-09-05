@@ -6,7 +6,7 @@ import '../../../data/cart/cart_state.dart';
 import '../../../data/sale/sale_enum.dart';
 import '../../../router/ikki_router.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../ui/pos_dialog.dart';
+import '../ui/pos_dialog_two.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
   const SalesModeDialog({super.key});
@@ -90,10 +90,11 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width * 0.6;
 
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Mode Penjualan',
-      constraints: const BoxConstraints(maxWidth: 700),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -102,71 +103,69 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
           PosButton.process(onPressed: onProcessPressed),
         ],
       ),
-      child: Column(
-        children: [
-          Text('Jumlah Pax', style: textTheme.labelLarge),
-          const SizedBox(height: 8),
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 50),
-            child: ListView.separated(
-              controller: scrollController,
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                final value = index + 1;
-                final selected = pax == value;
+      children: [
+        Text('Jumlah Pax', style: textTheme.labelLarge),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 50,
+          width: width,
+          child: ListView.separated(
+            controller: scrollController,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: 100,
+            itemBuilder: (context, index) {
+              final value = index + 1;
+              final selected = pax == value;
 
-                return FilterChip(
-                  labelPadding: EdgeInsets.zero,
-                  padding: EdgeInsets.zero,
-                  label: SizedBox.square(
-                    dimension: 50,
-                    child: Center(
-                      child: Text('$value', style: const TextStyle(fontWeight: FontWeight.w600)),
-                    ),
+              return FilterChip(
+                labelPadding: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                label: SizedBox.square(
+                  dimension: 50,
+                  child: Center(
+                    child: Text('$value', style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
-                  selected: selected,
-                  showCheckmark: false,
-                  onSelected: (selected) {
-                    pax = value;
-                    setState(() {});
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(width: 8);
-              },
-            ),
+                ),
+                selected: selected,
+                showCheckmark: false,
+                onSelected: (selected) {
+                  pax = value;
+                  setState(() {});
+                },
+              );
+            },
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
           ),
-          const SizedBox(height: 24),
-          Text('Mode Penjualan', style: textTheme.labelLarge),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 50,
-            child: ListView.separated(
-              itemCount: SaleMode.values.length,
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) => const SizedBox(width: 8),
-              itemBuilder: (context, index) {
-                final saleMode = SaleMode.values[index];
-                final isSelected = selectedSaleMode == saleMode;
+        ),
+        const SizedBox(height: 16),
+        Text('Mode Penjualan', style: textTheme.labelLarge),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: width,
+          height: 50,
+          child: ListView.separated(
+            itemCount: SaleMode.values.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              final saleMode = SaleMode.values[index];
+              final isSelected = selectedSaleMode == saleMode;
 
-                return ChoiceChip(
-                  // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  showCheckmark: false,
-                  selected: isSelected,
-                  onSelected: (selected) {
-                    selectedSaleMode = saleMode;
-                    setState(() {});
-                  },
-                  label: Text(saleMode.value),
-                );
-              },
-            ),
+              return ChoiceChip(
+                // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                showCheckmark: false,
+                selected: isSelected,
+                onSelected: (selected) {
+                  selectedSaleMode = saleMode;
+                  setState(() {});
+                },
+                label: Text(saleMode.value),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

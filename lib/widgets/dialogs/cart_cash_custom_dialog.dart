@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog.dart';
+import '../ui/pos_dialog_two.dart';
 
 class CartCashCustom extends StatefulWidget {
   const CartCashCustom({super.key});
@@ -46,8 +46,9 @@ class _CartCashCustomState extends State<CartCashCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Masukkan Nominal',
+      constraints: const BoxConstraints(minWidth: 400),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -56,28 +57,26 @@ class _CartCashCustomState extends State<CartCashCustom> {
           Expanded(child: PosButton.process(onPressed: isValid ? onClose : null)),
         ],
       ),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: TextField(
-              controller: controller,
-              autocorrect: false,
-              enableSuggestions: false,
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                hintText: 'Nominal',
-                hintStyle: TextStyle(fontSize: 14),
-              ),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF374151),
-              ),
+      children: [
+        Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: TextField(
+            controller: controller,
+            autocorrect: false,
+            enableSuggestions: false,
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              hintText: 'Nominal',
+              hintStyle: TextStyle(fontSize: 14),
+            ),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF374151),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

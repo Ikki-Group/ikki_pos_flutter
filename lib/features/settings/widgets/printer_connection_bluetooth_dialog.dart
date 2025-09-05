@@ -5,7 +5,7 @@ import 'package:flutter_thermal_printer/utils/printer.dart';
 import '../../../data/printer/printer_provider.dart';
 import '../../../data/printer/templates/template_print_info.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog.dart';
+import '../../../widgets/ui/pos_dialog_two.dart';
 
 class PrinterConnectionBluetoothDialog extends ConsumerStatefulWidget {
   const PrinterConnectionBluetoothDialog({super.key});
@@ -52,9 +52,9 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Bluetooth',
-      constraints: const BoxConstraints(maxWidth: 480),
+      constraints: const BoxConstraints(minWidth: 500),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -66,43 +66,42 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text('Daftar Printer', style: textTheme.titleMedium),
-              const Spacer(),
-              TextButton.icon(
-                onPressed: onScan,
-                icon: isScanning ? null : const Icon(Icons.search),
-                label: Text(isScanning ? 'Scanning...' : 'Scan'),
-              ),
-            ],
-          ),
-          const Divider(),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
-            child: isScanning
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: printers.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final printer = printers.elementAt(index);
-                      return CheckboxListTile(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 2),
-                        title: Text(printer.name!),
-                        subtitle: Text(printer.address!),
-                        value: printer.address == selectedPrinter?.address,
-                        onChanged: (bool? value) {
-                          selectedPrinter = printer;
-                          setState(() {});
-                        },
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
+      children: [
+        Row(
+          children: [
+            Text('Daftar Printer', style: textTheme.titleMedium),
+            const Spacer(),
+            TextButton.icon(
+              onPressed: onScan,
+              icon: isScanning ? null : const Icon(Icons.search),
+              label: Text(isScanning ? 'Scanning...' : 'Scan'),
+            ),
+          ],
+        ),
+        const Divider(),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.height * 0.6,
+          child: isScanning
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: printers.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final printer = printers.elementAt(index);
+                    return CheckboxListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 2),
+                      title: Text(printer.name!),
+                      subtitle: Text(printer.address!),
+                      value: printer.address == selectedPrinter?.address,
+                      onChanged: (bool? value) {
+                        selectedPrinter = printer;
+                        setState(() {});
+                      },
+                    );
+                  },
+                ),
+        ),
+      ],
     );
   }
 }

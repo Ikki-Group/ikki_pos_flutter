@@ -1,33 +1,19 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/auth/auth_api_model.dart';
 import '../../../data/auth/auth_repo.dart';
-import '../../../data/auth/auth_token_provider.dart';
-import '../../../data/auth/auth_util.dart';
+import '../../../utils/result.dart';
 
 part 'auth_device_provider.g.dart';
 
 @riverpod
-class AuthDevice extends _$AuthDevice {
+class Authenticate extends _$Authenticate {
   @override
-  FutureOr<String?> build() => null;
+  FutureOr<bool> build() => true;
 
-  Future<void> authenticate(String code) async {
-    try {
-      state = const AsyncValue.loading();
-
-      final req = AuthRequest(
-        key: code,
-        deviceInfo: await getDeviceInfo(),
-      );
-
-      final res = await ref.read(authRepoProvider).authenticate(req);
-      final token = res.token;
-
-      await ref.read(authTokenProvider.notifier).setToken(token);
-      state = AsyncValue.data(res.token);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
-    }
+  Future<bool> call(String code) async {
+    state = const AsyncValue.loading();
+    final result = await ref.read(authRepoProvider).authenticate(code);
+    state = const AsyncData(true);
+    return result.when(success: (_) => true, failure: (e) => false);
   }
 }

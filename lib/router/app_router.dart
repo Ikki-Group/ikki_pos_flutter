@@ -89,7 +89,12 @@ GoRouter goRouter(Ref ref) {
 
       ShellRoute(
         pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
-          return MaterialPage(child: Scaffold(body: child));
+          return MaterialPage(
+            child: Scaffold(
+              body: child,
+              resizeToAvoidBottomInset: false,
+            ),
+          );
         },
 
         routes: <RouteBase>[

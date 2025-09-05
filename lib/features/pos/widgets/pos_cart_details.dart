@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config/pos_theme.dart';
+import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
@@ -72,7 +73,7 @@ class _CartDetails extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Rizqy Nugroho', style: textTheme.titleSmall),
+                  Text(cart.label, style: textTheme.titleSmall),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -101,29 +102,27 @@ class _CartDetails extends StatelessWidget {
           const SizedBox(height: 8),
           const Divider(),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Rincian Pesanan',
-                  style: textTheme.labelLarge,
-                  textAlign: TextAlign.left,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Rincian Pesanan',
+                style: textTheme.labelMedium,
+                textAlign: TextAlign.left,
+              ),
+              OutlinedButton.icon(
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  backgroundColor: Colors.transparent,
+                  side: const BorderSide(color: POSTheme.borderLight),
                 ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    backgroundColor: Colors.transparent,
-                  ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.add),
-                  label: const Text('Tambah Pesanan'),
-                ),
-              ],
-            ),
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Tambah Pesanan'),
+              ),
+            ],
           ),
           Expanded(
             child: Padding(
@@ -134,15 +133,28 @@ class _CartDetails extends StatelessWidget {
                   children: [
                     for (final batch in cart.batches) ...[
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
+                          Text(
+                            'Pesanan ${batch.id}',
+                            style: textTheme.labelMedium,
+                          ),
                           const SizedBox(width: 8),
                           Text(
-                            Formatter.dateTime.format(DateTime.parse(batch.at)),
-                            style: textTheme.bodySmall,
+                            '(${Formatter.dateTime.format(DateTime.parse(batch.at))})',
+                            style: textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                           const Spacer(),
-                          Text('Rp 100.000', style: textTheme.titleSmall),
+                          Text(
+                            cart.items
+                                .where((item) => item.batchId == batch.id)
+                                .fold<double>(0, (prev, curr) => prev + curr.gross)
+                                .toIdr,
+                            style: textTheme.labelMedium,
+                          ),
                         ],
                       ),
                       for (final item in cart.items.toList().where((i) => i.batchId == batch.id)) ...[
@@ -151,8 +163,13 @@ class _CartDetails extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
                           child: Row(
                             children: [
-                              Expanded(child: Text(item.product.name, style: textTheme.bodySmall)),
-                              Text('Rp 100.000', style: textTheme.bodySmall),
+                              Expanded(
+                                child: Text(
+                                  '${item.qty} x ${item.product.name}',
+                                  style: textTheme.bodySmall,
+                                ),
+                              ),
+                              Text(item.gross.toIdrNoSymbol, style: textTheme.bodySmall),
                             ],
                           ),
                         ),

@@ -13,6 +13,17 @@ extension CartItemX on CartItem {
 extension CartX on Cart {
   bool get isItemInBatchEmpty => items.indexWhere((item) => item.batchId == batchId).isNegative;
   bool get isItemEmpty => items.isEmpty;
+
+  String get label {
+    var name = '-';
+
+    if (customer != null && customer!.name.isNotEmpty) {
+      name = customer!.name;
+    } else if (note.isNotEmpty) {
+      name = note;
+    }
+    return name;
+  }
 }
 
 extension ProductModelX on ProductModel {

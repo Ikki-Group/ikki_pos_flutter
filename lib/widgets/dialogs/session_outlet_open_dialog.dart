@@ -5,7 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/user/user_provider.dart';
+import '../../data/user/user_utils.dart';
 import '../../shared/utils/formatter.dart';
+import '../../utils/extensions.dart';
+import '../ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
 import 'currency_numpad_dialog.dart';
 
@@ -32,16 +35,19 @@ class _SessionOutletOpenDialogState extends ConsumerState<SessionOutletOpenDialo
 
   void onClose() => Navigator.pop(context);
 
-  void onConfirm() {
+  Future<void> onConfirm() async {
     if (cash == 0) return;
-    ref.read(confirmActionProvider.notifier).execute(cash);
+    await ref.read(confirmActionProvider.notifier).execute(cash);
+    if (!mounted) return;
+    context.showTextSnackBar('Berhasil membuka toko');
+    onClose();
   }
 
   Future<void> onTapCash() async {
     final updatedCash = await CurrencyNumpadDialog.show(
       context,
       initialValue: cash,
-      placeholder: 'Masukkan Kas Akhir',
+      placeholder: 'Masukkan Kas Awal',
       maxDigits: 6,
     );
 
@@ -55,26 +61,16 @@ class _SessionOutletOpenDialogState extends ConsumerState<SessionOutletOpenDialo
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider).requireValue;
-    final user = ref.watch(currentUserProvider)!;
+    final user = ref.watch(currentUserProvider).requireValue;
 
     return PosDialog(
       mainAxisSize: MainAxisSize.min,
       title: 'Buka Toko',
       footer: Row(
         children: [
-          Expanded(
-            child: OutlinedButton(
-              onPressed: onClose,
-              child: const Text('Batal'),
-            ),
-          ),
+          Expanded(child: PosButton.cancel(onPressed: onClose)),
           const SizedBox(width: 12),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: onConfirm,
-              child: const Text('Proses'),
-            ),
-          ),
+          Expanded(child: PosButton.process(onPressed: onConfirm)),
         ],
       ),
       child: Column(
@@ -132,7 +128,7 @@ class ConfirmAction extends _$ConfirmAction {
   FutureOr<bool> build() => false;
 
   Future<void> execute(int cash) async {
-    final user = ref.read(currentUserProvider)!;
+    final user = ref.read(currentUserProvider).requireValue;
     await ref.read(outletProvider.notifier).open(cash: cash, user: user);
   }
 }

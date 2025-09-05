@@ -1,33 +1,67 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
+import '../../utils/result.dart';
 import 'auth_api_model.dart';
+import 'auth_util.dart';
 
 part 'auth_repo.g.dart';
 
 @riverpod
 AuthRepo authRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
-  return AuthRepo(dio: dio);
+  final sp = ref.watch(sharedPrefsProvider);
+  return AuthRepoImpl(dio: dio, sp: sp);
 }
 
-class AuthRepo {
-  AuthRepo({required this.dio});
-  final Dio dio;
+abstract class AuthRepo {
+  Future<Result<String>> authenticate(String code);
+  Future<void> logout();
+  Future<String?> getToken();
+  Future<bool?> setToken(String token);
+}
 
-  Future<AuthResponse> authenticate(AuthRequest req) async {
-    return _mockAuthResponse;
+class AuthRepoImpl implements AuthRepo {
+  AuthRepoImpl({required this.dio, required this.sp});
+  final Dio dio;
+  final SharedPreferences sp;
+
+  @override
+  Future<Result<String>> authenticate(String code) async {
+    try {
+      final deviceInfo = await getDeviceInfo();
+      final _ = AuthRequest(
+        code: code,
+        deviceInfo: deviceInfo,
+      );
+
+      await setToken(_mockAuthResponse.token);
+      return const Result.success('Auth Success');
+    } catch (e) {
+      return Result.failure(e.toString());
+    }
+  }
+
+  @override
+  Future<void> logout() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getToken() async {
+    final token = sp.getString(SharedPrefsKeys.authToken.key);
+    return token;
+  }
+
+  @override
+  Future<bool?> setToken(String token) async {
+    return sp.setString(SharedPrefsKeys.authToken.key, token);
   }
 }
 
 const _mockAuthResponse = AuthResponse(
-  id: 'id',
-  token: 'token',
-  outletId: 'outletId',
-  deviceName: 'deviceName',
-  receipt: AuthReceiptConfig(
-    prefix: 'prefix',
-    counter: 1,
-  ),
+  token: 'supersecret',
 );

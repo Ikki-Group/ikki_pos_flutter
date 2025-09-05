@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/config/pos_theme.dart';
+import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../shared/utils/formatter.dart';
 
@@ -14,8 +15,8 @@ class PosCartListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final borderColor = isSelected ? POSTheme.primaryBlue.withValues(alpha: .5) : POSTheme.borderLight;
-    final backgroundColor = isSelected ? POSTheme.primaryBlueLight.withValues(alpha: .05) : Colors.white;
+    final borderColor = isSelected ? POSTheme.cardBorderFocus : POSTheme.borderLight;
+    final backgroundColor = isSelected ? POSTheme.cardBgFocus : Colors.white;
 
     return InkWell(
       onTap: onTap,
@@ -51,7 +52,7 @@ class PosCartListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Rizqy Nugroho', style: textTheme.labelMedium),
+                      Text(cart.label, style: textTheme.labelMedium),
                       Text(Formatter.toIdr.format(cart.net), style: textTheme.labelMedium),
                     ],
                   ),

@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../data/user/user_provider.dart';
+import '../../../data/user/user_utils.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../payment/payment_enum.dart';
 import '../../payment/payment_model.dart';
@@ -44,7 +45,7 @@ class CartPaymentStateNotifier extends _$CartPaymentStateNotifier {
         label: payment.label,
         type: payment.type,
         at: DateTime.now().toIso8601String(),
-        by: ref.read(currentUserProvider.notifier).requiredUser().id,
+        by: ref.read(currentUserProvider).requireValue.id,
         isDraft: true,
       ),
     ];
@@ -71,6 +72,7 @@ extension CartPaymentStateX on CartPaymentState {
   bool get allowToPay => change >= 0 && tender > 0 && remaining <= 0;
 
   CartPaymentState invalidate() {
+    var payments = this.payments.toList();
     final tender = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
     var change = tender - total;
     var remaining = total - tender;
@@ -78,10 +80,20 @@ extension CartPaymentStateX on CartPaymentState {
     if (change < 0) change = 0;
     if (remaining < 0) remaining = 0;
 
+    if (change > 0) {
+      // Attch change to payment with type cash
+      payments = payments.map((e) {
+        return e.copyWith(
+          change: e.type == PaymentType.cash ? change : null,
+        );
+      }).toList();
+    }
+
     return copyWith(
       change: change,
       tender: tender,
       remaining: remaining,
+      payments: payments,
     );
   }
 }

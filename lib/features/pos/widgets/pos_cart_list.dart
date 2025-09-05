@@ -10,7 +10,9 @@ class PosCartList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final textTheme = Theme.of(context).textTheme;
     final filter = ref.watch(posFilterProvider);
+
     var items = ref.watch(cartDataProvider);
     items = items.toList().reversed.toList();
 
@@ -36,7 +38,7 @@ class PosCartList extends ConsumerWidget {
               height: 30,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Daftar Pesanan', style: Theme.of(context).textTheme.labelLarge),
+                child: Text('Daftar Pesanan', style: textTheme.labelLarge),
               ),
             ),
             const SizedBox(height: 8),
@@ -53,7 +55,7 @@ class PosCartList extends ConsumerWidget {
                       isSelected: item.id == filter.selectedCart?.id,
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
+                  separatorBuilder: (_, _) => const SizedBox(height: 8),
                 ),
               },
             ),

@@ -53,8 +53,10 @@ class _PosFiltersState extends ConsumerState<PosFilters> {
               autocorrect: false,
               enableSuggestions: false,
               controller: controller,
+              onTapOutside: (_) => FocusScope.of(context).unfocus(),
               decoration: InputDecoration(
                 hintText: 'Cari Order...',
+                contentPadding: EdgeInsets.zero,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: filter.search.isNotEmpty
                     ? InkWell(

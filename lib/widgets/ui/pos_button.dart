@@ -19,6 +19,7 @@ class PosButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.icon,
+    this.disabled = false,
   });
 
   const PosButton.cancel({
@@ -28,6 +29,7 @@ class PosButton extends StatelessWidget {
     this.onPressed,
     this.variant = ButtonVariant.destructiveOutlined,
     this.icon,
+    this.disabled = false,
   });
 
   const PosButton.process({
@@ -37,6 +39,7 @@ class PosButton extends StatelessWidget {
     this.onPressed,
     this.variant = ButtonVariant.primary,
     this.icon,
+    this.disabled = false,
   });
 
   final String text;
@@ -44,6 +47,7 @@ class PosButton extends StatelessWidget {
   final ButtonVariant variant;
   final Widget? icon;
   final bool isLoading;
+  final bool disabled;
 
   static ButtonStyle? getStyle(ButtonVariant variant) {
     return switch (variant) {
@@ -69,9 +73,26 @@ class PosButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = getStyle(variant);
+    final isDisabled = disabled || isLoading;
 
     final Widget labelWidget = Text(text);
+
     Widget button;
+    Widget buttonChild;
+
+    if (isLoading) {
+      buttonChild = const CircularProgressIndicator.adaptive();
+    } else {
+      buttonChild = icon == null
+          ? labelWidget
+          : Row(
+              children: [
+                icon!,
+                const SizedBox(width: 8),
+                labelWidget,
+              ],
+            );
+    }
 
     switch (variant) {
       case ButtonVariant.primary:
@@ -79,16 +100,16 @@ class PosButton extends StatelessWidget {
       case ButtonVariant.destructive:
         button = FilledButton(
           style: style,
-          onPressed: onPressed,
-          child: icon == null ? labelWidget : Row(children: [icon!, const SizedBox(width: 8), labelWidget]),
+          onPressed: isDisabled ? null : onPressed,
+          child: buttonChild,
         );
       case ButtonVariant.primaryOutlined:
       case ButtonVariant.secondaryOutlined:
       case ButtonVariant.destructiveOutlined:
         button = OutlinedButton(
           style: style,
-          onPressed: onPressed,
-          child: icon == null ? labelWidget : Row(children: [icon!, const SizedBox(width: 8), labelWidget]),
+          onPressed: isDisabled ? null : onPressed,
+          child: buttonChild,
         );
     }
 

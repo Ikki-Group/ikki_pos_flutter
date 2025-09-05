@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/printer/printer_enum.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog.dart';
+import '../../../widgets/ui/pos_dialog_two.dart';
 import 'printer_connection_bluetooth_dialog.dart';
 import 'printer_connection_lan_dialog.dart';
 
@@ -38,9 +38,9 @@ class _PrinterConnectionSelectDialogState extends State<PrinterConnectionSelectD
 
   @override
   Widget build(BuildContext context) {
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Pilih Koneksi Printer',
-      constraints: const BoxConstraints(maxWidth: 480),
+      constraints: const BoxConstraints(minWidth: 500),
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -49,17 +49,16 @@ class _PrinterConnectionSelectDialogState extends State<PrinterConnectionSelectD
           PosButton.process(onPressed: value != null ? onConfirm : null),
         ],
       ),
-      child: Column(
-        children: [
-          for (final conn in PrinterConnectionType.values)
-            CheckboxListTile(
-              value: value == conn,
-              onChanged: (v) => setState(() => value = conn),
-              checkboxScaleFactor: 1.2,
-              title: Text(conn.label),
-            ),
-        ],
-      ),
+      children: [
+        for (final conn in PrinterConnectionType.values)
+          CheckboxListTile(
+            value: value == conn,
+            onChanged: (v) => setState(() => value = conn),
+            checkboxScaleFactor: 1.2,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            title: Text(conn.label),
+          ),
+      ],
     );
   }
 }

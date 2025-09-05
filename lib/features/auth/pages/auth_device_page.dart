@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../data/auth/auth_token_provider.dart';
 import '../../../router/ikki_router.dart';
+import '../../../utils/extensions.dart';
 import '../providers/auth_device_provider.dart';
 
 const _kCodeLen = 6;
@@ -18,7 +20,6 @@ class AuthDevicePage extends ConsumerStatefulWidget {
 
 class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   late TextEditingController pinController;
-  final focusNode = FocusNode();
   String code = '';
 
   @override
@@ -34,109 +35,88 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   @override
   void dispose() {
     pinController.dispose();
-    focusNode.dispose();
     super.dispose();
   }
 
   Future<void> submit() async {
-    await ref.read(authDeviceProvider.notifier).authenticate(code.toUpperCase());
+    final result = await ref.read(authenticateProvider.notifier).call(code.toUpperCase());
+    if (!mounted) return;
+    if (result) {
+      ref.invalidate(authTokenProvider);
+      context
+        ..showTextSnackBar('Autentikasi Berhasil')
+        ..goNamed(IkkiRouter.syncGlobal.name);
+    } else {
+      context.showTextSnackBar('Autentikasi Gagal', severity: SnackBarSeverity.error);
+      pinController.clear();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final provider = ref.watch(authDeviceProvider);
+    final authenticate = ref.watch(authenticateProvider);
 
-    final messenger = ScaffoldMessenger.of(context);
-
-    ref.listen(authDeviceProvider, (_, next) {
-      next.whenOrNull(
-        data: (res) {
-          if (res != null) {
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(res),
-                backgroundColor: Colors.greenAccent,
-              ),
-            );
-            context.goNamed(IkkiRouter.syncGlobal.name);
-          }
-        },
-        error: (e, _) {
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              backgroundColor: Colors.redAccent,
-            ),
-          );
-          pinController.clear();
-        },
-      );
-    });
+    final isValidInput = code.length == _kCodeLen;
 
     return Scaffold(
       body: Center(
-        child: GestureDetector(
-          onTap: focusNode.unfocus,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Device Authentication',
-                style: theme.textTheme.displaySmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Device Authentication',
+              style: theme.textTheme.displaySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              'Please copy the code from backoffice',
+              style: theme.textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 35),
+            Pinput(
+              length: _kCodeLen,
+              controller: pinController,
+              hapticFeedbackType: HapticFeedbackType.lightImpact,
+              textCapitalization: TextCapitalization.characters,
+              onTapOutside: (_) => context.unfocus(),
+              inputFormatters: [
+                TextInputFormatter.withFunction(
+                  (oldValue, newValue) => newValue.copyWith(text: newValue.text.toUpperCase()),
+                ),
+              ],
+              defaultPinTheme: PinTheme(
+                width: 56,
+                height: 56,
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  color: Color.fromRGBO(30, 60, 87, 1),
+                  fontWeight: FontWeight.w600,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              const SizedBox(height: 5),
-              Text(
-                'Please copy the code from backoffice',
-                style: theme.textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 35),
-              Pinput(
-                length: _kCodeLen,
-                controller: pinController,
-                focusNode: focusNode,
-                hapticFeedbackType: HapticFeedbackType.lightImpact,
-                textCapitalization: TextCapitalization.characters,
-                inputFormatters: [
-                  TextInputFormatter.withFunction(
-                    (oldValue, newValue) {
-                      return newValue.copyWith(text: newValue.text.toUpperCase());
-                    },
-                  ),
-                ],
-                defaultPinTheme: PinTheme(
-                  width: 56,
-                  height: 56,
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    color: Color.fromRGBO(30, 60, 87, 1),
-                    fontWeight: FontWeight.w600,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: provider.maybeWhen<VoidCallback?>(
-                  loading: () => null,
-                  orElse: () => code.length == _kCodeLen ? submit : null,
-                ),
-                child: const Text('Authenticate Device'),
+              onPressed: authenticate.maybeWhen<VoidCallback?>(
+                loading: () => null,
+                orElse: () => isValidInput ? submit : null,
               ),
-            ],
-          ),
+              child: const Text('Authenticate Device'),
+            ),
+          ],
         ),
       ),
     );

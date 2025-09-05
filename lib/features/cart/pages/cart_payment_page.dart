@@ -8,11 +8,11 @@ import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/cash_generator.dart';
 import '../../../shared/utils/formatter.dart';
+import '../../../widgets/dialogs/cart_cash_custom_dialog.dart';
+import '../../../widgets/dialogs/cart_note_dialog.dart';
 import '../../payment/payment_enum.dart';
 import '../../payment/payment_model.dart';
 import '../providers/cart_payment_state_provider.dart';
-import '../widgets/cart_cash_custom.dart';
-import '../widgets/cart_note_dialog.dart';
 
 class CartPaymentPage extends ConsumerStatefulWidget {
   const CartPaymentPage({super.key});
@@ -59,7 +59,12 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[_OrderInfo(), Divider(), _OrderItemsPreview(), _PayButton()],
+                children: <Widget>[
+                  _OrderInfo(),
+                  Divider(),
+                  _OrderItemsPreview(),
+                  _PayButton(),
+                ],
               ),
             ),
           ),
@@ -241,7 +246,7 @@ class _Actions extends ConsumerWidget {
         children: <Widget>[
           Expanded(
             child: FilledButton(
-              onPressed: () {},
+              onPressed: null,
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 shape: const RoundedRectangleBorder(),
@@ -254,9 +259,7 @@ class _Actions extends ConsumerWidget {
           const VerticalDivider(),
           Expanded(
             child: FilledButton(
-              onPressed: () {
-                CartNoteDialog.show(context);
-              },
+              onPressed: () => CartNoteDialog.show(context),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 shape: const RoundedRectangleBorder(),
@@ -319,8 +322,8 @@ class _OrderItemsPreview extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
-              Text(Formatter.toIdr.format(net), style: textTheme.titleSmall),
+              Text('Pesanan ${batch.id}', style: textTheme.titleMedium),
+              Text(net.toIdr, style: textTheme.titleMedium),
             ],
           ),
           const SizedBox(height: 4),
@@ -337,12 +340,12 @@ class _OrderItemsPreview extends ConsumerWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  Formatter.toIdrNoSymbol.format(item.gross),
+                  item.gross.toIdrNoSymbol,
                   style: textTheme.bodySmall,
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
           ],
         ],
       );

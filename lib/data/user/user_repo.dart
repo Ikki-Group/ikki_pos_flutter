@@ -15,30 +15,39 @@ part 'user_repo.g.dart';
 UserRepo userRepo(Ref ref) {
   final sp = ref.watch(sharedPrefsProvider);
   final dio = ref.watch(dioClientProvider);
-  return UserRepo(dio: dio, sp: sp);
+  return UserRepoImpl(dio: dio, sp: sp);
 }
 
-class UserRepo {
-  UserRepo({required this.dio, required this.sp});
+abstract class UserRepo {
+  Future<List<UserModel>> fetch();
+  Future<List<UserModel>> getLocal();
+  Future<bool> saveLocal(List<UserModel> users);
+}
+
+class UserRepoImpl implements UserRepo {
+  UserRepoImpl({required this.dio, required this.sp});
 
   final Dio dio;
   final SharedPreferences sp;
 
-  // Local
+  @override
   Future<List<UserModel>> getLocal() async {
-    final raw = sp.getString(SharedPrefsKeys.users.key);
+    final raw = sp.getStringList(SharedPrefsKeys.users.key);
     if (raw != null) {
-      return UserModel.fromJsonList(jsonDecode(raw) as JsonList);
+      final jsonList = raw.map(jsonDecode).toList();
+      return jsonList.map((u) => UserModel.fromJson(u as Json)).toList();
     } else {
       return fetch();
     }
   }
 
+  @override
   Future<bool> saveLocal(List<UserModel> users) async {
-    return sp.setString(SharedPrefsKeys.users.key, jsonEncode(users));
+    final encoded = users.map(jsonEncode).toList();
+    return sp.setStringList(SharedPrefsKeys.users.key, encoded);
   }
 
-  // Remote
+  @override
   Future<List<UserModel>> fetch() async {
     final users = _kMock;
     await saveLocal(users);

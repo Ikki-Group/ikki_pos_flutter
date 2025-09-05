@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/user/user_model.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../ui/pos_dialog.dart';
+import '../ui/pos_dialog_two.dart';
 
 class SelectUserDialog extends ConsumerStatefulWidget {
   const SelectUserDialog({required this.users, this.initialValue, super.key});
@@ -43,9 +43,7 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
     scrollController = ScrollController();
     value = widget.initialValue;
 
-    final scrollIndex = widget.initialValue != null
-        ? widget.users.indexWhere((user) => user.id == widget.initialValue!.id)
-        : -1;
+    final scrollIndex = value != null ? widget.users.indexWhere((user) => user.id == value!.id) : -1;
 
     if (scrollIndex != -1) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -63,8 +61,8 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
   void scrollTo(int index) {
     if (scrollController.hasClients) {
       scrollController.animateTo(
-        index * 32.0,
-        duration: const Duration(milliseconds: 300),
+        index * 40.0,
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
       );
     }
@@ -76,10 +74,9 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Pilih Kasir',
       footer: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(child: PosButton.cancel(onPressed: onClose)),
           const SizedBox(width: 8),
@@ -89,42 +86,44 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Text(
-            'Daftar Karyawan',
-            style: context.textTheme.labelLarge,
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: 12),
-          Container(
-            constraints: BoxConstraints(maxWidth: 500, maxHeight: MediaQuery.of(context).size.height * 0.5),
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              controller: scrollController,
-              itemCount: widget.users.length,
-              itemBuilder: (context, index) {
-                final user = widget.users[index];
-                final isSelected = value?.id == user.id;
+      children: [
+        Text(
+          'Daftar Karyawan',
+          style: context.textTheme.labelLarge,
+          textAlign: TextAlign.left,
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.height * 0.7,
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            controller: scrollController,
+            itemCount: widget.users.length,
+            itemBuilder: (context, index) {
+              final user = widget.users[index];
+              final isSelected = value?.id == user.id;
 
-                return CheckboxListTile(
-                  title: Text(user.name),
-                  subtitle: Text(user.email),
-                  value: isSelected,
-                  contentPadding: EdgeInsets.zero,
-                  checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                  checkboxScaleFactor: 1.2,
-                  selectedTileColor: POSTheme.primaryBlue,
-                  onChanged: (bool? newValue) {
-                    value = user;
-                    setState(() {});
-                  },
-                );
-              },
-            ),
+              return CheckboxListTile(
+                title: Text(user.name),
+                subtitle: Text(user.email),
+                value: isSelected,
+                contentPadding: EdgeInsets.zero,
+                checkboxShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                checkboxScaleFactor: 1.2,
+                selectedTileColor: POSTheme.primaryBlue,
+                onChanged: (_) {
+                  value = user;
+                  setState(() {});
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

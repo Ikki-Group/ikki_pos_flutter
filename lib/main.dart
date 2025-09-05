@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/db/sembast.dart';
 import 'core/db/shared_prefs.dart';
 import 'router/ikki_pos_app.dart';
-import 'shared/utils/talker.dart';
 
 //
 // Devlopment device (iPad)
@@ -30,7 +29,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      observers: const [TalkerStateLogger()],
+      // observers: const [TalkerStateLogger()],
       overrides: [
         sembastServiceProvider.overrideWithValue(SembastService(db: db)),
         sharedPrefsProvider.overrideWithValue(sp),

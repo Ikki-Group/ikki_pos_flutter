@@ -6,6 +6,7 @@ import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
+import '../../payment/payment_enum.dart';
 
 class CartPaymentSuccess extends ConsumerStatefulWidget {
   const CartPaymentSuccess({super.key});
@@ -28,6 +29,8 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final cart = ref.watch(cartStateProvider);
+
+    final change = cart.payments.reversed.firstWhere((p) => p.change != null && p.type == PaymentType.cash).change;
 
     return Scaffold(
       body: Center(
@@ -66,29 +69,37 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Tunai', style: textTheme.bodyMedium),
-                    const SizedBox(width: 16),
-                    Text(
-                      cart.net.toIdr,
-                      style: textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Kembalian', style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange)),
-                    const SizedBox(width: 16),
-                    Text(
-                      cart.net.toIdr,
-                      style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange),
-                    ),
-                  ],
-                ),
+                for (final payment in cart.payments)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(payment.label, style: textTheme.bodyMedium),
+                      const SizedBox(width: 16),
+                      Text(
+                        payment.amount.toIdr,
+                        style: textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                if (change != null && change > 0) ...[
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Kembalian',
+                        style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        change.toIdr,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: POSTheme.secondaryOrange,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,

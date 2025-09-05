@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../data/cart/cart_state.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog.dart';
+import '../../../widgets/ui/pos_dialog_two.dart';
+import '../../router/ikki_router.dart';
 
 class CartSaveDialog extends ConsumerStatefulWidget {
   const CartSaveDialog({super.key});
@@ -49,44 +51,43 @@ class _CartSaveDialogState extends ConsumerState<CartSaveDialog> {
   Future<void> onSave() async {
     final name = controller.text;
     await ref.read(cartStateProvider.notifier).save(name);
-    onClose();
+    if (!mounted) return;
+    context.goNamed(IkkiRouter.pos.name);
   }
 
   @override
   Widget build(BuildContext context) {
-    return PosDialog(
+    return PosDialogTwo(
       title: 'Simpan Pesanan',
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(child: PosButton.cancel(onPressed: onClose)),
           const SizedBox(width: 8),
-          Expanded(child: PosButton.process(onPressed: isValid ? onClose : null)),
+          Expanded(child: PosButton.process(onPressed: isValid ? onSave : null)),
         ],
       ),
-      child: Column(
-        children: [
-          Text('Nama Pesanan', style: Theme.of(context).textTheme.labelLarge),
-          const SizedBox(height: 12),
-          Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: TextField(
-              controller: controller,
-              autocorrect: false,
-              enableSuggestions: false,
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              decoration: const InputDecoration(
-                hintText: 'Masukkan Nama Pelanggan atau Nomor Meja',
-                hintStyle: TextStyle(fontSize: 14),
-              ),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFF374151),
-              ),
+      children: [
+        Text('Nama Pesanan', style: Theme.of(context).textTheme.labelLarge),
+        const SizedBox(height: 12),
+        Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: TextField(
+            controller: controller,
+            autocorrect: false,
+            enableSuggestions: false,
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            decoration: const InputDecoration(
+              hintText: 'Masukkan Nama Pelanggan atau Nomor Meja',
+              hintStyle: TextStyle(fontSize: 14),
+            ),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF374151),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -7,7 +7,7 @@ import '../../../data/cart/cart_state.dart';
 import '../../../data/product/product.model.dart';
 import '../../../data/product/product.provider.dart';
 import '../../../shared/utils/formatter.dart';
-import 'cart_product_picker_dialog.dart';
+import '../../../widgets/dialogs/cart_product_picker_dialog.dart';
 
 class CartItems extends ConsumerWidget {
   const CartItems({super.key});

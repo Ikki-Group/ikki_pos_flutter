@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../data/user/user_model.dart';
 import '../../../data/user/user_provider.dart';
+import '../../../data/user/user_utils.dart';
 import '../../../router/ikki_router.dart';
 
 class PosAppDrawer extends ConsumerWidget {
@@ -108,7 +109,7 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
   @override
   void initState() {
     super.initState();
-    user = ref.read(currentUserProvider.notifier).requiredUser();
+    user = ref.read(currentUserProvider).requireValue;
   }
 
   void onLogout() {

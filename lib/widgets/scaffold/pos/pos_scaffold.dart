@@ -18,6 +18,7 @@ class PosScaffold extends ConsumerWidget {
       child: Scaffold(
         appBar: PosAppBar(router: router),
         drawer: const PosAppDrawer(),
+        resizeToAvoidBottomInset: false,
         body: child,
       ),
     );

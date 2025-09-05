@@ -53,6 +53,9 @@ abstract class POSTheme {
   static const Color shadowMedium = Color(0x1A000000);
   static const Color shadowDark = Color(0x25000000);
 
+  static const Color cardBorderFocus = Color.fromARGB(255, 106, 162, 253);
+  static const Color cardBgFocus = Color.fromARGB(255, 237, 242, 252);
+
   static BorderRadius radius8 = BorderRadius.circular(8);
 
   static const TextStyle buttonText = TextStyle(
