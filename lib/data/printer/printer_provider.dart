@@ -10,22 +10,33 @@ import '../../shared/utils/talker.dart';
 import 'printer_enum.dart';
 import 'printer_model.dart';
 import 'printer_repo.dart';
+import 'templates/template_print_info.dart';
 
 part 'printer_provider.g.dart';
 
 const _defaultTimeout = Duration(seconds: 5);
 StreamSubscription<List<Printer>>? printerStream;
 
+abstract class PrinterContract {
+  Future<void> load();
+  Future<bool> requestBluetoothPermissions();
+  Future<PrinterModel> bluetoothConnectAndSave(Printer printer);
+  Future<PrinterModel> lanConnectAndSave(String name, String host, int port);
+}
+
 @Riverpod(keepAlive: true)
-class PrinterState extends _$PrinterState {
+class PrinterState extends _$PrinterState implements PrinterContract {
   final FlutterThermalPrinter instance = FlutterThermalPrinter.instance;
 
   @override
-  List<PrinterModel> build() {
-    load();
-    return [];
+  List<PrinterModel> build() => [];
+
+  @override
+  Future<void> load() async {
+    state = await ref.read(printerRepoProvider).getLocal();
   }
 
+  @override
   Future<bool> requestBluetoothPermissions() async {
     final statuses = await [
       Permission.bluetooth,
@@ -35,10 +46,6 @@ class PrinterState extends _$PrinterState {
     ].request();
 
     return statuses.values.every((status) => status.isGranted);
-  }
-
-  Future<void> load() async {
-    state = await ref.read(printerRepoProvider).getLocal();
   }
 
   Future<List<Printer>> startBluetoothScan() async {
@@ -55,14 +62,12 @@ class PrinterState extends _$PrinterState {
     );
 
     printerStream = instance.devicesStream.listen((List<Printer> event) async {
-      for (final element in event) {
-        if (element.connectionType == ConnectionType.BLE && element.name != null && element.name!.isNotEmpty) {
-          // final isExists = scannedPrinters.any(
-          //   (element) => element.name == element.name && element.address == element.address,
-          // );
-          // if (!isExists) {
-          scannedPrinters.add(element);
-          // }
+      for (final p in event) {
+        if (p.connectionType == ConnectionType.BLE && p.name != null && p.name!.isNotEmpty) {
+          final isExists = scannedPrinters.any((sp) => sp.name == p.name && sp.address == p.address);
+          if (!isExists) {
+            scannedPrinters.add(p);
+          }
         }
       }
     });
@@ -76,9 +81,13 @@ class PrinterState extends _$PrinterState {
     return scannedPrinters;
   }
 
+  @override
   Future<PrinterModel> bluetoothConnectAndSave(Printer printer) async {
     await instance.connect(printer);
     talker.debug('connected to ${printer.name}');
+
+    // Send template print info to ensure printer is ready
+    await templatePrintInfo(instance, printer);
 
     final printerModel = PrinterModel(
       id: ObjectId().hexString,
@@ -87,8 +96,8 @@ class PrinterState extends _$PrinterState {
       address: printer.address,
     );
 
-    final printers = await ref.read(printerRepoProvider).getLocal();
-    final isExists = printers.any((element) => element.address == printer.address);
+    final printers = state.toList();
+    final isExists = state.any((element) => element.address == printer.address);
 
     if (isExists) {
       talker.debug('printer already exists');
@@ -97,10 +106,11 @@ class PrinterState extends _$PrinterState {
       await ref.read(printerRepoProvider).saveLocal(printers);
     }
 
-    await load();
+    state = printers;
     return printerModel;
   }
 
+  @override
   Future<PrinterModel> lanConnectAndSave(String name, String host, int port) async {
     final address = '$host:$port';
 
@@ -113,7 +123,7 @@ class PrinterState extends _$PrinterState {
       address: address,
     );
 
-    final printers = await ref.read(printerRepoProvider).getLocal();
+    final printers = state.toList();
     final isExists = printers.any((element) => element.address == address);
 
     if (isExists) {
@@ -123,7 +133,7 @@ class PrinterState extends _$PrinterState {
       await ref.read(printerRepoProvider).saveLocal(printers);
     }
 
-    await load();
+    state = printers;
     return printerModel;
   }
 }

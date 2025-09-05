@@ -11,40 +11,47 @@ import 'printer_model.dart';
 
 part 'printer_repo.g.dart';
 
-typedef PrinterList = List<PrinterModel>;
-
 @Riverpod(keepAlive: true)
 PrinterRepo printerRepo(Ref ref) {
-  return PrinterRepo(
+  return PrinterRepoImpl(
     ref.watch(sharedPrefsProvider),
     ref.watch(dioClientProvider),
   );
 }
 
-class PrinterRepo {
-  const PrinterRepo(this.sp, this.dio);
+abstract class PrinterRepo {
+  Future<List<PrinterModel>> getState();
+  Future<List<PrinterModel>> getLocal();
+  Future<bool> saveLocal(List<PrinterModel> printers);
+}
+
+class PrinterRepoImpl implements PrinterRepo {
+  const PrinterRepoImpl(this.sp, this.dio);
 
   final SharedPreferences sp;
   final Dio dio;
 
-  // Local
-  Future<PrinterList> getLocal() async {
-    final raw = sp.getString(SharedPrefsKeys.printers.name);
-    if (raw == null) {
-      return getRemote();
+  @override
+  Future<List<PrinterModel>> getState() async {
+    final local = await getLocal();
+    return local;
+  }
+
+  @override
+  Future<List<PrinterModel>> getLocal() async {
+    final raw = sp.getStringList(SharedPrefsKeys.printers.key);
+    if (raw != null) {
+      final jsonList = posJsonDecodeList(raw);
+      return jsonList.map(PrinterModel.fromJson).toList();
     }
-    final json = jsonDecode(raw) as JsonListDynamic;
-    return json.map((val) => PrinterModel.fromJson(val as Json)).toList();
-  }
-
-  Future<bool> saveLocal(PrinterList printers) async {
-    return sp.setString(SharedPrefsKeys.printers.name, jsonEncode(printers));
-  }
-
-  // Remote
-  Future<PrinterList> getRemote() async {
     return [];
   }
 
-  Future<void> saveRemote() async {}
+  @override
+  Future<bool> saveLocal(List<PrinterModel> printers) async {
+    return sp.setStringList(
+      SharedPrefsKeys.printers.key,
+      printers.map(jsonEncode).toList(),
+    );
+  }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 
 import '../../../data/printer/printer_provider.dart';
-import '../../../data/printer/templates/template_print_info.dart';
+import '../../../utils/extensions.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog_two.dart';
 
@@ -25,32 +25,64 @@ class PrinterConnectionBluetoothDialog extends ConsumerStatefulWidget {
 class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnectionBluetoothDialog> {
   List<Printer> printers = [];
   Printer? selectedPrinter;
-  bool isScanning = false;
   bool isLoading = false;
 
   void onClose() => Navigator.of(context).pop();
 
   Future<void> onScan() async {
-    isScanning = true;
+    isLoading = true;
+    selectedPrinter = null;
     setState(() {});
-    await ref.read(printerStateProvider.notifier).requestBluetoothPermissions();
-    printers = await ref.read(printerStateProvider.notifier).startBluetoothScan();
-    isScanning = false;
+
+    await ref
+        .read(printerStateProvider.notifier)
+        .startBluetoothScan()
+        .then(
+          (result) => printers = result,
+          onError: (e) {
+            if (!mounted) return;
+            context.showTextSnackBar(
+              'Gagal menemukan printer',
+              severity: SnackBarSeverity.error,
+            );
+          },
+        );
+
+    isLoading = false;
     setState(() {});
   }
 
-  Future<void> onConfirm() async {
+  Future<void> onConnectAndSave() async {
+    if (selectedPrinter == null) return;
+
     isLoading = true;
+    setState(() => {});
+
+    await ref
+        .read(printerStateProvider.notifier)
+        .bluetoothConnectAndSave(
+          selectedPrinter!,
+        )
+        .catchError(() {
+          if (mounted) {
+            context.showTextSnackBar(
+              'Gagal menghubungkan printer ${selectedPrinter?.name}',
+              severity: SnackBarSeverity.error,
+            );
+          }
+        });
+
+    isLoading = false;
     setState(() {});
 
-    await ref.read(printerStateProvider.notifier).instance.connect(selectedPrinter!);
-    await templatePrintInfo(ref.read(printerStateProvider.notifier).instance, selectedPrinter!);
     onClose();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final isScanning = isLoading && selectedPrinter == null;
+    final isConnecting = isLoading && selectedPrinter != null;
 
     return PosDialogTwo(
       title: 'Bluetooth',
@@ -61,7 +93,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
           PosButton.cancel(onPressed: onClose),
           const SizedBox(width: 8),
           PosButton.process(
-            onPressed: selectedPrinter == null || isLoading ? null : onConfirm,
+            onPressed: selectedPrinter == null || isConnecting ? null : onConnectAndSave,
             text: 'Hubungkan & Simpan',
           ),
         ],
@@ -72,7 +104,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
             Text('Daftar Printer', style: textTheme.titleMedium),
             const Spacer(),
             TextButton.icon(
-              onPressed: onScan,
+              onPressed: isScanning ? null : onScan,
               icon: isScanning ? null : const Icon(Icons.search),
               label: Text(isScanning ? 'Scanning...' : 'Scan'),
             ),
@@ -94,6 +126,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
                       subtitle: Text(printer.address!),
                       value: printer.address == selectedPrinter?.address,
                       onChanged: (bool? value) {
+                        printer.isConnected = false;
                         selectedPrinter = printer;
                         setState(() {});
                       },
