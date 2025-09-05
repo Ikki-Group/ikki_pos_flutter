@@ -65,7 +65,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final outlet = ref.watch(outletProvider).requireValue;
+    final outlet = ref.watch(outletProvider);
 
     return Scaffold(
       body: Center(
@@ -76,7 +76,7 @@ class _UserSelectPageState extends ConsumerState<UserSelectPage> {
             children: [
               Text('Selamat Datang', style: textTheme.titleLarge, textAlign: TextAlign.center),
               const SizedBox(height: 4),
-              Text('-- ${outlet.name} --', style: textTheme.titleMedium, textAlign: TextAlign.center),
+              Text('-- ${outlet.outlet.name} --', style: textTheme.titleMedium, textAlign: TextAlign.center),
               const SizedBox(height: 20),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(

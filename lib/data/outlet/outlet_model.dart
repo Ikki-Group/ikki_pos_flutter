@@ -6,17 +6,25 @@ part 'outlet_model.freezed.dart';
 part 'outlet_model.g.dart';
 
 @freezed
+abstract class OutletStateModel with _$OutletStateModel {
+  const factory OutletStateModel({
+    required OutletModel outlet,
+    OutletSessionModel? session,
+  }) = _OutletStateModel;
+
+  factory OutletStateModel.fromJson(Json json) => _$OutletStateModelFromJson(json);
+}
+
+@freezed
 abstract class OutletModel with _$OutletModel {
   const factory OutletModel({
     required String id,
     required String name,
     required String type,
-    required String syncAt,
     required String createdAt,
     required String updatedAt,
     required String createdBy,
     required String updatedBy,
-    @Default(OutletSessionModel()) OutletSessionModel session,
   }) = _OutletModel;
 
   factory OutletModel.fromJson(Json json) => _$OutletModelFromJson(json);
@@ -25,8 +33,12 @@ abstract class OutletModel with _$OutletModel {
 @freezed
 abstract class OutletSessionModel with _$OutletSessionModel {
   const factory OutletSessionModel({
-    @Default('') String id,
-    @Default(OutletSessionSummaryModel()) OutletSessionSummaryModel summary,
+    required String id,
+    @Default(0) int trxCount,
+    @Default(0) int trxSuccess,
+    @Default(0) int trxFail,
+    @Default(0) int netSales,
+    @Default(0) int cash,
     @Default(OutletSessionInfo()) OutletSessionInfo open,
     @Default(OutletSessionInfo()) OutletSessionInfo close,
   }) = _OutletSessionModel;
@@ -35,24 +47,11 @@ abstract class OutletSessionModel with _$OutletSessionModel {
 }
 
 @freezed
-abstract class OutletSessionSummaryModel with _$OutletSessionSummaryModel {
-  const factory OutletSessionSummaryModel({
-    @Default(0) int trxCount,
-    @Default(0) int trxSuccess,
-    @Default(0) int trxFail,
-    @Default(0) int netSales,
-    @Default(0) int cash,
-  }) = _OutletSessionSummaryModel;
-
-  factory OutletSessionSummaryModel.fromJson(Json json) => _$OutletSessionSummaryModelFromJson(json);
-}
-
-@freezed
 abstract class OutletSessionInfo with _$OutletSessionInfo {
   const factory OutletSessionInfo({
     @Default('') String at,
     @Default('') String by,
-    @Default(0) int balance,
+    @Default(0) int cashBalance,
     String? note,
   }) = _OutletSessionInfo;
 

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../data/user/user_model.dart';
 import '../../../data/user/user_provider.dart';
-import '../../../data/user/user_utils.dart';
+import '../../../data/user/user_util.dart';
 import '../../../router/ikki_router.dart';
 
 class PosAppDrawer extends ConsumerWidget {

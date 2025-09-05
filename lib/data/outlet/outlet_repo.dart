@@ -16,43 +16,49 @@ part 'outlet_repo.g.dart';
 OutletRepo outletRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   final sp = ref.watch(sharedPrefsProvider);
-  return OutletRepo(dio: dio, sp: sp, ref: ref);
+  return OutletRepoImpl(dio: dio, sp: sp, ref: ref);
 }
 
-class OutletRepo {
-  OutletRepo({required this.dio, required this.sp, required this.ref});
+abstract class OutletRepo {
+  Future<OutletStateModel> getState();
+  Future<bool> saveState(OutletStateModel state);
+
+  Future<OutletModel> fetchOutlet();
+}
+
+class OutletRepoImpl implements OutletRepo {
+  OutletRepoImpl({required this.dio, required this.sp, required this.ref});
 
   final Dio dio;
   final SharedPreferences sp;
   final Ref ref;
 
-  // Local
+  @override
+  Future<OutletStateModel> getState() async {
+    talker.info('[OutletRepo] getState');
 
-  Future<OutletModel> getLocal() async {
-    talker.info('[OutletRepo] getLocal');
-
-    OutletModel outlet;
-    final raw = sp.getString(SharedPrefsKeys.outlet.key);
+    OutletStateModel state;
+    final raw = sp.getString(SharedPrefsKeys.outletState.key);
     if (raw != null) {
-      outlet = OutletModel.fromJson(jsonDecode(raw) as Json);
+      final json = posJsonDecode(raw);
+      state = OutletStateModel.fromJson(json);
     } else {
-      outlet = await fetch();
+      final outlet = await fetchOutlet();
+      state = OutletStateModel(outlet: outlet);
     }
-    return outlet;
+
+    return state;
   }
 
-  Future<bool> saveLocal(OutletModel outlet) async {
-    talker.info('[OutletRepo] saveLocal $outlet');
-    return sp.setString(SharedPrefsKeys.outlet.key, jsonEncode(outlet));
+  @override
+  Future<bool> saveState(OutletStateModel state) {
+    talker.info('[OutletRepo] saveState $state');
+    return sp.setString(SharedPrefsKeys.outletState.key, jsonEncode(state));
   }
 
-  // Remote
-
-  Future<OutletModel> fetch() async {
-    talker.info('[OutletRepo] fetch');
-    const outlet = _kMock;
-    await saveLocal(outlet);
-    return outlet;
+  @override
+  Future<OutletModel> fetchOutlet() async {
+    return _kMock;
   }
 }
 
@@ -60,7 +66,6 @@ const _kMock = OutletModel(
   id: 'id',
   name: 'Ikki Coffee',
   type: 'type',
-  syncAt: '2023-07-01T00:00:00.000Z',
   createdAt: '2023-07-01T00:00:00.000Z',
   updatedAt: '2023-07-01T00:00:00.000Z',
   createdBy: 'createdBy',

@@ -63,9 +63,7 @@ class _ActionsSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final closeAction = ref.watch(closeActionProvider);
-    final outlet = ref.watch(outletProvider).requireValue;
-
-    print(outlet.isOpen);
+    final _ = ref.watch(outletProvider);
 
     return Container(
       padding: const EdgeInsets.all(8),

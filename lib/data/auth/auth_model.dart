@@ -8,7 +8,7 @@ part 'auth_model.g.dart';
 @freezed
 abstract class AuthRequest with _$AuthRequest {
   const factory AuthRequest({
-    required String key,
+    required String code,
     required AuthDeviceInfo deviceInfo,
   }) = _AuthRequest;
 
@@ -18,11 +18,7 @@ abstract class AuthRequest with _$AuthRequest {
 @freezed
 abstract class AuthResponse with _$AuthResponse {
   const factory AuthResponse({
-    required String id,
     required String token,
-    required String outletId,
-    required String deviceName,
-    required AuthReceiptConfig receipt,
   }) = _AuthResponse;
 
   factory AuthResponse.fromJson(Json json) => _$AuthResponseFromJson(json);
@@ -38,14 +34,4 @@ abstract class AuthDeviceInfo with _$AuthDeviceInfo {
   }) = _AuthDeviceInfo;
 
   factory AuthDeviceInfo.fromJson(Json json) => _$AuthDeviceInfoFromJson(json);
-}
-
-@freezed
-abstract class AuthReceiptConfig with _$AuthReceiptConfig {
-  const factory AuthReceiptConfig({
-    required String prefix,
-    required int counter,
-  }) = _AuthReceiptConfig;
-
-  factory AuthReceiptConfig.fromJson(Json json) => _$AuthReceiptConfigFromJson(json);
 }

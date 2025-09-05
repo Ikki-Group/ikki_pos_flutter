@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
 import '../../utils/result.dart';
-import 'auth_api_model.dart';
+import 'auth_model.dart';
 import 'auth_util.dart';
 
 part 'auth_repo.g.dart';

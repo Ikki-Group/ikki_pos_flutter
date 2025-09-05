@@ -34,8 +34,8 @@ class UserRepoImpl implements UserRepo {
   Future<List<UserModel>> getLocal() async {
     final raw = sp.getStringList(SharedPrefsKeys.users.key);
     if (raw != null) {
-      final jsonList = raw.map(jsonDecode).toList();
-      return jsonList.map((u) => UserModel.fromJson(u as Json)).toList();
+      final jsonList = posJsonDecodeList(raw);
+      return jsonList.map(UserModel.fromJson).toList();
     } else {
       return fetch();
     }

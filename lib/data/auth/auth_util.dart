@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 
-import 'auth_api_model.dart';
+import 'auth_model.dart';
 
 Future<AuthDeviceInfo> getDeviceInfo() async {
   var di = const AuthDeviceInfo(

@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../data/cart/cart_model.dart';
 import '../../../data/cart/cart_state.dart';
 import '../../../data/user/user_provider.dart';
-import '../../../data/user/user_utils.dart';
+import '../../../data/user/user_util.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../payment/payment_enum.dart';
 import '../../payment/payment_model.dart';

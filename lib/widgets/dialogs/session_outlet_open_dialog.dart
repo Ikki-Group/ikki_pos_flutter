@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/user/user_provider.dart';
-import '../../data/user/user_utils.dart';
+import '../../data/user/user_util.dart';
 import '../../shared/utils/formatter.dart';
 import '../../utils/extensions.dart';
 import '../ui/pos_button.dart';
@@ -60,7 +60,7 @@ class _SessionOutletOpenDialogState extends ConsumerState<SessionOutletOpenDialo
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final outlet = ref.watch(outletProvider).requireValue;
+    final outlet = ref.watch(outletProvider);
     final user = ref.watch(currentUserProvider).requireValue;
 
     return PosDialog(
@@ -83,7 +83,7 @@ class _SessionOutletOpenDialogState extends ConsumerState<SessionOutletOpenDialo
           ),
           const SizedBox(height: 6),
           Text(
-            outlet.name,
+            outlet.outlet.name,
             style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
@@ -129,6 +129,11 @@ class ConfirmAction extends _$ConfirmAction {
 
   Future<void> execute(int cash) async {
     final user = ref.read(currentUserProvider).requireValue;
-    await ref.read(outletProvider.notifier).open(cash: cash, user: user);
+    await ref
+        .read(outletProvider.notifier)
+        .open(
+          cash: cash,
+          user: user,
+        );
   }
 }

@@ -1,13 +1,14 @@
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../outlet/outlet_provider.dart';
+import '../outlet/outlet_model.dart';
+import '../outlet/outlet_util.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
 import '../user/user_model.dart';
 import '../user/user_provider.dart';
-import '../user/user_utils.dart';
+import '../user/user_util.dart';
 import 'cart_enum.dart';
 import 'cart_extension.dart';
 import 'cart_model.dart';
@@ -25,14 +26,16 @@ class CartState extends _$CartState {
 
   void setState(Cart Function(Cart) fn) => state = fn(state);
 
-  Future<void> newCart(
-    int pax,
-    SaleMode saleMode,
-  ) async {
-    final user = _getUser();
-    final outlet = await ref.read(outletProvider.future).then((value) => value.requireOpen);
-    final sessionId = outlet.session.id;
-    final rc = await ref.read(receiptCodeRepoProvider).getCode(sessionId);
+  Future<void> newCart({
+    required int pax,
+    required SaleMode saleMode,
+    required OutletStateModel outletState,
+    required UserModel user,
+  }) async {
+    final outlet = outletState.outlet;
+    final session = outletState.requireOpen;
+
+    final rc = await ref.read(receiptCodeRepoProvider).getCode(session.id);
     final now = DateTime.now().toIso8601String();
     final initialLog = CartLogAction.create.toLog(state, user, 'Cart created');
     final initialBatch = CartBatch(id: 1, at: now, by: user.id);
@@ -43,7 +46,7 @@ class CartState extends _$CartState {
       saleMode: saleMode,
       pax: pax,
       outletId: outlet.id,
-      sessionId: sessionId,
+      sessionId: session.id,
       batches: [initialBatch],
       logs: [initialLog],
       createdAt: now,

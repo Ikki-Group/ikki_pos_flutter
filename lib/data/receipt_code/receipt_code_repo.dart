@@ -8,13 +8,19 @@ part 'receipt_code_repo.g.dart';
 @Riverpod(keepAlive: true)
 ReceiptCodeRepo receiptCodeRepo(Ref ref) {
   final sp = ref.watch(sharedPrefsProvider);
-  return ReceiptCodeRepo(sp: sp);
+  return ReceiptCodeRepoImpl(sp: sp);
 }
 
-class ReceiptCodeRepo {
-  ReceiptCodeRepo({required this.sp});
+abstract class ReceiptCodeRepo {
+  Future<String> getCode(String sessionId);
+  Future<bool> commit(String code);
+}
+
+class ReceiptCodeRepoImpl implements ReceiptCodeRepo {
+  ReceiptCodeRepoImpl({required this.sp});
   final SharedPreferences sp;
 
+  @override
   Future<String> getCode(String sessionId) async {
     final queue = getLocalQueue();
     final date = DateTime.now().toString().substring(0, 10);
@@ -22,6 +28,7 @@ class ReceiptCodeRepo {
     return 'PT/$date/$queuePad';
   }
 
+  @override
   Future<bool> commit(String code) async {
     final queue = getLocalQueue();
     // final [_, _, queue] = code.split('/');

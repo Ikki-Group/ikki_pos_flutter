@@ -6,6 +6,9 @@ import '../../../data/cart/cart_state.dart';
 import '../../../data/sale/sale_enum.dart';
 import '../../../router/ikki_router.dart';
 import '../../../widgets/ui/pos_button.dart';
+import '../../data/outlet/outlet_provider.dart';
+import '../../data/user/user_provider.dart';
+import '../../data/user/user_util.dart';
 import '../ui/pos_dialog_two.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
@@ -77,10 +80,24 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   Future<void> onProcessPressed() async {
     final routeName = GoRouter.of(context).state.name;
     if (routeName == IkkiRouter.cart.name) {
-      ref.read(cartStateProvider.notifier).updateSalesAndPax(selectedSaleMode, pax);
+      ref
+          .read(cartStateProvider.notifier)
+          .updateSalesAndPax(
+            selectedSaleMode,
+            pax,
+          );
       onClose();
     } else {
-      await ref.read(cartStateProvider.notifier).newCart(pax, selectedSaleMode);
+      final outletState = ref.read(outletProvider);
+      final user = ref.read(currentUserProvider).requireValue;
+      await ref
+          .read(cartStateProvider.notifier)
+          .newCart(
+            pax: pax,
+            saleMode: selectedSaleMode,
+            outletState: outletState,
+            user: user,
+          );
       if (!mounted) return;
       context.goNamed(IkkiRouter.cart.name);
     }
@@ -153,7 +170,6 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
               final isSelected = selectedSaleMode == saleMode;
 
               return ChoiceChip(
-                // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 showCheckmark: false,
                 selected: isSelected,
                 onSelected: (selected) {

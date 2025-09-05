@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../shared/utils/formatter.dart';
 import '../ui/numpad_pin.dart';
-import '../ui/pos_dialog.dart';
+import '../ui/pos_dialog_two.dart';
 
 class CurrencyNumpadDialog extends ConsumerStatefulWidget {
   const CurrencyNumpadDialog({
@@ -62,8 +62,7 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
     final isEmptyInput = value == 0;
     final displayValue = isEmptyInput ? widget.placeholder : Formatter.toIdr.format(value);
 
-    return PosDialog(
-      mainAxisSize: MainAxisSize.min,
+    return PosDialogTwo(
       constraints: const BoxConstraints(maxWidth: 350),
       footer: Row(
         children: [
@@ -82,35 +81,36 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: BoxBorder.fromLTRB(
-                  bottom: BorderSide(
-                    color: isEmptyInput ? Colors.grey[500]! : Colors.black,
-                  ),
+      children: [
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: BoxBorder.fromLTRB(
+                bottom: BorderSide(
+                  color: isEmptyInput ? Colors.grey[500]! : Colors.black,
                 ),
               ),
-              child: Align(
-                child: Text(
-                  displayValue,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: isEmptyInput ? Colors.grey[500]! : Colors.black,
-                  ),
+            ),
+            child: Align(
+              child: Text(
+                displayValue,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: isEmptyInput ? Colors.grey[500]! : Colors.black,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 32),
-          NumpadPin(
+        ),
+        const SizedBox(height: 32),
+        SizedBox(
+          width: 360,
+          child: NumpadPin(
             aspectRatio: 19 / 12,
             onKeyPressed: (key) {
               final inputStr = value.toString();
@@ -130,9 +130,9 @@ class _CurrencyNumpadDialogState extends ConsumerState<CurrencyNumpadDialog> {
               }
             },
           ),
-          const SizedBox(height: 16),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

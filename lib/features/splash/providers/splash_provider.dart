@@ -12,7 +12,7 @@ part 'splash_provider.g.dart';
 FutureOr<IkkiRouter> splash(Ref ref) async {
   final token = await ref.watch(authTokenProvider.future);
   if (token != null) {
-    await ref.watch(outletProvider.future);
+    await ref.watch(outletProvider.notifier).load();
     await ref.watch(userRepoProvider).fetch();
     await ref.watch(productProvider.future);
     return IkkiRouter.userSelect;

@@ -54,7 +54,7 @@ class _SessionOutletCloseDialogState extends ConsumerState<SessionOutletCloseDia
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final outlet = ref.watch(outletProvider).requireValue;
+    final outlet = ref.watch(outletProvider);
     final user = ref.watch(currentUserProvider)!;
 
     return PosDialog(
@@ -87,7 +87,7 @@ class _SessionOutletCloseDialogState extends ConsumerState<SessionOutletCloseDia
           ),
           const SizedBox(height: 6),
           Text(
-            outlet.name,
+            outlet.outlet.name,
             style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),

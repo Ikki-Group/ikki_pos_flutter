@@ -39,14 +39,14 @@ class _PosInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final outlet = ref.watch(outletProvider).requireValue;
+    final outlet = ref.watch(outletProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          outlet.name,
+          outlet.outlet.name,
           style: textTheme.titleSmall?.copyWith(
             color: Colors.white,
             fontSize: 16,

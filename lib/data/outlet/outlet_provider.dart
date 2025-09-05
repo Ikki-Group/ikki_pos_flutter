@@ -1,40 +1,52 @@
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../shared/utils/talker.dart';
 import '../user/user_model.dart';
 import 'outlet_model.dart';
 import 'outlet_repo.dart';
 import 'outlet_session_repo.dart';
+import 'outlet_util.dart';
 
 part 'outlet_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class Outlet extends _$Outlet {
   @override
-  FutureOr<OutletModel> build() => ref.watch(outletRepoProvider).getLocal();
+  OutletStateModel build() => null!;
+
+  Future<bool> load() async {
+    try {
+      final outlet = await ref.read(outletRepoProvider).getState();
+      state = outlet;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   Future<bool> open({
     required int cash,
     required UserModel user,
     String note = '',
   }) async {
-    var outlet = state.requireValue;
-    if (outlet.isOpen) throw Exception('Outlet session is already open');
+    if (state.isOpen) throw Exception('Outlet session is already open');
 
-    outlet = outlet.copyWith(
+    final open = OutletSessionInfo(
+      at: DateTime.now().toIso8601String(),
+      by: user.id,
+      cashBalance: cash,
+      note: note,
+    );
+
+    state = state.copyWith(
       session: OutletSessionModel(
         id: ObjectId().hexString,
-        open: OutletSessionInfo(
-          at: DateTime.now().toIso8601String(),
-          by: user.id,
-          balance: cash,
-          note: note,
-        ),
+        open: open,
       ),
     );
 
-    await ref.read(outletRepoProvider).saveLocal(outlet);
-    state = AsyncValue.data(outlet);
+    await ref.read(outletRepoProvider).saveState(state);
     return true;
   }
 
@@ -43,31 +55,22 @@ class Outlet extends _$Outlet {
     required UserModel user,
     String note = '',
   }) async {
-    var outlet = state.requireValue;
-    if (!outlet.isOpen) throw Exception('Outlet session is not open');
+    if (!state.isOpen || state.session == null) throw Exception('Outlet session is not open');
 
-    final session = outlet.session.copyWith(
+    final session = state.session!.copyWith(
       close: OutletSessionInfo(
         at: DateTime.now().toIso8601String(),
         by: user.id,
-        balance: cash,
+        cashBalance: cash,
         note: note,
       ),
     );
 
+    talker.info('[Outlet] close $session');
     await ref.read(outletSessionRepoProvider).saveLocal(session);
 
-    outlet = outlet.copyWith(session: const OutletSessionModel());
-    state = AsyncValue.data(outlet);
-    return ref.read(outletRepoProvider).saveLocal(outlet);
-  }
-}
-
-extension OutletX on OutletModel {
-  bool get isOpen => session.id.isNotEmpty;
-
-  OutletModel get requireOpen {
-    if (!isOpen) throw Exception('Outlet session is not open');
-    return this;
+    state = state.copyWith(session: null);
+    await ref.read(outletRepoProvider).saveState(state);
+    return true;
   }
 }

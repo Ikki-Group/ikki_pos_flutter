@@ -17,9 +17,15 @@ enum CartLogAction {
 
   String toLog(Cart state, UserModel user, String message) {
     final date = DateTime.now().toIso8601String();
-    final stateStr = jsonEncode(state.toString());
-    final msg = '[$date]-[$this]-[${user.id}-${user.name}]-[$stateStr] $message';
-    talker.debug(msg);
+    const encoder = JsonEncoder.withIndent('  ');
+    final stateStr = encoder.convert(state);
+    final msg =
+        '''
+[$date][$this][${user.id}-${user.name}][$message]
+$stateStr
+''';
+
+    talker.info(msg);
     return msg;
   }
 }

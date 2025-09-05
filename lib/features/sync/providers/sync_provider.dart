@@ -11,7 +11,7 @@ FutureOr<bool> syncGlobal(Ref ref) async {
   await ref.watch(authTokenProvider.future);
   // ignore: inference_failure_on_instance_creation
   await Future.delayed(const Duration(seconds: 5));
-  await ref.watch(outletProvider.future);
+  await ref.watch(outletProvider.notifier).load();
   await ref.watch(userRepoProvider).getLocal();
   return true;
 }
