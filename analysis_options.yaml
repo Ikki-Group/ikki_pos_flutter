@@ -21,6 +21,7 @@ analyzer:
     missing_required_param: error
     missing_return: error
     null_check_always_fails: ignore
+    use_setters_to_change_properties: ignore
 
 formatter:
   trailing_commas: preserve

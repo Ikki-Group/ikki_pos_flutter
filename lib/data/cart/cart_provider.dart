@@ -8,10 +8,7 @@ part 'cart_provider.g.dart';
 @Riverpod(keepAlive: true)
 class CartData extends _$CartData {
   @override
-  List<Cart> build() {
-    load();
-    return [];
-  }
+  List<Cart> build() => [];
 
   Future<void> load() async {
     state = await ref.read(cartRepoProvider).list();

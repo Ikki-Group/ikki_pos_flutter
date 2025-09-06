@@ -9,7 +9,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../shared/utils/talker.dart';
 import 'printer_enum.dart';
 import 'printer_model.dart';
+import 'printer_queue.dart';
 import 'printer_repo.dart';
+import 'printer_utils.dart';
 import 'templates/template_print_info.dart';
 
 part 'printer_provider.g.dart';
@@ -22,11 +24,13 @@ abstract class PrinterContract {
   Future<bool> requestBluetoothPermissions();
   Future<PrinterModel> bluetoothConnectAndSave(Printer printer);
   Future<PrinterModel> lanConnectAndSave(String name, String host, int port);
+  Future<bool> printTemplate(PrinterModel printer, PrinterTemplate template);
 }
 
 @Riverpod(keepAlive: true)
 class PrinterState extends _$PrinterState implements PrinterContract {
   final FlutterThermalPrinter instance = FlutterThermalPrinter.instance;
+  final PrinterQueue queue = PrinterQueue();
 
   @override
   List<PrinterModel> build() => [];
@@ -44,6 +48,9 @@ class PrinterState extends _$PrinterState implements PrinterContract {
       Permission.bluetoothConnect,
       Permission.location,
     ].request();
+
+    final isOn = await instance.isBleTurnedOn();
+    talker.debug('isOn: $isOn');
 
     return statuses.values.every((status) => status.isGranted);
   }
@@ -86,9 +93,6 @@ class PrinterState extends _$PrinterState implements PrinterContract {
     await instance.connect(printer);
     talker.debug('connected to ${printer.name}');
 
-    // Send template print info to ensure printer is ready
-    await templatePrintInfo(instance, printer);
-
     final printerModel = PrinterModel(
       id: ObjectId().hexString,
       name: printer.name!,
@@ -98,6 +102,8 @@ class PrinterState extends _$PrinterState implements PrinterContract {
 
     final printers = state.toList();
     final isExists = state.any((element) => element.address == printer.address);
+
+    await printTemplate(printerModel, PrinterTempInfo(printer));
 
     if (isExists) {
       talker.debug('printer already exists');
@@ -135,5 +141,23 @@ class PrinterState extends _$PrinterState implements PrinterContract {
 
     state = printers;
     return printerModel;
+  }
+
+  @override
+  Future<bool> printTemplate(PrinterModel printerModel, PrinterTemplate template) async {
+    final printer = printerModel.printer;
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm58, profile);
+    await instance.connect(printer);
+    final bytes = await template.build(generator);
+
+    await queue.queue.add(() async {
+      final chunk = bytes.splitByLength(182);
+      for (final chunk in chunk) {
+        await instance.printData(printer, chunk, longData: true);
+      }
+    });
+
+    return true;
   }
 }

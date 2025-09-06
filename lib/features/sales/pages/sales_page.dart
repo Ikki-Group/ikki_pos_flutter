@@ -78,7 +78,7 @@ class _TableTransactions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
 
     return Expanded(
       child: Padding(

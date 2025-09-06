@@ -22,3 +22,7 @@ Future<Database> initSembastDb() async {
 
   return db;
 }
+
+enum SembastKeys {
+  carts,
+}

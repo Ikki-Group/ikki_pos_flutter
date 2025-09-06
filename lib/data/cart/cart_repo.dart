@@ -67,7 +67,6 @@ class CartRepo {
     }
   }
 
-  // ignore: unused_element
   Future<void> unsafeClear() async {
     try {
       await store.delete(ss.db);

@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sembast/sembast_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/db/sembast.dart';
 import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
 import '../../utils/result.dart';
@@ -10,11 +12,16 @@ import 'auth_util.dart';
 
 part 'auth_repo.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 AuthRepo authRepo(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   final sp = ref.watch(sharedPrefsProvider);
-  return AuthRepoImpl(dio: dio, sp: sp);
+  final sembastService = ref.watch(sembastServiceProvider);
+  return AuthRepoImpl(
+    dio: dio,
+    sp: sp,
+    sembastService: sembastService,
+  );
 }
 
 abstract class AuthRepo {
@@ -25,9 +32,11 @@ abstract class AuthRepo {
 }
 
 class AuthRepoImpl implements AuthRepo {
-  AuthRepoImpl({required this.dio, required this.sp});
+  AuthRepoImpl({required this.dio, required this.sp, required this.sembastService});
+
   final Dio dio;
   final SharedPreferences sp;
+  final SembastService sembastService;
 
   @override
   Future<Result<String>> authenticate(String code) async {
@@ -46,8 +55,9 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<void> logout() {
-    throw UnimplementedError();
+  Future<void> logout() async {
+    await sp.clear();
+    await sembastService.db.dropAll();
   }
 
   @override

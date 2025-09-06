@@ -1,18 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/cart/cart_model.dart';
-import '../../../data/cart/cart_repo.dart';
 
 part 'pos_provider.freezed.dart';
 part 'pos_provider.g.dart';
-
-@riverpod
-FutureOr<List<Cart>> posCartList(Ref ref) async {
-  final cartList = await ref.watch(cartRepoProvider).list();
-  return cartList.sortedBy((c) => c.createdAt).toList();
-}
 
 @freezed
 abstract class PosFilterState with _$PosFilterState {

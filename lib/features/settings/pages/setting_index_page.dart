@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../utils/setting_tab.dart';
 import '../widgets/setting_sidebar.dart';
 import 'setting_dev_page.dart';
+import 'settings_devices_page.dart';
 import 'settings_printer_page.dart';
 
 class SettingIndexPage extends ConsumerStatefulWidget {
@@ -46,7 +47,7 @@ class _SettingIndexPageState extends ConsumerState<SettingIndexPage> {
                   child: switch (selectedTab) {
                     SettingTab.printer => const SettingsPrinterPage(),
                     SettingTab.logs => const SettingDevPage(),
-                    SettingTab.dev => const SettingDevPage(),
+                    SettingTab.devices => const SettingsDevicesPage(),
                   },
                 ),
               ),

@@ -61,7 +61,10 @@ class PosCartListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('-', style: textTheme.labelMedium),
-                      Text('Belum Lunas', style: textTheme.labelMedium?.copyWith(color: POSTheme.accentRed)),
+                      Text(
+                        'Belum Lunas',
+                        style: textTheme.labelMedium?.copyWith(color: POSTheme.accentRed),
+                      ),
                     ],
                   ),
                 ],

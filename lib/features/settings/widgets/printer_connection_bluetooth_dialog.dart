@@ -58,19 +58,14 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
     isLoading = true;
     setState(() => {});
 
-    await ref
-        .read(printerStateProvider.notifier)
-        .bluetoothConnectAndSave(
-          selectedPrinter!,
-        )
-        .catchError(() {
-          if (mounted) {
-            context.showTextSnackBar(
-              'Gagal menghubungkan printer ${selectedPrinter?.name}',
-              severity: SnackBarSeverity.error,
-            );
-          }
-        });
+    await ref.read(printerStateProvider.notifier).bluetoothConnectAndSave(selectedPrinter!).catchError(() {
+      if (mounted) {
+        context.showTextSnackBar(
+          'Gagal menghubungkan printer ${selectedPrinter?.name}',
+          severity: SnackBarSeverity.error,
+        );
+      }
+    });
 
     isLoading = false;
     setState(() {});
