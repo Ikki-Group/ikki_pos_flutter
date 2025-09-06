@@ -36,17 +36,28 @@ class _SettingsPrinterPageState extends ConsumerState<SettingsPrinterPage> {
             ),
           ],
         ),
+        // Expanded(
+        //   child: SingleChildScrollView(
+        //     padding: EdgeInsets.zero,
+        //     child: Column(
+        //       children: <Widget>[
+        //         for (final printer in printers)
+        //           _PrinterItem(
+        //             printer: printer,
+        //           ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         Expanded(
-          child: SingleChildScrollView(
+          child: ListView(
             padding: EdgeInsets.zero,
-            child: Column(
-              children: <Widget>[
-                for (final printer in printers)
-                  _PrinterItem(
-                    printer: printer,
-                  ),
-              ],
-            ),
+            children: <Widget>[
+              for (final printer in printers)
+                _PrinterItem(
+                  printer: printer,
+                ),
+            ],
           ),
         ),
       ],
@@ -71,9 +82,15 @@ class _PrinterItem extends StatelessWidget {
     }
 
     return ListTile(
+      style: ListTileStyle.list,
+      minLeadingWidth: 0,
+      onTap: () {},
+      enableFeedback: true,
       contentPadding: EdgeInsets.zero,
       title: Text(printer.name),
       subtitle: Text(subtitle),
+      leading: const Icon(Icons.print),
+      trailing: const Icon(Icons.chevron_right),
     );
   }
 }

@@ -15,6 +15,7 @@ sealed class PrinterModel with _$PrinterModel {
     String? host,
     int? port,
     String? address,
+    @Default(false) bool isConnected,
   }) = _PrinterModel;
 
   factory PrinterModel.fromJson(Json json) => _$PrinterModelFromJson(json);

@@ -25,6 +25,10 @@ abstract class PrinterContract {
   Future<PrinterModel> bluetoothConnectAndSave(Printer printer);
   Future<PrinterModel> lanConnectAndSave(String name, String host, int port);
   Future<bool> printTemplate(PrinterModel printer, PrinterTemplate template);
+  Future<bool> print(
+    PrinterTemplate template, {
+    PrinterModel? printer,
+  });
 }
 
 @Riverpod(keepAlive: true)
@@ -38,6 +42,7 @@ class PrinterState extends _$PrinterState implements PrinterContract {
   @override
   Future<void> load() async {
     state = await ref.read(printerRepoProvider).getLocal();
+    talker.info('[PrinterState] load, $state');
   }
 
   @override
@@ -80,7 +85,9 @@ class PrinterState extends _$PrinterState implements PrinterContract {
     });
 
     await Future.delayed(_defaultTimeout, () {
-      print('[PrinterState] stopScan');
+      talker
+        ..info('[PrinterState] stopScan')
+        ..info(scannedPrinters.toString());
       printerStream?.cancel();
       instance.stopScan();
     });
@@ -158,6 +165,14 @@ class PrinterState extends _$PrinterState implements PrinterContract {
       }
     });
 
+    return true;
+  }
+
+  @override
+  Future<bool> print(PrinterTemplate template, {PrinterModel? printer}) async {
+    talker.info('[PrinterState] print, $state');
+    final selectedPrinter = printer ?? state.first;
+    await printTemplate(selectedPrinter, template);
     return true;
   }
 }

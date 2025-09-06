@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/outlet/outlet_provider.dart';
-import '../../../shared/utils/formatter.dart';
 import '../provider/shift_page_provider.dart';
+import '../widgets/shift_outlet_info.dart';
+import '../widgets/shift_summary.dart';
 
 class ShiftPage extends ConsumerStatefulWidget {
   const ShiftPage({super.key});
@@ -43,9 +44,9 @@ class _ShiftPageState extends ConsumerState<ShiftPage> {
               child: const SingleChildScrollView(
                 child: Column(
                   children: [
-                    _SummarySection(),
+                    ShiftSummary(),
                     SizedBox(height: 16),
-                    _OutletInfo(),
+                    ShiftOutletInfo(),
                   ],
                 ),
               ),
@@ -100,122 +101,4 @@ class _ActionsSection extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _SummarySection extends ConsumerWidget {
-  const _SummarySection();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return const Column(
-      children: [
-        Row(
-          children: [
-            _SummaryItem(
-              'Total Transaksi',
-              '10',
-            ),
-            SizedBox(width: 8),
-            _SummaryItem(
-              'Uang Tunai',
-              'Rp. 100.000',
-            ),
-          ],
-        ),
-        SizedBox(height: 8),
-        Row(
-          children: [
-            _SummaryItem(
-              'Produk Terjual',
-              '10',
-            ),
-            SizedBox(width: 8),
-            _SummaryItem(
-              'Transaksi Void',
-              '10',
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _SummaryItem extends StatelessWidget {
-  const _SummaryItem(this.title, this.value);
-
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Expanded(
-      child: Container(
-        height: 80,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: Colors.black.withAlpha(120),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(title, style: textTheme.labelMedium),
-            const SizedBox(height: 4),
-            Text(value, style: textTheme.labelLarge),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _OutletInfo extends StatelessWidget {
-  const _OutletInfo();
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    final outletInfo = <KeyValue>[
-      const KeyValue('Nama Toko', 'Ikki Coffee'),
-      const KeyValue('Kas Awal', 'Rp. 100.000'),
-      const KeyValue('Kasir', 'Rizqy Nugroho'),
-      KeyValue('Waktu', Formatter.dateTime.format(DateTime.now())),
-      const KeyValue('Alamat', 'Jl. Kebon Jeruk'),
-      const KeyValue('No. Telepon', '08123456789'),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Text('Informasi Buka Toko', style: textTheme.labelLarge),
-        ),
-        const Divider(),
-        const SizedBox(height: 8),
-        ...outletInfo.map(
-          (e) => ListTile(
-            minTileHeight: 0,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            title: Text(e.key),
-            subtitle: Text(e.value),
-            dense: true,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class KeyValue {
-  const KeyValue(this.key, this.value);
-
-  final String key;
-  final String value;
 }

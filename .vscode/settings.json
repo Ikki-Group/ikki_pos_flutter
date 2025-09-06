@@ -27,7 +27,7 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
-    "editor.suggest.insertMode": "replace",
+    "editor.suggest.insertMode": "insert",
     "editor.defaultFormatter": "Dart-Code.dart-code",
     "editor.inlayHints.enabled": "offUnlessPressed",
     "editor.formatOnSave": true,
@@ -38,10 +38,10 @@
       "source.organizeImports": "explicit"
     }
   },
-  "workbench.colorCustomizations": {
-    "debugConsole.errorForeground": "#0000ff",
-    "debugConsole.infoForeground": "#00ff00",
-    "debugConsole.sourceForeground": "#ffdd00",
-    "debugConsole.warningForeground": "#ffdd00",
-  }
+  // "workbench.colorCustomizations": {
+  //   "debugConsole.errorForeground": "#0000ff",
+  //   "debugConsole.infoForeground": "#00ff00",
+  //   "debugConsole.sourceForeground": "#ffdd00",
+  //   "debugConsole.warningForeground": "#ffdd00",
+  // }
 }

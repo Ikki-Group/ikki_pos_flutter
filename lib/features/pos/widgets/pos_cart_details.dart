@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_model.dart';
+import '../../../data/outlet/outlet_provider.dart';
+import '../../../data/printer/printer_provider.dart';
+import '../../../data/printer/templates/template_receipt.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../provider/pos_provider.dart';
@@ -189,11 +192,7 @@ class _CartDetails extends StatelessWidget {
                 variant: ButtonVariant.destructiveOutlined,
               ),
               const Spacer(),
-              OutlinedButton.icon(
-                onPressed: () {},
-                label: const Text('Cetak'),
-                icon: const Icon(Icons.print),
-              ),
+              _PrintButton(cart),
               const SizedBox(width: 8),
               ElevatedButton.icon(
                 onPressed: () {},
@@ -204,6 +203,24 @@ class _CartDetails extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PrintButton extends ConsumerWidget {
+  const _PrintButton(this.cart);
+
+  final Cart cart;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final outlet = ref.watch(outletProvider);
+    return PosButton(
+      text: 'Cetak',
+      icon: const Icon(Icons.print),
+      onPressed: () {
+        ref.read(printerStateProvider.notifier).print(TemplateReceipt(cart, outlet));
+      },
     );
   }
 }

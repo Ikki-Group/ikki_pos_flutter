@@ -10,11 +10,21 @@ import 'outlet_util.dart';
 
 part 'outlet_provider.g.dart';
 
-@Riverpod(keepAlive: true)
-class Outlet extends _$Outlet {
-  @override
-  OutletStateModel build() => null!;
+abstract class OutletProviderContract {
+  Future<bool> load();
+  Future<bool> open({required int cash, required UserModel user, String note = ''});
+  Future<bool> close({required int cash, required UserModel user, String note = ''});
+}
 
+@Riverpod(keepAlive: true, name: 'outletProvider')
+class OutletNotifier extends _$OutletNotifier implements OutletProviderContract {
+  @override
+  OutletStateModel build() {
+    load();
+    return null!;
+  }
+
+  @override
   Future<bool> load() async {
     try {
       final outlet = await ref.read(outletRepoProvider).getState();
@@ -25,6 +35,7 @@ class Outlet extends _$Outlet {
     }
   }
 
+  @override
   Future<bool> open({
     required int cash,
     required UserModel user,
@@ -50,6 +61,7 @@ class Outlet extends _$Outlet {
     return true;
   }
 
+  @override
   Future<bool> close({
     required int cash,
     required UserModel user,

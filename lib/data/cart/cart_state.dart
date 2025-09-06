@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../outlet/outlet_model.dart';
+import '../outlet/outlet_provider.dart';
 import '../outlet/outlet_util.dart';
+import '../printer/printer_provider.dart';
+import '../printer/templates/template_receipt.dart';
 import '../product/product.model.dart';
 import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
@@ -145,6 +150,9 @@ class CartState extends _$CartState {
 
     await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(receiptCodeRepoProvider).commit(state.rc);
+
+    final outlet = ref.read(outletProvider);
+    unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceipt(state, outlet)));
 
     // Reset after screen success
     // reset();
