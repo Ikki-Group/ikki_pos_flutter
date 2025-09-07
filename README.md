@@ -30,3 +30,4 @@ Weekly Report
 - Rilis backoffice v2 (support aplikasi mobile) tanggal 8 Agustus 2025
 - Manajemen promo
 - CRM
+

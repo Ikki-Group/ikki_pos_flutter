@@ -17,8 +17,10 @@ enum CartLogAction {
 
   String toLog(Cart state, UserModel user, String message) {
     final date = DateTime.now().toIso8601String();
-    const encoder = JsonEncoder.withIndent('  ');
-    final stateStr = encoder.convert(state);
+    // const encoder = JsonEncoder.withIndent('  ');
+    // final stateStr = encoder.convert(state);
+    final stateStr = jsonEncode(state);
+
     final msg =
         '''
 [$date][$this][${user.id}-${user.name}][$message]

@@ -77,7 +77,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
     Navigator.of(context).pop();
   }
 
-  Future<void> onProcessPressed() async {
+  void onProcessPressed() {
     final routeName = GoRouter.of(context).state.name;
     if (routeName == IkkiRouter.cart.name) {
       ref
@@ -90,7 +90,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
     } else {
       final outletState = ref.read(outletProvider);
       final user = ref.read(currentUserProvider).requireValue;
-      await ref
+      ref
           .read(cartStateProvider.notifier)
           .newCart(
             pax: pax,
@@ -98,7 +98,6 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
             outletState: outletState,
             user: user,
           );
-      if (!mounted) return;
       context.goNamed(IkkiRouter.cart.name);
     }
   }

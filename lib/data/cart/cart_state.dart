@@ -21,21 +21,43 @@ import 'cart_util.dart';
 
 part 'cart_state.g.dart';
 
-@Riverpod(keepAlive: true, name: 'cartStateProvider')
-class CartState extends _$CartState {
-  @override
-  Cart build() => const Cart();
-
-  void setCart(Cart cart) => state = cart.copyWith();
-
-  void setState(Cart Function(Cart) fn) => state = fn(state);
-
-  Future<void> newCart({
+abstract class CartAbstract {
+  void setCart(Cart cart);
+  void setState(Cart Function(Cart) fn);
+  void newCart({
     required int pax,
     required SaleMode saleMode,
     required OutletStateModel outletState,
     required UserModel user,
-  }) async {
+  });
+  void newBatch(Cart cart, UserModel user);
+  void addProductDirectly(ProductModel product);
+  void addCartItem(CartItem item);
+  void removeItem(CartItem item);
+  void clearAllItems();
+  void reset();
+  void save(String? name);
+  void pay(List<CartPayment> payments);
+}
+
+@Riverpod(keepAlive: true, name: 'cartStateProvider')
+class CartState extends _$CartState implements CartAbstract {
+  @override
+  Cart build() => const Cart();
+
+  @override
+  void setCart(Cart cart) => state = cart.copyWith();
+
+  @override
+  void setState(Cart Function(Cart) fn) => state = fn(state);
+
+  @override
+  void newCart({
+    required int pax,
+    required SaleMode saleMode,
+    required OutletStateModel outletState,
+    required UserModel user,
+  }) {
     final outlet = outletState.outlet;
     final session = outletState.requireOpen;
 
@@ -64,6 +86,7 @@ class CartState extends _$CartState {
     state = state.copyWith(saleMode: saleMode, pax: pax);
   }
 
+  @override
   void addProductDirectly(ProductModel product) {
     final items = state.items.toList();
     final targetIdx = items.indexWhere((i) => i.product.id == product.id && i.note.isEmpty);
@@ -86,6 +109,7 @@ class CartState extends _$CartState {
     }
   }
 
+  @override
   void addCartItem(CartItem item) {
     final items = state.items.toList();
     final index = items.indexWhere((i) => i.id == item.id);
@@ -99,6 +123,7 @@ class CartState extends _$CartState {
     _recalculateCart();
   }
 
+  @override
   void removeItem(CartItem item) {
     final items = state.items.toList();
     final index = items.indexWhere((i) => i.id == item.id);
@@ -109,6 +134,7 @@ class CartState extends _$CartState {
     _recalculateCart();
   }
 
+  @override
   void clearAllItems() {
     state = state.copyWith(
       items: [],
@@ -117,10 +143,12 @@ class CartState extends _$CartState {
     );
   }
 
+  @override
   void reset() {
     state = const Cart();
   }
 
+  @override
   Future<void> save(String? name) async {
     state = state.copyWith(
       status: CartStatus.process,
@@ -135,6 +163,7 @@ class CartState extends _$CartState {
     reset();
   }
 
+  @override
   Future<void> pay(List<CartPayment> payments) async {
     final user = _getUser();
     final now = DateTime.now().toIso8601String();
@@ -175,6 +204,21 @@ class CartState extends _$CartState {
       discount: cartDiscountAmount,
       gross: itemsGross,
       net: finalNet,
+    );
+  }
+
+  @override
+  void newBatch(Cart cart, UserModel user) {
+    state = cart.copyWith(
+      batches: [
+        ...state.batches,
+        CartBatch(
+          id: state.batches.length + 1,
+          at: DateTime.now().toIso8601String(),
+          by: user.id,
+        ),
+      ],
+      batchId: state.batches.length + 1,
     );
   }
 }

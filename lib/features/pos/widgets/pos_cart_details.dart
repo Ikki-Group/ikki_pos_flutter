@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/config/pos_theme.dart';
 import '../../../data/cart/cart_extension.dart';
 import '../../../data/cart/cart_model.dart';
+import '../../../data/cart/cart_state.dart';
 import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/printer/printer_provider.dart';
 import '../../../data/printer/templates/template_receipt.dart';
+import '../../../data/user/user_provider.dart';
+import '../../../data/user/user_util.dart';
+import '../../../router/ikki_router.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../provider/pos_provider.dart';
@@ -58,12 +63,12 @@ class _EmptyState extends ConsumerWidget {
   }
 }
 
-class _CartDetails extends StatelessWidget {
+class _CartDetails extends ConsumerWidget {
   const _CartDetails(this.cart);
   final Cart cart;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -94,10 +99,10 @@ class _CartDetails extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.only(right: 8),
                 child: Text(
-                  'LUNAS',
-                  style: textTheme.titleMedium?.copyWith(color: POSTheme.statusSuccess),
+                  'BELUM LUNAS',
+                  style: textTheme.titleMedium?.copyWith(color: POSTheme.accentRed),
                 ),
               ),
             ],
@@ -110,23 +115,28 @@ class _CartDetails extends StatelessWidget {
             children: [
               Text(
                 'Rincian Pesanan',
-                style: textTheme.labelMedium,
+                style: textTheme.labelLarge,
                 textAlign: TextAlign.left,
               ),
               OutlinedButton.icon(
                 style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   minimumSize: Size.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   backgroundColor: Colors.transparent,
                   side: const BorderSide(color: POSTheme.borderLight),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final user = ref.read(currentUserProvider).requireValue;
+                  ref.read(cartStateProvider.notifier).newBatch(cart, user);
+                  context.goNamed(IkkiRouter.cart.name);
+                },
                 icon: const Icon(Icons.add),
                 label: const Text('Tambah Pesanan'),
               ),
             ],
           ),
+          const SizedBox(height: 8),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),

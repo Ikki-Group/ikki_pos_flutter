@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config/pos_theme.dart';
+import '../../../data/cart/cart_state.dart';
 import '../../../data/outlet/outlet_provider.dart';
 import '../../../data/outlet/outlet_util.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
@@ -21,6 +22,7 @@ class _HomeCreateOrderButtonState extends ConsumerState<HomeCreateOrderButton> {
     if (!outlet.isOpen) {
       await SessionOutletOpenDialog.show(context);
     } else {
+      ref.read(cartStateProvider.notifier).reset();
       SalesModeDialog.show(context);
     }
   }
