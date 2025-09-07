@@ -21,7 +21,7 @@ import 'cart_util.dart';
 
 part 'cart_state.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: true, name: 'cartStateProvider')
 class CartState extends _$CartState {
   @override
   Cart build() => const Cart();

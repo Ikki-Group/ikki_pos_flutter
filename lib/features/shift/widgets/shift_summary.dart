@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/utils/formatter.dart';
+import '../provider/shift_page_provider.dart';
+
 class ShiftSummary extends ConsumerWidget {
   const ShiftSummary({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Column(
+    final data = ref.watch(shiftSummaryDataProvider);
+
+    return Column(
       children: [
         Row(
           children: [
             _Item(
               'Total Transaksi',
-              '10',
+              data.transactionCount.toString(),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             _Item(
               'Uang Tunai',
-              'Rp. 100.000',
+              data.cashBalance.toIdr,
             ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           children: [
             _Item(
               'Produk Terjual',
-              '10',
+              data.productSales.toString(),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             _Item(
               'Transaksi Void',
-              '10',
+              data.transacionVoid.toString(),
             ),
           ],
         ),

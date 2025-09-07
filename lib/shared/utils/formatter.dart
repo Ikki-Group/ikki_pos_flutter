@@ -33,3 +33,8 @@ extension IntX on int {
   String get toIdr => Formatter.toIdr.format(this);
   String get toIdrNoSymbol => Formatter.toIdrNoSymbol.format(this);
 }
+
+extension NumX on num {
+  String get toIdr => Formatter.toIdr.format(this);
+  String get toIdrNoSymbol => Formatter.toIdrNoSymbol.format(this);
+}
