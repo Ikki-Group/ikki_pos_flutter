@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/utils/formatter.dart';
+import '../widgets/sales_data_table.dart';
 
 class SalesPage extends ConsumerStatefulWidget {
   const SalesPage({super.key});
@@ -14,12 +15,29 @@ class SalesPage extends ConsumerStatefulWidget {
 class _SalesPageState extends ConsumerState<SalesPage> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        _Summary(),
-        _TableTransactions(),
-      ],
+    return const Padding(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        children: [
+          _Summary(),
+          SizedBox(height: 8),
+          SalesDataTable(),
+        ],
+      ),
     );
+    // return const SalesDataTable();
+    // return const Column(
+    //   children: [
+    //     _Summary(),
+    //     // SalesDataTable(),
+    //     Stack(
+    //       alignment: Alignment.bottomCenter,
+    //       children: [
+    //         SalesDataTable(),
+    //       ],
+    //     ),
+    //   ],
+    // );
   }
 }
 
@@ -30,45 +48,42 @@ class _Summary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Card(
-              elevation: 1,
-              shadowColor: Colors.green,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text('Total Transaksi', style: textTheme.labelLarge),
-                    const SizedBox(height: 8),
-                    Text('1 Transaksi', style: textTheme.titleMedium),
-                  ],
-                ),
+    return Row(
+      children: [
+        Expanded(
+          child: Card(
+            elevation: 1,
+            shadowColor: Colors.green,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text('Total Transaksi', style: textTheme.labelLarge),
+                  const SizedBox(height: 8),
+                  Text('1 Transaksi', style: textTheme.titleMedium),
+                ],
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Card(
-              elevation: 1,
-              shadowColor: Colors.green,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text('Total Pembelian', style: textTheme.labelLarge),
-                    const SizedBox(height: 8),
-                    Text(10000.0.toIdr, style: textTheme.titleMedium),
-                  ],
-                ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Card(
+            elevation: 1,
+            shadowColor: Colors.green,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text('Total Pembelian', style: textTheme.labelLarge),
+                  const SizedBox(height: 8),
+                  Text(10000.0.toIdr, style: textTheme.titleMedium),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -107,7 +122,7 @@ class _TableTransactions extends ConsumerWidget {
             ),
           ],
           rows: List<DataRow>.generate(
-            100,
+            10,
             (index) => DataRow(
               cells: [
                 DataCell(Text('A' * (10 - index % 10))),
@@ -118,6 +133,20 @@ class _TableTransactions extends ConsumerWidget {
               ],
             ),
           ),
+          // source: DataTableSource(
+          //   data: List.generate(
+          //     100,
+          //     (index) => DataRow(
+          //       cells: [
+          //         DataCell(Text('A' * (10 - index % 10))),
+          //         DataCell(Text('B' * (10 - (index + 5) % 10))),
+          //         DataCell(Text('C' * (15 - (index + 5) % 10))),
+          //         DataCell(Text('D' * (15 - (index + 10) % 10))),
+          //         DataCell(Text(((index + 0.1) * 25.4).toString())),
+          //       ],
+          //     ),
+          //   ),
+          // )
         ),
       ),
     );

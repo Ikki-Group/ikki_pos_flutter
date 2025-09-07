@@ -36,19 +36,6 @@ class _SettingsPrinterPageState extends ConsumerState<SettingsPrinterPage> {
             ),
           ],
         ),
-        // Expanded(
-        //   child: SingleChildScrollView(
-        //     padding: EdgeInsets.zero,
-        //     child: Column(
-        //       children: <Widget>[
-        //         for (final printer in printers)
-        //           _PrinterItem(
-        //             printer: printer,
-        //           ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         Expanded(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -76,9 +63,9 @@ class _PrinterItem extends StatelessWidget {
 
     switch (printer.connectionType) {
       case PrinterConnectionType.bluetooth:
-        subtitle = 'Bluetooth ${printer.address}';
+        subtitle = 'Bluetooth - ${printer.address}';
       case PrinterConnectionType.lan:
-        subtitle = 'LAN/WIFI ${printer.host}:${printer.port}';
+        subtitle = 'LAN/WIFI - ${printer.host}:${printer.port}';
     }
 
     return ListTile(

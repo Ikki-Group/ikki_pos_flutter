@@ -8,6 +8,7 @@ import '../../core/db/shared_prefs.dart';
 import '../../core/network/dio_client.dart';
 import '../../shared/utils/talker.dart';
 import '../json.dart';
+import 'outlet_constant.dart';
 import 'outlet_model.dart';
 
 part 'outlet_repo.g.dart';
@@ -44,7 +45,10 @@ class OutletRepoImpl implements OutletRepo {
       state = OutletStateModel.fromJson(json);
     } else {
       final outlet = await fetchOutlet();
-      state = OutletStateModel(outlet: outlet);
+      state = OutletStateModel(
+        outlet: outlet,
+        device: _mockDevice,
+      );
     }
 
     return state;
@@ -66,6 +70,18 @@ const _kMock = OutletModel(
   id: 'id',
   name: 'Ikki Coffee',
   type: 'type',
+  createdAt: '2023-07-01T00:00:00.000Z',
+  updatedAt: '2023-07-01T00:00:00.000Z',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
+  code: 'ICO',
+);
+
+const _mockDevice = OutletDeviceModel(
+  id: 'id',
+  name: 'Ikki Coffee',
+  type: OutletDeviceType.cashier,
+  code: '1',
   createdAt: '2023-07-01T00:00:00.000Z',
   updatedAt: '2023-07-01T00:00:00.000Z',
   createdBy: 'createdBy',

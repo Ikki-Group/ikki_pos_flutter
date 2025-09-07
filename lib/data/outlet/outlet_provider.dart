@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,8 +13,14 @@ part 'outlet_provider.g.dart';
 
 abstract class OutletProviderContract {
   Future<bool> load();
+
+  // Shift management
   Future<bool> open({required int cash, required UserModel user, String note = ''});
   Future<bool> close({required int cash, required UserModel user, String note = ''});
+
+  // Receipt code
+  String getReceiptCode();
+  Future<bool> incrementReceiptCode();
 }
 
 @Riverpod(keepAlive: true, name: 'outletProvider')
@@ -83,6 +90,36 @@ class OutletNotifier extends _$OutletNotifier implements OutletProviderContract 
 
     state = state.copyWith(session: null);
     await ref.read(outletRepoProvider).saveState(state);
+    return true;
+  }
+
+  @override
+  String getReceiptCode() {
+    final session = state.session;
+    if (session == null) throw Exception('Outlet session is not open');
+
+    final outletCode = state.outlet.code;
+    final deviceCode = state.device.code;
+    final date = DateFormat('yyyyMMdd').format(DateTime.now());
+    final queue = session.queue;
+
+    // Example
+    // ICO/1/20230101/1
+
+    return '$outletCode/$deviceCode/$date/$queue';
+  }
+
+  @override
+  Future<bool> incrementReceiptCode() async {
+    final session = state.session;
+    if (session == null) throw Exception('Outlet session is not open');
+
+    final queue = session.queue + 1;
+    final newState = state.copyWith.session!(queue: queue);
+
+    await ref.read(outletRepoProvider).saveState(newState);
+    state = newState;
+
     return true;
   }
 }

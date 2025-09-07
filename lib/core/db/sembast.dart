@@ -13,7 +13,12 @@ SembastService sembastService(Ref ref) {
 class SembastService {
   SembastService({required this.db});
 
-  final Database db;
+  Database db;
+
+  Future<void> reinit() async {
+    final f = getDatabaseFactorySqflite(sqflite.databaseFactory);
+    db = await f.openDatabase('test.db');
+  }
 }
 
 Future<Database> initSembastDb() async {

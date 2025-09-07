@@ -9,7 +9,6 @@ import '../outlet/outlet_util.dart';
 import '../printer/printer_provider.dart';
 import '../printer/templates/template_receipt.dart';
 import '../product/product.model.dart';
-import '../receipt_code/receipt_code_repo.dart';
 import '../sale/sale_enum.dart';
 import '../user/user_model.dart';
 import '../user/user_provider.dart';
@@ -40,7 +39,7 @@ class CartState extends _$CartState {
     final outlet = outletState.outlet;
     final session = outletState.requireOpen;
 
-    final rc = await ref.read(receiptCodeRepoProvider).getCode(session.id);
+    final rc = ref.read(outletProvider.notifier).getReceiptCode();
     final now = DateTime.now().toIso8601String();
     final initialLog = CartLogAction.create.toLog(state, user, 'Cart created');
     final initialBatch = CartBatch(id: 1, at: now, by: user.id);
@@ -132,7 +131,7 @@ class CartState extends _$CartState {
     );
 
     await ref.read(cartDataProvider.notifier).save(state);
-    await ref.read(receiptCodeRepoProvider).commit(state.rc);
+    await ref.read(outletProvider.notifier).incrementReceiptCode();
     reset();
   }
 
@@ -149,7 +148,7 @@ class CartState extends _$CartState {
     );
 
     await ref.read(cartDataProvider.notifier).save(state);
-    await ref.read(receiptCodeRepoProvider).commit(state.rc);
+    await ref.read(outletProvider.notifier).incrementReceiptCode();
 
     final outlet = ref.read(outletProvider);
     unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceipt(state, outlet)));

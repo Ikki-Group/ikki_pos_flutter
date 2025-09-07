@@ -1,0 +1,4 @@
+enum OutletDeviceType {
+  cashier,
+  worker,
+}

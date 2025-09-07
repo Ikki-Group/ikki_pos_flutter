@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../json.dart';
+import 'outlet_constant.dart';
 
 part 'outlet_model.freezed.dart';
 part 'outlet_model.g.dart';
@@ -9,6 +10,7 @@ part 'outlet_model.g.dart';
 abstract class OutletStateModel with _$OutletStateModel {
   const factory OutletStateModel({
     required OutletModel outlet,
+    required OutletDeviceModel device,
     OutletSessionModel? session,
   }) = _OutletStateModel;
 
@@ -20,6 +22,7 @@ abstract class OutletModel with _$OutletModel {
   const factory OutletModel({
     required String id,
     required String name,
+    required String code,
     required String type,
     required String createdAt,
     required String updatedAt,
@@ -31,6 +34,22 @@ abstract class OutletModel with _$OutletModel {
 }
 
 @freezed
+abstract class OutletDeviceModel with _$OutletDeviceModel {
+  const factory OutletDeviceModel({
+    required String id,
+    required String name,
+    required OutletDeviceType type,
+    required String code,
+    required String createdAt,
+    required String updatedAt,
+    required String createdBy,
+    required String updatedBy,
+  }) = _OutletDeviceModel;
+
+  factory OutletDeviceModel.fromJson(Json json) => _$OutletDeviceModelFromJson(json);
+}
+
+@freezed
 abstract class OutletSessionModel with _$OutletSessionModel {
   const factory OutletSessionModel({
     required String id,
@@ -39,6 +58,7 @@ abstract class OutletSessionModel with _$OutletSessionModel {
     @Default(0) int trxFail,
     @Default(0) int netSales,
     @Default(0) int cash,
+    @Default(1) int queue,
     @Default(OutletSessionInfo()) OutletSessionInfo open,
     @Default(OutletSessionInfo()) OutletSessionInfo close,
   }) = _OutletSessionModel;
