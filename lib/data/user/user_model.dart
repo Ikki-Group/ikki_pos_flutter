@@ -12,6 +12,12 @@ abstract class UserModel with _$UserModel {
     required String name,
     required String email,
     required String pin,
+    required String status,
+    required bool isRoot,
+    required String createdAt,
+    required String updatedAt,
+    required String createdBy,
+    required String updatedBy,
   }) = _UserModel;
 
   const UserModel._();

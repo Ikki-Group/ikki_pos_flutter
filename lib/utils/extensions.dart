@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/config/pos_theme.dart';
+import '../core/theme/app_theme.dart';
 
 extension BuildContextX on BuildContext {
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackBar(
@@ -18,10 +18,10 @@ extension BuildContextX on BuildContext {
 }
 
 enum SnackBarSeverity {
-  success(POSTheme.accentGreen, Colors.white),
-  info(POSTheme.primaryBlueLight, Colors.white),
-  warning(POSTheme.statusWarning, Colors.white),
-  error(POSTheme.accentRed, Colors.white);
+  success(AppTheme.accentGreen, Colors.white),
+  info(AppTheme.primaryBlueLight, Colors.white),
+  warning(AppTheme.statusWarning, Colors.white),
+  error(AppTheme.accentRed, Colors.white);
 
   const SnackBarSeverity(this.bg, this.text);
   final Color bg;

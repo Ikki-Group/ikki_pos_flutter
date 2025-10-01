@@ -8,6 +8,7 @@ import '../outlet/outlet_provider.dart';
 import '../outlet/outlet_util.dart';
 import '../printer/printer_provider.dart';
 import '../printer/templates/template_receipt.dart';
+import '../printer/templates/template_receipt_checker.dart';
 import '../product/product.model.dart';
 import '../sale/sale_enum.dart';
 import '../user/user_model.dart';
@@ -24,12 +25,8 @@ part 'cart_state.g.dart';
 abstract class CartAbstract {
   void setCart(Cart cart);
   void setState(Cart Function(Cart) fn);
-  void newCart({
-    required int pax,
-    required SaleMode saleMode,
-    required OutletStateModel outletState,
-    required UserModel user,
-  });
+  void newCart(int pax, SaleMode saleMode, {required UserModel user, required OutletStateModel outletState});
+  void setSalesAndPax(SaleMode saleMode, int pax);
   void newBatch(Cart cart, UserModel user);
   void addProductDirectly(ProductModel product);
   void addCartItem(CartItem item);
@@ -38,6 +35,7 @@ abstract class CartAbstract {
   void reset();
   void save(String? name);
   void pay(List<CartPayment> payments);
+  void print();
 }
 
 @Riverpod(keepAlive: true, name: 'cartStateProvider')
@@ -52,18 +50,12 @@ class CartState extends _$CartState implements CartAbstract {
   void setState(Cart Function(Cart) fn) => state = fn(state);
 
   @override
-  void newCart({
-    required int pax,
-    required SaleMode saleMode,
-    required OutletStateModel outletState,
-    required UserModel user,
-  }) {
+  void newCart(int pax, SaleMode saleMode, {required UserModel user, required OutletStateModel outletState}) {
     final outlet = outletState.outlet;
     final session = outletState.requireOpen;
 
     final rc = ref.read(outletProvider.notifier).getReceiptCode();
     final now = DateTime.now().toIso8601String();
-    final initialLog = CartLogAction.create.toLog(state, user, 'Cart created');
     final initialBatch = CartBatch(id: 1, at: now, by: user.id);
 
     state = Cart(
@@ -74,7 +66,6 @@ class CartState extends _$CartState implements CartAbstract {
       outletId: outlet.id,
       sessionId: session.id,
       batches: [initialBatch],
-      logs: [initialLog],
       createdAt: now,
       createdBy: user.id,
       updatedAt: now,
@@ -82,8 +73,24 @@ class CartState extends _$CartState implements CartAbstract {
     );
   }
 
-  void updateSalesAndPax(SaleMode saleMode, int pax) {
+  @override
+  void setSalesAndPax(SaleMode saleMode, int pax) {
     state = state.copyWith(saleMode: saleMode, pax: pax);
+  }
+
+  @override
+  void newBatch(Cart cart, UserModel user) {
+    state = cart.copyWith(
+      batches: [
+        ...state.batches,
+        CartBatch(
+          id: state.batches.length + 1,
+          at: DateTime.now().toIso8601String(),
+          by: user.id,
+        ),
+      ],
+      batchId: state.batches.length + 1,
+    );
   }
 
   @override
@@ -178,12 +185,22 @@ class CartState extends _$CartState implements CartAbstract {
 
     await ref.read(cartDataProvider.notifier).save(state);
     await ref.read(outletProvider.notifier).incrementReceiptCode();
+    await ref.read(outletProvider.notifier).addSalesSuccess(state.net, state.receivableCash);
 
     final outlet = ref.read(outletProvider);
-    unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceipt(state, outlet)));
+    // unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceipt(state, outlet)));
+    const copyCount = 2;
+    for (var i = 0; i < copyCount; i++) {
+      unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceiptChecker(state, outlet)));
+    }
 
     // Reset after screen success
     // reset();
+  }
+
+  @override
+  void print() {
+    unawaited(ref.read(printerStateProvider.notifier).print(TemplateReceipt(state, ref.read(outletProvider))));
   }
 
   // Internal methods
@@ -204,21 +221,6 @@ class CartState extends _$CartState implements CartAbstract {
       discount: cartDiscountAmount,
       gross: itemsGross,
       net: finalNet,
-    );
-  }
-
-  @override
-  void newBatch(Cart cart, UserModel user) {
-    state = cart.copyWith(
-      batches: [
-        ...state.batches,
-        CartBatch(
-          id: state.batches.length + 1,
-          at: DateTime.now().toIso8601String(),
-          by: user.id,
-        ),
-      ],
-      batchId: state.batches.length + 1,
     );
   }
 }

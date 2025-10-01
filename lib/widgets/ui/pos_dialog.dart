@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/config/pos_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class PosDialog extends StatelessWidget {
   const PosDialog({
@@ -27,7 +27,7 @@ class PosDialog extends StatelessWidget {
     if (title != null && title!.isNotEmpty) {
       header = Container(
         padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(color: POSTheme.primaryBlue),
+        decoration: const BoxDecoration(color: AppTheme.primaryBlue),
         child: Row(
           children: [
             Expanded(

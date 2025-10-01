@@ -82,7 +82,7 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
     if (routeName == IkkiRouter.cart.name) {
       ref
           .read(cartStateProvider.notifier)
-          .updateSalesAndPax(
+          .setSalesAndPax(
             selectedSaleMode,
             pax,
           );
@@ -93,8 +93,8 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
       ref
           .read(cartStateProvider.notifier)
           .newCart(
-            pax: pax,
-            saleMode: selectedSaleMode,
+            pax,
+            selectedSaleMode,
             outletState: outletState,
             user: user,
           );

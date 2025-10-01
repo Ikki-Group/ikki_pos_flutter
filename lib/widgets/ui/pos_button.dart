@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/config/pos_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 enum ButtonVariant {
   primary,
@@ -53,19 +53,19 @@ class PosButton extends StatelessWidget {
     return switch (variant) {
       ButtonVariant.primary => null,
       ButtonVariant.secondary => FilledButton.styleFrom(
-        backgroundColor: POSTheme.secondaryOrange,
+        backgroundColor: AppTheme.secondaryOrange,
       ),
       ButtonVariant.destructive => FilledButton.styleFrom(
-        backgroundColor: POSTheme.accentRed,
+        backgroundColor: AppTheme.accentRed,
       ),
       ButtonVariant.primaryOutlined => null,
       ButtonVariant.secondaryOutlined => OutlinedButton.styleFrom(
-        side: const BorderSide(color: POSTheme.secondaryOrange),
-        foregroundColor: POSTheme.secondaryOrange,
+        side: const BorderSide(color: AppTheme.secondaryOrange),
+        foregroundColor: AppTheme.secondaryOrange,
       ),
       ButtonVariant.destructiveOutlined => OutlinedButton.styleFrom(
-        side: const BorderSide(color: POSTheme.accentRed),
-        foregroundColor: POSTheme.accentRed,
+        side: const BorderSide(color: AppTheme.accentRed),
+        foregroundColor: AppTheme.accentRed,
       ),
     };
   }

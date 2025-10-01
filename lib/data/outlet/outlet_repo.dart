@@ -24,7 +24,7 @@ abstract class OutletRepo {
   Future<OutletStateModel> getState();
   Future<bool> saveState(OutletStateModel state);
 
-  Future<OutletModel> fetchOutlet();
+  Future<bool> syncState(OutletModel outlet, OutletDeviceModel device);
 }
 
 class OutletRepoImpl implements OutletRepo {
@@ -61,29 +61,7 @@ class OutletRepoImpl implements OutletRepo {
   }
 
   @override
-  Future<OutletModel> fetchOutlet() async {
-    return _kMock;
+  Future<bool> syncState(OutletModel outlet, OutletDeviceModel device) {
+    throw UnimplementedError();
   }
 }
-
-const _kMock = OutletModel(
-  id: 'id',
-  name: 'Ikki Coffee',
-  type: 'type',
-  createdAt: '2023-07-01T00:00:00.000Z',
-  updatedAt: '2023-07-01T00:00:00.000Z',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy',
-  code: 'ICO',
-);
-
-const _mockDevice = OutletDeviceModel(
-  id: 'id',
-  name: 'Ikki Coffee',
-  type: OutletDeviceType.cashier,
-  code: '1',
-  createdAt: '2023-07-01T00:00:00.000Z',
-  updatedAt: '2023-07-01T00:00:00.000Z',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy',
-);

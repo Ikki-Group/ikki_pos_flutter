@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
-import '../../data/auth/auth_token_provider.dart';
+import '../../features/auth/provider/auth_token_provider.dart';
 import '../config/app_config.dart';
 
 part 'dio_client.g.dart';
@@ -10,7 +12,7 @@ part 'dio_client.g.dart';
 Dio dioClient(Ref ref) {
   final dio = Dio()
     ..options = BaseOptions(
-      baseUrl: AppConfig.baseUrl,
+      baseUrl: ApiConfig.baseUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(minutes: 5),
       sendTimeout: const Duration(seconds: 30),
@@ -45,7 +47,13 @@ Dio dioClient(Ref ref) {
   );
 
   // Logging interceptor
-  // dio.interceptors.add(TalkerDioLogger());
+  dio.interceptors.add(
+    TalkerDioLogger(
+      settings: TalkerDioLoggerSettings(
+        printErrorHeaders: false,
+      ),
+    ),
+  );
 
   return dio;
 }

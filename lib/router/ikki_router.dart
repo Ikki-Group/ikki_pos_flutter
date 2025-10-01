@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:go_router/go_router.dart';
 
 enum IkkiRouter {
   widgetsbook,
@@ -28,9 +27,4 @@ enum IkkiRouter {
     if (name == null) return null;
     return IkkiRouter.values.firstWhereOrNull((e) => e.name == name);
   }
-}
-
-extension RouterX on GoRouter {
-  String? get currentRouteName => routerDelegate.currentConfiguration.last.route.name;
-  IkkiRouter? get currentRouteIkki => IkkiRouter.fromName(currentRouteName);
 }

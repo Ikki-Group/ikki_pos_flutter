@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../features-old/payment/payment_enum.dart';
 import '../../shared/utils/talker.dart';
 import '../user/user_model.dart';
 import 'cart_model.dart';
@@ -29,5 +30,16 @@ $stateStr
 
     talker.info(msg);
     return msg;
+  }
+}
+
+extension CartX on Cart {
+  double get receivableCash {
+    final cash = payments.toList().where((p) => p.type == PaymentType.cash);
+    var amount = 0.0;
+    for (final p in cash) {
+      amount += p.amount;
+    }
+    return amount;
   }
 }

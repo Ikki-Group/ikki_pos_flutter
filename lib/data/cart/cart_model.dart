@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../features/payment/payment_enum.dart';
+import '../../features-old/payment/payment_enum.dart';
 import '../json.dart';
 import '../sale/sale_enum.dart';
 import 'cart_enum.dart';

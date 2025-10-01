@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/config/app_constants.dart';
-import '../core/config/pos_theme.dart';
+import '../core/config/app_constant.dart';
+import '../core/theme/app_theme.dart';
 import 'app_router.dart';
 
 class IkkiPosApp extends ConsumerWidget {
@@ -14,8 +14,7 @@ class IkkiPosApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: router,
-      theme: POSTheme.lightTheme,
-      // theme: AppThemeFlex.light,
+      theme: AppTheme.lightTheme,
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.25)),

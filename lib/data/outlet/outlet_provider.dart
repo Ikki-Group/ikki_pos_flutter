@@ -21,6 +21,10 @@ abstract class OutletProviderContract {
   // Receipt code
   String getReceiptCode();
   Future<bool> incrementReceiptCode();
+
+  // Sales
+  Future<bool> addSalesSuccess(double netSales, double cash);
+  Future<bool> addSalesFail();
 }
 
 @Riverpod(keepAlive: true, name: 'outletProvider')
@@ -121,5 +125,23 @@ class OutletNotifier extends _$OutletNotifier implements OutletProviderContract 
     state = newState;
 
     return true;
+  }
+
+  @override
+  Future<bool> addSalesFail() async {
+    state = state.copyWith(session: state.session!.copyWith(trxFail: state.session!.trxFail + 1));
+    return ref.read(outletRepoProvider).saveState(state);
+  }
+
+  @override
+  Future<bool> addSalesSuccess(double netSales, double cash) {
+    state = state.copyWith(
+      session: state.session!.copyWith(
+        trxSuccess: state.session!.trxSuccess + 1,
+        netSales: state.session!.netSales + netSales,
+        cash: state.session!.cash + cash,
+      ),
+    );
+    return ref.read(outletRepoProvider).saveState(state);
   }
 }

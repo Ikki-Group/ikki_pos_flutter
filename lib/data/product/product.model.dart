@@ -11,11 +11,18 @@ sealed class ProductModel with _$ProductModel {
     required String id,
     required String outletId,
     required String name,
+    required String desc,
     required double price,
+    required bool pricingBySalesMode,
     required bool hasVariant,
-    required String categoryId,
+    required List<ProductVariant> variants,
+    required bool isActive,
+    required String createdAt,
+    required String updatedAt,
+    required String createdBy,
+    required String updatedBy,
+    @Default(null) String? categoryId,
     String? mokaId,
-    @Default([]) List<ProductVariant> variants,
     @Default(false) bool isFavorite,
   }) = _ProductModel;
 
@@ -23,11 +30,23 @@ sealed class ProductModel with _$ProductModel {
 }
 
 @freezed
+abstract class PricingModel with _$PricingModel {
+  const factory PricingModel({
+    required String mode,
+    required double price,
+  }) = _PricingModel;
+
+  factory PricingModel.fromJson(Json json) => _$PricingModelFromJson(json);
+}
+
+@freezed
 sealed class ProductVariant with _$ProductVariant {
   const factory ProductVariant({
     required String id,
     required String name,
+    required bool isDefault,
     required double price,
+    required List<PricingModel> prices,
     String? mokaId,
   }) = _ProductVariant;
 
