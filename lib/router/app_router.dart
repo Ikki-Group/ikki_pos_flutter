@@ -5,6 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/app/presentation/app_splash_page.dart';
 import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
+import '../features/cart/presentation/cart_order/cart_order_page.dart';
+import '../features/cart/presentation/cart_payment/cart_payment_page.dart';
 import '../features/pos/presentation/pos_home/pos_home_page.dart';
 import '../shared/utils/talker.dart';
 import '../widgets/layout/shell/shell_layout.dart';
@@ -53,6 +55,27 @@ GoRouter goRouter(Ref ref) {
           //   name: IkkiRouter.sales.name,
           //   builder: (context, state) => const SalesPage(),
           // ),
+        ],
+      ),
+
+      ShellRoute(
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return Scaffold(
+            body: child,
+            resizeToAvoidBottomInset: false,
+          );
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: IkkiRouter.cart.path,
+            name: IkkiRouter.cart.name,
+            builder: (context, state) => const CartOrderPage(),
+          ),
+          GoRoute(
+            path: IkkiRouter.cartPayment.path,
+            name: IkkiRouter.cartPayment.name,
+            builder: (context, state) => const CartPaymentPage(),
+          ),
         ],
       ),
     ],

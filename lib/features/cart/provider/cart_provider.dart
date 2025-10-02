@@ -6,31 +6,39 @@ import '../../../model/product_model.dart';
 import '../../../model/user_model.dart';
 import '../../outlet/data/outlet_state.dart';
 import "../data/cart_state.dart";
+import 'cart_extension.dart';
 
 part 'cart_provider.g.dart';
 
-abstract class CartProvider {
+abstract class CartAbstract {
   Future<void> createNew({
     required int pax,
-    required SaleMode saleMode,
+    required SalesMode salesMode,
     required UserModel user,
     required OutletState outletState,
   });
 
+  void setSalesAndPax(SalesMode salesMode, int pax);
+
   Future<void> addProductDirectly(ProductModel product);
+  Future<void> upsertCartItem(CartItem item);
+  Future<void> removeItem(CartItem item);
+  Future<void> clearCurrentItems();
+
+  void reset();
 }
 
 @Riverpod(keepAlive: true)
-class Cart extends _$Cart implements CartProvider {
+class Cart extends _$Cart implements CartAbstract {
   @override
   CartState build() {
-    throw UnimplementedError();
+    return CartState();
   }
 
   @override
   Future<void> createNew({
     required int pax,
-    required SaleMode saleMode,
+    required SalesMode salesMode,
     required UserModel user,
     required OutletState outletState,
   }) async {
@@ -40,7 +48,7 @@ class Cart extends _$Cart implements CartProvider {
     final newCart = CartState(
       id: ObjectId().hexString,
       rc: outletState.receiptCode,
-      saleMode: saleMode,
+      salesMode: salesMode,
       pax: pax,
       outletId: outletState.outlet.id,
       sessionId: session.id,
@@ -61,7 +69,105 @@ class Cart extends _$Cart implements CartProvider {
   }
 
   @override
-  Future<void> addProductDirectly(ProductModel product) {
-    throw UnimplementedError();
+  void setSalesAndPax(SalesMode salesMode, int pax) {
+    state = state.copyWith(salesMode: salesMode, pax: pax);
+  }
+
+  @override
+  Future<void> addProductDirectly(ProductModel product) async {
+    var newState = state.copyWith();
+    final newItems = state.items.toList();
+
+    // Upsert if product already exist
+    // Unique by product id, note, batchId and salesMode
+    final idx = newItems.indexWhere(
+      (item) =>
+          item.product.id == product.id &&
+          item.batchId == state.batchId &&
+          item.salesMode == state.salesMode &&
+          item.note.isEmpty,
+    );
+
+    if (idx != -1) {
+      var item = newItems[idx];
+
+      final qty = item.qty + 1;
+      final gross = qty * item.price;
+      final net = gross;
+      item = item.copyWith(
+        qty: qty,
+        gross: gross,
+        net: net,
+      );
+
+      newItems[idx] = item;
+    } else {
+      final price = product.price;
+
+      final item = CartItem(
+        id: ObjectId().hexString,
+        batchId: state.batchId,
+        salesMode: state.salesMode,
+        product: CartItemProduct(
+          id: product.id,
+          name: product.name,
+          price: price,
+        ),
+        variant: null,
+        note: '',
+        qty: 1,
+        price: price,
+        gross: price,
+        discount: 0,
+        net: price,
+      );
+
+      newItems.add(item);
+    }
+
+    newState = newState.copyWith(items: newItems);
+    state = newState.recalculate();
+  }
+
+  @override
+  Future<void> upsertCartItem(CartItem item) async {
+    var newState = state.copyWith();
+    final newItems = state.items.toList();
+
+    final idx = newItems.indexWhere((i) => i.id == item.id && i.batchId == item.batchId);
+    if (idx != -1) {
+      newItems[idx] = item;
+    } else {
+      newItems.add(item);
+    }
+
+    newState = newState.copyWith(items: newItems);
+    state = newState.recalculate();
+  }
+
+  @override
+  Future<void> removeItem(CartItem item) async {
+    var newState = state.copyWith();
+    final newItems = state.items.toList();
+    final idx = newItems.indexWhere((i) => i.id == item.id && i.batchId == item.batchId);
+    if (idx != -1) {
+      newItems.removeAt(idx);
+      newState = newState.copyWith(items: newItems);
+      state = newState.recalculate();
+    }
+  }
+
+  @override
+  Future<void> clearCurrentItems() async {
+    // Remove all items in current batch
+    var newState = state.copyWith();
+    final newItems = state.items.where((item) => item.batchId != state.batchId).toList();
+    newState = newState.copyWith(items: newItems);
+    state = newState.recalculate();
+  }
+
+  @override
+  void reset() {
+    state = CartState();
   }
 }

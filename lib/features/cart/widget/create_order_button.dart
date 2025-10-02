@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/dialogs/outlet_open_dialog.dart';
+import '../../../widgets/dialogs/sales_mode_dialog.dart';
 import '../../outlet/data/outlet_state.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../provider/cart_provider.dart';
 
 class CreateOrderButton extends ConsumerStatefulWidget {
   const CreateOrderButton({super.key});
@@ -20,8 +22,8 @@ class _CreateOrderButtonState extends ConsumerState<CreateOrderButton> {
     if (!outlet.isOpen) {
       await OutletOpenDialog.show(context);
     } else {
-      // ref.read(cartStateProvider.notifier).reset();
-      // SalesModeDialog.show(context);
+      ref.read(cartProvider.notifier).reset();
+      SalesModeDialog.show(context);
     }
   }
 

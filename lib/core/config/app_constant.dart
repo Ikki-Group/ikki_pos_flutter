@@ -32,9 +32,19 @@ enum CartStatus {
   fail,
 }
 
-enum SaleMode {
-  dineIn,
-  takeAway,
+enum SalesMode {
+  dineIn(value: 'Dine-in'),
+  takeAway(value: 'Take Away');
+
+  const SalesMode({required this.value});
+  final String value;
+
+  @override
+  String toString() => value;
+
+  static SalesMode fromString(String value) {
+    return values.firstWhere((e) => e.value == value);
+  }
 }
 
 enum CartSource {

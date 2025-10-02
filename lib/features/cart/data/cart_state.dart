@@ -11,7 +11,7 @@ abstract class CartState with _$CartState {
     @Default('') String rc,
     @Default(BillType.open) BillType billType,
     @Default(CartStatus.process) CartStatus status,
-    @Default(SaleMode.dineIn) SaleMode saleMode,
+    @Default(SalesMode.dineIn) SalesMode salesMode,
     @Default(1) int pax,
     @Default('') String note,
     @Default(null) CartCustomer? customer,
@@ -50,7 +50,7 @@ sealed class CartItem with _$CartItem {
   const factory CartItem({
     @Default('') String id,
     @Default(0) int batchId,
-    @Default(SaleMode.dineIn) SaleMode saleMode,
+    @Default(SalesMode.dineIn) SalesMode salesMode,
     @Default(CartItemProduct()) CartItemProduct product,
     @Default(null) CartItemVariant? variant,
     @Default('') String note,
