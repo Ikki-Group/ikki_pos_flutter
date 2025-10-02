@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config/app_constant.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../features/cart/widget/create_order_button.dart';
 import '../../../features/outlet/provider/outlet_provider.dart';
 import '../../../router/ikki_router.dart';
 
@@ -18,13 +19,8 @@ class ShellAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var actions = <Widget>[];
 
-    if (router == IkkiRouter.pos) {
-      // actions.add(const HomeCreateOrderButton());
-    }
-
-    if (actions.isNotEmpty) {
-      actions.add(const SizedBox(width: 8));
-    }
+    if (router == IkkiRouter.pos) actions.add(CreateOrderButton());
+    if (actions.isNotEmpty) actions.add(const SizedBox(width: 8));
 
     return AppBar(
       toolbarHeight: preferredSize.height,

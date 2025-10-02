@@ -32,6 +32,8 @@ class SyncRepoImpl implements SyncRepo {
       'device': data['device'] as Json,
       'outlet': data['outlet'] as Json,
       'users': data['accounts'] as dynamic,
+      'products': data['products'] as dynamic,
+      'categories': data['categories'] as dynamic,
     });
   }
 }

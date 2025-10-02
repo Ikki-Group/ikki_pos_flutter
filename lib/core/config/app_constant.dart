@@ -6,11 +6,43 @@ abstract class AppConstants {
   static const pinLength = 4;
 }
 
-enum UserRole { employee, admin }
+enum UserRole {
+  employee,
+  admin,
+}
 
-enum ShiftStatus { open, close }
+enum ShiftStatus {
+  open,
+  close,
+}
 
 enum OutletDeviceType {
   cashier,
   kitchen,
+}
+
+enum BillType {
+  open,
+  close,
+}
+
+enum CartStatus {
+  process,
+  success,
+  fail,
+}
+
+enum SaleMode {
+  dineIn,
+  takeAway,
+}
+
+enum CartSource {
+  cashier,
+  online,
+}
+
+enum PaymentType {
+  cash,
+  cashless,
 }

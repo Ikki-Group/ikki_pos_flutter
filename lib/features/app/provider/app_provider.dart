@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../auth/provider/auth_token_provider.dart';
 import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../../product/provider/product_provider.dart';
 import '../data/sync_repo.dart';
 
 part "app_provider.freezed.dart";
@@ -36,6 +37,7 @@ class App extends _$App {
 
       await ref.read(outletProvider.notifier).syncData(mainData.outlet, mainData.device);
       await ref.read(userProvider.notifier).syncLocal(mainData.users);
+      await ref.read(productProvider.notifier).syncData(mainData.products, mainData.categories);
 
       state = state.copyWith(isAuthenticated: true);
     }

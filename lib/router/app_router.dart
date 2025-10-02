@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/app/presentation/app_splash_page.dart';
 import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
+import '../features/pos/presentation/pos_home/pos_home_page.dart';
 import '../shared/utils/talker.dart';
 import '../widgets/layout/shell/shell_layout.dart';
 import 'ikki_router.dart';
@@ -45,7 +46,7 @@ GoRouter goRouter(Ref ref) {
           GoRoute(
             path: IkkiRouter.pos.path,
             name: IkkiRouter.pos.name,
-            builder: (context, state) => const Placeholder(),
+            builder: (context, state) => const PosHomePage(),
           ),
           // GoRoute(
           //   path: IkkiRouter.sales.path,

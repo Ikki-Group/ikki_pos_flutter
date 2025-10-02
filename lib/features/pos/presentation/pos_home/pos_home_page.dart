@@ -1,7 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../provider/pos_provider.dart';
+import '../../../../core/theme/app_theme.dart';
+import "./pos_home_controller.dart";
+
+class PosHomePage extends ConsumerStatefulWidget {
+  const PosHomePage({super.key});
+
+  @override
+  ConsumerState<PosHomePage> createState() => _PosHomePageState();
+}
+
+class _PosHomePageState extends ConsumerState<PosHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return const ColoredBox(
+      color: AppTheme.backgroundSecondary,
+      child: Column(
+        children: <Widget>[
+          PosFilters(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+              child: Row(
+                children: [
+                  // Expanded(flex: 5, child: PosCartList()),
+                  SizedBox(width: 8),
+                  // Expanded(flex: 8, child: PosCartDetails()),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class PosFilters extends ConsumerStatefulWidget {
   const PosFilters({super.key});
