@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 
-import '../../../data/printer/printer_provider.dart';
 import '../../../utils/extensions.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog_two.dart';
+import '../../features/printer/provider/printer_provider.dart';
 
 class PrinterConnectionBluetoothDialog extends ConsumerStatefulWidget {
   const PrinterConnectionBluetoothDialog({super.key});
@@ -35,7 +35,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
     setState(() {});
 
     await ref
-        .read(printerStateProvider.notifier)
+        .read(printerProvider.notifier)
         .startBluetoothScan()
         .then(
           (result) => printers = result,
@@ -58,14 +58,16 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
     isLoading = true;
     setState(() => {});
 
-    await ref.read(printerStateProvider.notifier).bluetoothConnectAndSave(selectedPrinter!).catchError(() {
+    try {
+      await ref.read(printerProvider.notifier).bluetoothConnectAndSave(selectedPrinter!);
+    } catch (e) {
       if (mounted) {
         context.showTextSnackBar(
           'Gagal menghubungkan printer ${selectedPrinter?.name}',
           severity: SnackBarSeverity.error,
         );
       }
-    });
+    }
 
     isLoading = false;
     setState(() {});

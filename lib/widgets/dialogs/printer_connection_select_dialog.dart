@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/printer/printer_enum.dart';
-import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog_two.dart';
+import '../../core/config/app_constant.dart';
+import '../ui/pos_button.dart';
+import '../ui/pos_dialog_two.dart';
 import 'printer_connection_bluetooth_dialog.dart';
 import 'printer_connection_lan_dialog.dart';
 

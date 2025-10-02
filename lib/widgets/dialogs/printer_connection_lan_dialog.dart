@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/printer/printer_provider.dart';
-import '../../../widgets/ui/pos_button.dart';
-import '../../../widgets/ui/pos_dialog_two.dart';
+import '../../features/printer/provider/printer_provider.dart';
+import '../ui/pos_button.dart';
+import '../ui/pos_dialog_two.dart';
 
 class PrinterConnectionLanDialog extends ConsumerStatefulWidget {
   const PrinterConnectionLanDialog({super.key});
@@ -35,14 +35,14 @@ class _PrinterConnectionLanDialogState extends ConsumerState<PrinterConnectionLa
 
     formKey.currentState!.save();
     await ref
-        .read(printerStateProvider.notifier)
+        .read(printerProvider.notifier)
         .lanConnectAndSave(
           name,
           host,
           port,
         );
 
-    // onClose();
+    onClose();
   }
 
   @override

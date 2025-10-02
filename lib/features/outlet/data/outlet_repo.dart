@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/db/shared_prefs.dart';
-import '../../../data/json.dart';
 import '../../../model/device_model.dart';
 import '../../../model/outlet_model.dart';
 import '../../../shared/utils/talker.dart';
+import '../../../utils/json.dart';
 import 'outlet_state.dart';
 
 part 'outlet_repo.g.dart';
@@ -41,6 +41,9 @@ class OutletRepoImpl implements OutletRepo {
       throw Exception('Outlet state not found, ensure to initialize');
     }
     final json = posJsonDecode(raw);
+    if (json == null) {
+      throw Exception('Outlet state is not valid');
+    }
     state = OutletState.fromJson(json);
 
     return state;

@@ -7,7 +7,9 @@ import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
 import '../features/cart/presentation/cart_order/cart_order_page.dart';
 import '../features/cart/presentation/cart_payment/cart_payment_page.dart';
+import '../features/cart/presentation/cart_payment_success/cart_payment_success_page.dart';
 import '../features/pos/presentation/pos_home/pos_home_page.dart';
+import '../features/settings/presentation/layouts/settings_layout.dart';
 import '../shared/utils/talker.dart';
 import '../widgets/layout/shell/shell_layout.dart';
 import 'ikki_router.dart';
@@ -50,11 +52,11 @@ GoRouter goRouter(Ref ref) {
             name: IkkiRouter.pos.name,
             builder: (context, state) => const PosHomePage(),
           ),
-          // GoRoute(
-          //   path: IkkiRouter.sales.path,
-          //   name: IkkiRouter.sales.name,
-          //   builder: (context, state) => const SalesPage(),
-          // ),
+          GoRoute(
+            path: IkkiRouter.settings.path,
+            name: IkkiRouter.settings.name,
+            builder: (context, state) => const SettingsLayout(),
+          ),
         ],
       ),
 
@@ -75,6 +77,11 @@ GoRouter goRouter(Ref ref) {
             path: IkkiRouter.cartPayment.path,
             name: IkkiRouter.cartPayment.name,
             builder: (context, state) => const CartPaymentPage(),
+          ),
+          GoRoute(
+            path: IkkiRouter.cartPaymentSuccess.path,
+            name: IkkiRouter.cartPaymentSuccess.name,
+            builder: (context, state) => const CartPaymentSuccessPage(),
           ),
         ],
       ),

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/config/pos_theme.dart';
-import '../../../data/cart/cart_state.dart';
-import '../../../router/ikki_router.dart';
-import '../../../shared/utils/formatter.dart';
-import '../../payment/payment_enum.dart';
+import '../../../../core/config/app_constant.dart';
+import '../../../../core/theme/app_theme.dart';
+import '../../../../router/ikki_router.dart';
+import '../../../../shared/utils/formatter.dart';
+import '../../provider/cart_provider.dart';
 
-class CartPaymentSuccess extends ConsumerStatefulWidget {
-  const CartPaymentSuccess({super.key});
+class CartPaymentSuccessPage extends ConsumerStatefulWidget {
+  const CartPaymentSuccessPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CartPaymentSuccessState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CartPaymentSuccessPageState();
 }
 
-class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
+class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage> {
   @override
   void initState() {
     super.initState();
@@ -28,7 +28,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final cart = ref.watch(cartStateProvider);
+    final cart = ref.watch(cartProvider);
 
     final change = cart.payments.reversed.firstWhere((p) => p.change != null && p.type == PaymentType.cash).change;
 
@@ -41,7 +41,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                 const Icon(
                   Icons.check_circle_outlined,
                   size: 80,
-                  color: POSTheme.statusSuccess,
+                  color: AppTheme.statusSuccess,
                 ),
                 const SizedBox(height: 24),
                 Text('Pembayaran Berhasil', style: textTheme.titleLarge, textAlign: TextAlign.center),
@@ -88,13 +88,13 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                     children: [
                       Text(
                         'Kembalian',
-                        style: textTheme.titleSmall?.copyWith(color: POSTheme.secondaryOrange),
+                        style: textTheme.titleSmall?.copyWith(color: AppTheme.secondaryOrange),
                       ),
                       const SizedBox(width: 16),
                       Text(
                         change.toIdr,
                         style: textTheme.titleSmall?.copyWith(
-                          color: POSTheme.secondaryOrange,
+                          color: AppTheme.secondaryOrange,
                         ),
                       ),
                     ],
@@ -105,7 +105,7 @@ class _CartPaymentSuccessState extends ConsumerState<CartPaymentSuccess> {
                   width: double.infinity,
                   child: OutlinedButton(
                     onPressed: () {
-                      ref.read(cartStateProvider.notifier).print();
+                      // ref.read(cartProvider.notifier).print();
                     },
                     child: const Text('Cetak Nota'),
                   ),
