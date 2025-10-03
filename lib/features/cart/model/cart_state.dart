@@ -1,8 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/config/app_constant.dart';
+import '../../../utils/json.dart';
 
 part 'cart_state.freezed.dart';
+part 'cart_state.g.dart';
 
 @freezed
 abstract class CartState with _$CartState {
@@ -43,6 +45,8 @@ abstract class CartState with _$CartState {
     @Default('') String updatedAt,
     @Default('') String updatedBy,
   }) = _CartState;
+
+  factory CartState.fromJson(Json json) => _$CartStateFromJson(json);
 }
 
 @freezed
@@ -60,6 +64,8 @@ sealed class CartItem with _$CartItem {
     @Default(0) double discount,
     @Default(0) double net,
   }) = _CartItem;
+
+  factory CartItem.fromJson(Json json) => _$CartItemFromJson(json);
 }
 
 @freezed
@@ -69,6 +75,8 @@ sealed class CartItemProduct with _$CartItemProduct {
     @Default('') String name,
     @Default(0) double price,
   }) = _CartItemProduct;
+
+  factory CartItemProduct.fromJson(Json json) => _$CartItemProductFromJson(json);
 }
 
 @freezed
@@ -78,6 +86,8 @@ sealed class CartItemVariant with _$CartItemVariant {
     @Default('') String name,
     @Default(0) double price,
   }) = _CartItemVariant;
+
+  factory CartItemVariant.fromJson(Json json) => _$CartItemVariantFromJson(json);
 }
 
 @freezed
@@ -87,6 +97,8 @@ sealed class CartBatch with _$CartBatch {
     @Default('') String at,
     @Default('') String by,
   }) = _CartBatch;
+
+  factory CartBatch.fromJson(Json json) => _$CartBatchFromJson(json);
 }
 
 @freezed
@@ -102,6 +114,8 @@ sealed class CartPayment with _$CartPayment {
     double? change,
     double? tender,
   }) = _CartPayment;
+
+  factory CartPayment.fromJson(Json json) => _$CartPaymentFromJson(json);
 }
 
 @freezed
@@ -112,4 +126,6 @@ sealed class CartCustomer with _$CartCustomer {
     String? email,
     String? phone,
   }) = _CartCustomer;
+
+  factory CartCustomer.fromJson(Json json) => _$CartCustomerFromJson(json);
 }

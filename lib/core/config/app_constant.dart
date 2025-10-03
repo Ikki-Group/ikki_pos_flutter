@@ -6,21 +6,6 @@ abstract class AppConstants {
   static const pinLength = 4;
 }
 
-enum UserRole {
-  employee,
-  admin,
-}
-
-enum ShiftStatus {
-  open,
-  close,
-}
-
-enum OutletDeviceType {
-  cashier,
-  kitchen,
-}
-
 enum BillType {
   open,
   close,
@@ -56,13 +41,3 @@ enum PaymentType {
   cash,
   cashless,
 }
-
-enum PrinterConnectionType {
-  bluetooth(label: 'Bluetooth'),
-  lan(label: 'LAN/WIFI');
-
-  const PrinterConnectionType({required this.label});
-  final String label;
-}
-
-enum PrinterTag { receipt, checker, main }

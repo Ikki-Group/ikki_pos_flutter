@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../model/product_model.dart';
 import '../../../utils/json.dart';
+import '../model/product_model.dart';
 
 part 'product_state.freezed.dart';
 part 'product_state.g.dart';

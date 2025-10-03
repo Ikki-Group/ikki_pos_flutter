@@ -1,4 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../auth/provider/auth_token_provider.dart';
@@ -6,17 +5,9 @@ import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
 import '../../product/provider/product_provider.dart';
 import '../data/sync_repo.dart';
+import '../model/app_state.dart';
 
-part "app_provider.freezed.dart";
 part "app_provider.g.dart";
-
-@freezed
-abstract class AppState with _$AppState {
-  const factory AppState({
-    @Default(false) bool isAuthenticated,
-    @Default(true) bool isLoading,
-  }) = _AppState;
-}
 
 @Riverpod(keepAlive: true)
 class App extends _$App {
@@ -33,11 +24,11 @@ class App extends _$App {
       // await ref.read(outletProvider.notifier).load();
 
       // Hard sync
-      final mainData = await ref.read(syncRepoProvider).fetchMainData();
+      final data = await ref.read(syncRepoProvider).deviceSync();
 
-      await ref.read(outletProvider.notifier).syncData(mainData.outlet, mainData.device);
-      await ref.read(userProvider.notifier).syncLocal(mainData.users);
-      await ref.read(productProvider.notifier).syncData(mainData.products, mainData.categories);
+      await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
+      await ref.read(userProvider.notifier).syncLocal(data.users);
+      await ref.read(productProvider.notifier).syncData(data.products, data.categories);
 
       state = state.copyWith(isAuthenticated: true);
     }

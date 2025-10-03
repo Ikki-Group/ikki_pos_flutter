@@ -1,8 +1,10 @@
 import '../../../core/config/app_constant.dart';
 import '../../../shared/utils/formatter.dart';
-import '../data/cart_state.dart';
+import '../model/cart_state.dart';
 
 extension CartStateX on CartState {
+  int get itemsCount => items.fold<int>(0, (prev, curr) => prev + curr.qty);
+
   List<CartItem> get currentItems => items.where((item) => item.batchId == batchId).toList();
 
   CartState recalculate() {

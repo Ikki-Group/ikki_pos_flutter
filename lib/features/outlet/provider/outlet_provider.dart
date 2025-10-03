@@ -1,12 +1,12 @@
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/config/app_constant.dart';
-import '../../../model/device_model.dart';
-import '../../../model/outlet_model.dart';
-import '../../../model/user_model.dart';
+import '../../app/model/device_model.dart';
+import '../../auth/model/user_model.dart';
 import '../data/outlet_repo.dart';
 import '../data/outlet_state.dart';
+import '../model/outlet_model.dart';
+import '../model/shift_status.dart';
 
 part 'outlet_provider.g.dart';
 
@@ -50,4 +50,6 @@ class Outlet extends _$Outlet {
     state = newState;
     return true;
   }
+
+  Future<void> incrementQueue() async {}
 }

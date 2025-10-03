@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/config/app_constant.dart';
+import '../../features/printer/model/printer_enum.dart';
 import '../ui/pos_button.dart';
 import '../ui/pos_dialog_two.dart';
 import 'printer_connection_bluetooth_dialog.dart';

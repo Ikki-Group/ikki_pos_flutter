@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../model/product_model.dart';
+import '../../../product/model/product_model.dart';
 
 part 'cart_order_controller.freezed.dart';
 part 'cart_order_controller.g.dart';

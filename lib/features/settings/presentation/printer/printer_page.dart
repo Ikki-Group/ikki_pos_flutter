@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../model/printer_model.dart';
 import '../../../../widgets/dialogs/printer_connection_select_dialog.dart';
+import '../../../printer/model/printer_enum.dart';
+import '../../../printer/model/printer_model.dart';
 import '../../../printer/provider/printer_provider.dart';
 
 class PrinterPage extends ConsumerStatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../model/product_model.dart';
+import '../../../product/model/product_model.dart';
 import '../../../product/provider/product_provider.dart';
 import 'cart_order_controller.dart';
 

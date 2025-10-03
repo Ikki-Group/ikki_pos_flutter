@@ -5,26 +5,15 @@ import '../../../utils/json.dart';
 part 'auth_dto.freezed.dart';
 part 'auth_dto.g.dart';
 
-@freezed
+@Freezed(toJson: true)
 abstract class AuthRequest with _$AuthRequest {
   const factory AuthRequest({
     required String claimCode,
     required AuthDeviceInfo meta,
   }) = _AuthRequest;
-
-  factory AuthRequest.fromJson(Json json) => _$AuthRequestFromJson(json);
 }
 
-@freezed
-abstract class AuthResponse with _$AuthResponse {
-  const factory AuthResponse({
-    required String token,
-  }) = _AuthResponse;
-
-  factory AuthResponse.fromJson(Json json) => _$AuthResponseFromJson(json);
-}
-
-@freezed
+@Freezed(toJson: true)
 abstract class AuthDeviceInfo with _$AuthDeviceInfo {
   const factory AuthDeviceInfo({
     @Default('') String os,
@@ -33,6 +22,13 @@ abstract class AuthDeviceInfo with _$AuthDeviceInfo {
     @Default('') String osVersion,
     @Default('') String deviceId,
   }) = _AuthDeviceInfo;
+}
 
-  factory AuthDeviceInfo.fromJson(Json json) => _$AuthDeviceInfoFromJson(json);
+@Freezed(toJson: false)
+abstract class AuthResponse with _$AuthResponse {
+  const factory AuthResponse({
+    required String token,
+  }) = _AuthResponse;
+
+  factory AuthResponse.fromJson(Json json) => _$AuthResponseFromJson(json);
 }

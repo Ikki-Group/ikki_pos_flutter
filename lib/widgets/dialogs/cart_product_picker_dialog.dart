@@ -5,9 +5,9 @@ import 'package:objectid/objectid.dart';
 import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../core/theme/app_theme.dart';
-import '../../features/cart/data/cart_state.dart';
+import '../../features/cart/model/cart_state.dart';
 import '../../features/cart/provider/cart_provider.dart';
-import '../../model/product_model.dart';
+import '../../features/product/model/product_model.dart';
 import '../ui/pos_dialog_two.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {

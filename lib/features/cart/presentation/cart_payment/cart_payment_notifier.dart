@@ -3,9 +3,9 @@ import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/config/app_constant.dart';
-import '../../../../model/payment_model.dart';
 import '../../../auth/provider/user_provider.dart';
-import '../../data/cart_state.dart';
+import '../../../sales/model/payment_model.dart';
+import '../../model/cart_state.dart';
 import '../../provider/cart_provider.dart';
 
 part 'cart_payment_notifier.freezed.dart';

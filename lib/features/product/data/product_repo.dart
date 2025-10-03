@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/db/shared_prefs.dart';
-import '../../../model/product_model.dart';
+import '../model/product_model.dart';
 import 'product_state.dart';
 
 part 'product_repo.g.dart';

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../core/config/app_constant.dart';
-import '../utils/json.dart';
+import '../../../utils/json.dart';
+import 'printer_enum.dart';
 
 part 'printer_model.freezed.dart';
 part 'printer_model.g.dart';

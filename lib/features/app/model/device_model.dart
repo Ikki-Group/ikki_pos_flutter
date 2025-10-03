@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../core/config/app_constant.dart';
-import '../utils/json.dart';
+import '../../../utils/json.dart';
+import 'device_type.dart';
 
 part 'device_model.freezed.dart';
 part 'device_model.g.dart';
@@ -14,7 +14,7 @@ abstract class DeviceModel with _$DeviceModel {
     required String name,
     required String code,
     required String desc,
-    required OutletDeviceType type,
+    required DeviceType type,
     required String status,
     required String claimCode,
     required String claimedAt,
@@ -34,7 +34,7 @@ abstract class DeviceModel with _$DeviceModel {
     name: '',
     code: '',
     desc: '',
-    type: OutletDeviceType.cashier,
+    type: DeviceType.cashier,
     status: '',
     claimCode: '',
     claimedAt: '',

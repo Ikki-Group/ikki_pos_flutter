@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/config/app_constant.dart';
-import '../../../model/device_model.dart';
-import '../../../model/outlet_model.dart';
 import '../../../utils/json.dart';
+import '../../app/model/device_model.dart';
+import '../model/outlet_model.dart';
+import '../model/shift_status.dart';
 
 part 'outlet_state.freezed.dart';
 part 'outlet_state.g.dart';

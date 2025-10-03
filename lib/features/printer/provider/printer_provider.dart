@@ -6,10 +6,10 @@ import 'package:objectid/objectid.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/config/app_constant.dart';
-import '../../../model/printer_model.dart';
 import '../../../shared/utils/talker.dart';
 import '../data/printer_repo.dart';
+import '../model/printer_enum.dart';
+import '../model/printer_model.dart';
 import '../templates/printer_utils.dart';
 import '../templates/template_print_info.dart';
 import 'printer_queue.dart';

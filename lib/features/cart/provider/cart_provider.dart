@@ -2,10 +2,10 @@ import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/config/app_constant.dart';
-import '../../../model/product_model.dart';
-import '../../../model/user_model.dart';
+import '../../auth/model/user_model.dart';
 import '../../outlet/data/outlet_state.dart';
-import "../data/cart_state.dart";
+import '../../product/model/product_model.dart';
+import '../model/cart_state.dart';
 import 'cart_extension.dart';
 
 part 'cart_provider.g.dart';
@@ -24,6 +24,12 @@ abstract class CartAbstract {
   Future<void> upsertCartItem(CartItem item);
   Future<void> removeItem(CartItem item);
   Future<void> clearCurrentItems();
+
+  Future<void> pay(
+    List<CartPayment> payments,
+    UserModel user,
+    OutletState outletState,
+  );
 
   void reset();
 }
@@ -169,5 +175,12 @@ class Cart extends _$Cart implements CartAbstract {
   @override
   void reset() {
     state = CartState();
+  }
+
+  @override
+  Future<void> pay(List<CartPayment> payments, UserModel user, OutletState outletState) async {
+    var newState = state.copyWith();
+    newState = newState.copyWith(status: CartStatus.process, payments: payments);
+    state = newState.recalculate();
   }
 }

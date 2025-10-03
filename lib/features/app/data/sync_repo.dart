@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../utils/json.dart';
-import 'sync_dto.dart';
+import '../model/device_sync_dto.dart';
 
 part 'sync_repo.g.dart';
 
@@ -15,7 +15,7 @@ SyncRepo syncRepo(Ref ref) {
 }
 
 abstract class SyncRepo {
-  Future<OutletDeviceSyncResponseDto> fetchMainData();
+  Future<DeviceSyncResponseDto> deviceSync();
 }
 
 class SyncRepoImpl implements SyncRepo {
@@ -24,16 +24,9 @@ class SyncRepoImpl implements SyncRepo {
   final Dio dio;
 
   @override
-  Future<OutletDeviceSyncResponseDto> fetchMainData() async {
+  Future<DeviceSyncResponseDto> deviceSync() async {
     final response = await dio.post(ApiConfig.outletDeviceSync, data: {});
     final data = response.data['data'] as Json;
-
-    return OutletDeviceSyncResponseDto.fromJson({
-      'device': data['device'] as Json,
-      'outlet': data['outlet'] as Json,
-      'users': data['accounts'] as dynamic,
-      'products': data['products'] as dynamic,
-      'categories': data['categories'] as dynamic,
-    });
+    return DeviceSyncResponseDto.fromJson(data);
   }
 }

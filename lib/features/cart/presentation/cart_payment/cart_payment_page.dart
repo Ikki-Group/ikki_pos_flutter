@@ -4,11 +4,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../model/payment_model.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../shared/utils/cash_generator.dart';
 import '../../../../shared/utils/formatter.dart';
-import '../../data/cart_state.dart';
+import '../../../../utils/extensions.dart';
+import '../../../auth/provider/user_provider.dart';
+import '../../../outlet/provider/outlet_provider.dart';
+import '../../../sales/model/payment_model.dart';
+import '../../model/cart_state.dart';
 import '../../provider/cart_extension.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_payment_notifier.dart';
@@ -372,10 +375,14 @@ class _PayButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final payState = ref.watch(cartPaymentNotifier);
 
-    void pay() {
-      // TODO
-      // ref.read(cartStateProvider.notifier).pay(payState.payments);
-      context.goNamed(IkkiRouter.cartPaymentSuccess.name);
+    Future<void> pay() async {
+      final outlet = ref.read(outletProvider);
+      final user = ref.read(userProvider).selectedUser;
+      await ref.read(cartProvider.notifier).pay(payState.payments, user, outlet);
+      if (!context.mounted) return;
+      context
+        ..showTextSnackBar("Berhasil menyelesaikan penjualan")
+        ..goNamed(IkkiRouter.cartPaymentSuccess.name);
     }
 
     return FilledButton(

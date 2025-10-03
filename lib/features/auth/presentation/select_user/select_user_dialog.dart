@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../model/user_model.dart';
 import '../../../../widgets/ui/pos_button.dart';
 import '../../../../widgets/ui/pos_dialog_two.dart';
+import '../../model/user_model.dart';
 
 class SelectUserDialog extends ConsumerStatefulWidget {
   const SelectUserDialog({required this.users, this.initialValue, super.key});

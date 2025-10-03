@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/experimental/mutation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../features/auth/model/user_model.dart';
 import '../../features/auth/provider/user_provider.dart';
 import '../../features/outlet/provider/outlet_provider.dart';
-import '../../model/user_model.dart';
 import '../../shared/utils/formatter.dart';
 import '../../utils/extensions.dart';
 import '../ui/pos_button.dart';

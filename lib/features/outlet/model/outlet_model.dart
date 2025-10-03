@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../core/config/app_constant.dart';
-import '../utils/json.dart';
+import '../../../utils/json.dart';
+import 'shift_status.dart';
 
 part 'outlet_model.freezed.dart';
 part 'outlet_model.g.dart';

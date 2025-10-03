@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../model/user_model.dart';
 import '../data/user_repo.dart';
+import '../model/user_model.dart';
 
 part 'user_provider.freezed.dart';
 part 'user_provider.g.dart';

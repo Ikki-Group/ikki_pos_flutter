@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/db/shared_prefs.dart';
 import '../../../core/network/dio_client.dart';
-import '../../../model/printer_model.dart';
 import '../../../utils/json.dart';
+import '../model/printer_model.dart';
 
 part 'printer_repo.g.dart';
 

@@ -4,9 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/db/shared_prefs.dart';
-import '../../../model/user_model.dart';
 import '../../../shared/utils/talker.dart';
 import '../../../utils/json.dart';
+import '../model/user_model.dart';
 
 part 'user_repo.g.dart';
 

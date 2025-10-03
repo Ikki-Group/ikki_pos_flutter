@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../utils/json.dart';
+import '../../../utils/json.dart';
 
 part 'product_model.freezed.dart';
 part 'product_model.g.dart';

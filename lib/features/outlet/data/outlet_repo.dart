@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/db/shared_prefs.dart';
-import '../../../model/device_model.dart';
-import '../../../model/outlet_model.dart';
 import '../../../shared/utils/talker.dart';
 import '../../../utils/json.dart';
+import '../../app/model/device_model.dart';
+import '../model/outlet_model.dart';
 import 'outlet_state.dart';
 
 part 'outlet_repo.g.dart';

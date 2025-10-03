@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../model/product_model.dart';
 import '../../../../shared/utils/formatter.dart';
+import '../../../product/model/product_model.dart';
 import '../../../product/provider/product_provider.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_order_controller.dart';

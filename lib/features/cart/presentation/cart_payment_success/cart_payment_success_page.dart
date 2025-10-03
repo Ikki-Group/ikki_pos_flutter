@@ -6,6 +6,7 @@ import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../shared/utils/formatter.dart';
+import '../../provider/cart_extension.dart';
 import '../../provider/cart_provider.dart';
 
 class CartPaymentSuccessPage extends ConsumerStatefulWidget {
@@ -30,14 +31,18 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
     final textTheme = Theme.of(context).textTheme;
     final cart = ref.watch(cartProvider);
 
-    final change = cart.payments.reversed.firstWhere((p) => p.change != null && p.type == PaymentType.cash).change;
+    final change = cart.payments.reversed
+        .firstWhere(
+          (p) => p.change != null && p.type == PaymentType.cash,
+        )
+        .change;
 
     return Scaffold(
       body: Center(
         child: IntrinsicWidth(
           child: SingleChildScrollView(
             child: Column(
-              children: [
+              children: <Widget>[
                 const Icon(
                   Icons.check_circle_outlined,
                   size: 80,
@@ -53,7 +58,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                   children: [
                     Text('Jumlah Item', style: textTheme.bodyMedium),
                     const SizedBox(width: 16),
-                    Text('10 Item', style: textTheme.bodyMedium),
+                    Text('${cart.itemsCount} Item', style: textTheme.bodyMedium),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -85,7 +90,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text(
                         'Kembalian',
                         style: textTheme.titleSmall?.copyWith(color: AppTheme.secondaryOrange),

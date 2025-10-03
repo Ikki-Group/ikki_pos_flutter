@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../core/config/app_constant.dart';
-import '../utils/json.dart';
+import '../../../utils/json.dart';
+import 'user_role.dart';
 
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';

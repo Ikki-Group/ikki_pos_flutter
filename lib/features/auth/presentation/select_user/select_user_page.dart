@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_constant.dart';
-import '../../../../model/user_model.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../utils/extensions.dart';
 import '../../../../widgets/ui/numpad_pin.dart';
 import '../../../outlet/provider/outlet_provider.dart';
+import '../../model/user_model.dart';
 import '../../provider/user_provider.dart';
 import 'select_user_dialog.dart';
 

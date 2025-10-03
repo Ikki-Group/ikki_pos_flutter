@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../model/product_model.dart';
 import '../data/product_repo.dart';
 import '../data/product_state.dart';
+import '../model/product_model.dart';
 
 part 'product_provider.g.dart';
 
