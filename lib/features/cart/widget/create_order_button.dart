@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/dialogs/outlet_open_dialog.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
-import '../../outlet/data/outlet_state.dart';
+import '../../outlet/model/outlet_extension.dart';
 import '../../outlet/provider/outlet_provider.dart';
 import '../provider/cart_provider.dart';
 

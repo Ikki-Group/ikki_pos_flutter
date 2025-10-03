@@ -9,7 +9,7 @@ part 'app_splash_controller.g.dart';
 FutureOr<IkkiRouter> splash(Ref ref) async {
   ref.read(appProvider);
 
-  await Future.delayed(const Duration(seconds: 1));
+  // await Future.delayed(const Duration(seconds: 1));
   final app = await ref.read(appProvider.notifier).init();
   if (app.isAuthenticated) return IkkiRouter.userSelect;
   return IkkiRouter.authDevice;

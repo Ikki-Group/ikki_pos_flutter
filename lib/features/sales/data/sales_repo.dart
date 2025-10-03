@@ -29,8 +29,10 @@ class SalesRepoImpl implements SalesRepo {
 
   @override
   Future<List<CartState>> list() async {
-    final sales = await store.find(ss.db);
-    return sales.map((e) => CartState.fromJson(e.value! as Json)).toList();
+    final raw = await store.find(ss.db);
+    var sales = raw.map((e) => CartState.fromJson(e.value! as Json)).toList();
+    sales.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return sales;
   }
 
   @override
@@ -41,7 +43,7 @@ class SalesRepoImpl implements SalesRepo {
 
   @override
   Future<void> save(CartState sales) async {
-    await store.record(sales.id).put(ss.db, sales);
+    await store.record(sales.id).put(ss.db, sales.toJson());
   }
 
   @override

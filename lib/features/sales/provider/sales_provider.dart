@@ -5,11 +5,17 @@ import '../data/sales_repo.dart';
 
 part 'sales_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Sales extends _$Sales {
   @override
   FutureOr<List<CartState>> build() async {
     final sales = await ref.watch(salesRepoProvider).list();
     return sales;
+  }
+
+  Future<bool> save(CartState sales) async {
+    await ref.watch(salesRepoProvider).save(sales);
+    ref.invalidateSelf(asReload: true);
+    return true;
   }
 }

@@ -14,7 +14,7 @@ abstract class DeviceSyncResponseDto with _$DeviceSyncResponseDto {
   const factory DeviceSyncResponseDto({
     required DeviceModel device,
     required OutletModel outlet,
-    required List<UserModel> users,
+    required List<UserModel> accounts,
     required List<ProductModel> products,
     required List<ProductCategoryModel> categories,
   }) = _DeviceSyncResponseDto;

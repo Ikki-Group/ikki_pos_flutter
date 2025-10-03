@@ -3,10 +3,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/config/app_constant.dart';
 import '../../auth/model/user_model.dart';
-import '../../outlet/data/outlet_state.dart';
+import '../../auth/provider/user_provider.dart';
+import '../../outlet/model/outlet_extension.dart';
+import '../../outlet/model/outlet_state.dart';
+import '../../outlet/provider/outlet_provider.dart';
 import '../../product/model/product_model.dart';
+import '../../sales/provider/sales_provider.dart';
+import '../model/cart_extension.dart';
 import '../model/cart_state.dart';
-import 'cart_extension.dart';
 
 part 'cart_provider.g.dart';
 
@@ -25,6 +29,7 @@ abstract class CartAbstract {
   Future<void> removeItem(CartItem item);
   Future<void> clearCurrentItems();
 
+  Future<void> saveBill(String? name);
   Future<void> pay(
     List<CartPayment> payments,
     UserModel user,
@@ -181,6 +186,36 @@ class Cart extends _$Cart implements CartAbstract {
   Future<void> pay(List<CartPayment> payments, UserModel user, OutletState outletState) async {
     var newState = state.copyWith();
     newState = newState.copyWith(status: CartStatus.process, payments: payments);
-    state = newState.recalculate();
+
+    await ref
+        .read(outletProvider.notifier)
+        .onSavedOrder(
+          cart: newState,
+          lastStatus: CartStatus.process,
+          newPayments: payments,
+        );
+
+    await ref.read(salesProvider.notifier).save(newState);
+  }
+
+  @override
+  Future<void> saveBill(String? name) async {
+    final status = state.status;
+    final newState = state.copyWith(
+      status: CartStatus.process,
+      billType: BillType.open,
+      updatedAt: DateTime.now().toIso8601String(),
+      updatedBy: ref.read(userProvider).selectedUser.id,
+      customer: name != null ? CartCustomer(name: name) : state.customer,
+    );
+
+    await ref
+        .read(outletProvider.notifier)
+        .onSavedOrder(
+          cart: newState,
+          lastStatus: status,
+        );
+
+    await ref.read(salesProvider.notifier).save(newState);
   }
 }

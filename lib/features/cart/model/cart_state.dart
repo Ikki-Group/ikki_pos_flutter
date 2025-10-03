@@ -12,7 +12,7 @@ abstract class CartState with _$CartState {
     @Default('') String id,
     @Default('') String rc,
     @Default(BillType.open) BillType billType,
-    @Default(CartStatus.process) CartStatus status,
+    @Default(CartStatus.init) CartStatus status,
     @Default(SalesMode.dineIn) SalesMode salesMode,
     @Default(1) int pax,
     @Default('') String note,

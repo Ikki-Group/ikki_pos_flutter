@@ -1,4 +1,0 @@
-// enum PaymentType {
-//   cash,
-//   cashless,
-// }

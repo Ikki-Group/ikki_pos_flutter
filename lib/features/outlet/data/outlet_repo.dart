@@ -8,7 +8,7 @@ import '../../../shared/utils/talker.dart';
 import '../../../utils/json.dart';
 import '../../app/model/device_model.dart';
 import '../model/outlet_model.dart';
-import 'outlet_state.dart';
+import '../model/outlet_state.dart';
 
 part 'outlet_repo.g.dart';
 

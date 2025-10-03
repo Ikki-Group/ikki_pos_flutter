@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +7,7 @@ import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../shared/utils/formatter.dart';
-import '../../provider/cart_extension.dart';
+import '../../model/cart_extension.dart';
 import '../../provider/cart_provider.dart';
 
 class CartPaymentSuccessPage extends ConsumerStatefulWidget {
@@ -32,10 +33,10 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
     final cart = ref.watch(cartProvider);
 
     final change = cart.payments.reversed
-        .firstWhere(
+        .firstWhereOrNull(
           (p) => p.change != null && p.type == PaymentType.cash,
         )
-        .change;
+        ?.change;
 
     return Scaffold(
       body: Center(

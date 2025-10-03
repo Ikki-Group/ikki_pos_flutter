@@ -11,8 +11,8 @@ import '../../../../utils/extensions.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../outlet/provider/outlet_provider.dart';
 import '../../../sales/model/payment_model.dart';
+import '../../model/cart_extension.dart';
 import '../../model/cart_state.dart';
-import '../../provider/cart_extension.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_payment_notifier.dart';
 

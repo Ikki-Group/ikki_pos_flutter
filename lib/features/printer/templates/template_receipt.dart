@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../shared/utils/formatter.dart';
 import '../../cart/model/cart_state.dart';
-import '../../outlet/data/outlet_state.dart';
+import '../../outlet/model/outlet_state.dart';
 import 'printer_utils.dart';
 
 class TemplateReceipt extends PrinterTemplate {

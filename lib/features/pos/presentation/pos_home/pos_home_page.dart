@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import "./pos_home_controller.dart";
+import 'pos_home_notifier.dart';
+import 'pos_sales.dart';
+import 'pos_sales_details.dart';
 
 class PosHomePage extends ConsumerStatefulWidget {
   const PosHomePage({super.key});
@@ -23,10 +25,16 @@ class _PosHomePageState extends ConsumerState<PosHomePage> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
               child: Row(
-                children: [
-                  // Expanded(flex: 5, child: PosCartList()),
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: PosSales(),
+                  ),
                   SizedBox(width: 8),
-                  // Expanded(flex: 8, child: PosCartDetails()),
+                  Expanded(
+                    flex: 8,
+                    child: PosSalesDetails(),
+                  ),
                 ],
               ),
             ),

@@ -58,6 +58,14 @@ abstract class OutletSessionModel with _$OutletSessionModel {
   }) = _OutletSessionModel;
 
   factory OutletSessionModel.fromJson(Json json) => _$OutletSessionModelFromJson(json);
+
+  factory OutletSessionModel.empty() => OutletSessionModel(
+    id: '',
+    outletId: '',
+    open: OutletSessionInfo.empty(),
+    close: OutletSessionInfo.empty(),
+    status: ShiftStatus.close,
+  );
 }
 
 @freezed
@@ -70,4 +78,11 @@ abstract class OutletSessionInfo with _$OutletSessionInfo {
   }) = _OutletSessionInfo;
 
   factory OutletSessionInfo.fromJson(Json json) => _$OutletSessionInfoFromJson(json);
+
+  factory OutletSessionInfo.empty() => OutletSessionInfo(
+    at: '',
+    by: '',
+    balance: 0,
+    note: '',
+  );
 }

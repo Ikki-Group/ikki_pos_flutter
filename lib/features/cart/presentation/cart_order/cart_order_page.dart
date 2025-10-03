@@ -4,10 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/ikki_router.dart';
-import '../../../../shared/utils/formatter.dart';
 import '../../../../widgets/dialogs/sales_mode_dialog.dart';
-import '../../provider/cart_extension.dart';
 import '../../provider/cart_provider.dart';
+import 'cart_actions.dart';
 import 'cart_category.dart';
 import 'cart_items.dart';
 import 'cart_product_catalog.dart';
@@ -64,7 +63,7 @@ class _CartOrderPageState extends ConsumerState<CartOrderPage> {
                     SizedBox(height: 12),
                     CartSummary(),
                     SizedBox(height: 12),
-                    _CartAction(),
+                    CartActions(),
                   ],
                 ),
               ),
@@ -123,80 +122,6 @@ class _ProductFilterSection extends ConsumerWidget {
   }
 }
 
-class _CartAction extends ConsumerWidget {
-  const _CartAction();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cart = ref.watch(cartProvider);
-    final isEmpty = cart.currentItems.isEmpty;
-
-    var label = 'Bayar';
-    if (cart.items.isNotEmpty) label += '  |  ${Formatter.toIdr.format(cart.net)}';
-
-    void onPressed() {
-      context.goNamed(IkkiRouter.cartPayment.name);
-    }
-
-    // TODO
-    Future<void> onSave() async {
-      // CartSaveDialog.show(context);
-      // await ref.read(cartStateProvider.notifier).save();
-      // ref.invalidate(posCartListProvider);
-      // if (context.mounted) context.goNamed(IkkiRouter.pos.name);
-    }
-
-    Future<void> onClear() async {
-      await ref.read(cartProvider.notifier).clearCurrentItems();
-    }
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            IconButton.outlined(
-              icon: const Icon(Icons.delete_sweep_outlined),
-              onPressed: isEmpty ? null : onClear,
-              style: IconButton.styleFrom(
-                foregroundColor: AppTheme.accentRed,
-                side: const BorderSide(color: AppTheme.accentRed),
-              ),
-            ),
-            const SizedBox(width: 8),
-            IconButton.outlined(
-              icon: const Icon(Icons.save),
-              onPressed: isEmpty ? null : onSave,
-              style: IconButton.styleFrom(
-                foregroundColor: AppTheme.primaryBlue,
-                side: const BorderSide(color: AppTheme.primaryBlue),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.discount_outlined),
-                label: const Text('Discount'),
-                onPressed: null,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: FilledButton(
-                onPressed: isEmpty ? null : onPressed,
-                child: Text(label),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class _SalesModeInfo extends ConsumerWidget {
   const _SalesModeInfo();
 
@@ -232,7 +157,6 @@ class _BadgeReceiptCode extends ConsumerWidget {
         border: Border.all(color: AppTheme.borderDark),
       ),
       child: Row(
-        // mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(Icons.receipt, size: 16, color: AppTheme.textOnSecondary),
           const SizedBox(width: 8),

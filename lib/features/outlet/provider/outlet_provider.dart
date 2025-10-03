@@ -1,11 +1,15 @@
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../core/config/app_constant.dart';
 import '../../app/model/device_model.dart';
 import '../../auth/model/user_model.dart';
+import '../../cart/model/cart_state.dart';
 import '../data/outlet_repo.dart';
-import '../data/outlet_state.dart';
+import '../data/outlet_session_repo.dart';
+import '../model/outlet_extension.dart';
 import '../model/outlet_model.dart';
+import '../model/outlet_state.dart';
 import '../model/shift_status.dart';
 
 part 'outlet_provider.g.dart';
@@ -51,5 +55,63 @@ class Outlet extends _$Outlet {
     return true;
   }
 
-  Future<void> incrementQueue() async {}
+  Future<bool> closeOutlet(int cash, UserModel user, String? note) async {
+    if (!state.isOpen) throw Exception('Outlet session is not open');
+
+    var newSession = state.sessionRequired.copyWith();
+    final now = DateTime.now().toIso8601String();
+
+    newSession = newSession.copyWith(
+      close: OutletSessionInfo(
+        at: now,
+        by: user.id,
+        balance: cash,
+        note: '',
+      ),
+      status: ShiftStatus.close,
+    );
+
+    await ref.read(outletSessionRepoProvider).save(newSession);
+    final newState = state.copyWith(
+      session: null,
+    );
+
+    await ref.read(outletRepoProvider).saveState(newState);
+    state = newState;
+
+    return true;
+  }
+
+  Future<void> onSavedOrder({
+    required CartState cart,
+    required CartStatus lastStatus,
+    List<CartPayment>? newPayments,
+  }) async {
+    var newState = state.copyWith();
+    var newSession = newState.session!.copyWith();
+
+    if (lastStatus == CartStatus.init) {
+      newSession = newSession.copyWith(
+        queue: newSession.queue + 1,
+        trxCount: newSession.trxCount + 1,
+      );
+    }
+
+    if (newPayments != null) {
+      final amount = newPayments.fold<double>(0, (prev, curr) => prev + curr.amount);
+      final cashType = newPayments.where((p) => p.type == PaymentType.cash);
+      final cash = cashType.fold<double>(0, (prev, curr) => prev + curr.amount);
+
+      newSession = newSession.copyWith(
+        netSales: newSession.netSales + amount,
+        cash: newSession.cash + cash,
+      );
+    }
+
+    newState = newState.copyWith(
+      session: newSession,
+    );
+
+    await ref.read(outletRepoProvider).saveState(newState);
+  }
 }

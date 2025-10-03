@@ -12,11 +12,12 @@ part "app_provider.g.dart";
 @Riverpod(keepAlive: true)
 class App extends _$App {
   @override
-  AppState build() => AppState();
+  AppState build() => const AppState(
+    isLoading: true,
+    isAuthenticated: false,
+  );
 
   Future<AppState> init() async {
-    state = AppState(isLoading: true);
-
     final token = await ref.read(authTokenProvider.notifier).load();
 
     if (token != null && token.isNotEmpty) {
@@ -27,7 +28,7 @@ class App extends _$App {
       final data = await ref.read(syncRepoProvider).deviceSync();
 
       await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
-      await ref.read(userProvider.notifier).syncLocal(data.users);
+      await ref.read(userProvider.notifier).syncLocal(data.accounts);
       await ref.read(productProvider.notifier).syncData(data.products, data.categories);
 
       state = state.copyWith(isAuthenticated: true);

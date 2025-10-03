@@ -12,6 +12,7 @@ enum BillType {
 }
 
 enum CartStatus {
+  init,
   process,
   success,
   fail,
