@@ -2,6 +2,7 @@ import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:intl/intl.dart';
 
 import '../../../shared/utils/formatter.dart';
+import '../../cart/model/cart_extension.dart';
 import '../../cart/model/cart_state.dart';
 import '../../outlet/model/outlet_state.dart';
 import 'printer_utils.dart';
@@ -17,16 +18,7 @@ class TemplateReceipt extends PrinterTemplate {
 
   @override
   Future<List<int>> build(Generator generator) async {
-    var bytes = <int>[];
-
-    bytes += generator.clearStyle();
-    bytes += [0x1B, 0x21, 0x00]; // ESC ! 0 (Font A, normal)
-    bytes += generator.setStyles(
-      const PosStyles(
-        fontType: PosFontType.fontA,
-        align: PosAlign.center,
-      ),
-    );
+    var bytes = initBytes();
     bytes += generator.feed(1);
 
     bytes += generator.text(
@@ -50,20 +42,23 @@ class TemplateReceipt extends PrinterTemplate {
     }
 
     bytes += generator.hr(ch: '=', len: 32);
-    bytes += generator.text('--- Dine In ---', styles: const PosStyles(align: PosAlign.center, bold: true));
+    bytes += generator.text(
+      '--- ${cart.salesMode.value} ---',
+      styles: const PosStyles(align: PosAlign.center, bold: true),
+    );
+    bytes += generator.feed(1);
 
     for (final item in cart.items) {
       bytes += rowCartItem(item, generator);
     }
     bytes += generator.hr(len: 32);
 
-    // ignore: join_return_with_assignment
-    // bytes += generator.row(rowHeader('Total', cart.net.toIdrNoSymbol));
+    bytes += generator.text(" ${cart.itemsCount} Items");
     bytes += generator.row([
       PosColumn(
         text: 'Subtotal',
         width: 8,
-        styles: const PosStyles(align: PosAlign.right),
+        styles: const PosStyles(align: PosAlign.left),
       ),
       PosColumn(
         text: cart.gross.toIdrNoSymbol,
@@ -71,6 +66,8 @@ class TemplateReceipt extends PrinterTemplate {
         styles: const PosStyles(align: PosAlign.right),
       ),
     ]);
+    bytes += generator.hr(ch: '-', len: 32);
+
     bytes += generator.row([
       PosColumn(
         text: 'Total',
@@ -83,7 +80,24 @@ class TemplateReceipt extends PrinterTemplate {
         styles: const PosStyles(align: PosAlign.right, bold: true),
       ),
     ]);
-    bytes += generator.feed(2);
+
+    bytes += generator.feed(1);
+
+    // Footer
+    bytes += generator.text(
+      '''
+Terima kasih atas pesanan anda.
+
+Ikki Coffee
+123456
+''',
+      styles: const PosStyles(
+        align: PosAlign.center,
+        bold: true,
+      ),
+    );
+
+    bytes += generator.feed(3);
 
     return bytes;
   }
@@ -101,12 +115,16 @@ class TemplateReceipt extends PrinterTemplate {
     var bytes = <int>[];
 
     bytes += generator.row([
+      PosColumn(text: item.product.name, width: 12),
+    ]);
+
+    bytes += generator.row([
       PosColumn(
         text: item.qty.toString(),
         width: 1,
       ),
       PosColumn(
-        text: item.product.name,
+        text: "x @${item.price.toIdrNoSymbol}",
         width: 8,
       ),
       PosColumn(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,6 +9,8 @@ import '../../auth/provider/user_provider.dart';
 import '../../outlet/model/outlet_extension.dart';
 import '../../outlet/model/outlet_state.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../../printer/provider/printer_provider.dart';
+import '../../printer/templates/template_receipt_checker.dart';
 import '../../product/model/product_model.dart';
 import '../../sales/provider/sales_provider.dart';
 import '../model/cart_extension.dart';
@@ -184,8 +188,9 @@ class Cart extends _$Cart implements CartAbstract {
 
   @override
   Future<void> pay(List<CartPayment> payments, UserModel user, OutletState outletState) async {
+    final outlet = ref.read(outletProvider);
     var newState = state.copyWith();
-    newState = newState.copyWith(status: CartStatus.process, payments: payments);
+    newState = newState.copyWith(status: CartStatus.success, payments: payments);
 
     await ref
         .read(outletProvider.notifier)
@@ -196,6 +201,11 @@ class Cart extends _$Cart implements CartAbstract {
         );
 
     await ref.read(salesProvider.notifier).save(newState);
+
+    unawaited(ref.read(printerProvider.notifier).print(TemplateReceiptChecker(newState, outlet)));
+    // unawaited(ref.read(printerProvider.notifier).print(TemplateReceipt(newState, outlet)));
+
+    state = newState;
   }
 
   @override

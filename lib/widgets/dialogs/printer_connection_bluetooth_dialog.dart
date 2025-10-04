@@ -123,8 +123,7 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
                       subtitle: Text(printer.address!),
                       value: printer.address == selectedPrinter?.address,
                       onChanged: (bool? value) {
-                        printer.isConnected = false;
-                        selectedPrinter = printer;
+                        selectedPrinter = printer.copyWith(isConnected: false);
                         setState(() {});
                       },
                     );

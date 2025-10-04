@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../auth/provider/auth_token_provider.dart';
 import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../../printer/provider/printer_provider.dart';
 import '../../product/provider/product_provider.dart';
 import '../data/sync_repo.dart';
 import '../model/app_state.dart';
@@ -19,19 +20,24 @@ class App extends _$App {
 
   Future<AppState> init() async {
     final token = await ref.read(authTokenProvider.notifier).load();
+    await ref.read(printerProvider.notifier).load();
 
-    if (token != null && token.isNotEmpty) {
-      // await ref.read(userRepoProvider).getData();
-      // await ref.read(outletProvider.notifier).load();
+    try {
+      if (token != null && token.isNotEmpty) {
+        // await ref.read(userRepoProvider).getData();
+        // await ref.read(outletProvider.notifier).load();
 
-      // Hard sync
-      final data = await ref.read(syncRepoProvider).deviceSync();
+        // Hard sync
+        final data = await ref.read(syncRepoProvider).deviceSync();
 
-      await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
-      await ref.read(userProvider.notifier).syncLocal(data.accounts);
-      await ref.read(productProvider.notifier).syncData(data.products, data.categories);
+        await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
+        await ref.read(userProvider.notifier).syncLocal(data.accounts);
+        await ref.read(productProvider.notifier).syncData(data.products, data.categories);
 
-      state = state.copyWith(isAuthenticated: true);
+        state = state.copyWith(isAuthenticated: true, isLoading: false);
+      }
+    } catch (e) {
+      state = state.copyWith(isAuthenticated: false, isLoading: false);
     }
 
     return state;

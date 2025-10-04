@@ -7,6 +7,9 @@ import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../shared/utils/formatter.dart';
+import '../../../outlet/provider/outlet_provider.dart';
+import '../../../printer/provider/printer_provider.dart';
+import '../../../printer/templates/template_receipt.dart';
 import '../../model/cart_extension.dart';
 import '../../provider/cart_provider.dart';
 
@@ -27,6 +30,12 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
     context.goNamed(IkkiRouter.pos.name);
   }
 
+  void onPrint() {
+    final cart = ref.read(cartProvider);
+    final outlet = ref.read(outletProvider);
+    ref.read(printerProvider.notifier).print(TemplateReceipt(cart, outlet));
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -37,6 +46,24 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
           (p) => p.change != null && p.type == PaymentType.cash,
         )
         ?.change;
+
+    final rowWidgets = <Widget>[];
+
+    if (change != null) {
+      rowWidgets.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Kembalian', style: textTheme.titleSmall),
+            const SizedBox(width: 16),
+            Text(
+              change.toIdrNoSymbol,
+              style: textTheme.titleSmall,
+            ),
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       body: Center(
@@ -69,7 +96,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                     Text('Total Tagihan', style: textTheme.bodyMedium),
                     const SizedBox(width: 16),
                     Text(
-                      cart.net.toIdr,
+                      cart.net.toIdrNoSymbol,
                       style: textTheme.bodyMedium,
                     ),
                   ],
@@ -82,12 +109,12 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                       Text(payment.label, style: textTheme.bodyMedium),
                       const SizedBox(width: 16),
                       Text(
-                        payment.amount.toIdr,
+                        payment.amount.toIdrNoSymbol,
                         style: textTheme.bodyMedium,
                       ),
                     ],
                   ),
-                if (change != null && change > 0) ...[
+                if (change != null && change > 0) ...<Widget>[
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +125,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                       ),
                       const SizedBox(width: 16),
                       Text(
-                        change.toIdr,
+                        change.toIdrNoSymbol,
                         style: textTheme.titleSmall?.copyWith(
                           color: AppTheme.secondaryOrange,
                         ),
@@ -110,9 +137,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
-                    onPressed: () {
-                      // ref.read(cartProvider.notifier).print();
-                    },
+                    onPressed: onPrint,
                     child: const Text('Cetak Nota'),
                   ),
                 ),

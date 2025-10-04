@@ -19,7 +19,7 @@ enum CartStatus {
 }
 
 enum SalesMode {
-  dineIn(value: 'Dine-in'),
+  dineIn(value: 'Dine In'),
   takeAway(value: 'Take Away');
 
   const SalesMode({required this.value});

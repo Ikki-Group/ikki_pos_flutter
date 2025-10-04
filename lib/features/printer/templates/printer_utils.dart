@@ -4,10 +4,33 @@ import 'package:flutter_thermal_printer/utils/printer.dart';
 import '../model/printer_enum.dart';
 import '../model/printer_model.dart';
 
-abstract class PrinterTemplate {
+abstract class PrinterTemplate with PrinterUtils {
   String get name;
 
   Future<List<int>> build(Generator generator);
+}
+
+mixin class PrinterUtils {
+  late Generator generator;
+
+  void setup(Generator generator) {
+    this.generator = generator;
+  }
+
+  List<int> initBytes() {
+    print('initBytes');
+    var bytes = <int>[];
+    bytes += generator.clearStyle();
+    bytes += [0x1B, 0x21, 0x00];
+    bytes += generator.setStyles(
+      const PosStyles(
+        fontType: PosFontType.fontA,
+        align: PosAlign.center,
+      ),
+    );
+
+    return bytes;
+  }
 }
 
 extension PrinterModelX on PrinterModel {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/utils/formatter.dart';
 import '../../../cart/model/cart_extension.dart';
@@ -37,23 +38,27 @@ class PosSales extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Expanded(
-              child: switch (salesState) {
-                AsyncData(:final value) => ListView.separated(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    final item = value[index];
-                    return PosSalesItem(
-                      cart: item,
-                      onTap: () {
-                        ref.read(posFilterProvider.notifier).setSelectedCart(item.id);
-                      },
-                      isSelected: item.id == selectedCartId,
-                    );
-                  },
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                ),
-                _ => const Center(child: CircularProgressIndicator()),
-              },
+              child: salesState.when<Widget>(
+                data: (data) {
+                  data = data.where((item) => item.status != CartStatus.success).toList();
+                  return ListView.separated(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final item = data[index];
+                      return PosSalesItem(
+                        cart: item,
+                        onTap: () {
+                          ref.read(posFilterProvider.notifier).setSelectedCart(item.id);
+                        },
+                        isSelected: item.id == selectedCartId,
+                      );
+                    },
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                  );
+                },
+                error: (_, _) => const Center(child: CircularProgressIndicator()),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              ),
             ),
           ],
         ),

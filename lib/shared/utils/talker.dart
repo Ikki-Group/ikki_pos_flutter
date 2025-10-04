@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -32,21 +31,21 @@ class _MyFormatter implements LoggerFormatter {
 
 /// Useful to log state change in our application
 /// Read the logs and you'll better understand what's going on under the hood
-class TalkerStateLogger extends ProviderObserver {
-  const TalkerStateLogger();
+// class TalkerStateLogger extends ProviderObserver {
+//   const TalkerStateLogger();
 
-  @override
-  void didUpdateProvider(
-    ProviderObserverContext context,
-    Object? previousValue,
-    Object? newValue,
-  ) {
-    logger.debug('''
-{
-  provider: ${context.provider.name},
-  prev: $previousValue,
-  new: $newValue
-}
-''');
-  }
-}
+//   @override
+//   void didUpdateProvider(
+//     ProviderObserverContext context,
+//     Object? previousValue,
+//     Object? newValue,
+//   ) {
+//     logger.debug('''
+// {
+//   provider: ${context.provider.name},
+//   prev: $previousValue,
+//   new: $newValue
+// }
+// ''');
+//   }
+// }

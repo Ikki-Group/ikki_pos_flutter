@@ -41,8 +41,8 @@ class PrinterImpl extends _$PrinterImpl implements PrinterContract {
 
   @override
   Future<void> load() async {
-    // state = await ref.read(printerRepoProvider).getLocal();
-    // talker.info('[PrinterImpl] load, $state');
+    state = await ref.read(printerRepoProvider).getLocal();
+    talker.info('[PrinterImpl] load, $state');
   }
 
   @override
@@ -156,6 +156,7 @@ class PrinterImpl extends _$PrinterImpl implements PrinterContract {
     final profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm58, profile);
     await instance.connect(printer);
+    template.setup(generator);
     final bytes = await template.build(generator);
 
     await queue.queue.add(() async {

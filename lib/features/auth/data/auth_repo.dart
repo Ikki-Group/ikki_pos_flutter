@@ -89,7 +89,7 @@ class AuthRepoImpl implements AuthRepo {
         os: '${andro.device} ${andro.version} ${andro.brand}',
         osVersion: andro.version.release,
         model: andro.model,
-        deviceId: andro.serialNumber,
+        deviceId: andro.id,
       );
     } else if (Platform.isIOS) {
       final ios = await DeviceInfoPlugin().iosInfo;

@@ -15,21 +15,17 @@ class TemplateReceiptChecker extends PrinterTemplate {
 
   @override
   Future<List<int>> build(Generator generator) async {
-    var bytes = <int>[];
     final batchId = cart.batchId;
 
-    bytes += generator.clearStyle();
-    bytes += [0x1B, 0x21, 0x00]; // ESC ! 0 (Font A, normal)
-    bytes += generator.setStyles(
-      const PosStyles(
-        fontType: PosFontType.fontA,
-        align: PosAlign.center,
-      ),
-    );
-    bytes += generator.feed(1);
+    var bytes = initBytes();
+    bytes += generator.feed(2);
 
     bytes += generator.text(
       'Checker',
+      styles: const PosStyles(align: PosAlign.center, bold: true),
+    );
+    bytes += generator.text(
+      cart.rc,
       styles: const PosStyles(align: PosAlign.center, bold: true),
     );
     bytes += generator.text(
@@ -44,6 +40,8 @@ class TemplateReceiptChecker extends PrinterTemplate {
       styles: const PosStyles(align: PosAlign.center, bold: true),
     );
 
+    bytes += generator.feed(1);
+
     final itemsInBatch = cart.items.filter((item) => item.batchId == batchId);
 
     assert(itemsInBatch.isNotEmpty, 'Items in batch $batchId is empty');
@@ -52,15 +50,18 @@ class TemplateReceiptChecker extends PrinterTemplate {
       bytes += generator.row([
         PosColumn(
           text: item.qty.toString(),
-          styles: const PosStyles(align: PosAlign.right),
+          styles: const PosStyles(align: PosAlign.left),
+          width: 2,
         ),
         PosColumn(
           text: item.product.name,
           width: 10,
-          styles: const PosStyles(align: PosAlign.right),
+          styles: const PosStyles(align: PosAlign.left),
         ),
       ]);
     }
+
+    bytes += generator.feed(2);
 
     return bytes;
   }
