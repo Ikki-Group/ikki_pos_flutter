@@ -27,13 +27,7 @@ class App extends _$App {
         // await ref.read(userRepoProvider).getData();
         // await ref.read(outletProvider.notifier).load();
 
-        // Hard sync
-        final data = await ref.read(syncRepoProvider).deviceSync();
-
-        await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
-        await ref.read(userProvider.notifier).syncLocal(data.accounts);
-        await ref.read(productProvider.notifier).syncData(data.products, data.categories);
-
+        await hardSync();
         state = state.copyWith(isAuthenticated: true, isLoading: false);
       }
     } catch (e) {
@@ -41,5 +35,14 @@ class App extends _$App {
     }
 
     return state;
+  }
+
+  Future<void> hardSync() async {
+    // Hard sync
+    final data = await ref.read(syncRepoProvider).deviceSync();
+
+    await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
+    await ref.read(userProvider.notifier).syncLocal(data.accounts);
+    await ref.read(productProvider.notifier).syncData(data.products, data.categories);
   }
 }

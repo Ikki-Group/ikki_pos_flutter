@@ -30,6 +30,7 @@ abstract class AuthRepo {
   // Token Management
   Future<String?> getToken();
   Future<bool?> setToken(String token);
+  Future<bool> logout();
 
   // Api Call
   Future<Result<String>> authenticate(String code);
@@ -54,6 +55,11 @@ class AuthRepoImpl implements AuthRepo {
   @override
   Future<bool?> setToken(String token) async {
     return sp.setString(SharedPrefsKeys.authToken.key, token);
+  }
+
+  @override
+  Future<bool> logout() async {
+    return sp.remove(SharedPrefsKeys.authToken.key);
   }
 
   @override

@@ -40,7 +40,7 @@ class PosSales extends ConsumerWidget {
             Expanded(
               child: salesState.when<Widget>(
                 data: (data) {
-                  data = data.where((item) => item.status != CartStatus.success).toList();
+                  data = data.where((item) => item.status == CartStatus.process).toList();
                   return ListView.separated(
                     itemCount: data.length,
                     itemBuilder: (context, index) {

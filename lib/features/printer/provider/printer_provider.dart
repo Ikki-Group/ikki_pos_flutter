@@ -173,7 +173,9 @@ class PrinterImpl extends _$PrinterImpl implements PrinterContract {
   Future<bool> print(PrinterTemplate template, {PrinterModel? printer}) async {
     talker.info('[PrinterImpl] print, $state');
     final selectedPrinter = printer ?? state.first;
+    // if (selectedPrinter != null) {
     await printTemplate(selectedPrinter, template);
+    // }
     return true;
   }
 }

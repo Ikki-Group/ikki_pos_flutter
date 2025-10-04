@@ -51,6 +51,7 @@ dependencies:
   talker_flutter: ^5.0.1
 
 dev_dependencies:
+  sentry_dart_plugin: ^3.1.1
   build_runner: ^2.4.15
   build_verify: ^3.1.1
   custom_lint: ^0.8.0
@@ -77,3 +78,9 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-Bold.ttf
+
+sentry:
+  upload_debug_symbols: true
+  upload_source_maps: true
+  project: pos-app
+  org: ikki-group

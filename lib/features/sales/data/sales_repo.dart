@@ -19,6 +19,8 @@ abstract class SalesRepo {
 
   Future<void> save(CartState sales);
   Future<void> update(CartState sales);
+
+  Future<void> logout();
 }
 
 class SalesRepoImpl implements SalesRepo {
@@ -49,5 +51,11 @@ class SalesRepoImpl implements SalesRepo {
   @override
   Future<void> update(CartState sales) async {
     await store.record(sales.id).update(ss.db, sales);
+  }
+
+  @override
+  Future<void> logout() async {
+    await store.delete(ss.db);
+    ss.db.dropAll();
   }
 }

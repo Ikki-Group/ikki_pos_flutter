@@ -44,7 +44,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     result.when(
       success: (_) => context
         ..showTextSnackBar("Autentikasi Berhasil")
-        ..goNamed(IkkiRouter.syncGlobal.name),
+        ..goNamed(IkkiRouter.splash.name),
       failure: (_) {
         context
           ..showTextSnackBar("Autentikasi Gagal", severity: SnackBarSeverity.error)
@@ -78,6 +78,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
             ),
             const SizedBox(height: 35),
             Pinput(
+              keyboardType: TextInputType.none,
               length: AppConstants.authDeviceCodeLen,
               controller: pinController,
               hapticFeedbackType: HapticFeedbackType.lightImpact,

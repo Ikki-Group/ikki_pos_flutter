@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../device/device_page.dart';
 import '../printer/printer_page.dart';
 import 'settings_config.dart';
 
@@ -44,9 +45,9 @@ class _SettingsLayoutState extends ConsumerState<SettingsLayout> {
                   padding: const EdgeInsets.all(16),
                   child: switch (selectedTab) {
                     SettingsTab.printer => const PrinterPage(),
+                    SettingsTab.devices => const DevicePage(),
                     // SettingsTab.logs => const SettingDevPage(),
-                    // SettingsTab.devices => const SettingsDevicesPage(),
-                    _ => const SizedBox(),
+                    _ => const Placeholder(),
                   },
                 ),
               ),

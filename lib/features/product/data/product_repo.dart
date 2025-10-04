@@ -45,6 +45,11 @@ class ProductRepoImpl implements ProductRepo {
 
   @override
   Future<bool> syncState(List<ProductModel> products, List<ProductCategoryModel> categories) {
+    // Sort by name
+    products = products.toList()..sort((a, b) => a.name.compareTo(b.name));
+    categories = categories.toList()..sort((a, b) => a.name.compareTo(b.name));
+
+    // Merge categories
     categories = [
       ProductCategoryModel(
         id: ProductCategoryModel.all,
