@@ -10,6 +10,7 @@ import '../features/cart/presentation/cart_payment/cart_payment_page.dart';
 import '../features/cart/presentation/cart_payment_success/cart_payment_success_page.dart';
 import '../features/outlet/presentation/shift/shift_page.dart';
 import '../features/pos/presentation/pos_home/pos_home_page.dart';
+import '../features/sales/presentation/sales/sales_page.dart';
 import '../features/settings/presentation/layouts/settings_layout.dart';
 import '../shared/utils/talker.dart';
 import '../widgets/layout/shell/shell_layout.dart';
@@ -52,6 +53,11 @@ GoRouter goRouter(Ref ref) {
             path: IkkiRouter.pos.path,
             name: IkkiRouter.pos.name,
             builder: (context, state) => const PosHomePage(),
+          ),
+          GoRoute(
+            path: IkkiRouter.sales.path,
+            name: IkkiRouter.sales.name,
+            builder: (context, state) => const SalesPage(),
           ),
           GoRoute(
             path: IkkiRouter.shift.path,

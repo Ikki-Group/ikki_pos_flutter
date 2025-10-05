@@ -58,7 +58,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isValidInput = code.length == AppConstants.authDeviceCodeLen;
-    final isLoading = ref.watch(authenticateProvider.select((s) => s.isLoading));
+    final authenticateState = ref.watch(authenticateProvider);
 
     return Scaffold(
       body: Center(
@@ -112,7 +112,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: !isValidInput || isLoading ? null : submit,
+              onPressed: !isValidInput || authenticateState.isLoading ? null : submit,
               child: const Text('Authenticate Device'),
             ),
           ],

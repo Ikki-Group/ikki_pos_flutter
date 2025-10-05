@@ -15,8 +15,11 @@ abstract class AppConfig {
 }
 
 abstract class ApiConfig {
-  static String get baseUrl => AppConfig.prodUrl;
+  static String get baseUrl => AppConfig.devUrl;
 
   static const String outletDeviceClaim = '/outlet/device/claim';
   static const String outletDeviceSync = '/outlet/device/sync';
+
+  static const String outletShiftOpen = '/outlet/shift-session/open';
+  static const String outletShiftClose = '/outlet/shift-session/close';
 }

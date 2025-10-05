@@ -30,7 +30,7 @@ class Outlet extends _$Outlet {
     return state;
   }
 
-  Future<bool> openOutlet(int cash, UserModel user) async {
+  Future<bool> openOutlet(int cash, UserModel user, String? note) async {
     if (state.isOpen) throw Exception('Outlet session is already open');
 
     final outlet = state.outlet;
@@ -50,8 +50,18 @@ class Outlet extends _$Outlet {
       ),
     );
 
-    await ref.read(outletRepoProvider).saveState(newState);
-    state = newState;
+    // await ref.read(outletRepoProvider).saveState(newState);
+    // state = newState;
+    await ref
+        .read(outletSessionRepoProvider)
+        .open(
+          outletId: state.outlet.id,
+          by: user.id,
+          at: now,
+          balance: cash,
+          note: note,
+        );
+
     return true;
   }
 
@@ -82,6 +92,7 @@ class Outlet extends _$Outlet {
     return true;
   }
 
+  // TODO
   Future<void> onSavedOrder({
     required CartState cart,
     required CartStatus lastStatus,
@@ -93,7 +104,7 @@ class Outlet extends _$Outlet {
     if (lastStatus == CartStatus.init) {
       newSession = newSession.copyWith(
         queue: newSession.queue + 1,
-        trxCount: newSession.trxCount + 1,
+        // trxCount: newSession.trxCount + 1,
       );
     }
 
@@ -103,8 +114,8 @@ class Outlet extends _$Outlet {
       final cash = cashType.fold<double>(0, (prev, curr) => prev + curr.amount);
 
       newSession = newSession.copyWith(
-        netSales: newSession.netSales + amount,
-        cash: newSession.cash + cash,
+        // netSales: newSession.netSales + amount,
+        // cash: newSession.cash + cash,
       );
     }
 

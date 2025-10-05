@@ -47,12 +47,8 @@ abstract class OutletSessionModel with _$OutletSessionModel {
     required String id,
     required String outletId,
     required ShiftStatus status,
-    @Default(0) int trxCount,
-    @Default(0) int trxSuccess,
-    @Default(0) int trxFail,
-    @Default(0) double netSales,
-    @Default(0) double cash,
     @Default(1) int queue,
+    @Default(SessionSummary()) SessionSummary summary,
     @Default(OutletSessionInfo()) OutletSessionInfo open,
     @Default(OutletSessionInfo()) OutletSessionInfo close,
   }) = _OutletSessionModel;
@@ -85,4 +81,21 @@ abstract class OutletSessionInfo with _$OutletSessionInfo {
     balance: 0,
     note: '',
   );
+}
+
+@freezed
+sealed class SessionSummary with _$SessionSummary {
+  const factory SessionSummary({
+    @Default(0) int expectedCash,
+    @Default(0) int actualCash,
+    @Default(0) int cashVariance,
+    @Default(0) int totalOrders,
+    @Default(0) int totalVoids,
+    @Default(0) int totalSales,
+    @Default(0) int cashSales,
+    @Default(0) int nonCashSales,
+    @Default(0) int refunds,
+  }) = _SessionSummary;
+
+  factory SessionSummary.fromJson(Json json) => _$SessionSummaryFromJson(json);
 }

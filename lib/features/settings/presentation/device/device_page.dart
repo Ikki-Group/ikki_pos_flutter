@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../router/ikki_router.dart';
 import '../../../../utils/extensions.dart';
 import '../../../app/provider/app_provider.dart';
-import '../../../auth/provider/auth_token_provider.dart';
 
 class DevicePage extends ConsumerStatefulWidget {
   const DevicePage({super.key});
@@ -16,17 +15,17 @@ class DevicePage extends ConsumerStatefulWidget {
 
 class _DevicePageState extends ConsumerState<DevicePage> {
   Future<void> onLogout() async {
-    await ref.read(authTokenProvider.notifier).logout();
+    await ref.read(appProvider.notifier).logout();
     if (!mounted) return;
     context
       ..goNamed(IkkiRouter.authDevice.name)
-      ..showTextSnackBar('Berhasil logout');
+      ..showToast('Berhasil logout');
   }
 
   Future<void> onSync() async {
     await ref.read(appProvider.notifier).hardSync();
     if (!mounted) return;
-    context.showTextSnackBar('Berhasil menyinkronkan data');
+    context.showToast('Berhasil menyinkronkan data');
   }
 
   @override

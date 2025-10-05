@@ -1,5 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../core/db/sembast.dart';
+import '../../../core/db/shared_prefs.dart';
+import '../../../shared/utils/talker.dart';
 import '../../auth/provider/auth_token_provider.dart';
 import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
@@ -31,6 +34,7 @@ class App extends _$App {
         state = state.copyWith(isAuthenticated: true, isLoading: false);
       }
     } catch (e) {
+      talker.error(e.toString());
       state = state.copyWith(isAuthenticated: false, isLoading: false);
     }
 
@@ -44,5 +48,10 @@ class App extends _$App {
     await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
     await ref.read(userProvider.notifier).syncLocal(data.accounts);
     await ref.read(productProvider.notifier).syncData(data.products, data.categories);
+  }
+
+  Future<void> logout() async {
+    await ref.read(sembastServiceProvider).drop();
+    await ref.read(sharedPrefsProvider).clear();
   }
 }

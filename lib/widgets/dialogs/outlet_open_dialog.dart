@@ -34,7 +34,7 @@ var openOutletMutation = Mutation<void>();
 
 Future<void> executeOpenOutlet(WidgetRef ref, int cash, UserModel user) async {
   await openOutletMutation.run(ref, (tsx) async {
-    await ref.read(outletProvider.notifier).openOutlet(cash, user);
+    await ref.read(outletProvider.notifier).openOutlet(cash, user, "");
   });
 }
 

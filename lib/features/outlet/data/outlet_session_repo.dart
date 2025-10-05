@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sembast/sembast_io.dart';
 
+import '../../../core/config/app_config.dart';
 import '../../../core/db/sembast.dart';
 import '../../../core/network/dio_client.dart';
+import '../../../shared/utils/talker.dart';
 import '../../../utils/json.dart';
 import '../model/outlet_model.dart';
 
@@ -20,6 +22,16 @@ abstract class OutletSessionRepo {
   Future<List<OutletSessionModel>> list();
   Future<OutletSessionModel?> get(String id);
   Future<void> save(OutletSessionModel session);
+
+  // Rest API
+  Future<void> open({
+    required String outletId,
+    required String by,
+    required String at,
+    required int balance,
+    String? note,
+  });
+  // Future<void> close();
 }
 
 class OutletSessionInfoImpl extends OutletSessionRepo {
@@ -47,5 +59,29 @@ class OutletSessionInfoImpl extends OutletSessionRepo {
   @override
   Future<void> save(OutletSessionModel session) async {
     await store.record(session.id).put(ss.db, session.toJson());
+  }
+
+  @override
+  Future<void> open({
+    required String outletId,
+    required String by,
+    required String at,
+    required int balance,
+    String? note,
+  }) async {
+    final res = await dio.post(
+      ApiConfig.outletShiftOpen,
+      data: {
+        'outletId': outletId,
+        'open': {
+          'by': by,
+          'at': at,
+          'balance': balance,
+          'note': note,
+        },
+      },
+    );
+
+    talker.debug('open $res');
   }
 }
