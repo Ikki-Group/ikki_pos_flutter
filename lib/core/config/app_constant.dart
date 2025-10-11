@@ -1,6 +1,7 @@
 abstract class AppConstants {
   static const appName = 'Ikki POS';
   static const appVersion = '1.0.0';
+  static const developerName = 'Rizqy Nugroho';
 
   static const authDeviceCodeLen = 6;
   static const pinLength = 4;
