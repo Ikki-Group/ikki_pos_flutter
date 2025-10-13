@@ -6,7 +6,7 @@ import 'package:objectid/objectid.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../shared/utils/talker.dart';
+import '../../../utils/talker.dart';
 import '../data/printer_repo.dart';
 import '../model/printer_enum.dart';
 import '../model/printer_model.dart';

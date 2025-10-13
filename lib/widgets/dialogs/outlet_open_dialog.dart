@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/experimental/mutation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../features/auth/model/user_model.dart';
 import '../../features/auth/provider/user_provider.dart';
 import '../../features/outlet/provider/outlet_provider.dart';
-import '../../shared/utils/formatter.dart';
 import '../../utils/extensions.dart';
+import '../../utils/formatter.dart';
 import '../ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
 import 'currency_numpad_dialog.dart';
@@ -30,13 +30,7 @@ class OutletOpenDialog extends ConsumerStatefulWidget {
   }
 }
 
-var openOutletMutation = Mutation<void>();
-
-Future<void> executeOpenOutlet(WidgetRef ref, int cash, UserModel user) async {
-  await openOutletMutation.run(ref, (tsx) async {
-    await ref.read(outletProvider.notifier).openOutlet(cash, user, "");
-  });
-}
+var mutation = Mutation<void>();
 
 class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
   int cash = 0;
@@ -45,11 +39,19 @@ class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
 
   Future<void> onConfirm() async {
     if (cash == 0) return;
-    final user = ref.read(userProvider).selectedUser;
-    await executeOpenOutlet(ref, cash, user);
-    if (!mounted) return;
-    context.showTextSnackBar('Berhasil membuka toko');
-    onClose();
+
+    mutation.run(ref, (tsx) async {
+      final user = ref.read(userProvider).selectedUser;
+      final res = await ref.read(outletProvider.notifier).openOutlet(cash, user, "");
+
+      if (!mounted) return;
+      if (res) {
+        context.showToast('Berhasil membuka toko');
+        onClose();
+      } else {
+        context.showToast('Gagal membuka toko', type: ToastificationType.error);
+      }
+    });
   }
 
   Future<void> onTapCash() async {
@@ -71,7 +73,7 @@ class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
     final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider);
     final user = ref.watch(userProvider).selectedUser;
-    final mutationState = ref.watch(openOutletMutation);
+    final ms = ref.watch(mutation);
 
     return PosDialog(
       mainAxisSize: MainAxisSize.min,
@@ -83,7 +85,7 @@ class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
           Expanded(
             child: PosButton.process(
               onPressed: onConfirm,
-              isLoading: mutationState is MutationPending,
+              isLoading: ms is MutationPending,
             ),
           ),
         ],

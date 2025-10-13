@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/config/app_constant.dart';
 import '../core/theme/app_theme.dart';
-import 'app_router.dart';
+import 'go_router.dart';
 
-class IkkiPosApp extends ConsumerWidget {
-  const IkkiPosApp({super.key});
+class PosApp extends ConsumerWidget {
+  const PosApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,14 +15,14 @@ class IkkiPosApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       theme: AppTheme.lightTheme,
+      title: AppConstants.appName,
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.25)),
           child: child!,
         );
       },
-      title: AppConstants.appName,
-      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../router/ikki_router.dart';
-import '../../../../shared/utils/formatter.dart';
+import '../../../../router/app_router.dart';
+import '../../../../utils/formatter.dart';
 import '../../../outlet/provider/outlet_provider.dart';
 import '../../../printer/provider/printer_provider.dart';
 import '../../../printer/templates/template_receipt.dart';
@@ -27,7 +27,7 @@ class _CartPaymentSuccessPageState extends ConsumerState<CartPaymentSuccessPage>
   }
 
   void onDone() {
-    context.goNamed(IkkiRouter.pos.name);
+    context.goNamed(AppRouter.pos.name);
   }
 
   void onPrint() {

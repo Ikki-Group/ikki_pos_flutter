@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../shared/utils/formatter.dart';
+import '../../../../utils/formatter.dart';
 import '../../../../widgets/dialogs/cart_product_picker_dialog.dart';
 import '../../../product/provider/product_provider.dart';
 import '../../model/cart_state.dart';

@@ -5,8 +5,8 @@ import 'package:sembast/sembast_io.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/db/sembast.dart';
 import '../../../core/network/dio_client.dart';
-import '../../../shared/utils/talker.dart';
 import '../../../utils/json.dart';
+import '../../../utils/talker.dart';
 import '../model/outlet_model.dart';
 
 part 'outlet_session_repo.g.dart';

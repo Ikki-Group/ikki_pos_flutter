@@ -9,6 +9,7 @@ import '../../../core/config/app_config.dart';
 import '../../../core/db/sembast.dart';
 import '../../../core/db/shared_prefs.dart';
 import '../../../core/network/dio_client.dart';
+import '../../../utils/exception.dart';
 import '../../../utils/result.dart';
 import 'auth_dto.dart';
 
@@ -74,8 +75,8 @@ class AuthRepoImpl implements AuthRepo {
       final token = res.data['data']['token'] as String;
       await setToken(token);
       return const Result.success('Auth Success');
-    } catch (e) {
-      return Result.failure(e.toString());
+    } catch (e, st) {
+      return Result.failure(AppException.fromObject(e, st));
     }
   }
 

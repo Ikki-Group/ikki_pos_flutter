@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../shared/utils/formatter.dart';
+import '../../utils/formatter.dart';
 import '../ui/numpad_pin.dart';
 import '../ui/pos_dialog_two.dart';
 

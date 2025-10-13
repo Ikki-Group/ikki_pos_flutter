@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../router/ikki_router.dart';
+import '../../../../router/app_router.dart';
 import '../../../../utils/extensions.dart';
 import '../../../app/provider/app_provider.dart';
 
@@ -18,7 +18,7 @@ class _DevicePageState extends ConsumerState<DevicePage> {
     await ref.read(appProvider.notifier).logout();
     if (!mounted) return;
     context
-      ..goNamed(IkkiRouter.authDevice.name)
+      ..goNamed(AppRouter.authDevice.name)
       ..showToast('Berhasil logout');
   }
 

@@ -1,6 +1,6 @@
 import 'package:queue/queue.dart';
 
-import '../../../shared/utils/talker.dart';
+import '../../../utils/talker.dart';
 
 class PrinterQueue {
   factory PrinterQueue() {

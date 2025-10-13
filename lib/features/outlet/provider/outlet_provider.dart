@@ -1,10 +1,12 @@
-import 'package:objectid/objectid.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/config/app_constant.dart';
+import '../../../utils/result.dart';
 import '../../app/model/device_model.dart';
 import '../../auth/model/user_model.dart';
 import '../../cart/model/cart_state.dart';
+import '../../shift/data/shift_repo.dart';
+import '../../shift/model/shift_session_model.dart';
 import '../data/outlet_repo.dart';
 import '../data/outlet_session_repo.dart';
 import '../model/outlet_extension.dart';
@@ -36,33 +38,22 @@ class Outlet extends _$Outlet {
     final outlet = state.outlet;
     final now = DateTime.now().toIso8601String();
 
-    final newState = state.copyWith(
-      session: OutletSessionModel(
-        id: ObjectId().hexString,
-        outletId: outlet.id,
-        open: OutletSessionInfo(
-          at: now,
-          by: user.id,
-          balance: cash,
-          note: '',
-        ),
-        status: ShiftStatus.open,
-      ),
-    );
-
-    // await ref.read(outletRepoProvider).saveState(newState);
-    // state = newState;
-    await ref
-        .read(outletSessionRepoProvider)
+    final result = await ref
+        .read(shiftRepoProvider)
         .open(
-          outletId: state.outlet.id,
-          by: user.id,
-          at: now,
-          balance: cash,
-          note: note,
+          outlet.id,
+          ShiftSessionInfo(
+            by: user.id,
+            at: now,
+            balance: cash,
+            note: note,
+          ),
         );
 
-    return true;
+    return result.when<bool>(
+      success: (_) => true,
+      failure: (_) => false,
+    );
   }
 
   Future<bool> closeOutlet(int cash, UserModel user, String? note) async {

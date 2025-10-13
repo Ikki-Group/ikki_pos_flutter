@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../router/ikki_router.dart';
-import '../../../../shared/utils/cash_generator.dart';
-import '../../../../shared/utils/formatter.dart';
+import '../../../../router/app_router.dart';
+import '../../../../utils/cash_generator.dart';
 import '../../../../utils/extensions.dart';
+import '../../../../utils/formatter.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../outlet/provider/outlet_provider.dart';
 import '../../../sales/model/payment_model.dart';
@@ -25,7 +25,7 @@ class CartPaymentPage extends ConsumerStatefulWidget {
 
 class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
   void onPay() {
-    context.goNamed(IkkiRouter.cartPaymentSuccess.name);
+    context.goNamed(AppRouter.cartPaymentSuccess.name);
   }
 
   @override
@@ -34,7 +34,7 @@ class _CartPaymentPageState extends ConsumerState<CartPaymentPage> {
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
-          onPressed: () => context.goNamed(IkkiRouter.cart.name),
+          onPressed: () => context.goNamed(AppRouter.cart.name),
           icon: const Icon(Icons.arrow_back),
         ),
         title: const Text('Pembayaran'),
@@ -382,7 +382,7 @@ class _PayButton extends ConsumerWidget {
       if (!context.mounted) return;
       context
         ..showTextSnackBar("Berhasil menyelesaikan penjualan")
-        ..goNamed(IkkiRouter.cartPaymentSuccess.name);
+        ..goNamed(AppRouter.cartPaymentSuccess.name);
     }
 
     return FilledButton(

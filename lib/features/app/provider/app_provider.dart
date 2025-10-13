@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/db/sembast.dart';
 import '../../../core/db/shared_prefs.dart';
-import '../../../shared/utils/talker.dart';
+import '../../../utils/talker.dart';
 import '../../auth/provider/auth_token_provider.dart';
 import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';

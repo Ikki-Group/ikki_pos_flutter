@@ -5,12 +5,12 @@ import '../../../core/theme/app_theme.dart';
 import '../../../features/cart/widget/create_order_button.dart';
 import '../../../features/outlet/model/shift_status.dart';
 import '../../../features/outlet/provider/outlet_provider.dart';
-import '../../../router/ikki_router.dart';
+import '../../../router/app_router.dart';
 
 class ShellAppbar extends StatelessWidget implements PreferredSizeWidget {
   const ShellAppbar({required this.router, super.key});
 
-  final IkkiRouter? router;
+  final AppRouter? router;
 
   @override
   Size get preferredSize => const Size.fromHeight(72);
@@ -19,7 +19,7 @@ class ShellAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var actions = <Widget>[];
 
-    if (router == IkkiRouter.pos) actions.add(CreateOrderButton());
+    if (router == AppRouter.pos) actions.add(CreateOrderButton());
     if (actions.isNotEmpty) actions.add(const SizedBox(width: 8));
 
     return AppBar(
@@ -114,15 +114,15 @@ class _ShiftInfo extends ConsumerWidget {
 class _Title extends StatelessWidget {
   const _Title(this.router);
 
-  final IkkiRouter? router;
+  final AppRouter? router;
 
   @override
   Widget build(BuildContext context) {
     return switch (router) {
-      IkkiRouter.pos => const _PosInfo(),
-      IkkiRouter.sales => const Text('Riwayat Penjualan'),
-      IkkiRouter.shift => const Text('Pengelolaan Shift'),
-      IkkiRouter.settings => const Text('Pengaturan'),
+      AppRouter.pos => const _PosInfo(),
+      AppRouter.sales => const Text('Riwayat Penjualan'),
+      AppRouter.shift => const Text('Pengelolaan Shift'),
+      AppRouter.settings => const Text('Pengaturan'),
       _ => const Text('Ikki Pos'),
     };
   }

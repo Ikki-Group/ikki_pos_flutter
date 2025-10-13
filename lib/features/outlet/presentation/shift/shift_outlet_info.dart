@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/utils/formatter.dart';
+import '../../../../utils/formatter.dart';
 import '../../model/outlet_extension.dart';
 import '../../provider/outlet_provider.dart';
 

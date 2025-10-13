@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../shared/utils/formatter.dart';
+import '../../../../utils/formatter.dart';
 import '../../../../widgets/ui/pos_button.dart';
 import '../../../cart/model/cart_extension.dart';
 import '../../../cart/model/cart_state.dart';

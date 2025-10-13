@@ -1,8 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/utils/formatter.dart';
+import '../../../../utils/formatter.dart';
 import '../../provider/sales_provider.dart';
 
 class SalesPage extends ConsumerStatefulWidget {

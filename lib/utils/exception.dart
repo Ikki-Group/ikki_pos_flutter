@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import 'talker.dart';
+
 /// App exception handle any error that can be handled by the app.
 /// - DioException
 /// - Exception
@@ -13,17 +15,19 @@ class AppException implements Exception {
 
   factory AppException.fromDio(DioException e) {
     final data = e.response?.data;
+
     var msg = 'DioException: ${e.type}';
+    var code = e.type.toString();
+
     if (data is Map) {
-      print(data);
-      if (data['msg'] != null) {
-        msg = data['msg'] as String;
-      }
+      if (data['message'] is String) msg = data['message'] as String;
+      if (data['code'] is String) code = data['code'] as String;
     }
 
+    talker.error('[AppException.fromDio] message: $msg | code: $code | error: $e');
     return AppException(
       msg: msg,
-      code: e.type.toString(),
+      code: code,
       error: e.error,
       stackTrace: e.stackTrace,
     );
@@ -50,6 +54,7 @@ class AppException implements Exception {
       stackTrace: stackTrace,
     );
   }
+
   final String msg;
   final String code;
 

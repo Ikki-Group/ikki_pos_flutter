@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../router/ikki_router.dart';
+import '../../../../router/app_router.dart';
 import '../../../../widgets/dialogs/sales_mode_dialog.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_actions.dart';
@@ -81,7 +81,7 @@ class _Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void onBack() {
-      context.goNamed(IkkiRouter.pos.name);
+      context.goNamed(AppRouter.pos.name);
       // ref.read(cartStateProvider.notifier).reset();
     }
 

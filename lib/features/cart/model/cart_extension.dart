@@ -1,5 +1,5 @@
 import '../../../core/config/app_constant.dart';
-import '../../../shared/utils/formatter.dart';
+import '../../../utils/formatter.dart';
 import 'cart_state.dart';
 
 extension CartStateX on CartState {

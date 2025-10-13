@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog_two.dart';
 import '../../features/cart/provider/cart_provider.dart';
-import '../../router/ikki_router.dart';
+import '../../router/app_router.dart';
 
 class CartSaveDialog extends ConsumerStatefulWidget {
   const CartSaveDialog({super.key});
@@ -52,7 +52,7 @@ class _CartSaveDialogState extends ConsumerState<CartSaveDialog> {
     final name = controller.text;
     await ref.read(cartProvider.notifier).saveBill(name);
     if (!mounted) return;
-    context.goNamed(IkkiRouter.pos.name);
+    context.goNamed(AppRouter.pos.name);
   }
 
   @override

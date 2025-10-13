@@ -13,7 +13,7 @@ import 'package:toastification/toastification.dart';
 import 'core/config/app_config.dart';
 import 'core/db/sembast.dart';
 import 'core/db/shared_prefs.dart';
-import 'router/ikki_pos_app.dart';
+import 'router/pos_app.dart';
 
 //
 // Devlopment device (iPad)
@@ -25,7 +25,6 @@ import 'router/ikki_pos_app.dart';
 const double widthOfDesign = 1180;
 
 void main() async {
-  // final binding = SentryWidgetsFlutterBinding.ensureInitialized();
   ScaledWidgetsFlutterBinding.ensureInitialized(
     scaleFactor: (deviceSize) => deviceSize.width / widthOfDesign,
   );
@@ -70,7 +69,7 @@ Future<void> bootstrap() async {
             sembastServiceProvider.overrideWithValue(SembastService(db: db)),
             sharedPrefsProvider.overrideWithValue(sp),
           ],
-          child: const IkkiPosApp(),
+          child: const PosApp(),
         ),
       ),
     ),

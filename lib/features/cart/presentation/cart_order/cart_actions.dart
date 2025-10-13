@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
-import '../../../../router/ikki_router.dart';
-import '../../../../shared/utils/formatter.dart';
+import '../../../../router/app_router.dart';
+import '../../../../utils/formatter.dart';
 import '../../../../widgets/dialogs/cart_save_dialog.dart';
 import '../../model/cart_extension.dart';
 import '../../provider/cart_provider.dart';
@@ -26,7 +26,7 @@ class _CartActionsState extends ConsumerState<CartActions> {
     if (cart.items.isNotEmpty) label += '  |  ${Formatter.toIdr.format(cart.net)}';
 
     void onPressed() {
-      context.goNamed(IkkiRouter.cartPayment.name);
+      context.goNamed(AppRouter.cartPayment.name);
     }
 
     return Column(

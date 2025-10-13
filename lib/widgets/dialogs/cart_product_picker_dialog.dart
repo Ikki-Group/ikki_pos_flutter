@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objectid/objectid.dart';
 
-import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../core/theme/app_theme.dart';
 import '../../features/cart/model/cart_state.dart';
 import '../../features/cart/provider/cart_provider.dart';
 import '../../features/product/model/product_model.dart';
+import '../../utils/formatter.dart';
 import '../ui/pos_dialog_two.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {

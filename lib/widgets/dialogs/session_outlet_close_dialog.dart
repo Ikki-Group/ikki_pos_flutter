@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../core/theme/app_theme.dart';
 import '../../features/auth/provider/user_provider.dart';
 import '../../features/outlet/provider/outlet_provider.dart';
-import '../../shared/utils/formatter.dart';
+import '../../utils/formatter.dart';
 import '../ui/pos_dialog.dart';
 import 'currency_numpad_dialog.dart';
 

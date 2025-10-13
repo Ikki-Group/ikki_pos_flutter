@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
-import '../../shared/utils/formatter.dart';
+import '../../utils/formatter.dart';
 
 typedef ListKeys = List<List<String>>;
 

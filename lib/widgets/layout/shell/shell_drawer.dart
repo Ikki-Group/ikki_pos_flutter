@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../features/auth/model/user_model.dart';
 import '../../../features/auth/provider/user_provider.dart';
-import '../../../router/ikki_router.dart';
+import '../../../router/app_router.dart';
 
 class ShellDrawer extends ConsumerWidget {
   const ShellDrawer({super.key});
@@ -112,7 +112,7 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
   }
 
   void onLogout() {
-    context.goNamed(IkkiRouter.userSelect.name);
+    context.goNamed(AppRouter.userSelect.name);
     ref.read(userProvider.notifier).logout();
   }
 
@@ -152,11 +152,11 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
 }
 
 enum SGDrawerItem {
-  pos(name: 'Mulai Penjualan', icon: Icons.point_of_sale, route: IkkiRouter.pos),
-  sales(name: 'Riwayat Penjualan', icon: Icons.history, route: IkkiRouter.sales),
-  // finance(name: 'Laporan Keuangan', icon: Icons.attach_money, route: IkkiRouter.settings),
-  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: IkkiRouter.shift),
-  settings(name: 'Pengaturan', icon: Icons.settings, route: IkkiRouter.settings);
+  pos(name: 'Mulai Penjualan', icon: Icons.point_of_sale, route: AppRouter.pos),
+  sales(name: 'Riwayat Penjualan', icon: Icons.history, route: AppRouter.sales),
+  // finance(name: 'Laporan Keuangan', icon: Icons.attach_money, route: AppRouter.settings),
+  shift(name: 'Pengelolaan Shift', icon: Icons.access_time, route: AppRouter.shift),
+  settings(name: 'Pengaturan', icon: Icons.settings, route: AppRouter.settings);
 
   const SGDrawerItem({
     required this.name,
@@ -166,5 +166,5 @@ enum SGDrawerItem {
 
   final String name;
   final IconData icon;
-  final IkkiRouter route;
+  final AppRouter route;
 }

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../../core/config/app_constant.dart';
-import '../../../../router/ikki_router.dart';
+import '../../../../router/app_router.dart';
 import '../../../../utils/extensions.dart';
 import '../../../../utils/result.dart';
 import 'auth_device_controller.dart';
@@ -44,7 +44,7 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     result.when(
       success: (_) => context
         ..showTextSnackBar("Autentikasi Berhasil")
-        ..goNamed(IkkiRouter.splash.name),
+        ..goNamed(AppRouter.splash.name),
       failure: (_) {
         context
           ..showTextSnackBar("Autentikasi Gagal", severity: SnackBarSeverity.error)
