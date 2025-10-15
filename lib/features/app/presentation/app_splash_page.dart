@@ -24,7 +24,7 @@ class AppSplashPage extends ConsumerWidget {
                 )
                 .animate()
                 .fadeIn(duration: 100.ms)
-                .fadeOut(duration: 400.ms)
+                .fadeOut(duration: 200.ms)
                 .then()
                 .callback(
                   callback: (_) => context.goNamed(value.name),

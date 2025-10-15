@@ -23,7 +23,7 @@ class _DevicePageState extends ConsumerState<DevicePage> {
   }
 
   Future<void> onSync() async {
-    await ref.read(appProvider.notifier).hardSync();
+    await ref.read(appProvider.notifier).syncRemoteToLocal();
     if (!mounted) return;
     context.showToast('Berhasil menyinkronkan data');
   }

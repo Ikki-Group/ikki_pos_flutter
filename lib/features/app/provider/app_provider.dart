@@ -25,29 +25,54 @@ class App extends _$App {
     final token = await ref.read(authTokenProvider.notifier).load();
     await ref.read(printerProvider.notifier).load();
 
-    try {
-      if (token != null && token.isNotEmpty) {
-        // await ref.read(userRepoProvider).getData();
-        // await ref.read(outletProvider.notifier).load();
+    final isAuthenticated = token != null && token.isNotEmpty;
 
-        await hardSync();
-        state = state.copyWith(isAuthenticated: true, isLoading: false);
-      }
-    } catch (e) {
-      logger.error(e.toString());
-      state = state.copyWith(isAuthenticated: false, isLoading: false);
+    if (isAuthenticated) {
+      await loadData();
     }
 
+    state = state.copyWith(isAuthenticated: isAuthenticated, isLoading: false);
     return state;
   }
 
-  Future<void> hardSync() async {
+  Future<void> loadData() async {
+    logger.info("[App.loadData] start");
+
+    final isLocalReady = await loadLocal();
+    if (!isLocalReady) {
+      await syncRemoteToLocal();
+    }
+
+    logger.info("[App.loadData] end");
+  }
+
+  Future<bool> loadLocal() async {
+    logger.info("[App.loadLocal] start");
+
+    final outletLoaded = await ref.read(outletProvider.notifier).load() == null;
+    final userLoaded = await ref.read(userProvider.notifier).load() == null;
+    final productLoaded = await ref.read(productProvider.notifier).load() == null;
+
+    final isLocalReady = outletLoaded && userLoaded && productLoaded;
+
+    if (!isLocalReady) {
+      logger.info('Data need to sync, outlet: $outletLoaded, user: $userLoaded, product: $productLoaded');
+    }
+
+    return isLocalReady;
+  }
+
+  Future<void> syncRemoteToLocal() async {
+    logger.info("[App.hardSync] start");
+
     // Hard sync
     final data = await ref.read(syncRepoProvider).deviceSync();
 
     await ref.read(outletProvider.notifier).syncData(data.outlet, data.device);
     await ref.read(userProvider.notifier).syncLocal(data.accounts);
     await ref.read(productProvider.notifier).syncData(data.products, data.categories);
+
+    logger.info("[App.hardSync] end");
   }
 
   Future<void> logout() async {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,12 +21,15 @@ abstract class UserState with _$UserState {
 class User extends _$User {
   @override
   UserState build() {
+    unawaited(load());
     return UserState(users: [], selectedUser: UserModel.empty());
   }
 
-  Future<UserState> load() async {
-    var users = await ref.read(userRepoProvider).getData();
-    state = state.copyWith(users: users, selectedUser: UserModel.empty());
+  Future<UserState?> load() async {
+    var local = await ref.read(userRepoProvider).getLocal();
+    if (local != null) {
+      state = state.copyWith(users: local);
+    }
     return state;
   }
 
@@ -40,4 +45,8 @@ class User extends _$User {
     await ref.read(userRepoProvider).syncLocal(users);
     await load();
   }
+}
+
+extension UserX on UserState {
+  bool get isUserExist => selectedUser.id.isNotEmpty;
 }

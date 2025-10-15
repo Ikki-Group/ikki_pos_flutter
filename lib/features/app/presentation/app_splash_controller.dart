@@ -7,10 +7,9 @@ part 'app_splash_controller.g.dart';
 
 @riverpod
 FutureOr<AppRouter> splash(Ref ref) async {
-  ref.read(appProvider);
+  ref.watch(appProvider);
 
-  // await Future.delayed(const Duration(seconds: 1));
-  final app = await ref.read(appProvider.notifier).init();
-  if (app.isAuthenticated) return AppRouter.userSelect;
+  final appState = await ref.read(appProvider.notifier).init();
+  if (appState.isAuthenticated) return AppRouter.userSelect;
   return AppRouter.authDevice;
 }

@@ -16,10 +16,8 @@ ProductRepo productRepo(Ref ref) {
 }
 
 abstract class ProductRepo {
-  Future<ProductState> getState();
-  Future<bool> saveState(ProductState state);
-
-  Future<bool> syncState(List<ProductModel> products, List<ProductCategoryModel> categories);
+  Future<ProductState?> getLocal();
+  Future<bool> syncLocal(List<ProductModel> products, List<ProductCategoryModel> categories);
 }
 
 class ProductRepoImpl implements ProductRepo {
@@ -28,23 +26,16 @@ class ProductRepoImpl implements ProductRepo {
   final SharedPreferences sp;
 
   @override
-  Future<ProductState> getState() async {
+  Future<ProductState?> getLocal() async {
     final raw = sp.getString(SharedPrefsKeys.products.key);
     if (raw == null) {
-      throw Exception('Products not found, ensure to initialize');
+      return null;
     }
-    final state = ProductState.fromJson(jsonDecode(raw));
-    return Future.value(state);
+    return ProductState.fromJson(jsonDecode(raw));
   }
 
   @override
-  Future<bool> saveState(ProductState state) {
-    final encoded = jsonEncode(state);
-    return sp.setString(SharedPrefsKeys.products.key, encoded);
-  }
-
-  @override
-  Future<bool> syncState(List<ProductModel> products, List<ProductCategoryModel> categories) {
+  Future<bool> syncLocal(List<ProductModel> products, List<ProductCategoryModel> categories) {
     // Sort by name
     products = products.toList()..sort((a, b) => a.name.compareTo(b.name));
     categories = categories.toList()..sort((a, b) => a.name.compareTo(b.name));
@@ -87,6 +78,7 @@ class ProductRepoImpl implements ProductRepo {
     }).toList();
 
     final state = ProductState(products: products, categories: categories);
-    return saveState(state);
+    final encoded = jsonEncode(state);
+    return sp.setString(SharedPrefsKeys.products.key, encoded);
   }
 }

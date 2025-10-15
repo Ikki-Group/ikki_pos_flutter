@@ -6,6 +6,7 @@ import '../core/logger/talker_logger.dart';
 import '../features/app/presentation/app_splash_page.dart';
 import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
+import '../features/auth/provider/user_provider.dart';
 import '../features/cart/presentation/cart_order/cart_order_page.dart';
 import '../features/cart/presentation/cart_payment/cart_payment_page.dart';
 import '../features/cart/presentation/cart_payment_success/cart_payment_success_page.dart';
@@ -48,6 +49,13 @@ GoRouter goRouter(Ref ref) {
           final routeName = GoRouter.of(context).currentRouteName;
           final appRouter = AppRouter.fromName(routeName);
           return ShellLayout(router: appRouter, child: child);
+        },
+        redirect: (BuildContext context, GoRouterState state) {
+          final isUserExist = ref.read(userProvider).isUserExist;
+          if (!isUserExist) {
+            return AppRouter.userSelect.path;
+          }
+          return null;
         },
         routes: <RouteBase>[
           GoRoute(

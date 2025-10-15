@@ -17,11 +17,7 @@ UserRepo userRepo(Ref ref) {
 }
 
 abstract class UserRepo {
-  Future<List<UserModel>> getData();
-
   Future<List<UserModel>?> getLocal();
-  Future<bool> saveLocal(List<UserModel> users);
-
   Future<bool> syncLocal(List<UserModel> users);
 }
 
@@ -29,15 +25,6 @@ class UserRepoImpl implements UserRepo {
   UserRepoImpl({required this.sp});
 
   final SharedPreferences sp;
-
-  @override
-  Future<List<UserModel>> getData() async {
-    final users = await getLocal();
-    if (users == null) {
-      throw Exception('Users not found');
-    }
-    return users;
-  }
 
   @override
   Future<List<UserModel>?> getLocal() async {
@@ -51,14 +38,8 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  Future<bool> saveLocal(List<UserModel> users) async {
+  Future<bool> syncLocal(List<UserModel> users) async {
     final encoded = users.map(jsonEncode).toList();
     return sp.setStringList(SharedPrefsKeys.users.key, encoded);
-  }
-
-  @override
-  Future<bool> syncLocal(List<UserModel> users) async {
-    final result = await saveLocal(users);
-    return result;
   }
 }

@@ -16,13 +16,16 @@ class Product extends _$Product {
     return ProductState(products: [], categories: []);
   }
 
-  Future<ProductState> load() async {
-    state = await ref.read(productRepoProvider).getState();
-    return state;
+  Future<ProductState?> load() async {
+    final local = await ref.read(productRepoProvider).getLocal();
+    if (local != null) {
+      state = local;
+    }
+    return local;
   }
 
   Future<ProductState> syncData(List<ProductModel> products, List<ProductCategoryModel> categories) async {
-    await ref.read(productRepoProvider).syncState(products, categories);
+    await ref.read(productRepoProvider).syncLocal(products, categories);
     await load();
     return state;
   }
