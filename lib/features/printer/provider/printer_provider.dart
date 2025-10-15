@@ -6,7 +6,7 @@ import 'package:objectid/objectid.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../utils/talker.dart';
+import '../../../core/logger/talker_logger.dart';
 import '../data/printer_repo.dart';
 import '../model/printer_enum.dart';
 import '../model/printer_model.dart';
@@ -55,7 +55,7 @@ class PrinterImpl extends _$PrinterImpl implements PrinterContract {
     ].request();
 
     final isOn = await instance.isBleTurnedOn();
-    talker.debug('isOn: $isOn');
+    logger.debug('isOn: $isOn');
 
     return statuses.values.every((status) => status.isGranted);
   }

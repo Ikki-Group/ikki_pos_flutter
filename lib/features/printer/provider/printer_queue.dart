@@ -1,6 +1,6 @@
 import 'package:queue/queue.dart';
 
-import '../../../utils/talker.dart';
+import '../../../core/logger/talker_logger.dart';
 
 class PrinterQueue {
   factory PrinterQueue() {
@@ -13,6 +13,6 @@ class PrinterQueue {
   final queue = Queue();
 
   void init() {
-    talker.info('[PrinterQueue] init');
+    logger.info('[PrinterQueue] init');
   }
 }

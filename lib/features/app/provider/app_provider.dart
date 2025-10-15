@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/db/sembast.dart';
 import '../../../core/db/shared_prefs.dart';
-import '../../../utils/talker.dart';
+import '../../../core/logger/talker_logger.dart';
 import '../../auth/provider/auth_token_provider.dart';
 import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
@@ -34,7 +34,7 @@ class App extends _$App {
         state = state.copyWith(isAuthenticated: true, isLoading: false);
       }
     } catch (e) {
-      talker.error(e.toString());
+      logger.error(e.toString());
       state = state.copyWith(isAuthenticated: false, isLoading: false);
     }
 

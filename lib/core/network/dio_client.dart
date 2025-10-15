@@ -4,9 +4,9 @@ import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
 import '../../features/auth/provider/auth_token_provider.dart';
-import '../../utils/talker.dart';
 import '../config/app_config.dart';
 import '../config/app_constant.dart';
+import '../logger/talker_logger.dart';
 
 part 'dio_client.g.dart';
 
@@ -43,7 +43,7 @@ Dio dioClient(Ref ref) {
           options.headers['Authorization'] = 'Bearer $token';
         }
 
-        talker.debug("Token: $token");
+        logger.debug("Token: $token");
         handler.next(options);
       },
       onError: (error, handler) {

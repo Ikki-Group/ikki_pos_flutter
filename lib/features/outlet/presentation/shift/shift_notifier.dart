@@ -1,14 +1,13 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../sales/provider/sales_provider.dart';
-import '../../model/outlet_extension.dart';
-import '../../provider/outlet_provider.dart';
+import '../../../shift/provider/shift_provider.dart';
 
 part 'shift_notifier.g.dart';
 
 @riverpod
 FutureOr<ShiftSummaryData> shiftSummaryData(Ref ref) async {
-  final outlet = ref.watch(outletProvider);
+  final shiftValue = ref.watch(shiftProvider);
 
   final data = ShiftSummaryData(
     transactionCount: 0,
@@ -17,10 +16,11 @@ FutureOr<ShiftSummaryData> shiftSummaryData(Ref ref) async {
     transacionVoid: 0,
   );
 
-  final isOpen = outlet.isOpen;
+  final isOpen = shiftValue.isOpen;
   if (!isOpen) return data;
 
-  final sessionId = outlet.session!.id;
+  final shift = shiftValue.requiredOpen;
+  final sessionId = shift.id;
 
   final sales = await ref.watch(salesProvider.future).then((v) => v.where((c) => c.sessionId == sessionId).toList());
 

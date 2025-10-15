@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/experimental/mutation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/extensions.dart';
-import '../../../auth/provider/user_provider.dart';
-import '../../model/outlet_extension.dart';
-import '../../provider/outlet_provider.dart';
+import '../../../shift/provider/shift_provider.dart';
 import 'shift_outlet_info.dart';
 import 'shift_summary.dart';
 
@@ -68,18 +66,18 @@ class _ActionsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final outlet = ref.watch(outletProvider);
+    final shift = ref.watch(shiftProvider);
     final closeMutationState = ref.watch(closeMutation);
 
     Future<void> onClose() async {
       await closeMutation.run(ref, (tsx) async {
-        await ref
-            .read(outletProvider.notifier)
-            .closeOutlet(
-              1000,
-              ref.read(userProvider).selectedUser,
-              'Terima kasir',
-            );
+        // await ref
+        //     .read(outletProvider.notifier)
+        //     .closeOutlet(
+        //       1000,
+        //       ref.read(userProvider).selectedUser,
+        //       'Terima kasir',
+        //     );
       });
       if (!context.mounted) return;
       context.showTextSnackBar('Berhasil menutup toko');
@@ -103,7 +101,7 @@ class _ActionsSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             FilledButton(
-              onPressed: closeMutationState is MutationPending || !outlet.isOpen ? null : onClose,
+              onPressed: closeMutationState is MutationPending || shift.isOpen ? onClose : null,
               style: FilledButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.red,

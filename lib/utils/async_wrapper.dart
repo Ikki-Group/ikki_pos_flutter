@@ -1,6 +1,6 @@
+import '../core/logger/talker_logger.dart';
 import 'exception.dart';
 import 'result.dart';
-import 'talker.dart';
 
 abstract class AsyncWrapper {
   static Future<Result<T>> run<T>(
@@ -11,7 +11,7 @@ abstract class AsyncWrapper {
       final data = await action();
       return Result.success(data);
     } catch (e, s) {
-      talker.error('''
+      logger.error('''
 name: $name
 action: $action
 exception: $e

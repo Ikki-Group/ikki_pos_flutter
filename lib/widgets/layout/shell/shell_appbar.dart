@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../features/cart/widget/create_order_button.dart';
-import '../../../features/outlet/model/shift_status.dart';
 import '../../../features/outlet/provider/outlet_provider.dart';
+import '../../../features/shift/provider/shift_provider.dart';
 import '../../../router/app_router.dart';
 
 class ShellAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -94,8 +94,7 @@ class _ShiftInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    final session = ref.watch(outletProvider.select((s) => s.session));
-    final isOpen = session?.status == ShiftStatus.open;
+    final isOpen = ref.watch(shiftProvider).isOpen;
     final color = isOpen ? AppTheme.accentGreen : Color.fromARGB(255, 253, 154, 154);
 
     return Row(

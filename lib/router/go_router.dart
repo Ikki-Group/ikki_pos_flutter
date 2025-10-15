@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../core/logger/talker_logger.dart';
 import '../features/app/presentation/app_splash_page.dart';
 import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
@@ -12,7 +13,6 @@ import '../features/outlet/presentation/shift/shift_page.dart';
 import '../features/pos/presentation/pos_home/pos_home_page.dart';
 import '../features/sales/presentation/sales/sales_page.dart';
 import '../features/settings/presentation/layouts/settings_layout.dart';
-import '../utils/talker.dart';
 import '../widgets/layout/shell/shell_layout.dart';
 import 'app_router.dart';
 

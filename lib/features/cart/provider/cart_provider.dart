@@ -6,13 +6,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/config/app_constant.dart';
 import '../../auth/model/user_model.dart';
 import '../../auth/provider/user_provider.dart';
-import '../../outlet/model/outlet_extension.dart';
 import '../../outlet/model/outlet_state.dart';
 import '../../outlet/provider/outlet_provider.dart';
 import '../../printer/provider/printer_provider.dart';
 import '../../printer/templates/template_receipt_checker.dart';
 import '../../product/model/product_model.dart';
 import '../../sales/provider/sales_provider.dart';
+import '../../shift/model/shift_session_model.dart';
+import '../../shift/provider/shift_provider.dart';
 import '../model/cart_extension.dart';
 import '../model/cart_state.dart';
 
@@ -50,6 +51,8 @@ class Cart extends _$Cart implements CartAbstract {
     return CartState();
   }
 
+  ShiftSessionModel? get _shift => ref.read(shiftProvider);
+
   @override
   Future<void> createNew({
     required int pax,
@@ -57,16 +60,16 @@ class Cart extends _$Cart implements CartAbstract {
     required UserModel user,
     required OutletState outletState,
   }) async {
-    final session = outletState.sessionRequired;
+    final shift = _shift.requiredOpen;
     final now = DateTime.now().toIso8601String();
 
     final newCart = CartState(
       id: ObjectId().hexString,
-      rc: outletState.receiptCode,
+      rc: ref.read(shiftProvider.notifier).generateReceiptCode(),
       salesMode: salesMode,
       pax: pax,
       outletId: outletState.outlet.id,
-      sessionId: session.id,
+      sessionId: shift.id,
       batches: [
         CartBatch(
           id: 1,
@@ -192,13 +195,13 @@ class Cart extends _$Cart implements CartAbstract {
     var newState = state.copyWith();
     newState = newState.copyWith(status: CartStatus.success, payments: payments);
 
-    await ref
-        .read(outletProvider.notifier)
-        .onSavedOrder(
-          cart: newState,
-          lastStatus: CartStatus.process,
-          newPayments: payments,
-        );
+    // await ref
+    //     .read(outletProvider.notifier)
+    //     .onSavedOrder(
+    //       cart: newState,
+    //       lastStatus: CartStatus.process,
+    //       newPayments: payments,
+    //     );
 
     await ref.read(salesProvider.notifier).save(newState);
 
@@ -210,7 +213,7 @@ class Cart extends _$Cart implements CartAbstract {
 
   @override
   Future<void> saveBill(String? name) async {
-    final status = state.status;
+    // final status = state.status;
     final newState = state.copyWith(
       status: CartStatus.process,
       billType: BillType.open,
@@ -219,12 +222,12 @@ class Cart extends _$Cart implements CartAbstract {
       customer: name != null ? CartCustomer(name: name) : state.customer,
     );
 
-    await ref
-        .read(outletProvider.notifier)
-        .onSavedOrder(
-          cart: newState,
-          lastStatus: status,
-        );
+    // await ref
+    //     .read(outletProvider.notifier)
+    //     .onSavedOrder(
+    //       cart: newState,
+    //       lastStatus: status,
+    //     );
 
     await ref.read(salesProvider.notifier).save(newState);
   }

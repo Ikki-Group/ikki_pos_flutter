@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/config/app_config.dart';
+import '../../../core/db/shared_prefs.dart';
+import '../../../core/logger/talker_logger.dart';
 import '../../../core/network/dio_client.dart';
 import '../../../utils/async_wrapper.dart';
+import '../../../utils/json.dart';
 import '../../../utils/result.dart';
-import '../../../utils/talker.dart';
 import '../model/shift_session_model.dart';
 
 part 'shift_repo.g.dart';
@@ -14,11 +17,14 @@ part 'shift_repo.g.dart';
 ShiftRepo shiftRepo(Ref ref) {
   return ShiftRepoImpl(
     dio: ref.watch(dioClientProvider),
+    sp: ref.watch(sharedPrefsProvider),
   );
 }
 
 abstract class ShiftRepo {
-  Future<ShiftSessionModel?> syncData();
+  Future<ShiftSessionModel?> getLocalState();
+  Future<bool> syncLocalState(ShiftSessionModel? session);
+
   Future<Result<ShiftSessionModel>> open(
     String outletId,
     ShiftSessionInfo open,
@@ -30,9 +36,42 @@ abstract class ShiftRepo {
 }
 
 class ShiftRepoImpl implements ShiftRepo {
-  ShiftRepoImpl({required this.dio});
+  ShiftRepoImpl({required this.dio, required this.sp});
 
   final Dio dio;
+  final SharedPreferences sp;
+
+  @override
+  Future<ShiftSessionModel?> getLocalState() async {
+    logger.info('[ShiftRepo.getLocalState] start');
+
+    final raw = sp.getString(SharedPrefsKeys.shiftSession.key);
+    if (raw == null) {
+      logger.info('[ShiftRepo.getLocalState] shift session not found');
+      return null;
+    }
+
+    final json = posJsonDecode(raw);
+    if (json == null) {
+      logger.info('[ShiftRepo.getLocalState] shift session is not valid');
+      return null;
+    }
+
+    logger.info('[ShiftRepo.getLocalState] shift session found');
+    return ShiftSessionModel.fromJson(json);
+  }
+
+  @override
+  Future<bool> syncLocalState(ShiftSessionModel? session) {
+    logger.info('[ShiftRepo.syncLocalState] start');
+
+    final result = session != null
+        ? sp.setString(SharedPrefsKeys.shiftSession.key, posJsonEncode(session.toJson()))
+        : sp.remove(SharedPrefsKeys.shiftSession.key);
+
+    logger.info('[ShiftRepo.syncLocalState] result: $result');
+    return result;
+  }
 
   @override
   Future<Result<ShiftSessionModel>> open(
@@ -66,12 +105,7 @@ class ShiftRepoImpl implements ShiftRepo {
       },
     );
 
-    talker.debug('close $res');
+    logger.debug('close $res');
     return true;
-  }
-
-  @override
-  Future<ShiftSessionModel?> syncData() {
-    throw UnimplementedError();
   }
 }

@@ -6,6 +6,8 @@ import 'package:toastification/toastification.dart';
 import '../../core/theme/app_theme.dart';
 import '../../features/auth/provider/user_provider.dart';
 import '../../features/outlet/provider/outlet_provider.dart';
+import '../../features/shift/model/shift_session_model.dart';
+import '../../features/shift/provider/shift_provider.dart';
 import '../../utils/extensions.dart';
 import '../../utils/formatter.dart';
 import '../ui/pos_button.dart';
@@ -42,7 +44,18 @@ class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
 
     mutation.run(ref, (tsx) async {
       final user = ref.read(userProvider).selectedUser;
-      final res = await ref.read(outletProvider.notifier).openOutlet(cash, user, "");
+      final outlet = ref.read(outletProvider).outlet;
+      final res = await ref
+          .read(shiftProvider.notifier)
+          .open(
+            outlet.id,
+            ShiftSessionInfo(
+              by: user.id,
+              at: DateTime.now().toIso8601String(),
+              balance: cash,
+              note: '',
+            ),
+          );
 
       if (!mounted) return;
       if (res) {

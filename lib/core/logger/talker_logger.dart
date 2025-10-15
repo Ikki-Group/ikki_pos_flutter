@@ -28,24 +28,3 @@ class _MyFormatter implements LoggerFormatter {
     return '\n$msg\n';
   }
 }
-
-/// Useful to log state change in our application
-/// Read the logs and you'll better understand what's going on under the hood
-// class TalkerStateLogger extends ProviderObserver {
-//   const TalkerStateLogger();
-
-//   @override
-//   void didUpdateProvider(
-//     ProviderObserverContext context,
-//     Object? previousValue,
-//     Object? newValue,
-//   ) {
-//     logger.debug('''
-// {
-//   provider: ${context.provider.name},
-//   prev: $previousValue,
-//   new: $newValue
-// }
-// ''');
-//   }
-// }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/formatter.dart';
-import '../../model/outlet_extension.dart';
+import '../../../shift/provider/shift_provider.dart';
 import '../../provider/outlet_provider.dart';
 
 class ShiftOutletInfo extends ConsumerWidget {
@@ -12,11 +12,11 @@ class ShiftOutletInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider);
-    final session = outlet.whenOpenOrNull;
-    final open = session?.open;
+    final shift = ref.watch(shiftProvider);
+    final open = shift?.open;
 
     final outletInfo = <String, String>{}..putIfAbsent('Nama Toko', () => outlet.outlet.name);
-    if (open != null) {
+    if (shift != null && shift.isOpen && open != null) {
       outletInfo
         ..putIfAbsent('Kas Awal', () => open.balance.toIdr)
         ..putIfAbsent('Waktu', () => Formatter.dateTime.format(DateTime.parse(open.at)));

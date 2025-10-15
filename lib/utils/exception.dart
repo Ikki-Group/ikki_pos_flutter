@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'talker.dart';
+import '../core/logger/talker_logger.dart';
 
 /// App exception handle any error that can be handled by the app.
 /// - DioException
@@ -24,7 +24,7 @@ class AppException implements Exception {
       if (data['code'] is String) code = data['code'] as String;
     }
 
-    talker.error('[AppException.fromDio] message: $msg | code: $code | error: $e');
+    logger.error('[AppException.fromDio] message: $msg | code: $code | error: $e');
     return AppException(
       msg: msg,
       code: code,

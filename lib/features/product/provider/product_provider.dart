@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/product_repo.dart';
@@ -9,7 +11,10 @@ part 'product_provider.g.dart';
 @Riverpod(keepAlive: true)
 class Product extends _$Product {
   @override
-  ProductState build() => ProductState(products: [], categories: []);
+  ProductState build() {
+    unawaited(load());
+    return ProductState(products: [], categories: []);
+  }
 
   Future<ProductState> load() async {
     state = await ref.read(productRepoProvider).getState();

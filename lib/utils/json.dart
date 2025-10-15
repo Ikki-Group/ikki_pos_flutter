@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../core/logger/talker_logger.dart';
+
 /// Type aliases
 typedef Json = Map<String, dynamic>;
 typedef JsonList = List<Json>;
@@ -12,6 +14,7 @@ Json? posJsonDecode(String source) {
     if (result is Json) return result;
     return null;
   } catch (_) {
+    logger.error('posJsonDecode: $source');
     return null;
   }
 }

@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../widgets/dialogs/outlet_open_dialog.dart';
 import '../../../widgets/dialogs/sales_mode_dialog.dart';
-import '../../outlet/model/outlet_extension.dart';
-import '../../outlet/provider/outlet_provider.dart';
+import '../../shift/provider/shift_provider.dart';
 import '../provider/cart_provider.dart';
 
 class CreateOrderButton extends ConsumerStatefulWidget {
@@ -17,9 +16,9 @@ class CreateOrderButton extends ConsumerStatefulWidget {
 
 class _CreateOrderButtonState extends ConsumerState<CreateOrderButton> {
   Future<void> _onPressed() async {
-    final outlet = ref.read(outletProvider);
+    final shift = ref.read(shiftProvider);
 
-    if (!outlet.isOpen) {
+    if (!shift.isOpen) {
       await OutletOpenDialog.show(context);
     } else {
       ref.read(cartProvider.notifier).reset();

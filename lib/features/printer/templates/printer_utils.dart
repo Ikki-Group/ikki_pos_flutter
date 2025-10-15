@@ -1,7 +1,7 @@
 import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
 
-import '../../../utils/talker.dart';
+import '../../../core/logger/talker_logger.dart';
 import '../model/printer_enum.dart';
 import '../model/printer_model.dart';
 
@@ -19,7 +19,7 @@ mixin class PrinterUtils {
   }
 
   List<int> initBytes() {
-    talker.debug('initBytes');
+    logger.debug('initBytes');
     var bytes = <int>[];
     bytes += generator.clearStyle();
     bytes += [0x1B, 0x21, 0x00];

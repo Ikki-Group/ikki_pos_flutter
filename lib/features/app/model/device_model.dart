@@ -8,6 +8,8 @@ part 'device_model.g.dart';
 
 @freezed
 abstract class DeviceModel with _$DeviceModel {
+  const DeviceModel._();
+
   const factory DeviceModel({
     required String id,
     required String outletId,
@@ -45,4 +47,6 @@ abstract class DeviceModel with _$DeviceModel {
     updatedAt: '',
     updatedBy: '',
   );
+
+  bool get isEmpty => id.isEmpty;
 }
