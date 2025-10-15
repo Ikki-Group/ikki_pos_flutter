@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
 
 import '../core/theme/app_theme.dart';
 
@@ -14,18 +13,6 @@ extension BuildContextX on BuildContext {
       backgroundColor: severity.bg,
     ),
   );
-
-  ToastificationItem showToast(
-    String text, {
-    ToastificationType type = ToastificationType.success,
-  }) {
-    return toastification.show(
-      title: Text(text),
-      style: ToastificationStyle.flatColored,
-      type: type,
-      autoCloseDuration: Duration(seconds: 3),
-    );
-  }
 
   void unfocus() => FocusScope.of(this).unfocus();
 }

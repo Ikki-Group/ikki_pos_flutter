@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../utils/formatter.dart';
+import '../../../../widgets/dialogs/cart_product_picker_dialog.dart';
 import '../../../product/model/product_model.dart';
 import '../../../product/provider/product_provider.dart';
 import '../../provider/cart_provider.dart';
@@ -39,10 +40,10 @@ class CartProductCatalog extends ConsumerWidget {
 
     void onPress(ProductModel product) {
       if (product.hasVariant) {
-        // CartProductPickerDialog.show(
-        //   context,
-        //   product: product,
-        // );
+        CartProductPickerDialog.show(
+          context,
+          product: product,
+        );
       } else {
         ref.read(cartProvider.notifier).addProductDirectly(product);
       }

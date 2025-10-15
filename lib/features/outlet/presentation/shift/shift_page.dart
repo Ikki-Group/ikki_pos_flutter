@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/experimental/mutation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/extensions.dart';
+import '../../../auth/provider/user_provider.dart';
+import '../../../shift/model/shift_session_model.dart';
 import '../../../shift/provider/shift_provider.dart';
+import '../../provider/outlet_provider.dart';
 import 'shift_outlet_info.dart';
 import 'shift_summary.dart';
 
@@ -68,19 +71,25 @@ class _ActionsSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final shift = ref.watch(shiftProvider);
     final closeMutationState = ref.watch(closeMutation);
+    final user = ref.watch(userProvider).selectedUser;
 
     Future<void> onClose() async {
-      await closeMutation.run(ref, (tsx) async {
-        // await ref
-        //     .read(outletProvider.notifier)
-        //     .closeOutlet(
-        //       1000,
-        //       ref.read(userProvider).selectedUser,
-        //       'Terima kasir',
-        //     );
+      final outletId = ref.read(outletProvider).outlet.id;
+      closeMutation.run(ref, (tsx) async {
+        await ref
+            .read(shiftProvider.notifier)
+            .close(
+              outletId,
+              ShiftSessionInfo(
+                by: user.id,
+                at: DateTime.now().toIso8601String(),
+                balance: 0,
+                note: '',
+              ),
+            );
+        if (!context.mounted) return;
+        context.showTextSnackBar('Berhasil menutup toko');
       });
-      if (!context.mounted) return;
-      context.showTextSnackBar('Berhasil menutup toko');
     }
 
     return Container(

@@ -8,7 +8,7 @@ import '../../features/auth/provider/user_provider.dart';
 import '../../features/outlet/provider/outlet_provider.dart';
 import '../../features/shift/model/shift_session_model.dart';
 import '../../features/shift/provider/shift_provider.dart';
-import '../../utils/extensions.dart';
+import '../../utils/app_toast.dart';
 import '../../utils/formatter.dart';
 import '../ui/pos_button.dart';
 import '../ui/pos_dialog.dart';
@@ -59,10 +59,10 @@ class _OutletOpenDialogState extends ConsumerState<OutletOpenDialog> {
 
       if (!mounted) return;
       if (res) {
-        context.showToast('Berhasil membuka toko');
+        AppToast.show('Berhasil membuka toko');
         onClose();
       } else {
-        context.showToast('Gagal membuka toko', type: ToastificationType.error);
+        AppToast.show('Gagal membuka toko', type: ToastificationType.error);
       }
     });
   }

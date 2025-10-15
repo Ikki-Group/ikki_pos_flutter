@@ -23,6 +23,7 @@ abstract class ShiftSessionModel with _$ShiftSessionModel {
     required String updatedAt,
     required String updatedBy,
     required SyncMetaModel syncMeta,
+    @Default(0) int queue,
   }) = _ShiftSessionModel;
 
   factory ShiftSessionModel.fromJson(Json json) => _$ShiftSessionModelFromJson(json);
@@ -34,7 +35,7 @@ abstract class ShiftSessionInfo with _$ShiftSessionInfo {
     required String by,
     required String at,
     required int balance,
-    String? note,
+    @Default('') String note,
   }) = _ShiftSessionInfo;
 
   factory ShiftSessionInfo.empty() => ShiftSessionInfo(

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../router/app_router.dart';
-import '../../../../utils/extensions.dart';
+import '../../../../utils/app_toast.dart';
 import '../../../app/provider/app_provider.dart';
 
 class DevicePage extends ConsumerStatefulWidget {
@@ -17,15 +17,14 @@ class _DevicePageState extends ConsumerState<DevicePage> {
   Future<void> onLogout() async {
     await ref.read(appProvider.notifier).logout();
     if (!mounted) return;
-    context
-      ..goNamed(AppRouter.authDevice.name)
-      ..showToast('Berhasil logout');
+    context.goNamed(AppRouter.authDevice.name);
+    AppToast.show('Berhasil logout');
   }
 
   Future<void> onSync() async {
     await ref.read(appProvider.notifier).syncRemoteToLocal();
     if (!mounted) return;
-    context.showToast('Berhasil menyinkronkan data');
+    AppToast.show('Data berhasil disinkronkan');
   }
 
   @override

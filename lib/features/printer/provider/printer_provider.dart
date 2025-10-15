@@ -5,8 +5,10 @@ import 'package:flutter_thermal_printer/utils/printer.dart';
 import 'package:objectid/objectid.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../core/logger/talker_logger.dart';
+import '../../../utils/app_toast.dart';
 import '../data/printer_repo.dart';
 import '../model/printer_enum.dart';
 import '../model/printer_model.dart';
@@ -172,10 +174,16 @@ class PrinterImpl extends _$PrinterImpl implements PrinterContract {
   @override
   Future<bool> print(PrinterTemplate template, {PrinterModel? printer}) async {
     talker.info('[PrinterImpl] print, $state');
-    final selectedPrinter = printer ?? state.first;
-    // if (selectedPrinter != null) {
-    await printTemplate(selectedPrinter, template);
-    // }
+    final selectedPrinter = printer ?? state.firstOrNull;
+
+    if (selectedPrinter == null) {
+      AppToast.show('No printer found', type: ToastificationType.warning);
+    }
+
+    if (selectedPrinter != null) {
+      await printTemplate(selectedPrinter, template);
+    }
+
     return true;
   }
 }

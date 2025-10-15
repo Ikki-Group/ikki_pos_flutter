@@ -8,6 +8,7 @@ import '../../auth/provider/user_provider.dart';
 import '../../outlet/provider/outlet_provider.dart';
 import '../../printer/provider/printer_provider.dart';
 import '../../product/provider/product_provider.dart';
+import '../../shift/provider/shift_provider.dart';
 import '../data/sync_repo.dart';
 import '../model/app_state.dart';
 
@@ -43,6 +44,7 @@ class App extends _$App {
       await syncRemoteToLocal();
     }
 
+    await ref.read(shiftProvider.notifier).load();
     logger.info("[App.loadData] end");
   }
 

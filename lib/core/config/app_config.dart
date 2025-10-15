@@ -20,4 +20,5 @@ abstract class ApiConfig {
 
   static const String outletShiftOpen = '/outlet/shift-session/open';
   static const String outletShiftClose = '/outlet/shift-session/close';
+  static const String outletShiftSync = '/outlet/shift-session/sync';
 }
