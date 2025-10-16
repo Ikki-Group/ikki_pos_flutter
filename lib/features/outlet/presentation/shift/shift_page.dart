@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/experimental/mutation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../utils/extensions.dart';
+import '../../../../utils/app_toast.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../shift/model/shift_session_model.dart';
 import '../../../shift/provider/shift_provider.dart';
@@ -88,7 +88,7 @@ class _ActionsSection extends ConsumerWidget {
               ),
             );
         if (!context.mounted) return;
-        context.showTextSnackBar('Berhasil menutup toko');
+        AppToast.show("Berhasil menutup toko");
       });
     }
 

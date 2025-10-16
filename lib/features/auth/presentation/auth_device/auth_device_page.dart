@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../router/app_router.dart';
+import '../../../../utils/app_toast.dart';
 import '../../../../utils/extensions.dart';
 import '../../../../utils/result.dart';
 import 'auth_device_controller.dart';
@@ -42,13 +44,13 @@ class _AuthDevicePageState extends ConsumerState<AuthDevicePage> {
     if (!mounted) return;
 
     result.when(
-      success: (_) => context
-        ..showTextSnackBar("Autentikasi Berhasil")
-        ..goNamed(AppRouter.splash.name),
+      success: (_) {
+        context.goNamed(AppRouter.splash.name);
+        AppToast.show("Berhasil autentikasi device", type: ToastificationType.success);
+      },
       failure: (_) {
-        context
-          ..showTextSnackBar("Autentikasi Gagal", severity: SnackBarSeverity.error)
-          ..unfocus();
+        context.unfocus();
+        AppToast.show("Autentikasi Gagal", type: ToastificationType.error);
         pinController.clear();
       },
     );

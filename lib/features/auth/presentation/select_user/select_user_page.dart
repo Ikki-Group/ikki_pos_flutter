@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../router/app_router.dart';
-import '../../../../utils/extensions.dart';
+import '../../../../utils/app_toast.dart';
 import '../../../../widgets/ui/numpad_pin.dart';
 import '../../../outlet/provider/outlet_provider.dart';
 import '../../model/user_model.dart';
@@ -55,7 +56,7 @@ class _SelectUserPageState extends ConsumerState<SelectUserPage> {
         ref.read(userProvider.notifier).setUser(selectedUser!);
         context.goNamed(AppRouter.pos.name);
       } else {
-        context.showTextSnackBar('PIN Salah', severity: SnackBarSeverity.error);
+        AppToast.show("PIN Salah", type: ToastificationType.error);
         inputPin = '';
         setState(() {});
       }

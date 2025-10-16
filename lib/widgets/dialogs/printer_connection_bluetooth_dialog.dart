@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_thermal_printer/utils/printer.dart';
+import 'package:toastification/toastification.dart';
 
-import '../../../utils/extensions.dart';
 import '../../../widgets/ui/pos_button.dart';
 import '../../../widgets/ui/pos_dialog_two.dart';
 import '../../features/printer/provider/printer_provider.dart';
+import '../../utils/app_toast.dart';
 
 class PrinterConnectionBluetoothDialog extends ConsumerStatefulWidget {
   const PrinterConnectionBluetoothDialog({super.key});
@@ -41,9 +42,9 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
           (result) => printers = result,
           onError: (e) {
             if (!mounted) return;
-            context.showTextSnackBar(
+            AppToast.show(
               'Gagal menemukan printer',
-              severity: SnackBarSeverity.error,
+              type: ToastificationType.error,
             );
           },
         );
@@ -62,9 +63,9 @@ class _PrinterConnectionBluetoothDialogState extends ConsumerState<PrinterConnec
       await ref.read(printerProvider.notifier).bluetoothConnectAndSave(selectedPrinter!);
     } catch (e) {
       if (mounted) {
-        context.showTextSnackBar(
+        AppToast.show(
           'Gagal menghubungkan printer ${selectedPrinter?.name}',
-          severity: SnackBarSeverity.error,
+          type: ToastificationType.error,
         );
       }
     }

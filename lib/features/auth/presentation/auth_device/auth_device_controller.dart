@@ -11,7 +11,7 @@ class Authenticate extends _$Authenticate {
   @override
   FutureOr<void> build() {}
 
-  Future<Result> run(String code) async {
+  Future<Result<String>> run(String code) async {
     state = AsyncLoading();
     final result = await ref.read(authRepoProvider).authenticate(code);
     final _ = ref.refresh(authTokenProvider);

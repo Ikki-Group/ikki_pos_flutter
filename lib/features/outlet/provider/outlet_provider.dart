@@ -31,57 +31,6 @@ class Outlet extends _$Outlet {
     return state;
   }
 
-  // Future<bool> openOutlet(int cash, UserModel user, String? note) async {
-  //   if (state.isOpen) throw Exception('Outlet session is already open');
-
-  //   final outlet = state.outlet;
-  //   final now = DateTime.now().toIso8601String();
-
-  //   final result = await ref
-  //       .read(shiftRepoProvider)
-  //       .open(
-  //         outlet.id,
-  //         ShiftSessionInfo(
-  //           by: user.id,
-  //           at: now,
-  //           balance: cash,
-  //           note: note,
-  //         ),
-  //       );
-
-  //   return result.when<bool>(
-  //     success: (_) => true,
-  //     failure: (_) => false,
-  //   );
-  // }
-
-  // Future<bool> closeOutlet(int cash, UserModel user, String? note) async {
-  //   if (!state.isOpen) throw Exception('Outlet session is not open');
-
-  //   var newSession = state.sessionRequired.copyWith();
-  //   final now = DateTime.now().toIso8601String();
-
-  //   newSession = newSession.copyWith(
-  //     close: OutletSessionInfo(
-  //       at: now,
-  //       by: user.id,
-  //       balance: cash,
-  //       note: '',
-  //     ),
-  //     status: ShiftStatus.close,
-  //   );
-
-  //   await ref.read(outletSessionRepoProvider).save(newSession);
-  //   final newState = state.copyWith(
-  //     session: null,
-  //   );
-
-  //   await ref.read(outletRepoProvider).saveState(newState);
-  //   state = newState;
-
-  //   return true;
-  // }
-
   // // TODO
   // Future<void> onSavedOrder({
   //   required CartState cart,

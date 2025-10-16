@@ -21,7 +21,7 @@ dependencies:
     sdk: flutter
   flutter_animate: ^4.5.2
   flutter_keyboard_visibility: ^6.0.0
-  flutter_riverpod: ^3.0.0-dev.17
+  flutter_riverpod: ^3.0.3
   flutter_screenutil: ^5.9.3
   flutter_thermal_printer: ^1.2.1+1
   fpdart: ^1.1.1
@@ -39,7 +39,7 @@ dependencies:
   permission_handler: ^12.0.1
   pinput: ^5.0.1
   queue: ^3.4.0
-  riverpod_annotation: ^3.0.0-dev.17
+  riverpod_annotation: ^3.0.3
   scaled_app: ^2.3.0
   sembast: ^3.8.5+1
   sembast_sqflite: ^2.2.1

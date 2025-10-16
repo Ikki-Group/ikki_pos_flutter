@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
+import '../../../../utils/app_toast.dart';
 import '../../../../utils/cash_generator.dart';
-import '../../../../utils/extensions.dart';
 import '../../../../utils/formatter.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../outlet/provider/outlet_provider.dart';
@@ -380,9 +380,8 @@ class _PayButton extends ConsumerWidget {
       final user = ref.read(userProvider).selectedUser;
       await ref.read(cartProvider.notifier).pay(payState.payments, user, outlet);
       if (!context.mounted) return;
-      context
-        ..showTextSnackBar("Berhasil menyelesaikan penjualan")
-        ..goNamed(AppRouter.cartPaymentSuccess.name);
+      context.goNamed(AppRouter.cartPaymentSuccess.name);
+      AppToast.show("Berhasil menyelesaikan penjualan");
     }
 
     return FilledButton(

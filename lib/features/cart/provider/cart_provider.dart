@@ -52,6 +52,8 @@ class Cart extends _$Cart implements CartAbstract {
   }
 
   ShiftSessionModel? get _shift => ref.read(shiftProvider);
+  ShiftNotifier get _shiftNotifier => ref.read(shiftProvider.notifier);
+  UserModel get _currentUser => ref.read(userProvider).selectedUser;
 
   @override
   Future<void> createNew({
@@ -65,7 +67,7 @@ class Cart extends _$Cart implements CartAbstract {
 
     final newCart = CartState(
       id: ObjectId().hexString,
-      rc: ref.read(shiftProvider.notifier).generateReceiptCode(),
+      rc: _shiftNotifier.generateReceiptCode(),
       salesMode: salesMode,
       pax: pax,
       outletId: outletState.outlet.id,
@@ -213,7 +215,7 @@ class Cart extends _$Cart implements CartAbstract {
 
   @override
   Future<void> saveBill(String? name) async {
-    // final status = state.status;
+    final lastStatus = state.status;
     final newState = state.copyWith(
       status: CartStatus.process,
       billType: BillType.open,
@@ -222,12 +224,10 @@ class Cart extends _$Cart implements CartAbstract {
       customer: name != null ? CartCustomer(name: name) : state.customer,
     );
 
-    // await ref
-    //     .read(outletProvider.notifier)
-    //     .onSavedOrder(
-    //       cart: newState,
-    //       lastStatus: status,
-    //     );
+    await _shiftNotifier.onSalesSaved(
+      cart: newState,
+      lastStatus: lastStatus,
+    );
 
     await ref.read(salesProvider.notifier).save(newState);
   }
