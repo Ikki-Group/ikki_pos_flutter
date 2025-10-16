@@ -1,13 +1,19 @@
+// ignore_for_file: scoped_providers_should_specify_dependencies, missing_provider_scope
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:scaled_app/scaled_app.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
+import 'core/config/app_config.dart';
 import 'core/db/sembast.dart';
 import 'core/db/shared_prefs.dart';
-import 'router/ikki_pos_app.dart';
+import 'router/pos_app.dart';
 
 //
 // Devlopment device (iPad)
@@ -19,49 +25,53 @@ import 'router/ikki_pos_app.dart';
 const double widthOfDesign = 1180;
 
 void main() async {
-  ScaledWidgetsFlutterBinding.ensureInitialized(scaleFactor: (deviceSize) => deviceSize.width / widthOfDesign);
+  ScaledWidgetsFlutterBinding.ensureInitialized(
+    scaleFactor: (deviceSize) => deviceSize.width / widthOfDesign,
+  );
 
   await setPreferredOrientations();
   await initializeDateFormatting('id_ID');
+
+  if (kReleaseMode) {
+    await SentryFlutter.init(
+      (options) {
+        options
+          ..dsn = AppConfig.sentryDsn
+          ..sendDefaultPii = true
+          ..enableLogs = true
+          ..tracesSampleRate = 0.5
+          ..profilesSampleRate = 0.5
+          ..replay.sessionSampleRate = 0.1
+          ..replay.onErrorSampleRate = 1.0;
+      },
+      appRunner: bootstrap,
+    );
+  } else {
+    await bootstrap();
+  }
+}
+
+Future<void> bootstrap() async {
+  Intl.defaultLocale = "id-ID";
 
   final db = await initSembastDb();
   final sp = await SharedPreferences.getInstance();
 
   runApp(
-    ProviderScope(
-      // observers: const [TalkerStateLogger()],
-      overrides: [
-        sembastServiceProvider.overrideWithValue(SembastService(db: db)),
-        sharedPrefsProvider.overrideWithValue(sp),
-      ],
-      child: const IkkiPosApp(),
+    ToastificationWrapper(
+      config: ToastificationConfig(
+        alignment: Alignment.topCenter,
+      ),
+      child: SentryWidget(
+        child: ProviderScope(
+          // observers: const [TalkerStateLogger()],
+          overrides: <Override>[
+            sembastServiceProvider.overrideWithValue(SembastService(db: db)),
+            sharedPrefsProvider.overrideWithValue(sp),
+          ],
+          child: const PosApp(),
+        ),
+      ),
     ),
   );
-}
-
-Future<void> initOneSignal() async {
-  // Enable verbose logging for debugging (remove in production)
-  await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  OneSignal.initialize('YOUR_APP_ID');
-  // Use this method to prompt for push notifications.
-  // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-  await OneSignal.Notifications.requestPermission(false);
-}
-
-Future<void> initNewRelic() async {
-  // var appToken = '';
-  // if (Platform.isIOS) {
-  //   appToken = 'AAf4e0b2a3b17f3a07f6b173e6434adf60487742e4-NRMA';
-  // } else if (Platform.isAndroid) {
-  //   appToken = 'AA5f6b439c5b03b3edb50d5b1bb2f780b8580e3fa7-NRMA';
-  // }
-
-  // final config = Config(
-  //   accessToken: appToken,
-  //   newEventSystemEnabled: true,
-  // );
-  // await NewrelicMobile.instance.start(config, () {});
-  // await NewrelicMobile.instance.setMaxEventPoolSize(3000);
-  // await NewrelicMobile.instance.setMaxEventBufferTime(200);
-  // await NewrelicMobile.instance.setMaxOfflineStorageSize(200);
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/config/pos_theme.dart';
-import '../../../data/user/user_model.dart';
 import '../../../widgets/ui/pos_button.dart';
+import '../../core/theme/app_theme.dart';
+import '../../features/auth/model/user_model.dart';
 import '../ui/pos_dialog_two.dart';
 
 class SelectUserDialog extends ConsumerStatefulWidget {
@@ -114,7 +114,7 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 checkboxScaleFactor: 1.2,
-                selectedTileColor: POSTheme.primaryBlue,
+                selectedTileColor: AppTheme.primaryBlue,
                 onChanged: (_) {
                   value = user;
                   setState(() {});

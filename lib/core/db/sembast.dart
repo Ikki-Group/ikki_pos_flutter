@@ -19,6 +19,11 @@ class SembastService {
     final f = getDatabaseFactorySqflite(sqflite.databaseFactory);
     db = await f.openDatabase('test.db');
   }
+
+  Future<void> drop() async {
+    await db.dropAll();
+    // await db.reload();
+  }
 }
 
 Future<Database> initSembastDb() async {

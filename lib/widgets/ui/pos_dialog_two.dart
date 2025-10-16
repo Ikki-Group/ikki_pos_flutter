@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/config/pos_theme.dart';
+import '../../core/theme/app_theme.dart';
 
 class PosDialogTwo extends StatelessWidget {
   const PosDialogTwo({super.key, this.title, this.children, this.footer, this.constraints, this.width, this.height});
@@ -18,7 +18,7 @@ class PosDialogTwo extends StatelessWidget {
 
     if (title != null) {
       headerWidget = ColoredBox(
-        color: POSTheme.primaryBlue,
+        color: AppTheme.primaryBlue,
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Text(

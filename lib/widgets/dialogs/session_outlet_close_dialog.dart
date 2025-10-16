@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../core/config/pos_theme.dart';
-import '../../../data/outlet/outlet_provider.dart';
-import '../../../data/user/user_provider.dart';
-import '../../shared/utils/formatter.dart';
+import '../../core/theme/app_theme.dart';
+import '../../features/auth/provider/user_provider.dart';
+import '../../features/outlet/provider/outlet_provider.dart';
+import '../../utils/formatter.dart';
 import '../ui/pos_dialog.dart';
 import 'currency_numpad_dialog.dart';
 
@@ -55,7 +55,7 @@ class _SessionOutletCloseDialogState extends ConsumerState<SessionOutletCloseDia
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider);
-    final user = ref.watch(currentUserProvider)!;
+    final user = ref.watch(userProvider).selectedUser;
 
     return PosDialog(
       mainAxisSize: MainAxisSize.min,
@@ -110,7 +110,7 @@ class _SessionOutletCloseDialogState extends ConsumerState<SessionOutletCloseDia
             onTap: onTapCash,
             child: Container(
               decoration: const UnderlineTabIndicator(
-                borderSide: BorderSide(color: POSTheme.primaryBlueDark, width: 1.5),
+                borderSide: BorderSide(color: AppTheme.primaryBlueDark, width: 1.5),
                 insets: EdgeInsets.only(bottom: -8),
               ),
               child: Text(
@@ -132,7 +132,8 @@ class ConfirmAction extends _$ConfirmAction {
   FutureOr<bool> build() => false;
 
   Future<void> execute(int cash) async {
-    final user = ref.read(currentUserProvider)!;
-    await ref.read(outletProvider.notifier).close(cash: cash, user: user);
+    final user = ref.read(userProvider).selectedUser;
+    // TODO
+    // await ref.read(outletProvider.notifier).close(cash: cash, user: user);
   }
 }

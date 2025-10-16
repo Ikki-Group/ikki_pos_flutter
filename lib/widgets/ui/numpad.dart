@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/config/pos_theme.dart';
-import '../../shared/utils/formatter.dart';
+import '../../core/theme/app_theme.dart';
+import '../../utils/formatter.dart';
 
 typedef ListKeys = List<List<String>>;
 
@@ -75,7 +75,7 @@ class _NumpadState extends State<Numpad> {
   @override
   Widget build(BuildContext context) {
     final isEmptyInput = input.isEmpty;
-    final borderColor = isEmptyInput ? Colors.grey : POSTheme.primaryBlue;
+    final borderColor = isEmptyInput ? Colors.grey : AppTheme.primaryBlue;
     final textColor = isEmptyInput ? Colors.grey[500]! : Colors.black;
     final textFontWeight = isEmptyInput ? FontWeight.normal : FontWeight.bold;
     final textFontSize = isEmptyInput ? 20 : 24;

@@ -1,27 +1,11 @@
-include: package:very_good_analysis/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    unintended_html_in_doc_comment: ignore
   plugins:
     - custom_lint
   exclude: ["**/*.g.dart", "**/*.freezed.dart"]
-
-  # language:
-  #   strict-casts: true
-  #   strict-inference: true
-  #   strict-raw-types: true
-
-  errors:
-    argument_type_not_assignable_to_error_handler: ignore
-    avoid_catches_without_on_clauses: ignore
-    avoid_print: ignore
-    body_might_complete_normally_catch_error: ignore
-    document_ignores: ignore
-    invalid_annotation_target: ignore
-    invalid_return_type_for_catch_error: ignore
-    missing_required_param: error
-    missing_return: error
-    null_check_always_fails: ignore
-    use_setters_to_change_properties: ignore
 
 formatter:
   trailing_commas: preserve

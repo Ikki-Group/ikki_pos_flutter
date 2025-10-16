@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../data/cart/cart_state.dart';
-import '../../../data/sale/sale_enum.dart';
-import '../../../router/ikki_router.dart';
 import '../../../widgets/ui/pos_button.dart';
-import '../../data/outlet/outlet_provider.dart';
-import '../../data/user/user_provider.dart';
-import '../../data/user/user_util.dart';
+import '../../core/config/app_constant.dart';
+import '../../features/auth/provider/user_provider.dart';
+import '../../features/cart/provider/cart_provider.dart';
+import '../../features/outlet/provider/outlet_provider.dart';
+import '../../router/app_router.dart';
 import '../ui/pos_dialog_two.dart';
 
 class SalesModeDialog extends ConsumerStatefulWidget {
@@ -35,14 +34,14 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
   late ScrollController scrollController;
 
   int pax = 1;
-  SaleMode selectedSaleMode = SaleMode.dineIn;
+  SalesMode selectedSalesMode = SalesMode.dineIn;
 
   @override
   void initState() {
     super.initState();
-    final cart = ref.read(cartStateProvider);
+    final cart = ref.read(cartProvider);
 
-    selectedSaleMode = cart.saleMode;
+    selectedSalesMode = cart.salesMode;
     pax = cart.pax;
     scrollController = ScrollController();
 
@@ -79,26 +78,26 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
 
   void onProcessPressed() {
     final routeName = GoRouter.of(context).state.name;
-    if (routeName == IkkiRouter.cart.name) {
+    if (routeName == AppRouter.cart.name) {
       ref
-          .read(cartStateProvider.notifier)
-          .updateSalesAndPax(
-            selectedSaleMode,
+          .read(cartProvider.notifier)
+          .setSalesAndPax(
+            selectedSalesMode,
             pax,
           );
       onClose();
     } else {
-      final outletState = ref.read(outletProvider);
-      final user = ref.read(currentUserProvider).requireValue;
+      final outlet = ref.read(outletProvider);
+      final user = ref.read(userProvider).selectedUser;
       ref
-          .read(cartStateProvider.notifier)
-          .newCart(
+          .read(cartProvider.notifier)
+          .createNew(
             pax: pax,
-            saleMode: selectedSaleMode,
-            outletState: outletState,
+            salesMode: selectedSalesMode,
+            outletState: outlet,
             user: user,
           );
-      context.goNamed(IkkiRouter.cart.name);
+      context.goNamed(AppRouter.cart.name);
     }
   }
 
@@ -161,21 +160,21 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
           width: width,
           height: 50,
           child: ListView.separated(
-            itemCount: SaleMode.values.length,
+            itemCount: SalesMode.values.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemBuilder: (context, index) {
-              final saleMode = SaleMode.values[index];
-              final isSelected = selectedSaleMode == saleMode;
+              final salesMode = SalesMode.values[index];
+              final isSelected = selectedSalesMode == salesMode;
 
               return ChoiceChip(
                 showCheckmark: false,
                 selected: isSelected,
                 onSelected: (selected) {
-                  selectedSaleMode = saleMode;
+                  selectedSalesMode = salesMode;
                   setState(() {});
                 },
-                label: Text(saleMode.value),
+                label: Text(salesMode.value),
               );
             },
           ),

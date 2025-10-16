@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objectid/objectid.dart';
 
-import '../../../core/config/pos_theme.dart';
-import '../../../data/cart/cart_model.dart';
-import '../../../data/cart/cart_state.dart';
-import '../../../data/product/product.model.dart';
-import '../../../shared/utils/formatter.dart';
 import '../../../widgets/ui/pos_button.dart';
+import '../../core/theme/app_theme.dart';
+import '../../features/cart/model/cart_state.dart';
+import '../../features/cart/provider/cart_provider.dart';
+import '../../features/product/model/product_model.dart';
+import '../../utils/formatter.dart';
 import '../ui/pos_dialog_two.dart';
 
 class CartProductPickerDialog extends ConsumerStatefulWidget {
@@ -70,8 +70,6 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
   }
 
   void _onConfirm() {
-    final cart = ref.read(cartStateProvider.notifier);
-
     CartItemVariant? variant;
 
     if (selectedVariant != null) {
@@ -84,23 +82,27 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
     }
 
     final price = variant?.price ?? widget.product.price;
-    cart.addCartItem(
-      CartItem(
-        id: widget.cartItem?.id ?? ObjectId().hexString,
-        batchId: 1,
-        product: CartItemProduct(
-          id: widget.product.id,
-          name: widget.product.name,
-          price: widget.product.price,
-        ),
-        variant: variant,
-        qty: quantity,
-        price: price,
-        note: noteController.text,
-        gross: price * quantity,
-        net: price * quantity,
-      ),
-    );
+
+    ref
+        .read(cartProvider.notifier)
+        .upsertCartItem(
+          CartItem(
+            id: widget.cartItem?.id ?? ObjectId().hexString,
+            batchId: 1,
+            salesMode: ref.read(cartProvider.select((s) => s.salesMode)),
+            product: CartItemProduct(
+              id: widget.product.id,
+              name: widget.product.name,
+              price: widget.product.price,
+            ),
+            variant: variant,
+            qty: quantity,
+            price: price,
+            note: noteController.text,
+            gross: price * quantity,
+            net: price * quantity,
+          ),
+        );
 
     Navigator.of(context).pop();
   }
@@ -138,7 +140,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                   Text('Total', style: textTheme.labelLarge),
                   Text(
                     Formatter.toIdr.format(widget.product.price * quantity),
-                    style: textTheme.labelLarge?.copyWith(color: POSTheme.primaryBlue),
+                    style: textTheme.labelLarge?.copyWith(color: AppTheme.primaryBlue),
                   ),
                 ],
               ),
@@ -163,7 +165,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
               alignment: Alignment.centerLeft,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  border: Border.all(color: POSTheme.borderLight),
+                  border: Border.all(color: AppTheme.borderLight),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -178,7 +180,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       constraints: const BoxConstraints(minWidth: 46),
                       alignment: Alignment.center,
-                      color: POSTheme.borderLight,
+                      color: AppTheme.borderLight,
                       child: Text(quantity.toString(), style: textTheme.labelLarge),
                     ),
                     _buildQuantityButton(
@@ -271,7 +273,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Icon(
           icon,
-          color: enabled ? POSTheme.primaryBlueDark : const Color(0xFF9CA3AF),
+          color: enabled ? AppTheme.primaryBlueDark : const Color(0xFF9CA3AF),
           size: 20,
         ),
       ),
