@@ -4,8 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../auth/provider/user_provider.dart';
-import '../../../sales/model/payment_model.dart';
-import '../../model/cart_state.dart';
+import '../../../sales/domain/model/payment_model.dart';
+import '../../../sales/domain/model/sales_model.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 part 'cart_payment_notifier.freezed.dart';
@@ -18,7 +19,7 @@ abstract class CartPaymentState with _$CartPaymentState {
     @Default(0) double change,
     @Default(0) double tender,
     @Default(0) double remaining,
-    @Default([]) List<CartPayment> payments,
+    @Default([]) List<SalesPayment> payments,
   }) = _CartPaymentState;
 }
 
@@ -46,14 +47,14 @@ class PaymentNotifier extends _$PaymentNotifier {
 
     final payments = [
       ...state.payments,
-      CartPayment(
+      SalesPayment(
         id: ObjectId().hexString,
         amount: amount,
         label: payment.label,
         type: payment.type,
         at: DateTime.now().toIso8601String(),
         by: user.id,
-        isDraft: true,
+        // isDraft: true,
       ),
     ];
     final newState = state.copyWith(payments: payments);
@@ -72,7 +73,8 @@ extension CartPaymentStateX on CartPaymentState {
 
   CartPaymentState invalidate() {
     var payments = this.payments.toList();
-    final tender = payments.fold<double>(0, (prev, curr) => prev + curr.amount);
+    // final tender = payments.fold<double>(0, (prev, curr) => prev + curr?.amount ?? 0);
+    final tender = 0.toDouble();
     var change = tender - total;
     var remaining = total - tender;
 

@@ -4,9 +4,10 @@ import 'package:objectid/objectid.dart';
 
 import '../../../widgets/ui/pos_button.dart';
 import '../../core/theme/app_theme.dart';
-import '../../features/cart/model/cart_state.dart';
+import '../../features/cart/domain/cart_state.dart';
 import '../../features/cart/provider/cart_provider.dart';
 import '../../features/product/model/product_model.dart';
+import '../../features/sales/domain/model/sales_model.dart';
 import '../../utils/formatter.dart';
 import '../ui/pos_dialog_two.dart';
 
@@ -70,11 +71,11 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
   }
 
   void _onConfirm() {
-    CartItemVariant? variant;
+    SalesItemVariant? variant;
 
     if (selectedVariant != null) {
       final rawVariant = widget.product.variants.firstWhere((v) => v.id == selectedVariant);
-      variant = CartItemVariant(
+      variant = SalesItemVariant(
         id: rawVariant.id,
         name: rawVariant.name,
         price: rawVariant.price,

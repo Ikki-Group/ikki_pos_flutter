@@ -10,7 +10,7 @@ import '../../../../utils/formatter.dart';
 import '../../../outlet/provider/outlet_provider.dart';
 import '../../../printer/provider/printer_provider.dart';
 import '../../../printer/templates/template_receipt.dart';
-import '../../model/cart_extension.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 class CartPaymentSuccessPage extends ConsumerStatefulWidget {

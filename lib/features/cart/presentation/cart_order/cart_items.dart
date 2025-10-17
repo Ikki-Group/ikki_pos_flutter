@@ -5,8 +5,8 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/dialogs/cart_product_picker_dialog.dart';
 import '../../../product/provider/product_provider.dart';
-import '../../model/cart_extension.dart';
-import '../../model/cart_state.dart';
+import '../../domain/cart_state.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 class CartItems extends ConsumerWidget {

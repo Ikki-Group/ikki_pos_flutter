@@ -34,7 +34,7 @@ enum SalesMode {
   }
 }
 
-enum CartSource {
+enum SalesSource {
   cashier,
   online,
 }

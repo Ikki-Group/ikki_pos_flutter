@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../cart/model/cart_state.dart';
+import '../../cart/domain/cart_state.dart';
 import '../data/sales_repo.dart';
 
 part 'sales_provider.g.dart';

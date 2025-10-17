@@ -3,7 +3,7 @@ import 'package:sembast/sembast_io.dart';
 
 import '../../../core/db/sembast.dart';
 import '../../../utils/json.dart';
-import '../../cart/model/cart_state.dart';
+import '../../cart/domain/cart_state.dart';
 
 part 'sales_repo.g.dart';
 

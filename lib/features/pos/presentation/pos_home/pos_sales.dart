@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../utils/formatter.dart';
-import '../../../cart/model/cart_extension.dart';
-import '../../../cart/model/cart_state.dart';
+import '../../../cart/domain/cart_state.dart';
+import '../../../cart/domain/cart_state_ext.dart';
 import '../../../sales/provider/sales_provider.dart';
 import 'pos_home_notifier.dart';
 
@@ -114,7 +114,7 @@ class PosSalesItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(cart.label, style: textTheme.labelMedium),
+                      Text(cart.customer?.name ?? '', style: textTheme.labelMedium),
                       Text(Formatter.toIdr.format(cart.net), style: textTheme.labelMedium),
                     ],
                   ),

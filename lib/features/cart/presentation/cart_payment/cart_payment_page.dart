@@ -10,9 +10,10 @@ import '../../../../utils/cash_generator.dart';
 import '../../../../utils/formatter.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../outlet/provider/outlet_provider.dart';
-import '../../../sales/model/payment_model.dart';
-import '../../model/cart_extension.dart';
-import '../../model/cart_state.dart';
+import '../../../sales/domain/model/payment_model.dart';
+import '../../../sales/domain/model/sales_model.dart';
+import '../../domain/cart_state.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_payment_notifier.dart';
 
@@ -109,10 +110,11 @@ class _CartPaymentMethod extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
-                              Text(
-                                payment.formattedLabel,
-                                style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
-                              ),
+                              // TODO
+                              // Text(
+                              //   payment.formattedLabel,
+                              //   style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+                              // ),
                               const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
@@ -313,7 +315,7 @@ class _OrderItemsPreview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartProvider);
 
-    Widget buildItemBatch(List<CartItem> items, CartBatch batch) {
+    Widget buildItemBatch(List<CartItem> items, SalesBatch batch) {
       final textTheme = Theme.of(context).textTheme;
       final net = items.fold<double>(0, (prev, curr) => prev + curr.gross);
 

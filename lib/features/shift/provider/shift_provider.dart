@@ -10,8 +10,10 @@ import '../../../utils/app_toast.dart';
 import '../../../utils/exception.dart';
 import '../../../utils/result.dart';
 import '../../auth/provider/user_provider.dart';
-import '../../cart/model/cart_state.dart';
+import '../../cart/domain/cart_state.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../../sales/domain/extension/sales_model_ext.dart';
+import '../../sales/domain/model/sales_model.dart';
 import '../data/shift_repo.dart';
 import '../model/shift_session_model.dart';
 import '../model/shift_status.dart';
@@ -33,7 +35,7 @@ abstract class ShiftNotifier {
   Future<void> onSalesSaved({
     required CartState cart,
     required CartStatus lastStatus,
-    List<CartPayment> newPayments,
+    List<SalesPayment> newPayments,
   });
 }
 
@@ -127,7 +129,7 @@ class Shift extends _$Shift implements ShiftNotifier {
   Future<void> onSalesSaved({
     required CartState cart,
     required CartStatus lastStatus,
-    List<CartPayment> newPayments = const [],
+    List<SalesPayment> newPayments = const [],
   }) async {
     logger.info('[ShiftProvider.onSalesSaved] start');
     var shift = state.requiredOpen;

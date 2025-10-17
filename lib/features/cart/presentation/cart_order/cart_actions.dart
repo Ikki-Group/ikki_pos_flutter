@@ -6,7 +6,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/dialogs/cart_save_dialog.dart';
-import '../../model/cart_extension.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 class CartActions extends ConsumerStatefulWidget {

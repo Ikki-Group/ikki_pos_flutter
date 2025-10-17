@@ -7,8 +7,8 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/ui/pos_button.dart';
-import '../../../cart/model/cart_extension.dart';
-import '../../../cart/model/cart_state.dart';
+import '../../../cart/domain/cart_state.dart';
+import '../../../cart/domain/cart_state_ext.dart';
 import '../../../cart/provider/cart_provider.dart';
 import '../../../sales/provider/sales_provider.dart';
 import 'pos_home_notifier.dart';
@@ -87,7 +87,7 @@ class _CartDetails extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(cart.label, style: textTheme.titleSmall),
+                  Text(cart.customer?.name ?? '', style: textTheme.titleSmall),
                   const SizedBox(height: 8),
                   Row(
                     children: <Widget>[
