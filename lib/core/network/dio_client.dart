@@ -12,9 +12,9 @@ part 'dio_client.g.dart';
 
 final dioOptions = BaseOptions(
   baseUrl: ApiConfig.baseUrl,
-  connectTimeout: Duration(seconds: 30),
-  receiveTimeout: Duration(minutes: 5),
-  sendTimeout: Duration(seconds: 30),
+  // connectTimeout: Duration(seconds: 30),
+  // receiveTimeout: Duration(seconds: 5),
+  // sendTimeout: Duration(seconds: 30),
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

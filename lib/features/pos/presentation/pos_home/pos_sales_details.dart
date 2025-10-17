@@ -1,12 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../router/app_router.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/ui/pos_button.dart';
 import '../../../cart/model/cart_extension.dart';
 import '../../../cart/model/cart_state.dart';
+import '../../../cart/provider/cart_provider.dart';
 import '../../../sales/provider/sales_provider.dart';
 import 'pos_home_notifier.dart';
 
@@ -130,9 +133,10 @@ class _CartDetails extends ConsumerWidget {
                   side: const BorderSide(color: AppTheme.borderLight),
                 ),
                 onPressed: () {
-                  // final user = ref.read(userProvider).selectedUser;
-                  // ref.read(cartStateProvider.notifier).newBatch(cart, user);
-                  // context.goNamed(IkkiRouter.cart.name);
+                  ref.read(cartProvider.notifier).createNewBatch(cart).then((_) {
+                    if (!context.mounted) return;
+                    context.goNamed(AppRouter.cart.name);
+                  });
                 },
                 icon: const Icon(Icons.add),
                 label: const Text('Tambah Pesanan'),

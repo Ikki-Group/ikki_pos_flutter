@@ -81,27 +81,14 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
       );
     }
 
-    final price = variant?.price ?? widget.product.price;
-
     ref
         .read(cartProvider.notifier)
         .upsertCartItem(
-          CartItem(
-            id: widget.cartItem?.id ?? ObjectId().hexString,
-            batchId: 1,
-            salesMode: ref.read(cartProvider.select((s) => s.salesMode)),
-            product: CartItemProduct(
-              id: widget.product.id,
-              name: widget.product.name,
-              price: widget.product.price,
-            ),
-            variant: variant,
-            qty: quantity,
-            price: price,
-            note: noteController.text,
-            gross: price * quantity,
-            net: price * quantity,
-          ),
+          id: widget.cartItem?.id ?? ObjectId().hexString,
+          product: widget.product,
+          variant: variant,
+          qty: quantity,
+          note: noteController.text,
         );
 
     Navigator.of(context).pop();
@@ -124,7 +111,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
       title: widget.product.name,
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
+        children: <Widget>[
           Expanded(
             flex: 3,
             child: Container(
@@ -136,7 +123,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text('Total', style: textTheme.labelLarge),
                   Text(
                     Formatter.toIdr.format(widget.product.price * quantity),
@@ -155,10 +142,10 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
           ),
         ],
       ),
-      children: [
+      children: <Widget>[
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
             Text('Kuantitas', style: textTheme.labelLarge, textAlign: TextAlign.left),
             const SizedBox(height: 12),
             Align(
@@ -194,7 +181,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
             ),
 
             // Variants Section (if available)
-            if (widget.product.hasVariant && widget.product.variants.isNotEmpty == true) ...[
+            if (widget.product.hasVariant && widget.product.variants.isNotEmpty) ...<Widget>[
               const SizedBox(height: 20),
               Text('Varian', style: textTheme.labelLarge),
               const SizedBox(height: 12),
@@ -206,7 +193,7 @@ class CartProductPickerDialogState extends ConsumerState<CartProductPickerDialog
 
                   return FilterChip(
                     label: Column(
-                      children: [
+                      children: <Widget>[
                         Text(
                           variant.name,
                           style: const TextStyle(

@@ -129,3 +129,7 @@ sealed class CartCustomer with _$CartCustomer {
 
   factory CartCustomer.fromJson(Json json) => _$CartCustomerFromJson(json);
 }
+
+extension CartPaymentX on CartPayment {
+  bool get isCash => type == PaymentType.cash;
+}

@@ -37,7 +37,7 @@ class _CartOrderPageState extends ConsumerState<CartOrderPage> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
-                children: [
+                children: <Widget>[
                   _Header(),
                   SizedBox(height: 8),
                   CartCategories(),
@@ -82,7 +82,7 @@ class _Header extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void onBack() {
       context.goNamed(AppRouter.pos.name);
-      // ref.read(cartStateProvider.notifier).reset();
+      ref.read(cartProvider.notifier).reset();
     }
 
     return Row(
@@ -157,7 +157,7 @@ class _BadgeReceiptCode extends ConsumerWidget {
         border: Border.all(color: AppTheme.borderDark),
       ),
       child: Row(
-        children: [
+        children: <Widget>[
           const Icon(Icons.receipt, size: 16, color: AppTheme.textOnSecondary),
           const SizedBox(width: 8),
           Flexible(

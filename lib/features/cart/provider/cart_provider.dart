@@ -23,14 +23,21 @@ abstract class CartAbstract {
   Future<void> createNew({
     required int pax,
     required SalesMode salesMode,
-    required UserModel user,
-    required OutletState outletState,
   });
+  Future<void> createNewBatch(
+    CartState cart,
+  );
 
   void setSalesAndPax(SalesMode salesMode, int pax);
 
   Future<void> addProductDirectly(ProductModel product);
-  Future<void> upsertCartItem(CartItem item);
+  Future<void> upsertCartItem({
+    required String id,
+    required ProductModel product,
+    required CartItemVariant? variant,
+    required int qty,
+    required String note,
+  });
   Future<void> removeItem(CartItem item);
   Future<void> clearCurrentItems();
 
@@ -52,40 +59,57 @@ class Cart extends _$Cart implements CartAbstract {
   }
 
   ShiftSessionModel? get _shift => ref.read(shiftProvider);
-  ShiftNotifier get _shiftNotifier => ref.read(shiftProvider.notifier);
   UserModel get _currentUser => ref.read(userProvider).selectedUser;
+  OutletState get _outletState => ref.read(outletProvider);
+
+  ShiftNotifier get _shiftNotifier => ref.read(shiftProvider.notifier);
 
   @override
-  Future<void> createNew({
-    required int pax,
-    required SalesMode salesMode,
-    required UserModel user,
-    required OutletState outletState,
-  }) async {
+  Future<void> createNew({required int pax, required SalesMode salesMode}) async {
     final shift = _shift.requiredOpen;
     final now = DateTime.now().toIso8601String();
+    final userId = _currentUser.id;
 
     final newCart = CartState(
       id: ObjectId().hexString,
       rc: _shiftNotifier.generateReceiptCode(),
       salesMode: salesMode,
       pax: pax,
-      outletId: outletState.outlet.id,
+      outletId: _outletState.outlet.id,
       sessionId: shift.id,
       batches: [
         CartBatch(
           id: 1,
           at: now,
-          by: user.id,
+          by: userId,
         ),
       ],
       createdAt: now,
-      createdBy: user.id,
+      createdBy: userId,
       updatedAt: now,
-      updatedBy: user.id,
+      updatedBy: userId,
     );
 
     state = newCart;
+  }
+
+  @override
+  Future<void> createNewBatch(CartState cart) async {
+    final batchId = cart.batches.length + 1;
+    final userId = _currentUser.id;
+    final now = DateTime.now().toIso8601String();
+
+    state = cart.copyWith(
+      batchId: batchId,
+      batches: [
+        ...cart.batches,
+        CartBatch(
+          id: batchId,
+          at: now,
+          by: userId,
+        ),
+      ],
+    );
   }
 
   @override
@@ -150,15 +174,44 @@ class Cart extends _$Cart implements CartAbstract {
   }
 
   @override
-  Future<void> upsertCartItem(CartItem item) async {
+  Future<void> upsertCartItem({
+    required String id,
+    required ProductModel product,
+    required CartItemVariant? variant,
+    required int qty,
+    required String note,
+  }) async {
     var newState = state.copyWith();
     final newItems = state.items.toList();
 
-    final idx = newItems.indexWhere((i) => i.id == item.id && i.batchId == item.batchId);
-    if (idx != -1) {
-      newItems[idx] = item;
+    var price = product.price;
+    if (variant != null) {
+      price = variant.price;
+    }
+
+    final cartItem = CartItem(
+      id: id,
+      batchId: newState.batchId,
+      salesMode: newState.salesMode,
+      product: CartItemProduct(
+        id: product.id,
+        name: product.name,
+        price: product.price,
+      ),
+      variant: variant,
+      qty: qty,
+      price: price * qty,
+      gross: price * qty,
+      discount: 0,
+      net: price * qty,
+      note: note,
+    );
+
+    final idx = newItems.indexWhere((i) => i.id == id && i.batchId == newState.batchId);
+    if (idx.isNegative) {
+      newItems.add(cartItem);
     } else {
-      newItems.add(item);
+      newItems[idx] = cartItem;
     }
 
     newState = newState.copyWith(items: newItems);
