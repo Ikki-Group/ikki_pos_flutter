@@ -4,6 +4,11 @@ import 'package:go_transitions/go_transitions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppTheme {
+  // Font family
+  static const lato = "Lato";
+  static const inter = "Inter";
+  static const montserrat = "Montserrat";
+
   // Primary Colors
   static const Color primaryBlue = Color(0xFF2563EB);
   static const Color primaryBlueDark = Color(0xFF1D4ED8);
@@ -322,6 +327,7 @@ abstract class AppTheme {
           fontWeight: FontWeight.bold,
         ),
         titleLarge: TextStyle(
+          fontFamily: inter,
           fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
         ),

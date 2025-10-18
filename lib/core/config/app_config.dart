@@ -10,10 +10,13 @@ abstract class AppConfig {
   static const mqttWsPort = 8084;
   static const mqttUsername = 'mobile';
   static const mqttPassword = 'supersecret';
+
+  static const String sembastDb = "ikki.db";
 }
 
 abstract class ApiConfig {
-  static String get baseUrl => AppConfig.devUrl;
+  // static String get baseUrl => AppConfig.devUrl;
+  static String get baseUrl => AppConfig.prodUrl;
 
   static const String outletDeviceClaim = '/outlet/device/claim';
   static const String outletDeviceSync = '/outlet/device/sync';
