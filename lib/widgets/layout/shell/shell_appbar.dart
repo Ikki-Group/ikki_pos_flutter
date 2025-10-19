@@ -20,7 +20,7 @@ class ShellAppbar extends StatelessWidget implements PreferredSizeWidget {
     var actions = <Widget>[];
 
     if (router == AppRouter.pos) actions.add(CreateOrderButton());
-    if (actions.isNotEmpty) actions.add(const SizedBox(width: 8));
+    if (actions.isNotEmpty) actions.add(const SizedBox(width: 16));
 
     return AppBar(
       toolbarHeight: preferredSize.height,
@@ -42,6 +42,8 @@ class _PosInfo extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final outlet = ref.watch(outletProvider);
 
+    // TODO
+    // Use row instead of column
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,11 +52,11 @@ class _PosInfo extends ConsumerWidget {
           outlet.outlet.name,
           style: textTheme.titleSmall?.copyWith(
             color: Colors.white,
-            fontSize: 16,
-            height: 1,
+            fontSize: 18,
+            height: .8,
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         const Row(
           children: <Widget>[
             _NetInfo(),
@@ -74,14 +76,20 @@ class _NetInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
-    const color = Color.fromARGB(255, 24, 255, 182);
     return Row(
-      children: [
-        const Icon(Icons.wifi_rounded, size: 16, color: color),
+      children: <Widget>[
+        const Icon(
+          Icons.wifi_rounded,
+          size: 16,
+          color: AppTheme.accentGreenLight,
+        ),
         const SizedBox(width: 4),
         Text(
           'Online',
-          style: textTheme.bodySmall?.copyWith(color: Colors.white),
+          style: textTheme.bodySmall?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -95,7 +103,7 @@ class _ShiftInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final isOpen = ref.watch(shiftProvider).isOpen;
-    final color = isOpen ? AppTheme.accentGreen : Color.fromARGB(255, 253, 154, 154);
+    final color = isOpen ? AppTheme.accentGreenLight : Color.fromARGB(255, 253, 154, 154);
 
     return Row(
       children: <Widget>[
@@ -103,7 +111,10 @@ class _ShiftInfo extends ConsumerWidget {
         const SizedBox(width: 4),
         Text(
           isOpen ? 'Open' : 'Close',
-          style: textTheme.bodySmall?.copyWith(color: Colors.white),
+          style: textTheme.bodySmall?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );

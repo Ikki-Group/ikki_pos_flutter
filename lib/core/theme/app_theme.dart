@@ -21,6 +21,7 @@ abstract class AppTheme {
 
   // Accent Colors
   static const Color accentGreen = Color(0xFF10B981);
+  static const Color accentGreenLight = Color.fromARGB(255, 24, 255, 182);
   static const Color accentRed = Color(0xFFEF4444);
   static const Color accentBlue = Color(0xFF06B6D4);
 
