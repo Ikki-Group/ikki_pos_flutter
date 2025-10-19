@@ -337,22 +337,21 @@ abstract class AppTheme {
         titleMedium: TextStyle(
           fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
+          fontSize: 16,
         ),
         titleSmall: TextStyle(
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
+          fontSize: 12,
         ),
         bodyLarge: TextStyle(
           fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
         ),
         bodyMedium: TextStyle(
-          fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
+          fontWeight: FontWeight.w600,
         ),
         bodySmall: TextStyle(
           fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
+          fontSize: 12,
         ),
         labelLarge: TextStyle(
           fontWeight: FontWeight.w600,

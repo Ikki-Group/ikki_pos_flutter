@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/config/app_constant.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../utils/extension/ext_date_time.dart';
 import '../../../../utils/formatter.dart';
 import '../../../cart/domain/cart_state.dart';
 import '../../../cart/domain/cart_state_ext.dart';
@@ -74,7 +75,7 @@ class PosSales extends ConsumerWidget {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final item = data[index];
-                      return PosSalesItem(
+                      return _PosSalesItem(
                         cart: item,
                         onTap: () {
                           ref.read(posFilterProvider.notifier).setSelectedCart(item.id);
@@ -96,8 +97,8 @@ class PosSales extends ConsumerWidget {
   }
 }
 
-class PosSalesItem extends StatelessWidget {
-  const PosSalesItem({required this.isSelected, required this.onTap, required this.cart, super.key});
+class _PosSalesItem extends StatelessWidget {
+  const _PosSalesItem({required this.isSelected, required this.onTap, required this.cart});
 
   final bool isSelected;
   final CartState cart;
@@ -125,12 +126,12 @@ class PosSalesItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    Formatter.dateTime.format(DateTime.parse(cart.createdAt)),
-                    style: textTheme.labelMedium,
+                    DateTime.parse(cart.createdAt).dateTimeId,
+                    style: textTheme.titleSmall,
                   ),
                   Text(
                     cart.rc,
-                    style: textTheme.labelMedium,
+                    style: textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -142,19 +143,27 @@ class PosSalesItem extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(cart.customer?.name ?? '', style: textTheme.labelMedium),
-                      Text(Formatter.toIdr.format(cart.net), style: textTheme.labelMedium),
+                    children: <Widget>[
+                      Text(
+                        cart.customer?.name ?? '',
+                        style: textTheme.titleSmall,
+                      ),
+                      Text(
+                        Formatter.toIdr.format(cart.net),
+                        style: textTheme.titleSmall,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('-', style: textTheme.labelMedium),
+                      Text('-', style: textTheme.titleSmall),
                       Text(
-                        'Belum Lunas',
-                        style: textTheme.labelMedium?.copyWith(color: AppTheme.accentRed),
+                        'BELUM LUNAS',
+                        style: textTheme.titleSmall?.copyWith(
+                          color: AppTheme.accentRed,
+                        ),
                       ),
                     ],
                   ),

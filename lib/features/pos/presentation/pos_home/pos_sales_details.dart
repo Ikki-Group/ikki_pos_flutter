@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
+import '../../../../utils/extension/ext_date_time.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/ui/pos_button.dart';
 import '../../../cart/domain/cart_state.dart';
@@ -80,6 +81,7 @@ class _CartDetails extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,18 +89,21 @@ class _CartDetails extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(cart.customer?.name ?? '', style: textTheme.titleSmall),
+                  Text(
+                    cart.customer?.name ?? '',
+                    style: textTheme.titleSmall?.copyWith(fontSize: 16, height: 1),
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: <Widget>[
                       Text(
-                        Formatter.dateTime.format(DateTime.parse(cart.createdAt)),
-                        style: textTheme.labelMedium,
+                        DateTime.parse(cart.createdAt).dateTimeId,
+                        style: textTheme.titleSmall,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         cart.rc,
-                        style: textTheme.labelMedium,
+                        style: textTheme.titleSmall,
                       ),
                     ],
                   ),
@@ -108,40 +113,23 @@ class _CartDetails extends ConsumerWidget {
                 padding: const EdgeInsets.only(right: 8),
                 child: Text(
                   'BELUM LUNAS',
-                  style: textTheme.titleMedium?.copyWith(color: AppTheme.accentRed),
+                  style: textTheme.titleMedium?.copyWith(
+                    color: AppTheme.accentRed,
+                    fontFamily: AppTheme.lato,
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           const Divider(),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Rincian Pesanan',
-                style: textTheme.labelLarge,
-                textAlign: TextAlign.left,
-              ),
-              OutlinedButton.icon(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  backgroundColor: Colors.transparent,
-                  side: const BorderSide(color: AppTheme.borderLight),
-                ),
-                onPressed: () {
-                  ref.read(cartProvider.notifier).createNewBatch(cart).then((_) {
-                    if (!context.mounted) return;
-                    context.goNamed(AppRouter.cart.name);
-                  });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Tambah Pesanan'),
-              ),
-            ],
+          const SizedBox(height: 12),
+          Text(
+            'Rincian Pesanan',
+            style: textTheme.titleSmall?.copyWith(
+              color: AppTheme.primaryBlueDark,
+            ),
+            textAlign: TextAlign.left,
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -154,16 +142,15 @@ class _CartDetails extends ConsumerWidget {
                     for (final batch in cart.batches) ...<Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
+                        children: <Widget>[
                           Text(
                             'Pesanan ${batch.id}',
-                            style: textTheme.labelMedium,
+                            style: textTheme.titleSmall,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             '(${Formatter.dateTime.format(DateTime.parse(batch.at))})',
-                            style: textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
+                            style: textTheme.bodySmall?.copyWith(
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -173,27 +160,56 @@ class _CartDetails extends ConsumerWidget {
                                 .where((item) => item.batchId == batch.id)
                                 .fold<double>(0, (prev, curr) => prev + curr.gross)
                                 .toIdr,
-                            style: textTheme.labelMedium,
+                            style: textTheme.titleSmall,
                           ),
                         ],
                       ),
-                      for (final item in cart.items.toList().where((i) => i.batchId == batch.id)) ...[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  '${item.qty} x ${item.product.name}',
+                      const SizedBox(height: 4),
+                      for (final item in cart.items.toList().where((i) => i.batchId == batch.id)) ...<Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 32,
+                              child: Text(
+                                item.qty.toString(),
+                                textAlign: TextAlign.right,
+                                style: textTheme.bodySmall,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            SizedBox(
+                              width: 8,
+                              child: Text(
+                                "x",
+                                style: textTheme.bodySmall,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  item.product.name,
                                   style: textTheme.bodySmall,
                                 ),
-                              ),
-                              Text(item.gross.toIdrNoSymbol, style: textTheme.bodySmall),
-                            ],
-                          ),
+                                if (item.variant != null)
+                                  Text(
+                                    item.variant!.name,
+                                    style: textTheme.bodySmall,
+                                  ),
+                              ],
+                            ),
+                            Spacer(),
+                            Text(
+                              item.gross.toIdrNoSymbol,
+                              style: textTheme.bodySmall,
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 4),
                       ],
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                     ],
                   ],
                 ),
@@ -208,6 +224,18 @@ class _CartDetails extends ConsumerWidget {
                 variant: ButtonVariant.destructiveOutlined,
               ),
               const Spacer(),
+              PosButton(
+                text: "Tambah Pesanan",
+                icon: const Icon(Icons.add),
+                variant: ButtonVariant.primaryOutlined,
+                onPressed: () {
+                  ref.read(cartProvider.notifier).createNewBatch(cart).then((_) {
+                    if (!context.mounted) return;
+                    context.goNamed(AppRouter.cart.name);
+                  });
+                },
+              ),
+              const SizedBox(width: 8),
               _PrintButton(cart),
               const SizedBox(width: 8),
               ElevatedButton.icon(
@@ -234,6 +262,7 @@ class _PrintButton extends ConsumerWidget {
     return PosButton(
       text: 'Cetak',
       icon: const Icon(Icons.print),
+      variant: ButtonVariant.secondaryOutlined,
       onPressed: () {
         // ref.read(printerStateProvider.notifier).print(TemplateReceipt(cart, outlet));
       },

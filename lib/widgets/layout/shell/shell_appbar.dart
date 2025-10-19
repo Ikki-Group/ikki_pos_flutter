@@ -52,7 +52,8 @@ class _PosInfo extends ConsumerWidget {
           outlet.outlet.name,
           style: textTheme.titleSmall?.copyWith(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
             height: .8,
           ),
         ),
