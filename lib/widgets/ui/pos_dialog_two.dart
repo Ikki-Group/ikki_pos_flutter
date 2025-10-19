@@ -20,13 +20,18 @@ class PosDialogTwo extends StatelessWidget {
       headerWidget = ColoredBox(
         color: AppTheme.primaryBlue,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 18,
+            vertical: 16,
+          ),
           child: Text(
             title!,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontFamily: AppTheme.lato,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.5,
             ),
           ),
         ),
@@ -46,14 +51,6 @@ class PosDialogTwo extends StatelessWidget {
           ),
         ),
       );
-      // contentWidget = Padding(
-      //   padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-      //   child: SingleChildScrollView(
-      //     child: ListBody(
-      //       children: children!,
-      //     ),
-      //   ),
-      // );
     }
 
     Widget? footerWidget;
@@ -69,7 +66,7 @@ class PosDialogTwo extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           if (headerWidget != null) headerWidget,
           if (contentWidget != null) contentWidget,
           if (footerWidget != null) footerWidget,
@@ -88,24 +85,6 @@ class PosDialogTwo extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       clipBehavior: Clip.antiAlias,
       child: dialogChild,
-      // child: Container(
-      //   width: width,
-      //   height: height,
-      //   constraints: constraints,
-      //   clipBehavior: Clip.antiAlias,
-      //   decoration: BoxDecoration(
-      //     color: Colors.white,
-      //     borderRadius: BorderRadius.circular(12),
-      //     boxShadow: [
-      //       BoxShadow(
-      //         color: Colors.black.withValues(alpha: .2),
-      //         blurRadius: 20,
-      //         offset: const Offset(0, 8),
-      //       ),
-      //     ],
-      //   ),
-      //   child: dialogChild,
-      // ),
     );
   }
 }

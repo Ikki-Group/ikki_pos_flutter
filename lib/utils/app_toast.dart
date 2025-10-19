@@ -13,4 +13,8 @@ abstract class AppToast {
       autoCloseDuration: Duration(seconds: 3),
     );
   }
+
+  static void dismiss() {
+    toastification.dismissAll(delayForAnimation: true);
+  }
 }

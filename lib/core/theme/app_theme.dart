@@ -68,6 +68,7 @@ abstract class AppTheme {
     fontWeight: FontWeight.w600,
   );
 
+  static const double buttonHeight = 48;
   static const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 28, vertical: 16);
 
   static const Size appBarHeight = Size.fromHeight(72);
@@ -77,7 +78,7 @@ abstract class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      fontFamily: 'Inter',
+      fontFamily: lato,
 
       // Color Scheme
       colorScheme: const ColorScheme(
@@ -305,17 +306,18 @@ abstract class AppTheme {
 
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          fontSize: 40,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.25,
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          fontFamily: lato,
+          letterSpacing: -.25,
         ),
         displayMedium: TextStyle(
-          fontSize: 32,
+          fontSize: 24,
           fontWeight: FontWeight.w400,
         ),
         displaySmall: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w400,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
         ),
         headlineLarge: TextStyle(
           fontWeight: FontWeight.w700,
@@ -327,9 +329,9 @@ abstract class AppTheme {
           fontWeight: FontWeight.bold,
         ),
         titleLarge: TextStyle(
-          fontFamily: inter,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
+          letterSpacing: -0.5,
         ),
         titleMedium: TextStyle(
           fontWeight: FontWeight.w600,

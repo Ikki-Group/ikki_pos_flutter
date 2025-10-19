@@ -118,7 +118,7 @@ class _NumpadButton extends StatelessWidget {
     if (keyType == NumpadKey.backspace) {
       buttonChild = const Icon(
         Icons.backspace_outlined,
-        size: 20,
+        size: 22,
         color: AppTheme.accentRed,
       );
     } else {
@@ -144,8 +144,9 @@ class _NumpadButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             foregroundColor: AppTheme.borderDark,
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppTheme.surfacePrimary,
             side: const BorderSide(color: AppTheme.borderMedium),
+            fixedSize: const Size.fromHeight(AppTheme.buttonHeight),
           ),
       onPressed: () {
         // Add haptic feedback for better UX

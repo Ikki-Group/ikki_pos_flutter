@@ -54,18 +54,22 @@ class PosButton extends StatelessWidget {
       ButtonVariant.primary => null,
       ButtonVariant.secondary => FilledButton.styleFrom(
         backgroundColor: AppTheme.secondaryOrange,
+        fixedSize: Size.fromHeight(AppTheme.buttonHeight),
       ),
       ButtonVariant.destructive => FilledButton.styleFrom(
         backgroundColor: AppTheme.accentRed,
+        fixedSize: Size.fromHeight(AppTheme.buttonHeight),
       ),
       ButtonVariant.primaryOutlined => null,
       ButtonVariant.secondaryOutlined => OutlinedButton.styleFrom(
         side: const BorderSide(color: AppTheme.secondaryOrange),
         foregroundColor: AppTheme.secondaryOrange,
+        fixedSize: Size.fromHeight(AppTheme.buttonHeight),
       ),
       ButtonVariant.destructiveOutlined => OutlinedButton.styleFrom(
         side: const BorderSide(color: AppTheme.accentRed),
         foregroundColor: AppTheme.accentRed,
+        fixedSize: Size.fromHeight(AppTheme.buttonHeight),
       ),
     };
   }

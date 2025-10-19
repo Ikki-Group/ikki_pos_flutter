@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../core/config/app_constant.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utils/app_toast.dart';
 import '../../../../widgets/ui/numpad_pin.dart';
@@ -25,10 +26,16 @@ class _SelectUserPageState extends ConsumerState<SelectUserPage> {
 
   Future<void> openDialog() async {
     final users = ref.read(userProvider).users;
-    if (!mounted) return;
+    final user = await SelectUserDialog.show(
+      context,
+      users: users,
+      initialValue: selectedUser,
+    );
 
-    final user = await SelectUserDialog.show(context, users: users, initialValue: selectedUser);
     if (user != null) {
+      if (user.id != selectedUser?.id) {
+        inputPin = '';
+      }
       selectedUser = user;
       setState(() {});
     }
@@ -40,25 +47,36 @@ class _SelectUserPageState extends ConsumerState<SelectUserPage> {
       return;
     }
 
-    final value = switch (key) {
-      NumpadKey.backspace when inputPin.isNotEmpty => inputPin.substring(0, inputPin.length - 1),
-      _ when inputPin.length < AppConstants.pinLength => inputPin + key.value,
-      _ => inputPin,
-    };
+    switch (key) {
+      case NumpadKey.backspace:
+        if (inputPin.isNotEmpty) {
+          inputPin = inputPin.substring(0, inputPin.length - 1);
+        }
+        break;
+      case NumpadKey.empty:
+        break;
+      default:
+        if (inputPin.length < AppConstants.pinLength) {
+          inputPin += key.value;
+        }
+        break;
+    }
 
-    inputPin = value;
+    AppToast.dismiss();
     setState(() {});
 
-    if (selectedUser != null && value.length == AppConstants.pinLength) {
-      final isValid = selectedUser!.pin == value;
+    if (selectedUser != null && inputPin.length == AppConstants.pinLength) {
+      final isValid = selectedUser!.pin == inputPin;
 
       if (isValid) {
         ref.read(userProvider.notifier).setUser(selectedUser!);
         context.goNamed(AppRouter.pos.name);
       } else {
         AppToast.show("PIN Salah", type: ToastificationType.error);
-        inputPin = '';
-        setState(() {});
+        Future.delayed(const Duration(milliseconds: 200), () {
+          inputPin = '';
+          setState(() {});
+        });
       }
     }
   }
@@ -70,46 +88,47 @@ class _SelectUserPageState extends ConsumerState<SelectUserPage> {
 
     return Scaffold(
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 260),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Selamat Datang', style: textTheme.titleLarge, textAlign: TextAlign.center),
-              const SizedBox(height: 4),
-              Text('-- ${outlet.name} --', style: textTheme.titleMedium, textAlign: TextAlign.center),
-              const SizedBox(height: 20),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                ),
-                onPressed: openDialog,
-                child: Row(
-                  children: [
-                    const Icon(Icons.person, size: 24),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        selectedUser?.name ?? 'Pilih Karyawan',
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: 280,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 26),
+                Text('Selamat Datang', style: textTheme.displayLarge, textAlign: TextAlign.center),
+                const SizedBox(height: 12),
+                Text('-- ${outlet.name} --', style: textTheme.displaySmall, textAlign: TextAlign.center),
+                const SizedBox(height: 36),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    minimumSize: const Size.fromHeight(AppTheme.buttonHeight),
+                    backgroundColor: AppTheme.surfacePrimary,
+                  ),
+                  onPressed: openDialog,
+                  child: Row(
+                    children: <Widget>[
+                      const Icon(Icons.person, size: 20),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          selectedUser?.name ?? 'Pilih Karyawan',
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              PinIndicator(
-                pinLength: inputPin.length,
-                maxLength: AppConstants.pinLength,
-                boxSize: 48,
-              ),
-              const SizedBox(height: 8),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 280),
-                child: NumpadPin(onKeyPressed: handleKeyPress),
-              ),
-            ],
+                const SizedBox(height: 26),
+                PinIndicator(
+                  pinLength: inputPin.length,
+                  maxLength: AppConstants.pinLength,
+                  boxSize: 44,
+                ),
+                NumpadPin(onKeyPressed: handleKeyPress),
+              ],
+            ),
           ),
         ),
       ),
