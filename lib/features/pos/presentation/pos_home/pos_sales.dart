@@ -15,7 +15,9 @@ class PosSales extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+
     final selectedCartId = ref.watch(posFilterProvider.select((value) => value.selectedCartId));
+    final filter = ref.watch(posFilterProvider);
 
     var salesState = ref.watch(salesProvider);
 
@@ -29,18 +31,45 @@ class PosSales extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(
-              height: 30,
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 8),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Daftar Pesanan', style: textTheme.labelLarge),
               ),
             ),
-            const SizedBox(height: 8),
+            Divider(),
+            const SizedBox(height: 12),
             Expanded(
               child: salesState.when<Widget>(
                 data: (data) {
                   data = data.where((item) => item.status == CartStatus.process).toList();
+
+                  // TODO: Currently, we only show carts created from cashier
+                  if (filter.tab == PosTabItem.table) data = [];
+
+                  if (filter.search.isNotEmpty) {
+                    data = data.where((item) => item.customer?.name.contains(filter.search) ?? false).toList();
+                  }
+
+                  if (data.isEmpty) {
+                    return const Center(
+                      child: SizedBox(
+                        width: 300,
+                        child: Text(
+                          'Tidak ada pesanan yang sedang diproses',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: TextStyle(
+                            color: AppTheme.secondaryOrangeLight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
                   return ListView.separated(
                     itemCount: data.length,
                     itemBuilder: (context, index) {

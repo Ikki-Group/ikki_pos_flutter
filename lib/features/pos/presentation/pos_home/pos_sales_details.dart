@@ -178,11 +178,10 @@ class _CartDetails extends ConsumerWidget {
                         ],
                       ),
                       for (final item in cart.items.toList().where((i) => i.batchId == batch.id)) ...[
-                        const SizedBox(height: 4),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                           child: Row(
-                            children: [
+                            children: <Widget>[
                               Expanded(
                                 child: Text(
                                   '${item.qty} x ${item.product.name}',
@@ -194,7 +193,7 @@ class _CartDetails extends ConsumerWidget {
                           ),
                         ),
                       ],
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                     ],
                   ],
                 ),
