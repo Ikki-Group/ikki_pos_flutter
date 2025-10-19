@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../features/auth/model/user_model.dart';
 import '../../../features/auth/provider/user_provider.dart';
 import '../../../router/app_router.dart';
@@ -15,21 +16,29 @@ class ShellDrawer extends ConsumerWidget {
 
     return Drawer(
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-            decoration: const BoxDecoration(
-              color: Color(0xFF003366),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: AppTheme.primaryBlueDark,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
-              boxShadow: [BoxShadow()],
+              boxShadow: const [
+                BoxShadow(
+                  color: AppTheme.shadowDark,
+                  blurRadius: 8,
+                  offset: Offset(0, 8),
+                ),
+              ],
             ),
             child: const SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [SizedBox(height: 8), _UserInfo()],
+                children: [
+                  _UserInfo(),
+                ],
               ),
             ),
           ),
@@ -38,7 +47,7 @@ class ShellDrawer extends ConsumerWidget {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
-              children: [
+              children: <Widget>[
                 for (final item in SGDrawerItem.values)
                   _buildMenuItem(
                     context,
@@ -69,10 +78,10 @@ class ShellDrawer extends ConsumerWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue[100] : Colors.transparent,
+          color: isSelected ? Colors.blue[50] : Colors.transparent,
           border: Border(
             right: BorderSide(
-              color: isSelected ? Colors.orangeAccent : Colors.transparent,
+              color: isSelected ? AppTheme.secondaryOrangeLight : Colors.transparent,
               width: 5,
             ),
           ),
@@ -80,13 +89,13 @@ class ShellDrawer extends ConsumerWidget {
         child: ListTile(
           leading: Icon(
             item.icon,
-            color: isSelected ? Colors.blue : Colors.grey[600],
+            color: isSelected ? AppTheme.primaryBlue : Colors.grey[600],
           ),
           title: Text(
             item.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isSelected ? Colors.blue : Colors.grey[600],
+              color: isSelected ? AppTheme.primaryBlue : Colors.grey[600],
             ),
           ),
         ),
@@ -118,35 +127,43 @@ class _UserInfoState extends ConsumerState<_UserInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.transparent,
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.name,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                user.name,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
                 ),
-                const Text('Kasir', style: TextStyle(color: Colors.white70, fontSize: 13)),
-              ],
-            ),
+              ),
+              const Text(
+                'Kasir',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: onLogout,
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              fixedSize: const Size.square(24),
-              minimumSize: Size.zero,
-            ),
-            child: const Icon(Icons.logout, color: Colors.white, size: 24),
+        ),
+        TextButton(
+          onPressed: onLogout,
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            fixedSize: const Size.square(24),
+            minimumSize: Size.zero,
           ),
-        ],
-      ),
+          child: const Icon(Icons.logout, color: Colors.white, size: 24),
+        ),
+      ],
     );
   }
 }
