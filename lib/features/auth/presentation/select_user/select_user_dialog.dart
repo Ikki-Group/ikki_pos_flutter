@@ -43,7 +43,11 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
     scrollController = ScrollController();
     value = widget.initialValue;
 
-    final scrollIndex = value != null ? widget.users.indexWhere((user) => user.id == value!.id) : -1;
+    final scrollIndex = value != null
+        ? widget.users.indexWhere(
+            (user) => user.id == value!.id,
+          )
+        : -1;
 
     if (scrollIndex != -1) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,22 +82,31 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
       title: 'Pilih Kasir',
       footer: Row(
         children: [
-          Expanded(child: PosButton.cancel(onPressed: onClose)),
+          Expanded(
+            child: PosButton.cancel(
+              onPressed: onClose,
+            ),
+          ),
           const SizedBox(width: 8),
           Expanded(
             flex: 2,
-            child: PosButton.process(onPressed: value == null ? null : onConfirm),
+            child: PosButton.process(
+              onPressed: value == null ? null : onConfirm,
+            ),
           ),
         ],
       ),
       children: [
-        Text(
-          'Daftar Karyawan',
-          style: context.textTheme.labelLarge,
-          textAlign: TextAlign.left,
+        Center(
+          child: Text(
+            'Daftar Karyawan',
+            style: context.textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
         ),
         const SizedBox(height: 12),
         SizedBox(
+          // TODO responsive
           height: MediaQuery.of(context).size.height * 0.5,
           width: MediaQuery.of(context).size.height * 0.7,
           child: ListView.builder(
@@ -109,7 +122,9 @@ class _SelectUserDialogState extends ConsumerState<SelectUserDialog> {
                 title: Text(user.name),
                 subtitle: Text(user.email),
                 value: isSelected,
-                contentPadding: EdgeInsets.zero,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
                 checkboxShape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),

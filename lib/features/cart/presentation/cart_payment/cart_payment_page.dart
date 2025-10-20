@@ -7,12 +7,17 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utils/app_toast.dart';
 import '../../../../utils/cash_generator.dart';
+import '../../../../utils/extension/ext_date_time.dart';
 import '../../../../utils/formatter.dart';
+import '../../../../widgets/dialogs/cart_cash_custom_dialog.dart';
+import '../../../../widgets/dialogs/cart_note_dialog.dart';
 import '../../../auth/provider/user_provider.dart';
 import '../../../outlet/provider/outlet_provider.dart';
-import '../../../sales/model/payment_model.dart';
-import '../../model/cart_extension.dart';
-import '../../model/cart_state.dart';
+import '../../../sales/domain/payment_model.dart';
+import '../../../sales/domain/sales_model.dart';
+import '../../../sales/domain/sales_model_ext.dart';
+import '../../domain/cart_state.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 import 'cart_payment_notifier.dart';
 
@@ -90,8 +95,8 @@ class _CartPaymentMethod extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text('Pilih Metode Pembayaran', style: textTheme.titleSmall),
+            children: <Widget>[
+              Text('Pilih Metode Pembayaran', style: textTheme.labelMedium),
               if (state.payments.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 SingleChildScrollView(
@@ -108,10 +113,10 @@ class _CartPaymentMethod extends ConsumerWidget {
                             border: Border.all(color: AppTheme.borderDark),
                           ),
                           child: Row(
-                            children: [
+                            children: <Widget>[
                               Text(
                                 payment.formattedLabel,
-                                style: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+                                style: textTheme.labelSmall,
                               ),
                               const SizedBox(width: 8),
                               InkWell(
@@ -127,7 +132,7 @@ class _CartPaymentMethod extends ConsumerWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               buildSection(context, 'Tunai', <Widget>[
                 buildChip(
                   'Uang Pas',
@@ -144,8 +149,7 @@ class _CartPaymentMethod extends ConsumerWidget {
                 buildChip(
                   'Nominal Lain',
                   disabled: state.allowToPay,
-                  // onSelected: () => CartCashCustom.show(context),
-                  onSelected: () {},
+                  onSelected: () => CartCashCustom.show(context),
                 ),
               ]),
               const SizedBox(height: 16),
@@ -170,7 +174,7 @@ class _CartPaymentMethod extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(title, style: textTheme.labelLarge),
+        Text(title, style: textTheme.labelSmall),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -207,17 +211,23 @@ class _Summary extends ConsumerWidget {
       return Expanded(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(label, style: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500)),
+          children: <Widget>[
+            Text(
+              label,
+              style: textTheme.labelSmall,
+            ),
             const SizedBox(height: 4),
-            Text(Formatter.toIdr.format(amount), style: textTheme.titleMedium?.copyWith(color: color)),
+            Text(
+              amount.toIdr,
+              style: textTheme.titleMedium?.copyWith(color: color),
+            ),
           ],
         ),
       );
     }
 
     return ColoredBox(
-      color: Colors.white,
+      color: AppTheme.backgroundPrimary,
       child: IntrinsicHeight(
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 96),
@@ -227,7 +237,7 @@ class _Summary extends ConsumerWidget {
               const VerticalDivider(),
               buildSummary('Sisa Tagihan', state.remaining, AppTheme.accentRed),
               const VerticalDivider(),
-              buildSummary('Kembalian', state.change, AppTheme.accentGreen),
+              buildSummary('Kembalian', state.cashChange, AppTheme.accentGreen),
             ],
           ),
         ),
@@ -241,6 +251,13 @@ class _Actions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Future<void> onEditNote() async {
+      final defaultValue = ref.watch(cartPaymentNotifier.select((state) => state.note));
+      final note = await CartNoteDialog.show(context, defaultValue: defaultValue);
+      if (note == null) return;
+      ref.read(cartPaymentNotifier.notifier).updateNote(note);
+    }
+
     return IntrinsicHeight(
       child: Row(
         children: <Widget>[
@@ -251,7 +268,6 @@ class _Actions extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 shape: const RoundedRectangleBorder(),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                // side: BorderSide(color: AppTheme.),
               ),
               child: const Text('Pisah Bayar'),
             ),
@@ -259,13 +275,11 @@ class _Actions extends ConsumerWidget {
           const VerticalDivider(),
           Expanded(
             child: FilledButton(
-              // onPressed: () => CartNoteDialog.show(context),
-              onPressed: null,
+              onPressed: onEditNote,
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 shape: const RoundedRectangleBorder(),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                // side: BorderSide(color: AppTheme.),
               ),
               child: const Text('Catatan'),
             ),
@@ -283,6 +297,12 @@ class _OrderInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final cart = ref.watch(cartProvider);
+
+    var label = "Tanpa Pelanggan";
+    if (cart.customer != null && cart.customer!.name.isNotEmpty) {
+      label = cart.customer!.name;
+    }
+
     return ColoredBox(
       color: AppTheme.backgroundSecondary,
       child: Padding(
@@ -291,12 +311,12 @@ class _OrderInfo extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(cart.rc, style: textTheme.labelMedium),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Row(
               children: <Widget>[
                 const Icon(Icons.person, size: 20),
                 const SizedBox(width: 8),
-                Text('Rizqy Nugroho', style: textTheme.labelMedium),
+                Text(label, style: textTheme.labelSmall),
               ],
             ),
           ],
@@ -313,7 +333,7 @@ class _OrderItemsPreview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartProvider);
 
-    Widget buildItemBatch(List<CartItem> items, CartBatch batch) {
+    Widget buildItemBatch(List<CartItem> items, SalesBatch batch) {
       final textTheme = Theme.of(context).textTheme;
       final net = items.fold<double>(0, (prev, curr) => prev + curr.gross);
 
@@ -323,14 +343,17 @@ class _OrderItemsPreview extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Pesanan ${batch.id}', style: textTheme.titleMedium),
-              Text(net.toIdr, style: textTheme.titleMedium),
+              Text('Pesanan ${batch.id}', style: textTheme.titleSmall),
+              Text(net.toIdr, style: textTheme.titleSmall),
             ],
           ),
           const SizedBox(height: 4),
-          Text(Formatter.date.format(DateTime.parse(batch.at)), style: textTheme.bodySmall),
+          Text(
+            DateTime.parse(batch.at).dateTimeId,
+            style: textTheme.bodySmall,
+          ),
           const SizedBox(height: 12),
-          for (final item in items) ...[
+          for (final item in items) ...<Widget>[
             Row(
               children: [
                 Expanded(
@@ -339,7 +362,7 @@ class _OrderItemsPreview extends ConsumerWidget {
                     style: textTheme.bodySmall,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 4),
                 Text(
                   item.gross.toIdrNoSymbol,
                   style: textTheme.bodySmall,

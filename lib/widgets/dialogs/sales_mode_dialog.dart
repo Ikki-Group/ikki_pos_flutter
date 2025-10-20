@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../widgets/ui/pos_button.dart';
 import '../../core/config/app_constant.dart';
-import '../../features/auth/provider/user_provider.dart';
 import '../../features/cart/provider/cart_provider.dart';
-import '../../features/outlet/provider/outlet_provider.dart';
 import '../../router/app_router.dart';
 import '../ui/pos_dialog_two.dart';
 
@@ -87,15 +85,11 @@ class _SalesModeDialogState extends ConsumerState<SalesModeDialog> {
           );
       onClose();
     } else {
-      final outlet = ref.read(outletProvider);
-      final user = ref.read(userProvider).selectedUser;
       ref
           .read(cartProvider.notifier)
           .createNew(
             pax: pax,
             salesMode: selectedSalesMode,
-            outletState: outlet,
-            user: user,
           );
       context.goNamed(AppRouter.cart.name);
     }

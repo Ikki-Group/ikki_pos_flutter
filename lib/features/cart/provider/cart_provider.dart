@@ -11,11 +11,11 @@ import '../../outlet/provider/outlet_provider.dart';
 import '../../printer/provider/printer_provider.dart';
 import '../../printer/templates/template_receipt_checker.dart';
 import '../../product/model/product_model.dart';
+import '../../sales/domain/sales_model.dart';
 import '../../sales/provider/sales_provider.dart';
 import '../../shift/model/shift_session_model.dart';
 import '../../shift/provider/shift_provider.dart';
-import '../model/cart_extension.dart';
-import '../model/cart_state.dart';
+import '../domain/cart_state.dart';
 
 part 'cart_provider.g.dart';
 
@@ -23,20 +23,27 @@ abstract class CartAbstract {
   Future<void> createNew({
     required int pax,
     required SalesMode salesMode,
-    required UserModel user,
-    required OutletState outletState,
   });
+  Future<void> createNewBatch(
+    CartState cart,
+  );
 
   void setSalesAndPax(SalesMode salesMode, int pax);
 
   Future<void> addProductDirectly(ProductModel product);
-  Future<void> upsertCartItem(CartItem item);
+  Future<void> upsertCartItem({
+    required String id,
+    required ProductModel product,
+    required SalesItemVariant? variant,
+    required int qty,
+    required String note,
+  });
   Future<void> removeItem(CartItem item);
   Future<void> clearCurrentItems();
 
   Future<void> saveBill(String? name);
   Future<void> pay(
-    List<CartPayment> payments,
+    List<SalesPayment> payments,
     UserModel user,
     OutletState outletState,
   );
@@ -52,40 +59,57 @@ class Cart extends _$Cart implements CartAbstract {
   }
 
   ShiftSessionModel? get _shift => ref.read(shiftProvider);
-  ShiftNotifier get _shiftNotifier => ref.read(shiftProvider.notifier);
   UserModel get _currentUser => ref.read(userProvider).selectedUser;
+  OutletState get _outletState => ref.read(outletProvider);
+
+  ShiftNotifier get _shiftNotifier => ref.read(shiftProvider.notifier);
 
   @override
-  Future<void> createNew({
-    required int pax,
-    required SalesMode salesMode,
-    required UserModel user,
-    required OutletState outletState,
-  }) async {
+  Future<void> createNew({required int pax, required SalesMode salesMode}) async {
     final shift = _shift.requiredOpen;
     final now = DateTime.now().toIso8601String();
+    final userId = _currentUser.id;
 
     final newCart = CartState(
       id: ObjectId().hexString,
       rc: _shiftNotifier.generateReceiptCode(),
       salesMode: salesMode,
       pax: pax,
-      outletId: outletState.outlet.id,
+      outletId: _outletState.outlet.id,
       sessionId: shift.id,
       batches: [
-        CartBatch(
+        SalesBatch(
           id: 1,
           at: now,
-          by: user.id,
+          by: userId,
         ),
       ],
       createdAt: now,
-      createdBy: user.id,
+      createdBy: userId,
       updatedAt: now,
-      updatedBy: user.id,
+      updatedBy: userId,
     );
 
     state = newCart;
+  }
+
+  @override
+  Future<void> createNewBatch(CartState cart) async {
+    final batchId = cart.batches.length + 1;
+    final userId = _currentUser.id;
+    final now = DateTime.now().toIso8601String();
+
+    state = cart.copyWith(
+      batchId: batchId,
+      batches: [
+        ...cart.batches,
+        SalesBatch(
+          id: batchId,
+          at: now,
+          by: userId,
+        ),
+      ],
+    );
   }
 
   @override
@@ -109,18 +133,10 @@ class Cart extends _$Cart implements CartAbstract {
     );
 
     if (idx != -1) {
-      var item = newItems[idx];
-
-      final qty = item.qty + 1;
-      final gross = qty * item.price;
-      final net = gross;
-      item = item.copyWith(
-        qty: qty,
-        gross: gross,
-        net: net,
+      final item = newItems[idx];
+      newItems[idx] = item.copyWith(
+        qty: item.qty + 1,
       );
-
-      newItems[idx] = item;
     } else {
       final price = product.price;
 
@@ -128,7 +144,7 @@ class Cart extends _$Cart implements CartAbstract {
         id: ObjectId().hexString,
         batchId: state.batchId,
         salesMode: state.salesMode,
-        product: CartItemProduct(
+        product: SalesItemProduct(
           id: product.id,
           name: product.name,
           price: price,
@@ -136,33 +152,47 @@ class Cart extends _$Cart implements CartAbstract {
         variant: null,
         note: '',
         qty: 1,
-        price: price,
-        gross: price,
-        discount: 0,
-        net: price,
       );
 
       newItems.add(item);
     }
 
-    newState = newState.copyWith(items: newItems);
-    state = newState.recalculate();
+    state = newState.copyWith(items: newItems);
   }
 
   @override
-  Future<void> upsertCartItem(CartItem item) async {
+  Future<void> upsertCartItem({
+    required String id,
+    required ProductModel product,
+    required SalesItemVariant? variant,
+    required int qty,
+    required String note,
+  }) async {
     var newState = state.copyWith();
     final newItems = state.items.toList();
 
-    final idx = newItems.indexWhere((i) => i.id == item.id && i.batchId == item.batchId);
-    if (idx != -1) {
-      newItems[idx] = item;
+    final cartItem = CartItem(
+      id: id,
+      batchId: newState.batchId,
+      salesMode: newState.salesMode,
+      product: SalesItemProduct(
+        id: product.id,
+        name: product.name,
+        price: product.price,
+      ),
+      variant: variant,
+      qty: qty,
+      note: note,
+    );
+
+    final idx = newItems.indexWhere((i) => i.id == id && i.batchId == newState.batchId);
+    if (idx.isNegative) {
+      newItems.add(cartItem);
     } else {
-      newItems.add(item);
+      newItems[idx] = cartItem;
     }
 
-    newState = newState.copyWith(items: newItems);
-    state = newState.recalculate();
+    state = newState.copyWith(items: newItems);
   }
 
   @override
@@ -172,8 +202,7 @@ class Cart extends _$Cart implements CartAbstract {
     final idx = newItems.indexWhere((i) => i.id == item.id && i.batchId == item.batchId);
     if (idx != -1) {
       newItems.removeAt(idx);
-      newState = newState.copyWith(items: newItems);
-      state = newState.recalculate();
+      state = newState.copyWith(items: newItems);
     }
   }
 
@@ -182,8 +211,7 @@ class Cart extends _$Cart implements CartAbstract {
     // Remove all items in current batch
     var newState = state.copyWith();
     final newItems = state.items.where((item) => item.batchId != state.batchId).toList();
-    newState = newState.copyWith(items: newItems);
-    state = newState.recalculate();
+    state = newState.copyWith(items: newItems);
   }
 
   @override
@@ -192,7 +220,7 @@ class Cart extends _$Cart implements CartAbstract {
   }
 
   @override
-  Future<void> pay(List<CartPayment> payments, UserModel user, OutletState outletState) async {
+  Future<void> pay(List<SalesPayment> payments, UserModel user, OutletState outletState) async {
     final outlet = ref.read(outletProvider);
     var newState = state.copyWith();
     newState = newState.copyWith(status: CartStatus.success, payments: payments);
@@ -221,7 +249,7 @@ class Cart extends _$Cart implements CartAbstract {
       billType: BillType.open,
       updatedAt: DateTime.now().toIso8601String(),
       updatedBy: ref.read(userProvider).selectedUser.id,
-      customer: name != null ? CartCustomer(name: name) : state.customer,
+      customer: name != null ? SalesCustomer(name: name) : state.customer,
     );
 
     await _shiftNotifier.onSalesSaved(

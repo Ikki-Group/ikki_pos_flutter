@@ -3,7 +3,7 @@ import 'package:sembast/sembast_io.dart';
 
 import '../../../core/db/sembast.dart';
 import '../../../utils/json.dart';
-import '../../cart/model/cart_state.dart';
+import '../../cart/domain/cart_state.dart';
 
 part 'sales_repo.g.dart';
 
@@ -21,6 +21,7 @@ abstract class SalesRepo {
   Future<void> update(CartState sales);
 
   Future<void> logout();
+  Future<void> unsafeClear();
 }
 
 class SalesRepoImpl implements SalesRepo {
@@ -55,6 +56,12 @@ class SalesRepoImpl implements SalesRepo {
 
   @override
   Future<void> logout() async {
+    await store.delete(ss.db);
+    ss.db.dropAll();
+  }
+
+  @override
+  Future<void> unsafeClear() async {
     await store.delete(ss.db);
     ss.db.dropAll();
   }

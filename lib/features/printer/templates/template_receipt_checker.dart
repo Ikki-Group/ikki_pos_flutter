@@ -1,7 +1,7 @@
 import 'package:flutter_thermal_printer/flutter_thermal_printer.dart';
 import 'package:fpdart/fpdart.dart';
 
-import '../../cart/model/cart_state.dart';
+import '../../cart/domain/cart_state.dart';
 import '../../outlet/model/outlet_state.dart';
 import 'printer_utils.dart';
 

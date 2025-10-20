@@ -7,9 +7,11 @@ import '../features/app/presentation/app_splash_page.dart';
 import '../features/auth/presentation/auth_device/auth_device_page.dart';
 import '../features/auth/presentation/select_user/select_user_page.dart';
 import '../features/auth/provider/user_provider.dart';
+import '../features/cart/domain/cart_state_ext.dart';
 import '../features/cart/presentation/cart_order/cart_order_page.dart';
 import '../features/cart/presentation/cart_payment/cart_payment_page.dart';
 import '../features/cart/presentation/cart_payment_success/cart_payment_success_page.dart';
+import '../features/cart/provider/cart_provider.dart';
 import '../features/outlet/presentation/shift/shift_page.dart';
 import '../features/pos/presentation/pos_home/pos_home_page.dart';
 import '../features/sales/presentation/sales/sales_page.dart';
@@ -87,6 +89,11 @@ GoRouter goRouter(Ref ref) {
             body: child,
             resizeToAvoidBottomInset: false,
           );
+        },
+        redirect: (BuildContext context, GoRouterState state) {
+          final isEmptyState = ref.read(cartProvider).isEmptyState;
+          if (isEmptyState) return AppRouter.pos.path;
+          return null;
         },
         routes: <RouteBase>[
           GoRoute(

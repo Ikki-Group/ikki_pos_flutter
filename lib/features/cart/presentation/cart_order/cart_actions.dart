@@ -6,7 +6,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../router/app_router.dart';
 import '../../../../utils/formatter.dart';
 import '../../../../widgets/dialogs/cart_save_dialog.dart';
-import '../../model/cart_extension.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 class CartActions extends ConsumerStatefulWidget {
@@ -37,6 +37,7 @@ class _CartActionsState extends ConsumerState<CartActions> {
             const SizedBox(width: 8),
             _SaveButton(),
             const SizedBox(width: 8),
+            // TODO
             Expanded(
               child: OutlinedButton.icon(
                 icon: const Icon(Icons.discount_outlined),
@@ -48,7 +49,7 @@ class _CartActionsState extends ConsumerState<CartActions> {
         ),
         const SizedBox(height: 8),
         Row(
-          children: [
+          children: <Widget>[
             Expanded(
               child: FilledButton(
                 onPressed: isEmpty ? null : onPressed,
@@ -94,7 +95,10 @@ class _SaveButton extends ConsumerWidget {
     void onPressed() {
       final hasName = cart.customer?.name.isNotEmpty ?? false;
       if (hasName) {
-        ref.read(cartProvider.notifier).saveBill(null);
+        ref.read(cartProvider.notifier).saveBill(null).then((_) {
+          if (!context.mounted) return;
+          context.goNamed(AppRouter.pos.name);
+        });
       } else {
         CartSaveDialog.show(context);
       }

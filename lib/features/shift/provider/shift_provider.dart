@@ -9,8 +9,11 @@ import '../../../core/logger/talker_logger.dart';
 import '../../../utils/app_toast.dart';
 import '../../../utils/exception.dart';
 import '../../../utils/result.dart';
-import '../../cart/model/cart_state.dart';
+import '../../auth/provider/user_provider.dart';
+import '../../cart/domain/cart_state.dart';
 import '../../outlet/provider/outlet_provider.dart';
+import '../../sales/domain/sales_model.dart';
+import '../../sales/domain/sales_model_ext.dart';
 import '../data/shift_repo.dart';
 import '../model/shift_session_model.dart';
 import '../model/shift_status.dart';
@@ -32,7 +35,7 @@ abstract class ShiftNotifier {
   Future<void> onSalesSaved({
     required CartState cart,
     required CartStatus lastStatus,
-    List<CartPayment>? newPayments,
+    List<SalesPayment> newPayments,
   });
 }
 
@@ -89,9 +92,10 @@ class Shift extends _$Shift implements ShiftNotifier {
 
   @override
   Future<void> increaseQueue() async {
-    var session = state.requiredOpen;
-    session = session.copyWith(queue: session.queue + 1);
-    await _repo.syncLocalState(session);
+    var shift = state.requiredOpen;
+    shift = shift.copyWith(queue: shift.queue + 1);
+    state = shift;
+    await _repo.syncLocalState(shift);
   }
 
   @override
@@ -125,9 +129,49 @@ class Shift extends _$Shift implements ShiftNotifier {
   Future<void> onSalesSaved({
     required CartState cart,
     required CartStatus lastStatus,
-    List<CartPayment>? newPayments,
-  }) {
-    throw UnimplementedError();
+    List<SalesPayment> newPayments = const [],
+  }) async {
+    logger.info('[ShiftProvider.onSalesSaved] start');
+    var shift = state.requiredOpen;
+    var summary = shift.summary;
+
+    final isNew = lastStatus == CartStatus.init;
+    if (isNew) {
+      shift = shift.copyWith(queue: shift.queue + 1);
+      summary = summary.copyWith(
+        totalOrders: summary.totalOrders + 1,
+      );
+    }
+
+    if (newPayments.isNotEmpty) {
+      final total = newPayments.fold<double>(0, (prev, element) => prev + element.amount).toInt();
+      final cash = newPayments
+          .where((element) => element.isCash)
+          .fold<double>(0, (prev, element) => prev + element.amount)
+          .toInt();
+      final nonCash = newPayments
+          .where((element) => !element.isCash)
+          .fold<double>(0, (prev, element) => prev + element.amount)
+          .toInt();
+
+      summary = summary.copyWith(
+        expectedCash: summary.expectedCash + cash,
+        actualCash: summary.actualCash + cash,
+        totalSales: summary.totalSales + total,
+        cashSales: summary.cashSales + cash,
+        nonCashSales: summary.nonCashSales + nonCash,
+      );
+    }
+
+    shift = shift.copyWith(
+      summary: summary,
+      updatedAt: DateTime.now().toIso8601String(),
+      updatedBy: ref.read(userProvider).selectedUser.id,
+    );
+
+    await _repo.syncLocalState(shift);
+    state = shift;
+    logger.info('[ShiftProvider.onSalesSaved] start');
   }
 }
 

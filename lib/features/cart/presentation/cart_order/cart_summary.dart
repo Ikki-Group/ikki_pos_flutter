@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../utils/formatter.dart';
+import '../../domain/cart_state_ext.dart';
 import '../../provider/cart_provider.dart';
 
 class CartSummary extends ConsumerStatefulWidget {

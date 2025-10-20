@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../utils/extensions.dart';
 import 'pos_home_notifier.dart';
 import 'pos_sales.dart';
 import 'pos_sales_details.dart';
@@ -78,12 +79,12 @@ class _PosFiltersState extends ConsumerState<PosFilters> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         spacing: 8,
-        children: [
-          for (final tab in PosTabItem.values) ...[
+        children: <Widget>[
+          for (final tab in PosTabItem.values) ...<Widget>[
             FilterChip(
               label: Text(tab.label),
-              onSelected: (_) => {
-                ref.read(posFilterProvider.notifier).setTab(tab),
+              onSelected: (_) {
+                ref.read(posFilterProvider.notifier).setTab(tab);
               },
               showCheckmark: false,
               selected: tab == filter.tab,
@@ -95,9 +96,9 @@ class _PosFiltersState extends ConsumerState<PosFilters> {
               autocorrect: false,
               enableSuggestions: false,
               controller: controller,
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
+              onTapOutside: (_) => context.unfocus(),
               decoration: InputDecoration(
-                hintText: 'Cari Order...',
+                hintText: 'Cari pesanan, nomor, nama...',
                 contentPadding: EdgeInsets.zero,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: filter.search.isNotEmpty

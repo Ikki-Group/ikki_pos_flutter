@@ -4,6 +4,11 @@ import 'package:go_transitions/go_transitions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppTheme {
+  // Font family
+  static const lato = "Lato";
+  static const inter = "Inter";
+  static const montserrat = "Montserrat";
+
   // Primary Colors
   static const Color primaryBlue = Color(0xFF2563EB);
   static const Color primaryBlueDark = Color(0xFF1D4ED8);
@@ -16,6 +21,7 @@ abstract class AppTheme {
 
   // Accent Colors
   static const Color accentGreen = Color(0xFF10B981);
+  static const Color accentGreenLight = Color.fromARGB(255, 24, 255, 182);
   static const Color accentRed = Color(0xFFEF4444);
   static const Color accentBlue = Color(0xFF06B6D4);
 
@@ -63,6 +69,7 @@ abstract class AppTheme {
     fontWeight: FontWeight.w600,
   );
 
+  static const double buttonHeight = 48;
   static const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 28, vertical: 16);
 
   static const Size appBarHeight = Size.fromHeight(72);
@@ -72,7 +79,7 @@ abstract class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      fontFamily: 'Inter',
+      fontFamily: lato,
 
       // Color Scheme
       colorScheme: const ColorScheme(
@@ -300,17 +307,18 @@ abstract class AppTheme {
 
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          fontSize: 40,
-          fontWeight: FontWeight.w400,
-          letterSpacing: -0.25,
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          fontFamily: lato,
+          letterSpacing: -.25,
         ),
         displayMedium: TextStyle(
-          fontSize: 32,
+          fontSize: 24,
           fontWeight: FontWeight.w400,
         ),
         displaySmall: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w400,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
         ),
         headlineLarge: TextStyle(
           fontWeight: FontWeight.w700,
@@ -322,39 +330,43 @@ abstract class AppTheme {
           fontWeight: FontWeight.bold,
         ),
         titleLarge: TextStyle(
+          fontSize: 16,
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
+          letterSpacing: -0.5,
         ),
         titleMedium: TextStyle(
           fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
+          fontSize: 16,
         ),
         titleSmall: TextStyle(
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.1,
+          fontSize: 12,
         ),
         bodyLarge: TextStyle(
           fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
         ),
         bodyMedium: TextStyle(
-          fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
+          fontWeight: FontWeight.w600,
         ),
         bodySmall: TextStyle(
           fontWeight: FontWeight.w500,
-          letterSpacing: -0.1,
+          fontSize: 12,
+          letterSpacing: .25,
         ),
         labelLarge: TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
           letterSpacing: .25,
         ),
         labelMedium: TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
+          fontSize: 14,
           letterSpacing: .25,
         ),
         labelSmall: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
           letterSpacing: .25,
         ),
       ),

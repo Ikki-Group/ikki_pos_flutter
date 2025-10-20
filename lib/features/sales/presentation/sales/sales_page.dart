@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/formatter.dart';
+import '../../../cart/domain/cart_state_ext.dart';
 import '../../provider/sales_provider.dart';
 
 class SalesPage extends ConsumerStatefulWidget {
