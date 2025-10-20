@@ -67,29 +67,32 @@ jobs:
           echo "RENAMED_APK_PATH=$RENAMED_APK_PATH" >> "$GITHUB_OUTPUT"
           echo "RENAMED_APK_NAME=$RENAMED_APK_NAME" >> "$GITHUB_OUTPUT"
 
+      # - name: Upload to Cloudflare R2
+      #   id: upload_r2
+      #   uses: ryand56/r2-upload-action@latest
+      #   with:
+      #     r2-account-id: ${{ env.R2_ACCOUNT_ID }}
+      #     r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
+      #     r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
+      #     r2-bucket: ${{ env.R2_BUCKET_NAME }}
+      #     source-dir: build/app/outputs/flutter-apk/
+      #     destination-dir: ./ikki-apps/
+      #     output-file-url: true
+      #     keep-file-fresh: true
+
       - name: Upload to Cloudflare R2
         id: upload_r2
-        uses: ryand56/r2-upload-action@latest
+        uses: magicwallet/r2-upload@main
         with:
-          r2-account-id: ${{ env.R2_ACCOUNT_ID }}
-          r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
-          r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
-          r2-bucket: ${{ env.R2_BUCKET_NAME }}
-          source-dir: build/app/outputs/flutter-apk/
-          destination-dir: general/ikki-apps/
-          output-file-url: true
-          keep-file-fresh: true
+          endpoint: ${{ env.R2_ENDPOINT }}
+          access_key_id: ${{ env.R2_ACCESS_KEY_ID }}
+          secret_access_key: ${{ env.R2_SECRET_ACCESS_KEY }}
+          bucket: ${{ env.R2_BUCKET_NAME }}
+          file: ${{ steps.rename_apk.outputs.RENAMED_APK_PATH }}
+          destination: "./ikki-apps/"
 
       - name: Print and summarize upload result
         run: |
-          APK_NAME="${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}"
-          PUBLIC_URL="${{ steps.upload_r2.outputs.file-urls }}"
-
-          echo "📦 APK Name: $APK_NAME"
-          echo "🪣 R2 Path: $DEST_PATH"
-          echo "🌐 Public URL: $PUBLIC_URL"
-
           echo "### ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **APK Name:** $APK_NAME" >> $GITHUB_STEP_SUMMARY
-          echo "- **Public URL:** [Download APK]($PUBLIC_URL)" >> $GITHUB_STEP_SUMMARY
-          echo "- **URLs:** $PUBLIC_URL" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Name:** ${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK URL:** https://pub-ff55380c3870496bb5cc0be517c44d40.r2.dev/general/ikki-apps/${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
