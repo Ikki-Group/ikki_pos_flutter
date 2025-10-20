@@ -1,8 +1,8 @@
 name: Build Flutter Android APK
 
 on:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       version:
@@ -53,12 +53,12 @@ jobs:
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             # Manual trigger → use provided semantic version
             VERSION="${{ github.event.inputs.version }}"
-            RENAMED_APK_NAME="app-release-v${VERSION}.apk"
+            RENAMED_APK_NAME="ikki-pos-v${VERSION}.apk"
           else
             # Auto trigger → use datetime + run number
             DATE=$(date +'%Y%m%d-%H%M%S')
             RUN_NUMBER="${{ github.run_number }}"
-            RENAMED_APK_NAME="app-release-${DATE}-build${RUN_NUMBER}.apk"
+            RENAMED_APK_NAME="ikki-pos-${DATE}-build${RUN_NUMBER}.apk"
           fi
 
           RENAMED_APK_PATH="build/app/outputs/flutter-apk/$RENAMED_APK_NAME"
@@ -75,7 +75,7 @@ jobs:
           r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
           r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ env.R2_BUCKET_NAME }}
-          source-dir: src
+          source-dir: build/app/outputs/flutter-apk/
           destination-dir: general/ikki-apps/
           output-file-url: true
           keep-file-fresh: true
