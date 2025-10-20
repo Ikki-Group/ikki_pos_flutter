@@ -1,15 +1,25 @@
 name: Build Flutter Android APK
 
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Semantic version (e.g. 1.2.0)"
+        required: true
+
+env:
+  R2_BUCKET_NAME: general
+  R2_ACCOUNT_ID: aca8677a98bbe358e408059b8e93da20
+  R2_ACCESS_KEY_ID: c255c0d2fb37dc41fbdef72722a97e49
+  R2_SECRET_ACCESS_KEY: 0ae65b33d9197cc943419ab21208bcfbad8572e309ab0ac56816e87b3bccf240
+  R2_ENDPOINT: https://aca8677a98bbe358e408059b8e93da20.r2.cloudflarestorage.com
 
 jobs:
   build:
     name: Build Android APK
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -30,35 +40,56 @@ jobs:
         run: flutter build apk --release
 
       - name: Rename APK with build date and Run Number
-        id: rename_apk # Give this step an ID to reference its outputs
+        id: rename_apk
         run: |
-          # Ensure the output directory exists for safety
           mkdir -p build/app/outputs/flutter-apk/
-
-          # Construct a unique and descriptive filename including date and run number
-          # The run_number is useful to differentiate artifacts from different CI runs
-          DATE=$(date +'%Y-%m-%d')
-          RUN_NUMBER="${{ github.run_number }}"
           ORIGINAL_APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-          RENAMED_APK_NAME="app-release-${DATE}-build${RUN_NUMBER}.apk"
-          RENAMED_APK_PATH="build/app/outputs/flutter-apk/$RENAMED_APK_NAME"
 
-          # Check if the original APK exists before moving
-          if [ -f "$ORIGINAL_APK_PATH" ]; then
-            mv "$ORIGINAL_APK_PATH" "$RENAMED_APK_PATH"
-            echo "Renamed APK to: $RENAMED_APK_PATH"
-          else
-            echo "Error: app-release.apk not found at $ORIGINAL_APK_PATH"
-            exit 1 # Fail the step if the APK is not found
+          if [ ! -f "$ORIGINAL_APK_PATH" ]; then
+            echo "❌ Error: app-release.apk not found"
+            exit 1
           fi
 
-          # Set the renamed APK path as an output for subsequent steps
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Manual trigger → use provided semantic version
+            VERSION="${{ github.event.inputs.version }}"
+            RENAMED_APK_NAME="app-release-v${VERSION}.apk"
+          else
+            # Auto trigger → use datetime + run number
+            DATE=$(date +'%Y%m%d-%H%M%S')
+            RUN_NUMBER="${{ github.run_number }}"
+            RENAMED_APK_NAME="app-release-${DATE}-build${RUN_NUMBER}.apk"
+          fi
+
+          RENAMED_APK_PATH="build/app/outputs/flutter-apk/$RENAMED_APK_NAME"
+          mv "$ORIGINAL_APK_PATH" "$RENAMED_APK_PATH"
+
           echo "RENAMED_APK_PATH=$RENAMED_APK_PATH" >> "$GITHUB_OUTPUT"
           echo "RENAMED_APK_NAME=$RENAMED_APK_NAME" >> "$GITHUB_OUTPUT"
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload to Cloudflare R2
+        id: upload_r2
+        uses: ryand56/r2-upload-action@latest
         with:
-          name: release-apk
-          path: ${{ steps.rename_apk.outputs.RENAMED_APK_PATH }}
-          retention-days: 5
+          r2-account-id: ${{ env.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ env.R2_BUCKET_NAME }}
+          source-dir: src
+          destination-dir: general/ikki-apps/
+          output-file-url: true
+          keep-file-fresh: true
+
+      - name: Print and summarize upload result
+        run: |
+          APK_NAME="${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}"
+          PUBLIC_URL="${{ steps.upload_r2.outputs.file-urls }}"
+
+          echo "📦 APK Name: $APK_NAME"
+          echo "🪣 R2 Path: $DEST_PATH"
+          echo "🌐 Public URL: $PUBLIC_URL"
+
+          echo "### ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Name:** $APK_NAME" >> $GITHUB_STEP_SUMMARY
+          echo "- **Public URL:** [Download APK]($PUBLIC_URL)" >> $GITHUB_STEP_SUMMARY
+          echo "- **URLs:** $PUBLIC_URL" >> $GITHUB_STEP_SUMMARY
