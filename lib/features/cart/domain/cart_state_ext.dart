@@ -10,6 +10,8 @@ extension CartStateX on CartState {
   double get gross => items.fold<double>(0, (prev, curr) => prev + curr.gross);
   double get discount => items.fold<double>(0, (prev, curr) => prev + curr.discount);
   double get net => gross - discount;
+
+  double get paidAmount => payments.fold<double>(0, (prev, curr) => prev + curr.amount);
 }
 
 extension CartItemX on CartItem {

@@ -11,7 +11,7 @@ import '../../outlet/provider/outlet_provider.dart';
 import '../../printer/provider/printer_provider.dart';
 import '../../printer/templates/template_receipt_checker.dart';
 import '../../product/model/product_model.dart';
-import '../../sales/domain/model/sales_model.dart';
+import '../../sales/domain/sales_model.dart';
 import '../../sales/provider/sales_provider.dart';
 import '../../shift/model/shift_session_model.dart';
 import '../../shift/provider/shift_provider.dart';

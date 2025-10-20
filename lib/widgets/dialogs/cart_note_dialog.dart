@@ -4,16 +4,18 @@ import '../../../widgets/ui/pos_button.dart';
 import '../ui/pos_dialog_two.dart';
 
 class CartNoteDialog extends StatefulWidget {
-  const CartNoteDialog({super.key});
+  const CartNoteDialog({super.key, this.defaultValue});
+
+  final String? defaultValue;
 
   @override
   State<CartNoteDialog> createState() => _CartNoteDialogState();
 
-  static void show(BuildContext context) {
-    showDialog<void>(
+  static Future<String?> show(BuildContext context, {String defaultValue = ''}) {
+    return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return const CartNoteDialog();
+        return CartNoteDialog(defaultValue: defaultValue);
       },
     );
   }
@@ -21,17 +23,15 @@ class CartNoteDialog extends StatefulWidget {
 
 class _CartNoteDialogState extends State<CartNoteDialog> {
   late TextEditingController controller;
-  bool isValid = false;
 
   @override
   void initState() {
     super.initState();
     controller = TextEditingController()
       ..addListener(() {
-        setState(() {
-          isValid = controller.text.isNotEmpty;
-        });
-      });
+        setState(() {});
+      })
+      ..text = widget.defaultValue ?? '';
   }
 
   @override
@@ -44,6 +44,10 @@ class _CartNoteDialogState extends State<CartNoteDialog> {
     Navigator.of(context).pop();
   }
 
+  void onSave() {
+    Navigator.of(context).pop<String?>(controller.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return PosDialogTwo(
@@ -54,7 +58,7 @@ class _CartNoteDialogState extends State<CartNoteDialog> {
         children: [
           Expanded(child: PosButton.cancel(onPressed: onClose)),
           const SizedBox(width: 8),
-          Expanded(child: PosButton.process(onPressed: isValid ? onClose : null)),
+          Expanded(child: PosButton.process(onPressed: onSave)),
         ],
       ),
       children: [

@@ -7,7 +7,7 @@ import '../../core/theme/app_theme.dart';
 import '../../features/cart/domain/cart_state.dart';
 import '../../features/cart/provider/cart_provider.dart';
 import '../../features/product/model/product_model.dart';
-import '../../features/sales/domain/model/sales_model.dart';
+import '../../features/sales/domain/sales_model.dart';
 import '../../utils/formatter.dart';
 import '../ui/pos_dialog_two.dart';
 

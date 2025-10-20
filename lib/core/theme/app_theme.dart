@@ -352,17 +352,21 @@ abstract class AppTheme {
         bodySmall: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 12,
+          letterSpacing: .25,
         ),
         labelLarge: TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
           letterSpacing: .25,
         ),
         labelMedium: TextStyle(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
+          fontSize: 14,
           letterSpacing: .25,
         ),
         labelSmall: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
           letterSpacing: .25,
         ),
       ),
