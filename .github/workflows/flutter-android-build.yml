@@ -85,4 +85,4 @@ jobs:
         run: |
           echo "### ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **APK Name:** ${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **APK URL:** https://pub-ff55380c3870496bb5cc0be517c44d40.r2.dev/general/ikki-apps/${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK URL:** https://r2.rizeforge.com/ikki-apps/${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
