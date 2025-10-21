@@ -63,6 +63,7 @@ jobs:
           fi
 
           RENAMED_APK_PATH="${{ env.ARTIFACT_DIR }}/$RENAMED_APK_NAME"
+          mkdir -p "${{ env.ARTIFACT_DIR }}"
           mv "$ORIGINAL_APK_PATH" "$RENAMED_APK_PATH"
           echo "RENAMED_APK_PATH=$RENAMED_APK_PATH" >> "$GITHUB_OUTPUT"
           echo "RENAMED_APK_NAME=$RENAMED_APK_NAME" >> "$GITHUB_OUTPUT"
