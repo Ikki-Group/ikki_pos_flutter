@@ -10,6 +10,7 @@ on:
         required: true
 
 env:
+  ARTIFACT_DIR: artifacts
   R2_BUCKET_NAME: general
   R2_ACCOUNT_ID: aca8677a98bbe358e408059b8e93da20
   R2_ACCESS_KEY_ID: c255c0d2fb37dc41fbdef72722a97e49
@@ -17,17 +18,54 @@ env:
   R2_ENDPOINT: https://aca8677a98bbe358e408059b8e93da20.r2.cloudflarestorage.com
 
 jobs:
-  test-upload:
-    name: Test Upload
+  build:
+    name: Build Android APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Generate fake file txt with date
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Move to artifacts folder and rename APK with build date and Run Number
+        id: rename_apk
         run: |
           mkdir -p build/app/outputs/flutter-apk/
-          echo "This is a fake file" > build/app/outputs/flutter-apk/fake.txt
+          ORIGINAL_APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+
+          if [ ! -f "$ORIGINAL_APK_PATH" ]; then
+            echo "❌ Error: app-release.apk not found"
+            exit 1
+          fi
+
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # Manual trigger → use provided semantic version
+            VERSION="${{ github.event.inputs.version }}"
+            RENAMED_APK_NAME="ikki-pos-v${VERSION}.apk"
+          else
+            # Auto trigger → use datetime + run number
+            DATE=$(date +'%Y%m%d-%H%M%S')
+            RUN_NUMBER="${{ github.run_number }}"
+            RENAMED_APK_NAME="ikki-pos-${DATE}-build${RUN_NUMBER}.apk"
+          fi
+
+          RENAMED_APK_PATH="${{ env.ARTIFACT_DIR }}/$RENAMED_APK_NAME"
+          mv "$ORIGINAL_APK_PATH" "$RENAMED_APK_PATH"
+          echo "RENAMED_APK_PATH=$RENAMED_APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "RENAMED_APK_NAME=$RENAMED_APK_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Upload to Cloudflare R2
         id: upload_r2
@@ -37,7 +75,7 @@ jobs:
           r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
           r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ env.R2_BUCKET_NAME }}
-          source-dir: build/app/outputs/flutter-apk/
+          source-dir: ${{ env.ARTIFACT_DIR }}
           destination-dir: ./ikki-apps/
           output-file-url: true
           keep-file-fresh: true
@@ -45,72 +83,5 @@ jobs:
       - name: Print and summarize upload result
         run: |
           echo "### ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
-
-  # build:
-  #   name: Build Android APK
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout source
-  #       uses: actions/checkout@v4
-
-  #     - name: Setup Flutter
-  #       uses: subosito/flutter-action@v2
-  #       with:
-  #         channel: stable
-  #         flutter-version-file: pubspec.yaml
-
-  #     - name: Install dependencies
-  #       run: flutter pub get
-
-  #     - name: Run build_runner
-  #       run: flutter pub run build_runner build --delete-conflicting-outputs
-
-  #     - name: Build release APK
-  #       run: flutter build apk --release
-
-  #     - name: Rename APK with build date and Run Number
-  #       id: rename_apk
-  #       run: |
-  #         mkdir -p build/app/outputs/flutter-apk/
-  #         ORIGINAL_APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-
-  #         if [ ! -f "$ORIGINAL_APK_PATH" ]; then
-  #           echo "❌ Error: app-release.apk not found"
-  #           exit 1
-  #         fi
-
-  #         if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-  #           # Manual trigger → use provided semantic version
-  #           VERSION="${{ github.event.inputs.version }}"
-  #           RENAMED_APK_NAME="ikki-pos-v${VERSION}.apk"
-  #         else
-  #           # Auto trigger → use datetime + run number
-  #           DATE=$(date +'%Y%m%d-%H%M%S')
-  #           RUN_NUMBER="${{ github.run_number }}"
-  #           RENAMED_APK_NAME="ikki-pos-${DATE}-build${RUN_NUMBER}.apk"
-  #         fi
-
-  #         RENAMED_APK_PATH="build/app/outputs/flutter-apk/$RENAMED_APK_NAME"
-  #         mv "$ORIGINAL_APK_PATH" "$RENAMED_APK_PATH"
-
-  #         echo "RENAMED_APK_PATH=$RENAMED_APK_PATH" >> "$GITHUB_OUTPUT"
-  #         echo "RENAMED_APK_NAME=$RENAMED_APK_NAME" >> "$GITHUB_OUTPUT"
-
-  #     - name: Upload to Cloudflare R2
-  #       id: upload_r2
-  #       uses: ryand56/r2-upload-action@latest
-  #       with:
-  #         r2-account-id: ${{ env.R2_ACCOUNT_ID }}
-  #         r2-access-key-id: ${{ env.R2_ACCESS_KEY_ID }}
-  #         r2-secret-access-key: ${{ env.R2_SECRET_ACCESS_KEY }}
-  #         r2-bucket: ${{ env.R2_BUCKET_NAME }}
-  #         source-dir: build/app/outputs/flutter-apk/
-  #         destination-dir: ./ikki-apps/
-  #         output-file-url: true
-  #         keep-file-fresh: true
-
-  #     - name: Print and summarize upload result
-  #       run: |
-  #         echo "### ✅ Build Summary" >> $GITHUB_STEP_SUMMARY
-  #         echo "- **APK Name:** ${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
-  #         echo "- **APK URL:** https://pub-ff55380c3870496bb5cc0be517c44d40.r2.dev/general/ikki-apps/${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK Name:** ${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **APK URL:** https://pub-ff55380c3870496bb5cc0be517c44d40.r2.dev/general/ikki-apps/${{ steps.rename_apk.outputs.RENAMED_APK_NAME }}" >> $GITHUB_STEP_SUMMARY
